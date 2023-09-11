@@ -13,11 +13,14 @@ const Button = ({
   const variantButton = useMemo(() => {
     switch (variant) {
       case "outline":
-        return `font-osb text-sm text-primary border-solid border border-primary
-                  bg-white rounded-[50px] px-[30.35px] py-[10px] hover:bg-primary hover:text-white duration-[500ms]
-                  transition-all ${
-                    isActive === true ? "bg-primary text-white" : ""
-                  }`;
+        return ` hover:bg-primary hover:text-white border-solid border border-primary bg-white  
+        rounded-[50px] text-primary${
+          isActive === true ? "bg-primary text-white" : ""
+        }`;
+      case "filled":
+        return `text-white bg-primary hover:bg-black-555 hover:text-white  ${
+          isActive === true ? "bg-black-555 text-white" : ""
+        }`;
       default:
         return "";
     }
@@ -26,7 +29,11 @@ const Button = ({
     return (
       <Link
         to={`${link}`}
-        className={twMerge(` ${variantButton} ${className ?? ""}`)}
+        className={twMerge(
+          ` font-osb text-sm  px-[30.35px] py-[10px] duration-[500ms] transition-all ${variantButton} ${
+            className ?? ""
+          }`
+        )}
       >
         {children}
       </Link>
@@ -35,7 +42,11 @@ const Button = ({
   return (
     <button
       onClick={onClick}
-      className={twMerge(` ${variantButton} ${className ?? ""}`)}
+      className={twMerge(
+        ` font-osb text-sm px-[30.35px] py-[10px] duration-[500ms] transition-all ${variantButton} ${
+          className ?? ""
+        }`
+      )}
     >
       {children}
     </button>

@@ -48,6 +48,10 @@
       }
     }
   }
+  &__logo {
+    @apply xs:w-[130px] md:w-[150px] lg:w-auto md:-translate-x-[65%] md:-translate-y-1/2
+    lg:translate-x-0 lg:translate-y-0 lg:static md:absolute md:top-1/2 md:left-1/2;
+  }
   .sub {
     @apply p-[10px_14px_0px]  top-[120%] -left-[75%] absolute 
     bg-white shadow-header  transition-all duration-300 invisible opacity-0;

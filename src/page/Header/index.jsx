@@ -1,20 +1,17 @@
 import { useMainContext } from "@/components/MainContext";
 import React from "react";
 import { Link } from "react-router-dom";
-import Nav from "../Nav";
+import Button from "@/components/Button";
+import { PATHS } from "@/contants/path";
 
 const Header = () => {
   const { isNavbar, onToggleNav } = useMainContext();
   return (
     <header className="header">
       <div className="container h-full flex items-center justify-between">
-        <a
-          href="#"
-          className="header__logo xs:w-[130px] md:w-[150px] lg:w-auto md:-translate-x-[65%] md:-translate-y-1/2
-           lg:translate-x-0 lg:translate-y-0 lg:static md:absolute md:top-1/2 md:left-1/2"
-        >
+        <Link to={`${PATHS.HOME}`} className="header__logo   ">
           <img src="assets/img/logo-1.svg" alt="" />
-        </a>
+        </Link>
         <div
           className={`hamburger lg:hidden xs:block ${
             isNavbar ? "active" : "not-active"
@@ -27,10 +24,10 @@ const Header = () => {
         </div>
         <ul className="header__menu xs:hidden lg:flex">
           <li className="header__menu-item ">
-            <a href="#"> HOME</a>
+            <Link to={`${PATHS.HOME}`}> HOME</Link>
           </li>
           <li className="header__menu-item relative ">
-            <a href="#">
+            <Link to={`${PATHS.SHOP.INDEX}`}>
               SHOP
               <div className="arrow-down">
                 <svg
@@ -51,10 +48,10 @@ const Header = () => {
                     </li>
                   ))}
               </ul>
-            </a>
+            </Link>
           </li>
           <li className="header__menu-item relative">
-            <a href="#">
+            <Link to={`${PATHS.BLOG.INDEX}`}>
               BLOG
               <div className="arrow-down">
                 <svg
@@ -64,7 +61,7 @@ const Header = () => {
                   <path d="M556.01602 769.767264l453.883943-454.93226c18.798868-18.797098 18.798868-49.373591 0.008854-68.167148-9.057669-9.054127-21.159352-14.042485-34.080917-14.042485s-25.023249 4.988358-34.082688 14.044256L511.467873 687.601901 82.146769 246.561608c-8.95142-8.94965-21.054874-13.938008-33.972898-13.938008-12.919795 0-25.023249 4.988358-34.082688 14.044256-18.786473 18.791785-18.786473 49.368279 0 68.156523l452.562922 454.652473c10.723996 9.19225 25.28887 21.563095 38.55043 21.559553 1.156336 0 2.30913-0.093853 3.424737-0.279787l2.103717-0.348849 2.078925 0.462181c1.514038 0.336453 3.102451 0.504679 4.720967 0.504679 10.879827 0.001771 24.546902-7.672899 38.483139-21.607365z"></path>
                 </svg>
               </div>
-            </a>
+            </Link>
             <ul className="sub">
               {Array(5)
                 .fill("")
@@ -79,10 +76,10 @@ const Header = () => {
             </ul>
           </li>
           <li className="header__menu-item ">
-            <a href="#"> ABOUT</a>
+            <Link to={`${PATHS.ABOUT}`}> ABOUT</Link>
           </li>
           <li className="header__menu-item ">
-            <a href="#"> CONTACT</a>
+            <Link to={`${PATHS.CONTACT}`}> CONTACT</Link>
           </li>
         </ul>
         <div className="header__info xs:hidden md:flex h-full items-center">
@@ -145,7 +142,13 @@ const Header = () => {
               </li>
             </ul>
           </div>
-          <div className="header__info-whitelist group/hover">
+          <div className="header__info-whitelist group/hover mb-[2px] relative">
+            <span
+              className="text-[13px] text-white font-mam rounded-[50%] bg-primary h-[20px] w-[20px]
+            flex items-center justify-center absolute right-[3px] top-[42%] -translate-y-1/2"
+            >
+              3
+            </span>
             <svg className="w-[18px] h-[18px] " viewBox="0 0 24 24">
               <path
                 className="group-hover/hover:fill-primary duration-300 transition-colors"
@@ -153,6 +156,55 @@ const Header = () => {
                 d="M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z"
               />
             </svg>
+
+            <ul
+              className="absolute top-[150%] md:-right-[30%] lg:-right-[100%] border border-[#e5e7eb] border-solid
+             p-[20px_10px_10px]  invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100
+              group-hover/hover:top-[calc(100%+1px)] transition-all duration-400 shadow-header bg-white"
+            >
+              <h3 className="font-mab text-md text-black-555 p-[10px]">
+                (3) White list
+              </h3>
+              <ul className="flex flex-col min-w-max max-h-[390px] overflow-y-scroll scrollbar-cart pr-[10px]">
+                {Array(10)
+                  .fill("")
+                  .map((item, index) => (
+                    <li
+                      key={`${item}${index}`}
+                      className="flex items-center w-full gap-3 max-w-[280px] py-[10px]"
+                    >
+                      <a
+                        href=""
+                        className="relative block min-h-[100px] min-w-[100px] "
+                      >
+                        <img
+                          className="center-absolute hover:scale-105 transition-transform duration-300"
+                          src="/assets/img/product-4.jpg"
+                          alt=""
+                        />
+                      </a>
+                      <div>
+                        <a
+                          className="text-[16px] text-black-555 font-mar font-semibold truncate line-clamp-2 
+                       whitespace-normal hover:text-primary transition-colors duration-400"
+                          href=""
+                        >
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit. Ipsa, nihil.
+                        </a>
+                        <p className="font-mar font-bold text-[15px] text-primary mt-[14px]">
+                          $300
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+              </ul>
+              <div className="mt-[15px] flex items-center justify-center">
+                <Button variant="filled" className={`w-full`}>
+                  VIEW MY WHITE LIST
+                </Button>
+              </div>
+            </ul>
           </div>
           <div className="header__info-cart group/hover mb-[2px] relative">
             <span
@@ -222,6 +274,11 @@ const Header = () => {
                     </li>
                   ))}
               </ul>
+              <div className="mt-[15px] flex items-center justify-center">
+                <Button variant="filled" className={`w-full`}>
+                  VIEW MY CART
+                </Button>
+              </div>
             </ul>
           </div>
         </div>
