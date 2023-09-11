@@ -6,7 +6,7 @@
       @apply h-full flex items-center;
       &:hover {
         .sub {
-          @apply top-[calc(100%+1px)] visible opacity-100;
+          @apply top-[100%] visible opacity-100;
         }
       }
 
@@ -76,10 +76,10 @@
   }
 }
 .nav {
-  @apply fixed left-0 xs:top-[45px] 
-  md:top-[75px] h-screen w-screen z-[100];
+  @apply fixed left-0 xs:top-[56px] 
+  md:top-[75px] h-screen w-[50%] z-[100];
   &__inner {
-    @apply h-full w-[50%] bg-[rgba(0,0,0,255)];
+    @apply h-full w-[100%] bg-[rgba(0,0,0,255)];
     &-list {
       @apply h-full w-full flex flex-col  py-[40px]
        xs:pl-[14px] md:pl-[20px];

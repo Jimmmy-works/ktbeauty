@@ -159,7 +159,7 @@ const Footer = () => {
             </div>
           </div>
           <div
-            className="xs:w-full md:w-1/3 footer__middle-logo  md:absolute md:left-1/2 md:top-[43%] md:-translate-x-1/2  
+            className="xs:w-full md:w-1/3 gap-3 footer__middle-logo  md:absolute md:left-1/2 md:top-[43%] md:-translate-x-1/2  
             md:-translate-y-1/2 h-full flex flex-col items-center   "
           >
             <a href="#">
@@ -171,7 +171,7 @@ const Footer = () => {
               architecto ullam voluptatum?
             </p>
           </div>
-          <div className="xs:w-full md:w-1/3 footer__middle-menu">
+          <div className="xs:w-full md:w-1/3  footer__middle-menu">
             <h3 className="heading font-mab text-primary text-center text-[22px] ">
               KTBEAUTY INFO
             </h3>

@@ -27,7 +27,7 @@ const useHome = () => {
     }, 1000);
     return () => clearInterval(countDown);
   }, []);
-  //////////////////////////////////////////////////////////////////
+  //////////////////////////  ////////////////////////////////////////
   const marketingProps = { seconds, minutes, hours, days, weeks };
   const featuredProps = { onChangeFeaturedTab, featuerdTab };
   const categoryProps = { onChangeCategoryTab, categoryTab };

@@ -130,6 +130,11 @@
   }
 }
 .scshowcaseproduct {
+  &__top {
+    @apply border-b-[1px] border-dashed border-primary pb-[15px] 
+    xs:mb-[30px] lg:mb-[50px] flex items-center justify-between
+     xs:flex-col xs:gap-5 lg:gap-0 lg:flex-row;
+  }
   &__bottom {
     &-list {
       @apply xs:-mx-[5px] lg:-mx-[10px];

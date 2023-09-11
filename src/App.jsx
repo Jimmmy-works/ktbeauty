@@ -5,6 +5,9 @@ import MainLayout from "./layout/MainLayout";
 import { PATHS } from "./contants/path";
 import HomePage from "./page/HomePage";
 import Shop from "./page/Shop";
+import Blog from "./page/Blog";
+import AboutPage from "./page/AboutPage";
+import ContactPage from "./page/ContactPage";
 
 function App() {
   return (
@@ -13,6 +16,9 @@ function App() {
         <Route path={PATHS.HOME} element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path={PATHS.SHOP.INDEX} element={<Shop />} />
+          <Route path={PATHS.BLOG.INDEX} element={<Blog />} />
+          <Route path={PATHS.ABOUT} element={<AboutPage />} />
+          <Route path={PATHS.CONTACT} element={<ContactPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

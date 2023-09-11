@@ -14,7 +14,7 @@ const Button = ({
     switch (variant) {
       case "outline":
         return ` hover:bg-primary hover:text-white border-solid border border-primary bg-white  
-        rounded-[50px] text-primary${
+        rounded-[50px] text-primary ${
           isActive === true ? "bg-primary text-white" : ""
         }`;
       case "filled":

@@ -45,11 +45,7 @@ const ShowcaseProduct = ({ onChangeCategoryTab, categoryTab }) => {
   return (
     <section className="scshowcaseproduct pt-section">
       <div className="container">
-        <div
-          className="scshowcaseproduct__top border-b-[1px] border-dashed
-          border-primary pb-[15px] xs:mb-[30px] lg:mb-[50px] flex items-center justify-between
-          xs:flex-col xs:gap-5 lg:gap-0 lg:flex-row "
-        >
+        <div className="scshowcaseproduct__top ">
           <div className="heading-section flex items-center gap-3  ">
             <svg className="w-[32px] h-[32px]" viewBox="0 0 347 511.82">
               <path

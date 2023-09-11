@@ -30,10 +30,25 @@
     @apply relative;
   }
   .main-wrapper {
-    @apply xl:pt-[92px] xs:pt-[46px] md:pt-[76px];
+    @apply xl:pt-[92px] xs:pt-[56px] md:pt-[76px];
   }
 }
 @layer components {
+  .breadcrumb {
+    @apply border-t-[1px] border-b-[1px] border-solid border-[#e5e5e5] py-[32px];
+    &__list {
+      @apply flex items-center gap-[20px];
+      &-item {
+        @apply relative after:absolute after:h-[12px] after:w-[1px] font-mam tracking-wide
+                after:bg-black-555 after:top-1/2 after:-translate-y-1/2 after:rotate-[20deg]
+                after:-right-[10px] last:after:hidden  text-black-333 text-sm 
+                hover:text-primary duration-300 transition-colors;
+        &.active {
+          @apply text-primary;
+        }
+      }
+    }
+  }
 }
 @layer utilities {
   .center-absolute {
@@ -63,6 +78,43 @@
     &::-webkit-scrollbar-thumb {
       border-radius: 10px;
       -webkit-box-shadow: inset 0 0 6px #ff887b;
+    }
+  }
+  .accordion {
+    @apply font-osb text-[15px] text-black-333 py-[24px]  flex flex-col
+    not-lastChild:border-b-[1px] not-lastChild:border-solid cursor-pointer
+  not-lastChild:border-[rgb(229,229,229)];
+    &__heading {
+      @apply flex items-center justify-between uppercase;
+      &-dropdown {
+        @apply rounded-[50%] bg-[#f9f9f9] border-solid border 
+        border-[rgb(229,229,229)]  p-[9px];
+      }
+    }
+    &__content {
+      @apply flex flex-col items-start gap-[10px]  w-full duration-400 transition-all
+       overflow-hidden;
+      &-heading {
+        @apply flex items-center gap-[10px];
+        &.active {
+          a {
+            @apply text-black;
+          }
+        }
+        .dropdown {
+          @apply rounded-[50%] bg-primary p-[5px];
+        }
+        a {
+          @apply font-osr text-grey-999 duration-300 transition-colors;
+        }
+      }
+      &-list {
+        @apply flex flex-col pt-[2px] w-full;
+        .item {
+          @apply h-full text-sm font-osr text-grey-999 duration-300 transition-colors
+          hover:text-primary not-firstChild:pt-[16px];
+        }
+      }
     }
   }
 }

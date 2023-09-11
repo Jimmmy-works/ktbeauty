@@ -1045,7 +1045,7 @@ export default {
         },
         ".h-header": {
           "@media (min-width: 360px)": {
-            height: "46px",
+            height: "56px",
           },
           "@media (min-width: 768px)": {
             height: "76px",
@@ -1078,6 +1078,7 @@ export default {
         },
       });
       addVariant("not-lastChild", "&:not(:last-child)");
+      addVariant("not-firstChild", "&:not(:first-child)");
       // Add your custom styles here
       //   xs: ['1.2rem', { lineHeight: '2rem' }],
       // sm: ['1.4rem', { lineHeight: '2rem' }],
