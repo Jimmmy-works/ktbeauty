@@ -1,0 +1,162 @@
+.schero {
+  &__slider {
+    &:hover {
+      .schero__slider-prev,
+      .schero__slider-next {
+        @apply opacity-100 visible;
+      }
+    }
+    &-prev,
+    &-next {
+      @apply bg-white absolute  top-1/2 -translate-y-1/2 xs:p-[6px] md:p-[11px]
+        rounded-[50%] hover:bg-primary duration-400 transition-all cursor-pointer
+         opacity-0 invisible z-10;
+    }
+    &-prev {
+      @apply left-[16px];
+    }
+    &-next {
+      @apply right-[16px];
+    }
+    &-item {
+      @apply md:h-[600px] xs:h-[400px] xl:h-screen xl:w-screen
+      x:bg-[50%_calc(50%+76px)] lg:bg-[50%_calc(50%+92px)] xs:bg-[50%_calc(50%+46px)] 
+      bg-no-repeat bg-cover bg-slider-1 relative;
+      .textbox {
+        &__title {
+          @apply xs:translate-x-[200%] xl:translate-x-[100%] transition-transform duration-[1000ms] opacity-0 invisible;
+        }
+        &__desc {
+          @apply xs:translate-x-[-200%] xl:translate-x-[-100%] transition-transform duration-[1000ms] opacity-0 invisible;
+        }
+      }
+    }
+  }
+
+  .slick {
+    &-active {
+      .textbox {
+        &__title {
+          @apply translate-x-[none] opacity-100 visible;
+        }
+        &__desc {
+          @apply translate-x-[none] opacity-100 visible;
+        }
+      }
+    }
+    &-dots {
+      @apply xs:bottom-[40px] sm:bottom-[58px];
+      li {
+        @apply bg-white mx-[10px] rounded-[50%];
+        @apply xs:w-[14px] xs:h-[14px] sm:h-[20px] sm:w-[20px];
+        &.slick-active {
+          button {
+            &::before {
+              @apply text-primary;
+            }
+          }
+        }
+        button {
+          @apply xs:w-[14px] xs:h-[14px] sm:h-[20px] sm:w-[20px];
+          &::before {
+            @apply xs:leading-[16px]  sm:leading-[23px] xs:w-[14px] xs:h-[14px] 
+          sm:h-[20px] sm:w-[20px] transition-all duration-400 lg:text-[9px];
+          }
+        }
+      }
+    }
+    &-slider {
+      .slick-track {
+        @apply flex;
+      }
+    }
+  }
+}
+.scfeatured {
+  &__tabs {
+    @apply xs:flex-wrap xs:gap-[14px] lg:flex-nowrap flex items-center justify-center
+           xs:mb-[30px] md:mb-[50px];
+    &-item {
+      @apply bg-white font-mab xs:text-[14px] md:text-[18px] text-black-555  cursor-pointer uppercase
+            xs:py-[3px] md:py-[7px] xs:px-[20px] md:px-[72.2px]  rounded-[50px]  duration-400 
+          transition-all relative  before:absolute before:w-[10px] before:h-[10px]  before:top-1/2 
+         before:-translate-y-1/2 before:left-[52px] before:rounded-[50%] before:bg-white 
+         md:before:block xs:before:hidden;
+      &.active {
+        @apply bg-primary text-white shadow-[inset_0px_8px_23px_13px_rgba(0,0,0,0.2)];
+      }
+    }
+  }
+  &__content {
+    &-list {
+      .prev,
+      .next {
+        @apply bg-white absolute  top-1/2 -translate-y-1/2 xs:p-[6px] md:p-[11px] z-10
+        rounded-[50%] hover:bg-primary duration-400 transition-all cursor-pointer 
+        xl:block xs:hidden;
+      }
+      .prev {
+        @apply -left-[20px];
+      }
+      .next {
+        @apply -right-[20px];
+      }
+      @apply xs:-mx-[5px] lg:-mx-[10px];
+      .item {
+        @apply xs:mx-[5px] lg:mx-[10px];
+      }
+    }
+  }
+  .slick-list {
+    @apply pb-[10px] xs:-mx-[5px] lg:-mx-[10px];
+  }
+
+  .slick-track {
+    @apply flex;
+  }
+  .slick-slide {
+    @apply xs:w-[100%] md:w-[calc(50%-20px)] lg:w-[calc(25%)];
+  }
+}
+.scbrand {
+  .slick-list {
+    @apply pb-[20px] xs:-mx-[5px] lg:-mx-[10px];
+  }
+  .slick-track {
+    @apply flex xs:gap-2 md:gap-0;
+  }
+  .slick-slide {
+    @apply xs:w-1/2 md:w-1/4 lg:w-1/6 xs:mx-[5px] lg:mx-[10px];
+  }
+}
+.scshowcaseproduct {
+  &__bottom {
+    &-list {
+      @apply xs:-mx-[5px] lg:-mx-[10px];
+      .prev,
+      .next {
+        @apply bg-white absolute  top-1/2 -translate-y-1/2 xs:p-[6px] md:p-[11px] z-10
+        rounded-[50%] hover:bg-primary duration-400 transition-all cursor-pointer;
+      }
+      .prev {
+        @apply -left-[20px];
+      }
+      .next {
+        @apply -right-[20px];
+      }
+      .item {
+        @apply xs:mx-[5px] lg:mx-[10px];
+      }
+    }
+    .slick-list {
+      @apply pb-[10px] xs:-mx-[5px] lg:-mx-[10px];
+    }
+
+    .slick-track {
+      @apply flex;
+    }
+    .slick-slide {
+      @apply xs:w-[100%] md:w-[calc(50%-20px)] lg:w-[calc(25%)];
+    }
+  }
+}

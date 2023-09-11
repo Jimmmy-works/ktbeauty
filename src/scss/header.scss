@@ -1,0 +1,91 @@
+.header {
+  @apply h-header fixed w-full left-0 top-0 shadow-header z-[1000] bg-white;
+  &__menu {
+    @apply h-full center-absolute flex items-center gap-[40px];
+    &-item {
+      @apply h-full flex items-center;
+      &:hover {
+        .sub {
+          @apply top-[calc(100%+1px)] visible opacity-100;
+        }
+      }
+
+      a {
+        @apply flex items-center h-full text-sm text-black-555 font-mam  
+         font-[700]  duration-400 cursor-pointer gap-[5px] transition-colors;
+        .arrow-down {
+          @apply duration-400 transition-transform;
+          path {
+            @apply duration-400 transition-colors;
+          }
+        }
+        &:hover,
+        &.active {
+          @apply text-primary;
+          .arrow-down {
+            @apply -rotate-180;
+            svg {
+              path {
+                @apply fill-primary;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  &__info {
+    &-search,
+    &-profile,
+    &-whitelist,
+    &-cart {
+      @apply cursor-pointer relative xs:px-[8px] md:px-[15px] h-full
+      flex items-center;
+      &:hover {
+        .sub {
+          @apply top-[calc(100%)] visible opacity-100;
+        }
+      }
+    }
+  }
+  .sub {
+    @apply p-[10px_14px_0px]  top-[120%] -left-[75%] absolute 
+    bg-white shadow-header  transition-all duration-300 invisible opacity-0;
+    &__item {
+      @apply w-full min-w-max pb-[14px] cursor-pointer flex items-center
+      gap-2;
+      a {
+        @apply text-sm leading-[20px] text-black-555 font-mam
+        duration-400 transition-colors max-w-[300px];
+      }
+      svg {
+        path {
+          @apply transition-colors duration-400;
+        }
+      }
+      &:hover {
+        a {
+          @apply text-primary;
+        }
+      }
+    }
+  }
+}
+.nav {
+  @apply fixed left-0 xs:top-[45px] 
+  md:top-[75px] h-screen w-screen z-[100];
+  &__inner {
+    @apply h-full w-[50%] bg-[rgba(0,0,0,255)];
+    &-list {
+      @apply h-full w-full flex flex-col  py-[40px]
+       xs:pl-[14px] md:pl-[20px];
+      .item {
+        @apply text-white font-mam xs:text-[16px] md:text-[20px]
+        md:py-[16px] xs:py-[12px];
+        &__sub {
+          @apply flex items-center gap-2;
+        }
+      }
+    }
+  }
+}

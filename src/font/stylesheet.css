@@ -1,0 +1,88 @@
+@font-face {
+  font-family: "GreatVibes-Regular";
+  src: url("GreatVibes-Regular.woff2") format("woff2"),
+    url("GreatVibes-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "MontserratAlternates-Medium";
+  src: url("MontserratAlternates-Medium.woff2") format("woff2"),
+    url("MontserratAlternates-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MontserratAlternates-Light";
+  src: url("MontserratAlternates-Light.woff2") format("woff2"),
+    url("MontserratAlternates-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MontserratAlternates-Bold";
+  src: url("MontserratAlternates-Bold.woff2") format("woff2"),
+    url("MontserratAlternates-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MontserratAlternates-Regular";
+  src: url("MontserratAlternates-Regular.woff2") format("woff2"),
+    url("MontserratAlternates-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OpenSans-Bold";
+  src: url("OpenSans-Bold.woff2") format("woff2"),
+    url("OpenSans-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OpenSans-Regular";
+  src: url("OpenSans-Regular.woff2") format("woff2"),
+    url("OpenSans-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OpenSans-SemiBold";
+  src: url("OpenSans-SemiBold.woff2") format("woff2"),
+    url("OpenSans-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OpenSans-Light";
+  src: url("OpenSans-Light.woff2") format("woff2"),
+    url("OpenSans-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OpenSans-Medium";
+  src: url("OpenSans-Medium.woff2") format("woff2"),
+    url("OpenSans-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
