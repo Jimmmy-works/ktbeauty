@@ -1,83 +1,121 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const Accordion = ({ item, itemChildren, index }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [activeChildrenIndex, setActiveChildrenIndex] = useState(0);
+const Accordion = ({ item, renderProps, className }) => {
+  const [activeIndex, setActiveIndex] = useState("product-1");
+  const [activeChildrenIndex, setActiveChildrenIndex] = useState("");
   const refAccordion = useRef(null);
   const heightAccodion = refAccordion?.current?.clientHeight;
-  const handleAccordion = (index) => {
-    setActiveIndex((prev) => {
-      return prev === index ? null : index;
-    });
+  const handleAccordion = (id) => {
+    if (activeIndex === id) {
+      return setActiveIndex(null);
+    }
+    setActiveIndex(id);
   };
-  const handleChildrenAccordion = (index) => {
-    setActiveChildrenIndex((prev) => {
-      return prev === index ? null : index;
-    });
+  const handleChildrenAccordion = (id) => {
+    if (activeChildrenIndex === id) {
+      return setActiveChildrenIndex(null);
+    }
+    setActiveChildrenIndex(id);
   };
   return (
     <div
-      key={`${item}${index}`}
-      className="accordion overflow-hidden  duration-400 transition-all"
+      key={`${item?.id}`}
+      className={`accordion ${activeIndex === item?.id ? "active" : ""} ${
+        className ?? ""
+      }`}
     >
       <div
         className="accordion__heading"
-        onClick={() => handleAccordion(index)}
+        onClick={() => handleAccordion(item?.id)}
       >
-        <a>{item}</a>
-        <div className="accordion__heading-dropdown">
-          <svg className="w-[10px] h-[10px]" viewBox="0 0 24 24">
-            <path
-              fill="#333"
-              d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
-            />
-          </svg>
-        </div>
-      </div>
-      <div
-        ref={refAccordion}
-        className={` accordion__content
-        ${activeIndex === index ? ` max-h-[200px] mt-[10px]` : " max-h-0 "}`}
-      >
-        <div
-          className={`accordion__content-heading ${
-            activeIndex === index ? "active" : ""
-          }`}
-        >
-          <div
-            className="dropdown"
-            onClick={() => handleChildrenAccordion(index)}
-          >
-            <svg className="w-[10px] h-[10px] " viewBox="0 0 24 24">
+        <a>{item.title}</a>
+        {(item?.subCate || item?.type === "range") && (
+          <div className="accordion__heading-dropdown">
+            <svg className="w-[10px] h-[10px]" viewBox="0 0 24 24">
               <path
-                fill="white"
+                fill="#333"
                 d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
               />
             </svg>
           </div>
-          <a href="" className="">
-            Categories (3)
-          </a>
-        </div>
-        <div className="accordion__content-list">
-          <div className="item item__child">
-            <ul
-              className={`item__child-list duration-400 transition-all pl-[28px]  ${
-                activeChildrenIndex === index ? ` max-h-[200px] ` : " max-h-0 "
-              }`}
+        )}
+      </div>
+      {item?.subCate?.length &&
+        item?.subCate?.map((itemSub) => {
+          return (
+            <div
+              key={itemSub?.id}
+              ref={refAccordion}
+              className={` accordion__content 
+              ${activeChildrenIndex === itemSub?.id ? "active" : ""} 
+            ${
+              activeIndex === item?.id
+                ? `max-h-[132px] overflow-y-visible opacity-100 `
+                : "max-h-0 overflow-y-hidden opacity-0 "
+            }`}
             >
-              {itemChildren?.length &&
-                itemChildren?.map((item, index) => {
+              <div className={`accordion__content-heading `}>
+                <div
+                  className={`dropdown ${
+                    itemSub?.subCateChild ? "" : "opacity-0"
+                  }`}
+                  onClick={() => handleChildrenAccordion(itemSub?.id)}
+                >
+                  <svg className="w-[10px] h-[10px] " viewBox="0 0 24 24">
+                    <path
+                      fill="white"
+                      d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
+                    />
+                  </svg>
+                </div>
+
+                <a href="" className="leading-[28px] block">
+                  {itemSub?.title}{" "}
+                  {itemSub?.quantity && `(${itemSub?.quantity})`}
+                </a>
+              </div>
+              {itemSub?.subCateChild?.length &&
+                itemSub?.subCateChild?.map((itemSubChild) => {
                   return (
-                    <li key={`${item}${index}`} className="item item__child">
-                      <a href="">{item}</a>
-                    </li>
+                    <div
+                      key={itemSubChild?.id}
+                      className="accordion__content-list"
+                    >
+                      <div className="item">
+                        <ul
+                          className={`item__list duration-300 transition-all pl-[28px]   ${
+                            activeChildrenIndex === itemSub?.id
+                              ? `h-[48px] overflow-y-visible opacity-100`
+                              : "h-0 overflow-y-hidden opacity-0"
+                          }`}
+                        >
+                          <li className="item item__list-child  p-0">
+                            <a className="leading-[22px] block" href="">
+                              {itemSubChild?.title}{" "}
+                              {itemSubChild?.quantity &&
+                                `(${itemSubChild?.quantity})`}
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                   );
                 })}
-            </ul>
-          </div>
+            </div>
+          );
+        })}
+      {item?.type === "range" && (
+        <div
+          className={` accordion__content
+            ${
+              activeIndex === item?.id
+                ? `max-h-[132px] overflow-y-visible opacity-100`
+                : "max-h-0 overflow-y-hidden opacity-0"
+            }`}
+        >
+          {renderProps && renderProps?.()}
         </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -18,8 +18,8 @@ const Button = ({
           isActive === true ? "bg-primary text-white" : ""
         }`;
       case "filled":
-        return `text-white bg-primary hover:bg-black-555 hover:text-white  ${
-          isActive === true ? "bg-black-555 text-white" : ""
+        return `text-white bg-primary hover:bg-gray-100 hover:text-black  ${
+          isActive === true ? "bg-gray-100 text-black" : ""
         }`;
       default:
         return "";

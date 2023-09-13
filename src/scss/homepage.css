@@ -1,0 +1,136 @@
+.schero__slider:hover .schero__slider-prev,
+.schero__slider:hover .schero__slider-next {
+  @apply opacity-100 visible;
+}
+.schero__slider-prev, .schero__slider-next {
+  @apply bg-white absolute  top-1/2 -translate-y-1/2 xs:p-[6px] md:p-[11px]
+        rounded-[50%] hover:bg-primary duration-400 transition-all cursor-pointer
+         opacity-0 invisible z-10;
+}
+.schero__slider-prev {
+  @apply left-[16px];
+}
+.schero__slider-next {
+  @apply right-[16px];
+}
+.schero__slider-item {
+  @apply md:h-[600px] xs:h-[400px] xl:h-screen xl:w-screen
+      x:bg-[50%_calc(50%+76px)] lg:bg-[50%_calc(50%+92px)] xs:bg-[50%_calc(50%+46px)] 
+      bg-no-repeat bg-cover bg-slider-1 relative;
+}
+.schero__slider-item .textbox__title {
+  @apply xs:translate-x-[200%] xl:translate-x-[100%] transition-transform duration-[1000ms] opacity-0 invisible;
+}
+.schero__slider-item .textbox__desc {
+  @apply xs:translate-x-[-200%] xl:translate-x-[-100%] transition-transform duration-[1000ms] opacity-0 invisible;
+}
+.schero .slick-active .textbox__title {
+  @apply translate-x-[none] opacity-100 visible;
+}
+.schero .slick-active .textbox__desc {
+  @apply translate-x-[none] opacity-100 visible;
+}
+.schero .slick-dots {
+  @apply xs:bottom-[40px] sm:bottom-[58px];
+}
+.schero .slick-dots li {
+  @apply bg-white mx-[10px] rounded-[50%];
+  @apply xs:w-[14px] xs:h-[14px] sm:h-[20px] sm:w-[20px];
+}
+.schero .slick-dots li.slick-active button::before {
+  @apply text-primary;
+}
+.schero .slick-dots li button {
+  @apply xs:w-[14px] xs:h-[14px] sm:h-[20px] sm:w-[20px];
+}
+.schero .slick-dots li button::before {
+  @apply xs:leading-[16px]  sm:leading-[23px] xs:w-[14px] xs:h-[14px] 
+          sm:h-[20px] sm:w-[20px] transition-all duration-400 lg:text-[9px];
+}
+.schero .slick-slider .slick-track {
+  @apply flex;
+}
+
+.scfeatured__tabs {
+  @apply xs:flex-wrap xs:gap-[14px] lg:flex-nowrap flex items-center justify-center
+           xs:mb-[30px] md:mb-[50px];
+}
+.scfeatured__tabs-item {
+  @apply bg-white font-mab xs:text-[14px] md:text-[18px] text-black-555  cursor-pointer uppercase
+            xs:py-[3px] md:py-[7px] xs:px-[20px] md:px-[72.2px]  rounded-[50px]  duration-400 
+          transition-all relative  before:absolute before:w-[10px] before:h-[10px]  before:top-1/2 
+         before:-translate-y-1/2 before:left-[52px] before:rounded-[50%] before:bg-white 
+         md:before:block xs:before:hidden;
+}
+.scfeatured__tabs-item.active {
+  @apply bg-primary text-white shadow-[inset_0px_8px_23px_13px_rgba(0,0,0,0.2)];
+}
+.scfeatured__content-list {
+  @apply xs:-mx-[5px] lg:-mx-[10px];
+}
+.scfeatured__content-list .prev,
+.scfeatured__content-list .next {
+  @apply bg-white absolute  top-1/2 -translate-y-1/2 xs:p-[6px] md:p-[11px] z-10
+        rounded-[50%] hover:bg-primary duration-400 transition-all cursor-pointer 
+        xl:block xs:hidden;
+}
+.scfeatured__content-list .prev {
+  @apply -left-[20px];
+}
+.scfeatured__content-list .next {
+  @apply -right-[20px];
+}
+.scfeatured__content-list .item {
+  @apply xs:mx-[5px] lg:mx-[10px];
+}
+.scfeatured .slick-list {
+  @apply pb-[10px] xs:-mx-[5px] lg:-mx-[10px];
+}
+.scfeatured .slick-track {
+  @apply flex;
+}
+.scfeatured .slick-slide {
+  @apply xs:w-[100%] md:w-[calc(50%-20px)] lg:w-[calc(25%)];
+}
+
+.scbrand .slick-list {
+  @apply pb-[20px] xs:-mx-[5px] lg:-mx-[10px];
+}
+.scbrand .slick-track {
+  @apply flex xs:gap-2 md:gap-0;
+}
+.scbrand .slick-slide {
+  @apply xs:w-1/2 md:w-1/4 lg:w-1/6 xs:mx-[5px] lg:mx-[10px];
+}
+
+.scshowcaseproduct__top {
+  @apply border-b-[1px] border-dashed border-primary pb-[15px] 
+    xs:mb-[30px] lg:mb-[50px] flex items-center justify-between
+     xs:flex-col xs:gap-5 lg:gap-0 lg:flex-row;
+}
+.scshowcaseproduct__bottom-list {
+  @apply xs:-mx-[5px] lg:-mx-[10px];
+}
+.scshowcaseproduct__bottom-list .prev,
+.scshowcaseproduct__bottom-list .next {
+  @apply bg-white absolute  top-1/2 -translate-y-1/2 xs:p-[6px] md:p-[11px] z-10
+        rounded-[50%] hover:bg-primary duration-400 transition-all cursor-pointer;
+}
+.scshowcaseproduct__bottom-list .prev {
+  @apply -left-[20px];
+}
+.scshowcaseproduct__bottom-list .next {
+  @apply -right-[20px];
+}
+.scshowcaseproduct__bottom-list .item {
+  @apply xs:mx-[5px] lg:mx-[10px];
+}
+.scshowcaseproduct__bottom .slick-list {
+  @apply pb-[10px] xs:-mx-[5px] lg:-mx-[10px];
+}
+.scshowcaseproduct__bottom .slick-track {
+  @apply flex;
+}
+.scshowcaseproduct__bottom .slick-slide {
+  @apply xs:w-[100%] md:w-[calc(50%-20px)] lg:w-[calc(25%)];
+}/*# sourceMappingURL=homepage.css.map */

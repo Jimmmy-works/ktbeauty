@@ -1,0 +1,79 @@
+.header {
+  @apply h-header fixed w-full left-0 top-0 shadow-header z-[1000] bg-white;
+}
+.header__menu {
+  @apply h-full center-absolute flex items-center gap-[40px];
+}
+.header__menu-item {
+  @apply h-full flex items-center;
+}
+.header__menu-item:hover .sub {
+  @apply top-[100%] visible opacity-100;
+}
+.header__menu-item a {
+  @apply flex items-center h-full text-sm text-black-555 font-mam  
+         font-[700]  duration-400 cursor-pointer gap-[5px] transition-colors;
+}
+.header__menu-item a .arrow-down {
+  @apply duration-400 transition-transform;
+}
+.header__menu-item a .arrow-down path {
+  @apply duration-400 transition-colors;
+}
+.header__menu-item a:hover, .header__menu-item a.active {
+  @apply text-primary;
+}
+.header__menu-item a:hover .arrow-down, .header__menu-item a.active .arrow-down {
+  @apply -rotate-180;
+}
+.header__menu-item a:hover .arrow-down svg path, .header__menu-item a.active .arrow-down svg path {
+  @apply fill-primary;
+}
+.header__info-search, .header__info-profile, .header__info-whitelist, .header__info-cart {
+  @apply cursor-pointer relative xs:px-[8px] md:px-[15px] h-full
+      flex items-center;
+}
+.header__info-search:hover .sub, .header__info-profile:hover .sub, .header__info-whitelist:hover .sub, .header__info-cart:hover .sub {
+  @apply top-[calc(100%)] visible opacity-100;
+}
+.header__logo {
+  @apply xs:w-[130px] md:w-[150px] lg:w-auto md:-translate-x-[65%] md:-translate-y-1/2
+    lg:translate-x-0 lg:translate-y-0 lg:static md:absolute md:top-1/2 md:left-1/2;
+}
+.header .sub {
+  @apply p-[10px_14px_0px]  top-[120%] -left-[75%] absolute 
+    bg-white shadow-header  transition-all duration-300 invisible opacity-0;
+}
+.header .sub__item {
+  @apply w-full min-w-max pb-[14px] cursor-pointer flex items-center
+      gap-2;
+}
+.header .sub__item a {
+  @apply text-sm leading-[20px] text-black-555 font-mam
+        duration-400 transition-colors max-w-[300px];
+}
+.header .sub__item svg path {
+  @apply transition-colors duration-400;
+}
+.header .sub__item:hover a {
+  @apply text-primary;
+}
+
+.nav {
+  @apply fixed left-0 xs:top-[56px] 
+  md:top-[75px] h-screen w-[50%] z-[100];
+}
+.nav__inner {
+  @apply h-full w-[100%] bg-[rgba(0,0,0,255)];
+}
+.nav__inner-list {
+  @apply h-full w-full flex flex-col  py-[40px]
+       xs:pl-[14px] md:pl-[20px];
+}
+.nav__inner-list .item {
+  @apply text-white font-mam xs:text-[16px] md:text-[20px]
+        md:py-[16px] xs:py-[12px];
+}
+.nav__inner-list .item__sub {
+  @apply flex items-center gap-2;
+}/*# sourceMappingURL=header.css.map */
