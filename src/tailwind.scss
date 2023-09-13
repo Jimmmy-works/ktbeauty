@@ -121,7 +121,8 @@
       }
     }
     &__heading {
-      @apply flex items-center lg:gap-0 xs:gap-1 xs:justify-start lg:justify-between uppercase 
+      @apply flex items-center lg:gap-0 xs:gap-1 xs:justify-start 
+      lg:justify-between uppercase 
       cursor-pointer;
       &-dropdown {
         @apply rounded-[50%] bg-[#f9f9f9] border-solid border duration-300
@@ -141,7 +142,7 @@
         }
       }
       &-heading {
-        @apply flex xs:justify-start lg:justify-between  items-center gap-[10px] duration-300 transition-colors;
+        @apply flex xs:justify-start lg:justify-normal  items-center gap-[10px] duration-300 transition-colors;
 
         a {
           @apply font-osr text-grey-999 duration-300 transition-colors
