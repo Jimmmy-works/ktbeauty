@@ -11,7 +11,7 @@ import Pagination from "@/components/Pagination";
 import NavbarFilter from "@/components/NavbarFilter";
 import { useMainContext } from "@/components/MainContext";
 import useWindowSize from "@/utils/windowResize";
-import InputRange from "@/components/Input/inputRange";
+import InputRange from "@/components/Input/InputRange";
 
 const Shop = () => {
   const {
