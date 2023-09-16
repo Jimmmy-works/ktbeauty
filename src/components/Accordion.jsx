@@ -4,7 +4,6 @@ const Accordion = ({ item, renderProps, className }) => {
   const [activeIndex, setActiveIndex] = useState("product-1");
   const [activeChildrenIndex, setActiveChildrenIndex] = useState("");
   const refAccordion = useRef(null);
-  const heightAccodion = refAccordion?.current?.clientHeight;
   const handleAccordion = (id) => {
     if (activeIndex === id) {
       return setActiveIndex(null);
@@ -57,7 +56,7 @@ const Accordion = ({ item, renderProps, className }) => {
               <div className={`accordion__content-heading `}>
                 <div
                   className={`dropdown ${
-                    itemSub?.subCateChild ? "" : "opacity-0"
+                    itemSub?.subCateChild ? "" : "hidden"
                   }`}
                   onClick={() => handleChildrenAccordion(itemSub?.id)}
                 >

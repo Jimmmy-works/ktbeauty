@@ -922,6 +922,9 @@ export default {
       "product-banner": "url('/assets/img/product-banner.jpg')",
       "footer-banner": "url('/assets/img/footer-banner.jpg')",
       "marketing-banner": "url('/assets/img/marketing-banner.jpg')",
+      "advertising-banner-1": "url('/assets/img/advertising-banner-1.jpg')",
+      "advertising-banner-2": "url('/assets/img/advertising-banner-2.jpg')",
+      "advertising-banner-3": "url('/assets/img/advertising-banner-3.jpg')",
       "gradient-to-t": "linear-gradient(to top, var(--tw-gradient-stops))",
       "gradient-to-tr":
         "linear-gradient(to top right, var(--tw-gradient-stops))",
@@ -995,7 +998,7 @@ export default {
         lg: "970px",
         // lg: "984px",
         // 1280px
-        xl: "1140px",
+        xl: "1200px",
         // 1536px
         // "2xl": "1280px",
       },

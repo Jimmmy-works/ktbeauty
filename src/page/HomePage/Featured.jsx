@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import useHome from "./useHome";
 import { FEATURED_OPTIONS } from "@/contants/general";
 import ProductCard from "@/components/ProductCard";
+import Textbox from "@/components/Textbox";
 
 const Featured = ({ onChangeFeaturedTab, featuerdTab }) => {
   const refFeaturedSlider = useRef(null);
@@ -12,7 +13,7 @@ const Featured = ({ onChangeFeaturedTab, featuerdTab }) => {
     arrows: false,
     dots: false,
     speed: 600,
-    slidesToShow: 4,
+    slidesToShow: 3,
     variableWidth: true,
     // autoplay: true,
     // autoplaySpeed: 2000,
@@ -26,7 +27,7 @@ const Featured = ({ onChangeFeaturedTab, featuerdTab }) => {
       {
         breakpoint: 500,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
         },
       },
     ],
@@ -44,7 +45,7 @@ const Featured = ({ onChangeFeaturedTab, featuerdTab }) => {
   ];
   const baseURL = `/assets/img/`;
   return (
-    <section className="scfeatured pt-section">
+    <section className="scfeatured mt-section  bg-[#333] lg:py-[80px] md:py-[60px] xs:py-[50px]">
       <div className="container">
         <div className="scfeatured__tabs  ">
           <div
@@ -118,6 +119,7 @@ const Featured = ({ onChangeFeaturedTab, featuerdTab }) => {
               {images.map((item, index) => {
                 return (
                   <ProductCard
+                    isProductDetail
                     className={`item`}
                     key={`${item}${index}`}
                     item={item}

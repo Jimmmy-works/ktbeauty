@@ -1,21 +1,22 @@
 import React from "react";
 import Hero from "./Hero";
-import Outstanding from "./Outstanding";
 import Featured from "./Featured";
 import useHome from "./useHome";
-import Marketing from "./Marketing";
 import Brand from "./Brand";
 import ShowcaseProduct from "./ShowcaseProduct";
+import Countdown from "./Countdown";
+import Advertising from "./Advertising";
 
 const HomePage = () => {
-  const { featuredProps, categoryProps, marketingProps } = useHome();
+  const { featuredProps, categoryProps, countDownProps } = useHome();
 
   return (
     <main className="text-3xl text-green-400">
       <Hero />
       {/* <Outstanding /> */}
+      <Advertising />
       <Featured {...featuredProps} />
-      <Marketing {...marketingProps} />
+      <Countdown {...countDownProps} />
       <Brand />
       <ShowcaseProduct {...categoryProps} />
     </main>

@@ -89,6 +89,7 @@
   }
   &__content {
     &-list {
+      @apply relative;
       .prev,
       .next {
         @apply bg-white absolute  top-1/2 -translate-y-1/2 xs:p-[6px] md:p-[11px] z-10
@@ -101,21 +102,21 @@
       .next {
         @apply -right-[20px];
       }
-      @apply xs:-mx-[5px] lg:-mx-[10px];
+      @apply xs:-mx-[10px] lg:-mx-[15px];
       .item {
-        @apply xs:mx-[5px] lg:mx-[10px];
+        @apply bg-white p-[20px] md:p-[40px_40px_30px] xs:mx-[10px] lg:mx-[15px];
       }
     }
   }
   .slick-list {
-    @apply pb-[10px] xs:-mx-[5px] lg:-mx-[10px];
+    @apply xs:-mx-[10px] lg:-mx-[15px];
   }
 
   .slick-track {
     @apply flex;
   }
   .slick-slide {
-    @apply xs:w-[100%] md:w-[calc(50%-20px)] lg:w-[calc(25%)];
+    @apply xs:w-[100%] md:w-[calc(50%)] lg:w-[calc(25%)];
   }
 }
 .scbrand {
@@ -137,7 +138,7 @@
   }
   &__bottom {
     &-list {
-      @apply xs:-mx-[5px] lg:-mx-[10px];
+      @apply xs:-mx-[10px] lg:-mx-[15px];
       .prev,
       .next {
         @apply bg-white absolute  top-1/2 -translate-y-1/2 xs:p-[6px] md:p-[11px] z-10
@@ -150,11 +151,11 @@
         @apply -right-[20px];
       }
       .item {
-        @apply xs:mx-[5px] lg:mx-[10px];
+        @apply xs:mx-[10px] lg:mx-[15px];
       }
     }
     .slick-list {
-      @apply pb-[10px] xs:-mx-[5px] lg:-mx-[10px];
+      @apply pb-[10px] xs:-mx-[10px] lg:-mx-[15px];
     }
 
     .slick-track {

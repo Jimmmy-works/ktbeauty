@@ -28,10 +28,10 @@ const useHome = () => {
     return () => clearInterval(countDown);
   }, []);
   //////////////////////////  ////////////////////////////////////////
-  const marketingProps = { seconds, minutes, hours, days, weeks };
+  const countDownProps = { seconds, minutes, hours, days, weeks };
   const featuredProps = { onChangeFeaturedTab, featuerdTab };
   const categoryProps = { onChangeCategoryTab, categoryTab };
-  return { featuredProps, categoryProps, marketingProps };
+  return { featuredProps, categoryProps, countDownProps };
 };
 
 export default useHome;

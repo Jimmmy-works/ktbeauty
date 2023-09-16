@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="footer__subscription bg-footer-banner bg-fixed bg-no-repeat bg-center xs:py-[40px] xl:py-[100px] h-full">
         <div
           className="container flex items-center justify-between xl:gap-0  xl:flex-row 
-        xs:gap-[20px] xs:flex-col"
+        xs:gap-[20px] xs:flex-col md:flex-row"
         >
           <div className="footer__subscription-text xs:text-center xl:text-left max-w-[350px] ">
             <h3 className="font-mab text-md text-primary xs:mb-[10px] xl:mb-[18px]">

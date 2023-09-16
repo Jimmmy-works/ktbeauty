@@ -67,21 +67,25 @@ const Hero = () => {
         </div>
         <Slider {...settings} ref={sliderRef}>
           <div className="schero__slider-item">
-            <Textbox title={`Mega Store`} desc={`UP TO SALE 70%`}>
+            <Textbox textSlider title={`Mega Store`} desc={`UP TO SALE 70%`}>
               <div className="xs:mt-[20px] lg:mt-[38px] ">
                 <Button link={`#`}>Browse Now</Button>
               </div>
             </Textbox>
           </div>
           <div className="schero__slider-item ">
-            <Textbox title={`Gift Store Mockup`} desc={`Great shop`}>
+            <Textbox textSlider title={`Gift Store Mockup`} desc={`Great shop`}>
               <div className="xs:mt-[20px] lg:mt-[38px] ">
                 <Button link={`#`}>Browse Now</Button>
               </div>
             </Textbox>
           </div>
           <div className="schero__slider-item  ">
-            <Textbox title={`Kanebo Cosmetic`} desc={`Skincare night`}>
+            <Textbox
+              textSlider
+              title={`Kanebo Cosmetic`}
+              desc={`Skincare night`}
+            >
               <div className="xs:mt-[20px] lg:mt-[38px] ">
                 <Button link={`#`}>Browse Now</Button>
               </div>

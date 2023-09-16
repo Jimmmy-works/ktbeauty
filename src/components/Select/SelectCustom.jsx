@@ -17,8 +17,8 @@ const SelectCustom = () => {
     setDropdown(false);
   });
   return (
-    <div className="h-full relative z-10">
-      <div className="absolute right-2 top-1/2 -translate-y-1/2 ">
+    <div className="h-full relative z-50">
+      <div className="absolute right-2 top-1/2 -translate-y-1/2  ">
         <svg className="w-[8px] h-[8px]" viewBox="0 0 24 24">
           <path
             fill="#333"
@@ -34,7 +34,7 @@ const SelectCustom = () => {
         {titleSelect || `Sort By Popularity`}
       </div>
       <ul
-        className={` absolute top-[100%] duration-300 transition-all w-full
+        className={` absolute top-[100%] duration-300 transition-all w-full z-[100]
       ${dropdown ? " opacity-100 visible" : "opacity-0 invisible "}`}
       >
         <li
