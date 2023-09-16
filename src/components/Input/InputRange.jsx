@@ -10,10 +10,6 @@ const InputRange = () => {
   const [maxValue, setMaxValue] = useState(max);
   const minPos = parseInt(((minValue - min) / (max - min)) * 100);
   const maxPos = parseInt(((maxValue - min) / (max - min)) * 100);
-  console.log("minPos", minPos);
-  console.log("maxPos", maxPos);
-  console.log("minValue", minValue);
-  console.log("maxValue", maxValue);
   const handleMinChange = (e) => {
     e.preventDefault();
     const newMinVal = Math.min(e.target.value, maxValue - step);

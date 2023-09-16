@@ -3,13 +3,7 @@ import Accordion from "./Accordion";
 import useWindowSize from "@/utils/windowResize";
 import InputRange from "./Input/InputRange";
 
-const NavbarFilter = ({
-  inputFilter,
-  onToggleFilter,
-  options,
-  isFilter,
-  setIsFilter,
-}) => {
+const NavbarFilter = ({ onToggleFilter, options, isFilter, setIsFilter }) => {
   const { width } = useWindowSize();
   useEffect(() => {
     if (width >= 1024) {
