@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Accordion from "./Accordion";
 import useWindowSize from "@/utils/windowResize";
-import InputRange from "./Input/inputRange";
+import InputRange from "./Input/InputRange";
 
 const NavbarFilter = ({
   inputFilter,
