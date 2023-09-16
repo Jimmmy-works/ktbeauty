@@ -16,8 +16,8 @@ const HomePage = () => {
       {/* <Outstanding /> */}
       <Advertising />
       <Featured {...featuredProps} />
-      <Countdown {...countDownProps} />
       <Brand />
+      <Countdown {...countDownProps} />
       <ShowcaseProduct {...categoryProps} />
     </main>
   );
