@@ -1,0 +1,32 @@
+.shoppage {
+  .slick-current {
+    @apply duration-400 transition-all;
+    .item {
+      @apply border-dashed border-primary border;
+    }
+  }
+  &__left {
+    &-wrapper {
+      .item {
+        @apply h-[68px] w-[68px] duration-300 transition-all
+        border-dashed border-transparent border;
+      }
+    }
+  }
+  .slick-list {
+    @apply w-[68px];
+  }
+  .slick-slider {
+    @apply w-[68px];
+  }
+  .slick-track {
+    @apply w-full justify-start items-start mr-[15px];
+  }
+
+  .slick-slide {
+    @apply cursor-pointer border-none;
+    & > div {
+      @apply mb-[5px];
+    }
+  }
+}

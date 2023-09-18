@@ -1,6 +1,8 @@
 import React from "react";
 import Button from "./Button";
 import { Rate, Tooltip } from "antd";
+import { Link } from "react-router-dom";
+import { PATHS } from "@/contants/path";
 import styled from "styled-components";
 const StyleRate = styled.div`
   .ant-rate {
@@ -16,9 +18,9 @@ const ProductCard = ({ item, baseURL, className, isProductDetail = false }) => {
   if (isProductDetail)
     return (
       <div className={`card  ${className ?? ""} transition-all duration-400  `}>
-        <a
+        <Link
+          to={PATHS.SHOP.DETAIL}
           className="block relative h-0 pb-[100%] group/img overflow-hidden"
-          href="#"
         >
           <img
             className="center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105
@@ -96,16 +98,16 @@ const ProductCard = ({ item, baseURL, className, isProductDetail = false }) => {
               </div>
             </Tooltip>
           </div>
-        </a>
+        </Link>
         <div className="pt-[20px]">
-          <a
-            href="#"
+          <Link
+            to={PATHS.SHOP.DETAIL}
             className="font-osb text-[15px] uppercase text-black-555 
                     leading-[18px] truncate whitespace-normal line-clamp-2 hover:text-primary
                     duration-400 transition-colors "
           >
             Hollywood Lights Beauty
-          </a>
+          </Link>
           <StyleRate>
             <Rate />
           </StyleRate>
@@ -121,9 +123,9 @@ const ProductCard = ({ item, baseURL, className, isProductDetail = false }) => {
         className ?? ""
       } transition-all duration-400`}
     >
-      <a
+      <Link
+        to={PATHS.SHOP.DETAIL}
         className="block relative h-0 pb-[100%] group/img overflow-hidden"
-        href="#"
       >
         <img
           className="center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105"
@@ -149,17 +151,17 @@ const ProductCard = ({ item, baseURL, className, isProductDetail = false }) => {
             ></path>
           </svg>
         </button>
-      </a>
+      </Link>
       <div className="text-center p-[20px_12px_14px]">
-        <a
-          href="#"
+        <Link
+          to={PATHS.SHOP.DETAIL}
           className="font-osb text-sm uppercase text-black-555 
                     leading-[18px] truncate whitespace-normal line-clamp-2 hover:text-primary
                     duration-400 transition-colors "
         >
           Soy Wax for Container Candles Soy Wax for Container Candles les Soy
           Wax for Container Candles
-        </a>
+        </Link>
 
         <p className="font-osb text-sm text-primary mt-[6px] xs:mb-[4px] md:mb-[10px] leading-[18px]">
           $150.00

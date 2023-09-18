@@ -6,6 +6,7 @@
 @import "/src/scss/footer.scss";
 @import "/src/scss/hamburger.scss";
 @import "/src/scss/homepage.scss";
+@import "/src/scss/shop.scss";
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
 @layer base {
@@ -105,7 +106,6 @@
       cursor: pointer;
     }
   }
-
   .accordion {
     @apply font-osb text-[15px] text-black-333 py-[24px]  flex flex-col
         border-b-[1px] border-solid border-[rgb(229,229,229)]
@@ -204,6 +204,39 @@
         svg {
           path {
             @apply fill-white;
+          }
+        }
+      }
+    }
+  }
+  .tab {
+    &__header {
+      @apply mb-[30px] border-b border-solid border-gray-200 flex items-center justify-center;
+      &-item {
+        @apply p-[10px_20px_15px] text-grey-999 text-[16px] font-osb duration-400 transition-colors
+         relative before:absolute
+         cursor-pointer before:w-full before:h-[2px] before:bg-primary before:top-[calc(100%)]
+         before:left-0 before:origin-right before:scale-x-0 before:duration-400
+          before:transition-transform;
+        &.active {
+          @apply before:origin-left  before:scale-x-100 text-black-555;
+        }
+      }
+    }
+
+    &__content {
+      @apply max-w-[800px] mx-auto;
+      .review,
+      .description {
+        @apply hidden;
+      }
+      &-pane {
+        @apply invisible opacity-0 transition-all duration-[400ms];
+        &.active {
+          @apply visible opacity-100;
+          .review,
+          .description {
+            @apply block;
           }
         }
       }

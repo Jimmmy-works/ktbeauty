@@ -7,7 +7,7 @@ const Textbox = ({ textSlider, children, title, desc }) => {
         <h2 className="textbox__title font-gvr text-lg text-white mb-[10px]">
           {title}
         </h2>
-        <p className="textbox__desc font-mab text-xl text-white leading-none uppercase">
+        <p className="textbox__desc font-osb text-xl text-white leading-none uppercase">
           {desc}
         </p>
         {children}
