@@ -147,15 +147,21 @@ const ShopDetail = () => {
                   />
                 </a>
                 <div className="social flex justify-center items-center gap-[10px] mt-[34px]">
-                  <div className="social__fb p-[11px] rounded-[50%] bg-[#4F649F]">
+                  <div
+                    className="social__fb p-[11px] rounded-[50%] bg-[#4F649F]  hover:scale-[1.05]
+                  duration-300 transition-transform cursor-pointer"
+                  >
                     <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24">
                       <path
-                        className="fill-white"
+                        className="fill-white "
                         d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"
                       />
                     </svg>
                   </div>
-                  <div className="social__twitter p-[11px] rounded-[50%] bg-[#58C5E5]">
+                  <div
+                    className="social__twitter p-[11px] rounded-[50%] bg-[#58C5E5] hover:scale-[1.05]
+                  duration-300 transition-transform cursor-pointer"
+                  >
                     <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24">
                       <path
                         className="fill-white"
@@ -163,7 +169,10 @@ const ShopDetail = () => {
                       />
                     </svg>
                   </div>
-                  <div className="social__google p-[11px] rounded-[50%] bg-[#DB4437]">
+                  <div
+                    className="social__google p-[11px] rounded-[50%] bg-[#DB4437] hover:scale-[1.05]
+                  duration-300 transition-transform cursor-pointer"
+                  >
                     <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24">
                       <path
                         className="fill-white"
@@ -171,7 +180,10 @@ const ShopDetail = () => {
                       />
                     </svg>
                   </div>
-                  <div className="social__youtube p-[11px] rounded-[50%] bg-[#BD081C]">
+                  <div
+                    className="social__youtube p-[11px] rounded-[50%] bg-[#BD081C] hover:scale-[1.05]
+                  duration-300 transition-transform cursor-pointer"
+                  >
                     <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24">
                       <path
                         className="fill-white"
