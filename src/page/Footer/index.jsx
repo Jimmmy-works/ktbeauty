@@ -225,7 +225,7 @@ const Footer = () => {
           className="container py-[20px] flex xl:gap-0  xs:gap-[14px] xs:flex-col md:flex-row items-center
          justify-between"
         >
-          <div className="text-white text-sm font-mar  flex items-center gap-1">
+          <div className="text-white text-sm font-mar  flex items-center gap-2 justify-center flex-wrap">
             <p className="">Copyright © 2023</p>
             <p className="uppercase font-mab text-primary">ktbeauty</p>
             <p className="">All Rights Reserved</p>

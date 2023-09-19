@@ -48,8 +48,11 @@
     }
   }
   &__logo {
-    @apply xs:w-[130px] md:w-[150px] lg:w-auto md:-translate-x-[65%] md:-translate-y-1/2
+    @apply md:-translate-x-[65%] md:-translate-y-1/2
     lg:translate-x-0 lg:translate-y-0 lg:static md:absolute md:top-1/2 md:left-1/2;
+    svg {
+      @apply xs:w-[130px] md:w-[150px] lg:w-[182px];
+    }
   }
   .sub {
     @apply p-[10px_14px_0px]  top-[120%] -left-[75%] absolute 
@@ -78,15 +81,37 @@
   @apply fixed left-0 xs:top-[56px] 
   md:top-[75px] h-screen w-[50%] z-[100];
   &__inner {
-    @apply h-full w-[100%] bg-[rgba(0,0,0,255)];
+    @apply h-full w-[100%] bg-[#343434] bg-opacity-75;
     &-list {
-      @apply h-full w-full flex flex-col  py-[40px]
+      @apply h-full w-full flex flex-col  py-[10px]
        xs:pl-[14px] md:pl-[20px];
       .item {
-        @apply text-white font-mam xs:text-[16px] md:text-[20px]
+        @apply text-white font-mam xs:text-[14px] md:text-[20px]
         md:py-[16px] xs:py-[12px];
+        &__wrap {
+          @apply flex items-center gap-2 h-full;
+          a {
+            @apply duration-400 transition-colors;
+          }
+        }
         &__sub {
-          @apply flex items-center gap-2;
+          @apply absolute bg-[#282926]  left-[100%] top-[0] flex 
+          items-center justify-center transition-all duration-400
+           min-w-max invisible opacity-0;
+          &-list {
+            @apply flex flex-col xs:gap-4 md:gap-2 md:max-w-[250px] md:max-h-[400px]
+           xs:max-w-[180px] xs:max-h-[244px] overflow-y-auto py-3;
+            li {
+              @apply flex items-center  gap-2 md:text-md xs:text-[14px] 
+              px-[14px]  md:p-2 md:py-2 md:px-4  font-mar text-white;
+              a {
+                @apply leading-[20px];
+              }
+            }
+          }
+        }
+        .arrow-down {
+          @apply transition-all duration-400;
         }
       }
     }

@@ -90,8 +90,8 @@ const ShopDetail = () => {
         <BreadCrumb.Item isActive>Shop-detail-slug</BreadCrumb.Item>
       </BreadCrumb>
       <div className="container ">
-        <div className="flex gap-[14px] mt-[30px]">
-          <div className="shopapge__left w-1/2 ">
+        <div className="flex md:flex-row xs:flex-col xs:gap-[60px] md:gap-[14px] mt-[30px]">
+          <div className="shopapge__left xs:w-full md:w-1/2 ">
             <div className="shoppage__left-wrapper flex gap-[10px] ">
               <div className=" h-fit w-fit relative ">
                 <div
@@ -195,7 +195,7 @@ const ShopDetail = () => {
               </div>
             </div>
           </div>
-          <div className="shoppage__right w-1/2 pl-[36px]">
+          <div className="shoppage__right xs:w-full md:w-1/2 md:pl-[36px]">
             <h2 className="shoppage__right-title font-osr text-lg text-black-555">
               Luminizer Holiday Gift Set
             </h2>
@@ -337,10 +337,34 @@ const ShopDetail = () => {
               </div>
             </div>
             <div className="shoppage__right-category border-t-[1px] border-solid border-[#ececec] py-[32px] mt-[32px]">
-              <div className="category flex items-center gap-2">
+              <div className="category flex items-center gap-2 flex-wrap">
                 <p className="font-osr text-black-555 text-[15px] capitalize">
                   Categories:
                 </p>
+                <a
+                  href=""
+                  className="duration-300 transition-colors hover:text-primary font-osr text-grey-999 text-sm   capitalize"
+                >
+                  Lipstick
+                </a>
+                <a
+                  href=""
+                  className="duration-300 transition-colors hover:text-primary font-osr text-grey-999 text-sm   capitalize"
+                >
+                  Lipstick
+                </a>
+                <a
+                  href=""
+                  className="duration-300 transition-colors hover:text-primary font-osr text-grey-999 text-sm   capitalize"
+                >
+                  Lipstick
+                </a>
+                <a
+                  href=""
+                  className="duration-300 transition-colors hover:text-primary font-osr text-grey-999 text-sm   capitalize"
+                >
+                  Lipstick
+                </a>
                 <a
                   href=""
                   className="duration-300 transition-colors hover:text-primary font-osr text-grey-999 text-sm   capitalize"
@@ -354,7 +378,7 @@ const ShopDetail = () => {
                   Mascara
                 </a>
               </div>
-              <div className="tags flex items-center gap-2 mt-[14px]">
+              <div className="tags flex items-center gap-2 mt-[14px] flex-wrap">
                 <p className="font-osr text-black-555 text-[15px] capitalize">
                   tags:
                 </p>
