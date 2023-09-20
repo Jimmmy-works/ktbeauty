@@ -13,4 +13,5 @@ export const PATHS = {
     INDEX: SHOP_PATH,
     DETAIL: SHOP_PATH + "/:slug",
   },
+  CHECKOUT: "/checkout",
 };

@@ -922,7 +922,7 @@ export default {
       "product-banner": "url('/assets/img/product-banner.jpg')",
       "footer-banner": "url('/assets/img/footer-banner.jpg')",
       "marketing-banner": "url('/assets/img/marketing-banner.jpg')",
-      "advertising-banner-1": "url('/assets/img/advertising-banner-1.jpg')",
+      "advertising-banner-1": "url('/assets/img/advertising-banner-1.gif')",
       "advertising-banner-2": "url('/assets/img/advertising-banner-2.jpg')",
       "advertising-banner-3": "url('/assets/img/advertising-banner-3.jpg')",
       "gradient-to-t": "linear-gradient(to top, var(--tw-gradient-stops))",

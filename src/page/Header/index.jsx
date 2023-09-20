@@ -96,10 +96,7 @@ const Header = () => {
           </li>
         </ul>
         <div className="header__info xs:hidden md:flex h-full items-center">
-          <form
-            action=""
-            className="group/input group/hover header__info-search md:hidden lg:flex"
-          >
+          <div className="header__info-search relative group/hover peer/hover">
             <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24">
               <path
                 fill="#555"
@@ -107,13 +104,23 @@ const Header = () => {
                 d="M23.111 20.058l-4.977-4.977c.965-1.52 1.523-3.322 1.523-5.251 0-5.42-4.409-9.83-9.829-9.83-5.42 0-9.828 4.41-9.828 9.83s4.408 9.83 9.829 9.83c1.834 0 3.552-.505 5.022-1.383l5.021 5.021c2.144 2.141 5.384-1.096 3.239-3.24zm-20.064-10.228c0-3.739 3.043-6.782 6.782-6.782s6.782 3.042 6.782 6.782-3.043 6.782-6.782 6.782-6.782-3.043-6.782-6.782zm2.01-1.764c1.984-4.599 8.664-4.066 9.922.749-2.534-2.974-6.993-3.294-9.922-.749z"
               />
             </svg>
-            <input
-              type="text"
-              className="bg-white border-black-be border font-mam text-black-555 text-sm duration-500 transition-all 
-              w-[220px] h-[34px] pl-[10px]  rounded-lg  absolute right-[40px] top-1/2 -translate-y-1/2
-              group-hover/input:visible group-hover/input:opacity-100 invisible opacity-0"
-            />
-          </form>
+            <form
+              action=""
+              className="fixed lg:top-[108px] md:top-[96px] right-[40px] group/input group/hover  xs:hidden md:flex w-full  items-center
+              bg-[rgba(255,255,255,0.3)] max-w-[400px] p-[10px] gap-3  opacity-0 invisible
+               group-hover/hover:opacity-100 group-hover/hover:visible g
+               lg:group-hover/hover:top-[92px] md:group-hover/hover:top-[76px] 
+               transition-all duration-300"
+            >
+              <input
+                type="text"
+                className=" border-black-be border font-mam text-black-555 text-sm duration-500 transition-all 
+                w-full h-[34px] pl-[10px]   rounded-lg
+                "
+              />
+              <Button className={`px-[20px] py-[6.5px]`}>Search</Button>
+            </form>
+          </div>
           <div className="header__info-profile group/hover relative">
             <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24">
               <path
@@ -155,6 +162,7 @@ const Header = () => {
               </li>
             </ul>
           </div>
+
           <div className="header__info-whitelist group/hover mb-[2px] relative">
             <span
               className="text-[13px] text-white font-mam rounded-[50%] bg-primary h-[20px] w-[20px]
@@ -169,25 +177,24 @@ const Header = () => {
                 d="M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z"
               />
             </svg>
-
             <ul
-              className="absolute top-[150%] md:-right-[30%] lg:-right-[100%] border border-[#e5e7eb] border-solid
-             p-[20px_10px_10px]  invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100
-              group-hover/hover:top-[calc(100%+1px)] transition-all duration-400 shadow-header bg-white"
+              className="absolute top-[150%] md:-right-[30%] lg:-right-[100%]
+               invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100
+              group-hover/hover:top-[calc(100%+1px)] transition-all duration-400 shadow-[0_5px_5px_0_rgba(0,0,0,0.15)] bg-white"
             >
-              <h3 className="font-mab text-md text-black-555 p-[10px]">
-                (3) White list
+              <h3 className="font-mab text-md text-black-555 p-[20px_14px_20px]">
+                (5) Item in my cart
               </h3>
-              <ul className="flex flex-col min-w-max max-h-[390px] overflow-y-scroll scrollbar-cart pr-[10px]">
+              <ul className="flex flex-col min-w-max max-h-[390px] overflow-y-scroll scrollbar-cart  p-[0px_14px_0px]  ">
                 {Array(10)
                   .fill("")
                   .map((item, index) => (
                     <li
                       key={`${item}${index}`}
-                      className="flex items-center w-full gap-3 max-w-[280px] py-[10px]"
+                      className="flex items-center w-full gap-3 max-w-[280px] not-firstChild:pt-[10px] pb-[10px]"
                     >
-                      <a
-                        href=""
+                      <Link
+                        to={PATHS.SHOP.DETAIL}
                         className="relative block min-h-[100px] min-w-[100px] "
                       >
                         <img
@@ -195,26 +202,34 @@ const Header = () => {
                           src="/assets/img/product-4.jpg"
                           alt=""
                         />
-                      </a>
+                      </Link>
                       <div>
-                        <a
+                        <Link
+                          to={PATHS.SHOP.DETAIL}
                           className="text-[16px] text-black-555 font-mar font-semibold truncate line-clamp-2 
-                       whitespace-normal hover:text-primary transition-colors duration-400"
-                          href=""
+                      whitespace-normal hover:text-primary transition-colors duration-400"
                         >
                           Lorem ipsum dolor sit amet consectetur adipisicing
                           elit. Ipsa, nihil.
-                        </a>
-                        <p className="font-mar font-bold text-[15px] text-primary mt-[14px]">
+                        </Link>
+                        <p className="font-mar font-bold  text-[15px] text-primary mt-[6px]">
                           $300
                         </p>
+                        <div
+                          className="font-mam text-[15px] text-black-555 mt-[6px] flex items-start gap-[6px]
+                        flex-col"
+                        ></div>
                       </div>
                     </li>
                   ))}
               </ul>
-              <div className="mt-[15px] flex items-center justify-center">
-                <Button variant="filled" className={`w-full`}>
-                  VIEW MY WHITE LIST
+              <div className=" flex items-center justify-center">
+                <Button
+                  link={PATHS.CHECKOUT}
+                  variant="filled"
+                  className={`w-full text-center py-[14px]`}
+                >
+                  VIEW MY WHILE LIST
                 </Button>
               </div>
             </ul>
@@ -234,23 +249,23 @@ const Header = () => {
               />
             </svg>
             <ul
-              className="absolute top-[150%] md:-right-[30%] lg:-right-[100%] border border-[#e5e7eb] border-solid
-             p-[20px_10px_10px]  invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100
-              group-hover/hover:top-[calc(100%+1px)] transition-all duration-400 shadow-header bg-white"
+              className="absolute top-[150%] md:-right-[30%] lg:-right-[100%]
+               invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100
+              group-hover/hover:top-[calc(100%+1px)] transition-all duration-400 shadow-[0_5px_5px_0_rgba(0,0,0,0.15)] bg-white"
             >
-              <h3 className="font-mab text-md text-black-555 p-[10px]">
+              <h3 className="font-mab text-md text-black-555 p-[20px_14px_20px]">
                 (5) Item in my cart
               </h3>
-              <ul className="flex flex-col min-w-max max-h-[390px] overflow-y-scroll scrollbar-cart pr-[10px]">
+              <ul className="flex flex-col min-w-max max-h-[390px] overflow-y-scroll scrollbar-cart  p-[0px_14px_0px]  ">
                 {Array(10)
                   .fill("")
                   .map((item, index) => (
                     <li
                       key={`${item}${index}`}
-                      className="flex items-center w-full gap-3 max-w-[280px] py-[10px]"
+                      className="flex items-center w-full gap-3 max-w-[280px] not-firstChild:pt-[10px] pb-[10px]"
                     >
-                      <a
-                        href=""
+                      <Link
+                        to={PATHS.SHOP.DETAIL}
                         className="relative block min-h-[100px] min-w-[100px] "
                       >
                         <img
@@ -258,16 +273,16 @@ const Header = () => {
                           src="/assets/img/product-4.jpg"
                           alt=""
                         />
-                      </a>
+                      </Link>
                       <div>
-                        <a
+                        <Link
+                          to={PATHS.SHOP.DETAIL}
                           className="text-[16px] text-black-555 font-mar font-semibold truncate line-clamp-2 
                       whitespace-normal hover:text-primary transition-colors duration-400"
-                          href=""
                         >
                           Lorem ipsum dolor sit amet consectetur adipisicing
                           elit. Ipsa, nihil.
-                        </a>
+                        </Link>
                         <p className="font-mar font-bold  text-[15px] text-primary mt-[6px]">
                           $300
                         </p>
@@ -287,8 +302,12 @@ const Header = () => {
                     </li>
                   ))}
               </ul>
-              <div className="mt-[15px] flex items-center justify-center">
-                <Button variant="filled" className={`w-full`}>
+              <div className=" flex items-center justify-center">
+                <Button
+                  link={PATHS.CHECKOUT}
+                  variant="filled"
+                  className={`w-full text-center py-[14px]`}
+                >
                   VIEW MY CART
                 </Button>
               </div>

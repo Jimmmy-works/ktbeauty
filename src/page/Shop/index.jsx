@@ -46,7 +46,7 @@ const Shop = () => {
           <Link to={`${PATHS.HOME}`}>Home</Link>
         </BreadCrumb.Item>
         <BreadCrumb.Item isActive>
-          <Link to={PATHS.SHOP.INDEX}>Shop</Link>
+          <Link>Shop</Link>
         </BreadCrumb.Item>
       </BreadCrumb>
       <div className="container flex lg:flex-row xs:flex-col gap-[30px]">

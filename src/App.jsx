@@ -9,6 +9,7 @@ import Blog from "./page/Blog";
 import AboutPage from "./page/AboutPage";
 import ContactPage from "./page/ContactPage";
 import ShopDetail from "./page/Shop/ShopDetail";
+import CartPage from "./page/CartPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path={PATHS.BLOG.INDEX} element={<Blog />} />
           <Route path={PATHS.ABOUT} element={<AboutPage />} />
           <Route path={PATHS.CONTACT} element={<ContactPage />} />
+          <Route path={PATHS.CHECKOUT} element={<CartPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

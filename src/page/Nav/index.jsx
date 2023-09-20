@@ -29,7 +29,7 @@ const Nav = () => {
     >
       <div className="nav__inner">
         <ul className="nav__inner-list">
-          <div className="group/hover search flex items-center xs:gap-2 xs:py-[10px] md:py-[16px]  pr-[10px]">
+          <div className="group/hover search xs:flex md:hidden items-center xs:gap-2 xs:py-[10px] md:py-[16px]  pr-[10px]">
             <input
               type="text"
               className="bg-white border-black-be border font-mam text-black-555 text-sm duration-500 transition-all 
