@@ -95,8 +95,8 @@ const Header = () => {
             <Link to={`${PATHS.CONTACT}`}> CONTACT</Link>
           </li>
         </ul>
-        <div className="header__info xs:hidden md:flex h-full items-center">
-          <div className="header__info-search relative group/hover peer/hover">
+        <div className="header__info xs:hidden md:flex h-full items-center relative">
+          <div className="header__info-search  group/hover peer/hover">
             <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24">
               <path
                 fill="#555"
@@ -106,8 +106,8 @@ const Header = () => {
             </svg>
             <form
               action=""
-              className="fixed lg:top-[108px] md:top-[96px] right-[40px] group/input group/hover  xs:hidden md:flex w-full  items-center
-              bg-[rgba(255,255,255,0.3)] max-w-[400px] p-[10px] gap-3  opacity-0 invisible
+              className="absolute md:min-w-[300px] 2xl:min-w-[400px] lg:top-[108px] md:top-[96px] left-[-200%] group/input group/hover xs:hidden md:flex  items-center
+              bg-[rgba(255,255,255,0.3)] max-w-[400px] p-[10px] gap-2  opacity-0 invisible
                group-hover/hover:opacity-100 group-hover/hover:visible g
                lg:group-hover/hover:top-[92px] md:group-hover/hover:top-[76px] 
                transition-all duration-300"
@@ -115,10 +115,11 @@ const Header = () => {
               <input
                 type="text"
                 className=" border-black-be border font-mam text-black-555 text-sm duration-500 transition-all 
-                w-full h-[34px] pl-[10px]   rounded-lg
-                "
+                w-full h-[34px] pl-[10px] rounded-none"
               />
-              <Button className={`px-[20px] py-[6.5px]`}>Search</Button>
+              <Button className={`px-[12px] py-[6.5px] rounded-none`}>
+                Search
+              </Button>
             </form>
           </div>
           <div className="header__info-profile group/hover relative">
