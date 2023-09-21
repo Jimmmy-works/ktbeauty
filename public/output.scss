@@ -2298,9 +2298,19 @@ input[type="number"] {
   background-color: rgb(190 190 190 / var(--tw-bg-opacity)) !important;
 }
 
+.bg-blue-300 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(147 197 253 / var(--tw-bg-opacity)) !important;
+}
+
 .bg-gray-100 {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity)) !important;
+}
+
+.bg-green-300 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(134 239 172 / var(--tw-bg-opacity)) !important;
 }
 
 .bg-grey-999 {
@@ -2316,6 +2326,11 @@ input[type="number"] {
 .bg-primary {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(255 136 123 / var(--tw-bg-opacity)) !important;
+}
+
+.bg-red-300 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(252 165 165 / var(--tw-bg-opacity)) !important;
 }
 
 .bg-white {
@@ -2517,6 +2532,11 @@ input[type="number"] {
   padding-bottom: 14px !important;
 }
 
+.py-\[16px\] {
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+}
+
 .py-\[20px\] {
   padding-top: 20px !important;
   padding-bottom: 20px !important;
@@ -2555,16 +2575,6 @@ input[type="number"] {
 .py-\[6px\] {
   padding-top: 6px !important;
   padding-bottom: 6px !important;
-}
-
-.py-\[12px\] {
-  padding-top: 12px !important;
-  padding-bottom: 12px !important;
-}
-
-.py-\[16px\] {
-  padding-top: 16px !important;
-  padding-bottom: 16px !important;
 }
 
 .pb-\[100\%\] {
@@ -3057,6 +3067,46 @@ input[type="number"] {
     border-radius: 10px !important;
     -webkit-box-shadow: inset 0 0 6px #ff887b !important;
   }
+}
+
+@keyframes transfer-ball {
+  16.65% {
+    transform: translateY(8px);
+  }
+
+  33.3% {
+    transform: translateY(-6px);
+  }
+
+  49.95% {
+    transform: translateY(4px);
+  }
+
+  66.6% {
+    transform: translateY(-2px);
+  }
+
+  83.25% {
+    transform: translateY(1px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animated-transfer-page {
+  animation: transfer-ball 1s ease-in-out infinite !important;
+}
+
+.animated-transfer-page-2 {
+  animation: transfer-ball 1s ease-in-out infinite !important;
+  animation-delay: 100ms !important;
+}
+
+.animated-transfer-page-3 {
+  animation: transfer-ball 1s ease-in-out infinite !important;
+  animation-delay: 200ms !important;
 }
 
 .before\:absolute::before {
