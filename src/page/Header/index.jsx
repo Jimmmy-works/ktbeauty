@@ -226,7 +226,7 @@ const Header = () => {
               </ul>
               <div className=" flex items-center justify-center">
                 <Button
-                  link={PATHS.CHECKOUT}
+                  link={PATHS.CART}
                   variant="filled"
                   className={`w-full text-center py-[14px]`}
                 >
@@ -305,7 +305,7 @@ const Header = () => {
               </ul>
               <div className=" flex items-center justify-center">
                 <Button
-                  link={PATHS.CHECKOUT}
+                  link={PATHS.CART}
                   variant="filled"
                   className={`w-full text-center py-[14px]`}
                 >

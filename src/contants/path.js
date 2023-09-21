@@ -14,4 +14,6 @@ export const PATHS = {
     DETAIL: SHOP_PATH + "/:slug",
   },
   CHECKOUT: "/checkout",
+  CART: "/cart",
+  COMPLETE: "/complete" + "/:slug",
 };

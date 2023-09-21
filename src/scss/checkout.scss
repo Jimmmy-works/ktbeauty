@@ -1,0 +1,61 @@
+.checkout {
+  &__details {
+    @apply xs:pt-[10px] md:p-[10px_0px_0px_10px];
+    & > div {
+      @apply mt-[20px];
+    }
+    &-wrapper {
+      @apply font-mar text-sm text-black-333 flex flex-col gap-3;
+      input {
+        @apply border-b border-solid border-grey-999 p-[10px]
+        bg-[#f9f9f9];
+      }
+      textarea {
+        @apply border-b border-solid border-grey-999 p-[10px] 
+         bg-[#f9f9f9];
+      }
+    }
+  }
+  :where(.css-dev-only-do-not-override-18iikkb).ant-checkbox-wrapper:not(
+      .ant-checkbox-wrapper-disabled
+    ):hover
+    .ant-checkbox-inner,
+  :where(.css-dev-only-do-not-override-18iikkb).ant-checkbox:not(
+      .ant-checkbox-disabled
+    ):hover
+    .ant-checkbox-inner {
+    border-color: #ff887b;
+  }
+  :where(.css-dev-only-do-not-override-18iikkb).ant-checkbox-wrapper:not(
+      .ant-checkbox-wrapper-disabled
+    ):hover
+    .ant-checkbox-checked:not(.ant-checkbox-disabled)
+    .ant-checkbox-inner {
+    background-color: #ff887b;
+    border-color: transparent;
+  }
+  .ant-checkbox-wrapper {
+    span {
+      font-size: 14px;
+      font-family: "MontserratAlternates-regular";
+      color: #333;
+    }
+    .ant-checkbox {
+      &-inner {
+        span {
+        }
+      }
+      &:hover {
+        .ant-checkbox-inner {
+          border-color: #ff887b !important;
+        }
+      }
+      &-checked {
+        .ant-checkbox-inner {
+          background-color: #ff887b;
+          border-color: #ff887b;
+        }
+      }
+    }
+  }
+}

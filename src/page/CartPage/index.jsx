@@ -138,7 +138,7 @@ const CartPage = () => {
         </table>
         <div
           className="cartpage__total flex md:flex-row xs:flex-col items-start justify-start gap-[30px] pt-[30px] mt-[30px]
-        border-t border-solid border-black-be"
+        border-t border-solid border-black-be "
         >
           <div className="coupon  xs:w-full md:w-[50%] border border-solid  border-grey-999">
             <h3 className="text-white bg-black-555 font-osb text-[16px] py-[10px] px-[20px]">
@@ -149,17 +149,17 @@ const CartPage = () => {
                 type="text"
                 placeholder="Coupon code"
                 className="border border-solid border-grey-999 p-[11px] font-mar text-sm text-black
-                md:max-w-[300px] xs:max-w-[100%] w-full"
+                  md:max-w-[300px] xs:max-w-[100%] w-full"
               />
               <button
                 className="bg-black-555 font-mam font-semibold p-[11.5px] text-[14px] text-white
-              tracking-widest duration-400 transition-colors hover:bg-primary"
+                tracking-widest duration-400 transition-colors hover:bg-primary"
               >
                 Apply
               </button>
             </div>
           </div>
-          <div className="coupon  xs:w-full md:w-[50%] border border-solid border-grey-999">
+          <div className="  xs:w-full md:w-[50%] border border-solid border-grey-999">
             <h3 className="text-white bg-black-555 font-osb text-[16px] py-[10px] px-[20px]">
               Cart Total
             </h3>
@@ -178,9 +178,13 @@ const CartPage = () => {
               </h4>
               <div>
                 <Select
-                  defaultValue="free"
+                  defaultValue="default"
                   // onChange={handleChange}
                   options={[
+                    {
+                      value: "default",
+                      label: "Select shipping",
+                    },
                     {
                       value: "free",
                       label: "Free",
@@ -211,7 +215,10 @@ const CartPage = () => {
               <p className="text-[16px] font-mam text-black">$320.00</p>
             </div>
             <div className=" p-[20px] ">
-              <Button className={`rounded-none w-full`}>
+              <Button
+                link={PATHS.CHECKOUT}
+                className={`block text-center rounded-none w-full`}
+              >
                 PROCEED TO CHECKOUT
               </Button>
             </div>
