@@ -170,10 +170,10 @@ const Checkout = () => {
                   <h4 className="font-mab text-sm text-black-333">Subtotal</h4>
                   <p className="font-mab text-sm text-primary">$390.00</p>
                 </div>
-                <div className="flex items-center justify-between mt-[20px]">
+                {/* <div className="flex items-center justify-between mt-[20px]">
                   <h4 className="font-mab text-sm text-black-333">Shipping</h4>
                   <p className="font-mab text-sm text-primary">Free</p>
-                </div>
+                </div> */}
                 <div className="flex items-center justify-between mt-[20px]">
                   <h4 className="font-mab text-sm text-black-333">Shipping</h4>
                   <p

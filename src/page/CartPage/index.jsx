@@ -217,7 +217,7 @@ const CartPage = () => {
             <div className=" p-[20px] ">
               <Button
                 link={PATHS.CHECKOUT}
-                className={`block text-center rounded-none w-full`}
+                className={`block text-center rounded-none w-full  py-[16px]`}
               >
                 PROCEED TO CHECKOUT
               </Button>
