@@ -85,9 +85,19 @@
     &-list {
       @apply h-full w-full flex flex-col  py-[10px]
        xs:pl-[14px] md:pl-[20px];
+      .has-sub {
+        @apply md:py-[16px] xs:py-[12px];
+      }
       .item {
-        @apply text-white font-mam xs:text-[14px] md:text-[20px]
-        md:py-[16px] xs:py-[12px];
+        @apply text-white font-mam xs:text-[14px] md:text-[20px];
+        &:nth-child(2),
+        &:nth-child(5),
+        &:nth-child(6) {
+          a {
+            @apply block w-full md:py-[16px] xs:py-[12px];
+          }
+        }
+
         &__wrap {
           @apply flex items-center gap-2 h-full;
           a {

@@ -27,6 +27,10 @@ const ProductCard = ({ item, baseURL, className, isProductDetail = false }) => {
               h-full w-full"
             src={`${baseURL}${item}`}
             alt=""
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "/assets/img/error.png";
+            }}
           />
           <span
             className="absolute xs:top-4 md:top-7 left-5 xs:w-[30px] md:w-[40px] xs:h-[30px] md:h-[40px] border-dashed

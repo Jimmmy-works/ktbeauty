@@ -5,9 +5,24 @@ import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
 import Hamburger from "@/components/Hamburger";
 const Header = () => {
-  const { isNavbar, onToggleNav } = useMainContext();
+  const { isNavbar, onToggleNav, onAuthenModal, onLogin, onRegister } =
+    useMainContext();
   const refHeader = useRef(null);
   const [colorLogo, setColorLogo] = useState(0);
+  const images = [
+    "/assets/img/product-1.jpg",
+    "/assets/img/product-2.jpg",
+    "/assets/img/product-3.jpg",
+    "/assets/img/product-4.jpg",
+    "/assets/img/product-5.jpg",
+    "/assets/img/product-6.jpg",
+    "/assets/img/product-7.jpg",
+    "/assets/img/product-8.jpg",
+    "/assets/img/product-9.jpg",
+    "/assets/img/product-10.jpg",
+    "/assets/img/product-10.jpg",
+  ];
+
   const changeBackground = () => {
     if (window.scrollY > refHeader?.current?.clientHeight) {
       setColorLogo("fill-primary");
@@ -132,12 +147,11 @@ const Header = () => {
             </svg>
             <ul className="sub p-0 border border-[#e5e7eb] border-solid">
               <li
+                onClick={() => onAuthenModal("login")}
                 className="sub__item min-w-[120px] border-b border-[#e5e7eb] 
               border-solid p-[10px] justify-between group/sub "
               >
-                <a className="" href="">
-                  Login
-                </a>
+                <a>Login</a>
                 <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24">
                   <path
                     fill="#555"
@@ -147,12 +161,11 @@ const Header = () => {
                 </svg>
               </li>
               <li
+                onClick={() => onAuthenModal("register")}
                 className=" sub__item min-w-[120px] p-[10px] justify-between
               group/sub"
               >
-                <a className="" href="">
-                  Register
-                </a>
+                <a>Register</a>
                 <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24">
                   <path
                     className="group-hover/sub:fill-primary"
@@ -187,42 +200,44 @@ const Header = () => {
                 (5) Item in my cart
               </h3>
               <ul className="flex flex-col min-w-max max-h-[390px] overflow-y-scroll scrollbar-cart  p-[0px_14px_0px]  ">
-                {Array(10)
-                  .fill("")
-                  .map((item, index) => (
-                    <li
-                      key={`${item}${index}`}
-                      className="flex items-center w-full gap-3 max-w-[280px] not-firstChild:pt-[10px] pb-[10px]"
+                {images.map((item, index) => (
+                  <li
+                    key={`${item}${index}`}
+                    className="flex items-center w-full gap-3 max-w-[280px] not-firstChild:pt-[10px] pb-[10px]"
+                  >
+                    <Link
+                      to={PATHS.SHOP.DETAIL}
+                      className="relative block min-h-[100px] min-w-[100px] "
                     >
+                      <img
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "/assets/img/error.png";
+                        }}
+                        className="center-absolute hover:scale-105 transition-transform duration-300"
+                        src={item}
+                        alt=""
+                      />
+                    </Link>
+                    <div>
                       <Link
                         to={PATHS.SHOP.DETAIL}
-                        className="relative block min-h-[100px] min-w-[100px] "
-                      >
-                        <img
-                          className="center-absolute hover:scale-105 transition-transform duration-300"
-                          src="/assets/img/product-4.jpg"
-                          alt=""
-                        />
-                      </Link>
-                      <div>
-                        <Link
-                          to={PATHS.SHOP.DETAIL}
-                          className="text-[16px] text-black-555 font-mar font-semibold truncate line-clamp-2 
+                        className="text-[16px] text-black-555 font-mar font-semibold truncate line-clamp-2 
                       whitespace-normal hover:text-primary transition-colors duration-400"
-                        >
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Ipsa, nihil.
-                        </Link>
-                        <p className="font-mar font-bold  text-[15px] text-primary mt-[6px]">
-                          $300
-                        </p>
-                        <div
-                          className="font-mam text-[15px] text-black-555 mt-[6px] flex items-start gap-[6px]
+                      >
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Ipsa, nihil.
+                      </Link>
+                      <p className="font-mar font-bold  text-[15px] text-primary mt-[6px]">
+                        $300
+                      </p>
+                      <div
+                        className="font-mam text-[15px] text-black-555 mt-[6px] flex items-start gap-[6px]
                         flex-col"
-                        ></div>
-                      </div>
-                    </li>
-                  ))}
+                      ></div>
+                    </div>
+                  </li>
+                ))}
               </ul>
               <div className=" flex items-center justify-center">
                 <Button
@@ -258,50 +273,52 @@ const Header = () => {
                 (5) Item in my cart
               </h3>
               <ul className="flex flex-col min-w-max max-h-[390px] overflow-y-scroll scrollbar-cart  p-[0px_14px_0px]  ">
-                {Array(10)
-                  .fill("")
-                  .map((item, index) => (
-                    <li
-                      key={`${item}${index}`}
-                      className="flex items-center w-full gap-3 max-w-[280px] not-firstChild:pt-[10px] pb-[10px]"
+                {images.map((item, index) => (
+                  <li
+                    key={`${item}${index}`}
+                    className="flex items-center w-full gap-3 max-w-[280px] not-firstChild:pt-[10px] pb-[10px]"
+                  >
+                    <Link
+                      to={PATHS.SHOP.DETAIL}
+                      className="relative block min-h-[100px] min-w-[100px] "
                     >
+                      <img
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "/assets/img/error.png";
+                        }}
+                        className="center-absolute hover:scale-105 transition-transform duration-300"
+                        src={item}
+                        alt=""
+                      />
+                    </Link>
+                    <div>
                       <Link
                         to={PATHS.SHOP.DETAIL}
-                        className="relative block min-h-[100px] min-w-[100px] "
-                      >
-                        <img
-                          className="center-absolute hover:scale-105 transition-transform duration-300"
-                          src="/assets/img/product-4.jpg"
-                          alt=""
-                        />
-                      </Link>
-                      <div>
-                        <Link
-                          to={PATHS.SHOP.DETAIL}
-                          className="text-[16px] text-black-555 font-mar font-semibold truncate line-clamp-2 
+                        className="text-[16px] text-black-555 font-mar font-semibold truncate line-clamp-2 
                       whitespace-normal hover:text-primary transition-colors duration-400"
-                        >
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Ipsa, nihil.
-                        </Link>
-                        <p className="font-mar font-bold  text-[15px] text-primary mt-[6px]">
-                          $300
-                        </p>
-                        <div
-                          className="font-mam text-[15px] text-black-555 mt-[6px] flex items-start gap-[6px]
+                      >
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Ipsa, nihil.
+                      </Link>
+                      <p className="font-mar font-bold  text-[15px] text-primary mt-[6px]">
+                        $300
+                      </p>
+                      <div
+                        className="font-mam text-[15px] text-black-555 mt-[6px] flex items-start gap-[6px]
                         flex-col"
-                        >
-                          <p> Quantity: 100</p>
-                          <button
-                            className="px-[6px] block text-[13px] text-white rounded-md py-[3px] hover:bg-red-500
+                      >
+                        <p> Quantity: 100</p>
+                        <button
+                          className="px-[6px] block text-[13px] text-white rounded-md py-[3px] hover:bg-red-500
                       bg-black-333 transition-all duration-400"
-                          >
-                            Remove
-                          </button>
-                        </div>
+                        >
+                          Remove
+                        </button>
                       </div>
-                    </li>
-                  ))}
+                    </div>
+                  </li>
+                ))}
               </ul>
               <div className=" flex items-center justify-center">
                 <Button

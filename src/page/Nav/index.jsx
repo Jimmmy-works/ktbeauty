@@ -3,13 +3,18 @@ import { PATHS } from "@/contants/path";
 import useWindowSize from "@/utils/windowResize";
 
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Nav = () => {
-  const { isNavbar, onToggleNav, setIsNavbar } = useMainContext();
+  const { pathname } = useLocation();
+  const { isNavbar, setIsNavbar } = useMainContext();
   const [dropDown, setDropDown] = useState(false);
   const [controlSubNav, setControlSubNav] = useState("");
   const { width } = useWindowSize();
+  useEffect(() => {
+    setIsNavbar(false);
+  }, [pathname]);
+
   useEffect(() => {
     if (width > 1024) setIsNavbar(false);
   }, [width]);
@@ -48,8 +53,8 @@ const Nav = () => {
           <li className="item">
             <Link to={PATHS.HOME}>HOME</Link>
           </li>
-          <li className="item w-full relative">
-            <div className="item__wrap" onClick={onDropDown} id="blog-sub">
+          <li className="item has-sub  relative" onClick={onDropDown}>
+            <div className="item__wrap" id="blog-sub">
               <Link
                 className={` ${
                   dropDown && controlSubNav === "blog-sub"
@@ -104,7 +109,7 @@ const Nav = () => {
               </ul>
             </div>
           </li>
-          <li className="item w-full relative" onClick={onDropDown}>
+          <li className="item has-sub relative" onClick={onDropDown}>
             <div className="item__wrap" id="shop-sub">
               <Link
                 className={` ${
@@ -166,34 +171,42 @@ const Nav = () => {
           <li className="item">
             <Link to={PATHS.CONTACT}>CONTACT US</Link>
           </li>
-          <div className=" md:hidden xs:flex items-center gap-5 xs:py-[12px] md:py-[16px]">
-            <a className="profile group/hover relative">
-              <svg className="w-[20px] h-[20px]" viewBox="0 0 24 24">
+          <div className=" md:hidden xs:flex flex-col items-start justify-start ">
+            <Link className="profile w-full group/hover relative flex items-center gap-[10px] xs:py-[12px] md:py-[16px]">
+              <svg className="w-[16px] h-[16px]" viewBox="0 0 24 24">
                 <path
                   className="group-hover/hover:fill-primary duration-300 transition-colors"
                   fill="#fff"
                   d="M19 7.001c0 3.865-3.134 7-7 7s-7-3.135-7-7c0-3.867 3.134-7.001 7-7.001s7 3.134 7 7.001zm-1.598 7.18c-1.506 1.137-3.374 1.82-5.402 1.82-2.03 0-3.899-.685-5.407-1.822-4.072 1.793-6.593 7.376-6.593 9.821h24c0-2.423-2.6-8.006-6.598-9.819z"
                 />
               </svg>
-            </a>
-            <a className="whitelist group/hover">
-              <svg className="w-[20px] h-[20px] " viewBox="0 0 24 24">
+              <p className="text-white font-mam text-sm uppercase">Profile</p>
+            </Link>
+            <a className="whitelist w-full group/hover relative flex items-center gap-[10px] xs:py-[12px] md:py-[16px]">
+              <svg className="w-[16px] h-[16px] " viewBox="0 0 24 24">
                 <path
                   className="group-hover/hover:fill-primary duration-300 transition-colors"
                   fill="#fff "
                   d="M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z"
                 />
               </svg>
+              <p className="text-white font-mam text-sm uppercase">
+                White List
+              </p>
             </a>
-            <a className="cart group/hover mb-[2px] relative">
-              <svg className="w-[20px] h-[20px]" viewBox="0 0 24 24">
+            <Link
+              to={PATHS.CART}
+              className="cart group/hover w-full flex items-center gap-[10px] mb-[2px] relative xs:py-[12px] md:py-[16px]"
+            >
+              <svg className="w-[16px] h-[16px]" viewBox="0 0 24 24">
                 <path
                   className="group-hover/hover:fill-primary duration-300 transition-colors"
                   fill="#fff"
                   d="M6 23.73l-3-2.122v-14.2l3 1.359v14.963zm2-14.855v15.125l13-1.954v-15.046l-13 1.875zm5.963-7.875c-2.097 0-3.958 2.005-3.962 4.266l-.001 1.683c0 .305.273.54.575.494.244-.037.425-.247.425-.494v-1.681c.003-1.71 1.416-3.268 2.963-3.268.537 0 1.016.195 1.384.564.422.423.654 1.035.653 1.727v1.747c0 .305.273.54.575.494.243-.037.423-.246.423-.492l.002-1.749c.002-1.904-1.32-3.291-3.037-3.291zm-6.39 5.995c.245-.037.427-.247.427-.495v-2.232c.002-1.71 1.416-3.268 2.963-3.268l.162.015c.366-.283.765-.513 1.188-.683-.405-.207-.858-.332-1.35-.332-2.096 0-3.958 2.005-3.962 4.266v2.235c0 .306.272.538.572.494z"
                 />
-              </svg>
-            </a>
+              </svg>{" "}
+              <p className="text-white font-mam text-sm uppercase">Cart</p>
+            </Link>
           </div>
         </ul>
       </div>

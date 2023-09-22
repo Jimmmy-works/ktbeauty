@@ -16,9 +16,10 @@ const LoadingSpin = styled.div`
 const LoadingPage = ({ loadingPage }) => {
   return (
     <LoadingSpin
-      className={`loading  
+      className={`loading  bg-slider-2 after:w-screen after:h-screen after:z-[1001] after:bg-[rgba(0,0,0,0.3)] 
+     after:top-0 after:left-0 after:absolute
       ${
-        loadingPage
+        loadingPage === true
           ? "opacity-100 visible"
           : "opacity-0 invisible transition-all duration-500"
       }

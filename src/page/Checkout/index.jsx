@@ -11,6 +11,7 @@ const Checkout = () => {
     "/assets/img/product-2.jpg",
     "/assets/img/product-3.jpg",
     "/assets/img/product-4.jpg",
+    "/assets/img/product-10.jpg",
     "/assets/img/product-5.jpg",
   ];
   const { width } = useWindowSize();
@@ -43,12 +44,12 @@ const Checkout = () => {
                 </h3>
                 <div className="flex items-center gap-3 md:flex-row xs:flex-col">
                   <div className="checkout__details-wrapper xs:w-full md:w-1/2">
-                    <label htmlFor="">Phone</label>
-                    <input placeholder="+84" type="text" />
+                    <label htmlFor="phone">Phone</label>
+                    <input id="phone" placeholder="+84" type="text" />
                   </div>
                   <div className="checkout__details-wrapper xs:w-full md:w-1/2">
-                    <label htmlFor="">Email</label>
-                    <input placeholder="abc@gmail.com" type="text" />
+                    <label htmlFor="email">Email</label>
+                    <input id="email" placeholder="abc@gmail.com" type="text" />
                   </div>
                 </div>
                 <div>
@@ -61,39 +62,43 @@ const Checkout = () => {
                 </h3>
                 <div className="flex items-center gap-3 md:flex-row xs:flex-col">
                   <div className="checkout__details-wrapper xs:w-full md:w-1/2">
-                    <label htmlFor="">First Name</label>
-                    <input type="text" />
+                    <label htmlFor="first-name">First Name</label>
+                    <input type="text" id="first-name" />
                   </div>
                   <div className="checkout__details-wrapper xs:w-full md:w-1/2">
-                    <label htmlFor="">Last Name</label>
-                    <input type="text" />
+                    <label htmlFor="last-name">Last Name</label>
+                    <input type="text" id="last-name" />
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3 md:flex-row xs:flex-col">
                   <div className="checkout__details-wrapper xs:w-full md:w-1/3">
-                    <label htmlFor="">City</label>
-                    <input type="text" />
+                    <label htmlFor="city">City</label>
+                    <input type="text" id="city" />
                   </div>
                   <div className="checkout__details-wrapper xs:w-full md:w-1/3">
-                    <label htmlFor="">District</label>
-                    <input type="text" />
+                    <label htmlFor="district">District</label>
+                    <input type="text" id="district" />
                   </div>
                   <div className="checkout__details-wrapper xs:w-full md:w-1/3">
-                    <label htmlFor="">Ward</label>
-                    <input type="text" />
+                    <label htmlFor="ward">Ward</label>
+                    <input type="text" id="ward" />
                   </div>
                 </div>
                 <div className="checkout__details-wrapper">
-                  <label htmlFor="">Address</label>
-                  <input placeholder="ID home & Street name" type="text" />
+                  <label htmlFor="address">Address</label>
+                  <input
+                    id="address"
+                    placeholder="ID home & Street name"
+                    type="text"
+                  />
                 </div>
                 <div className="checkout__details-wrapper">
-                  <label htmlFor="">Note</label>
+                  <label htmlFor="note">Note</label>
                   <textarea
                     placeholder="Notes your order"
                     name=""
-                    id=""
+                    id="note"
                     cols="30"
                     rows="10"
                   ></textarea>
@@ -122,7 +127,11 @@ const Checkout = () => {
                         border-[#e2e0e0] duration-400 transition-colors hover:border-primary group/hover"
                         >
                           <img
-                            className="h-full w-full center-absolute rounded-[6px]"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = "/assets/img/error.png";
+                            }}
+                            className="h-full w-full object-cover center-absolute rounded-[6px]"
                             src={item}
                             alt=""
                           />
@@ -143,7 +152,7 @@ const Checkout = () => {
                           Lorem ipsum dolor sit amet {index}.
                         </Link>
                       </div>
-                      <p className="text-sm text-primary font-mab">$40.000</p>
+                      <p className="text-sm text-primary font-mab">$40.00</p>
                     </div>
                   );
                 })}

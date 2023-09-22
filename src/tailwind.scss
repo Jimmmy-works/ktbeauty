@@ -8,6 +8,7 @@
 @import "/src/scss/shop.scss";
 @import "/src/scss/cart.scss";
 @import "/src/scss/checkout.scss";
+@import "/src/scss/authen.scss";
 @import "/src/scss/hamburger.scss";
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
@@ -318,5 +319,42 @@
   .animated-transfer-page-3 {
     animation: transfer-ball 1s ease-in-out infinite;
     animation-delay: 200ms;
+  }
+}
+:where(.css-dev-only-do-not-override-18iikkb).ant-checkbox-wrapper:not(
+    .ant-checkbox-wrapper-disabled
+  ):hover
+  .ant-checkbox-inner,
+:where(.css-dev-only-do-not-override-18iikkb).ant-checkbox:not(
+    .ant-checkbox-disabled
+  ):hover
+  .ant-checkbox-inner {
+  border-color: #ff887b;
+}
+:where(.css-dev-only-do-not-override-18iikkb).ant-checkbox-wrapper:not(
+    .ant-checkbox-wrapper-disabled
+  ):hover
+  .ant-checkbox-checked:not(.ant-checkbox-disabled)
+  .ant-checkbox-inner {
+  background-color: #ff887b;
+  border-color: transparent;
+}
+.ant-checkbox-wrapper {
+  .ant-checkbox {
+    &-inner {
+      span {
+      }
+    }
+    &:hover {
+      .ant-checkbox-inner {
+        border-color: #ff887b !important;
+      }
+    }
+    &-checked {
+      .ant-checkbox-inner {
+        background-color: #ff887b;
+        border-color: #ff887b;
+      }
+    }
   }
 }

@@ -50,6 +50,10 @@ const CartPage = () => {
                       class="block xs:pb-[80%] xl:pb-[62.2%] overflow-hidden relative cursor-pointer group/hover"
                     >
                       <img
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "/assets/img/error.png";
+                        }}
                         class="center-absolute md:left-0 md:translate-x-0 group-hover/hover:scale-105 object-cover h-full
                         duration-400 transition-transform "
                         src={item}
