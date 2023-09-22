@@ -2342,6 +2342,11 @@ input[type="number"] {
   border-color: transparent !important;
 }
 
+.border-\[\#e3e3e3\] {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(227 227 227 / var(--tw-border-opacity)) !important;
+}
+
 .bg-\[\#181818\] {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(24 24 24 / var(--tw-bg-opacity)) !important;
@@ -2516,6 +2521,10 @@ input[type="number"] {
 
 .fill-black-333 {
   fill: #333 !important;
+}
+
+.fill-\[\#222\] {
+  fill: #222 !important;
 }
 
 .object-cover {
@@ -3076,6 +3085,11 @@ input[type="number"] {
 .text-white {
   --tw-text-opacity: 1 !important;
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+}
+
+.text-\[\#222\] {
+  --tw-text-opacity: 1 !important;
+  color: rgb(34 34 34 / var(--tw-text-opacity)) !important;
 }
 
 .opacity-0 {
@@ -3723,6 +3737,16 @@ input[type="number"] {
 .group\/sub:hover .group-hover\/sub\:text-black-555 {
   --tw-text-opacity: 1 !important;
   color: rgb(85 85 85 / var(--tw-text-opacity)) !important;
+}
+
+.group\/hover:hover .group-hover\/hover\:text-black-555 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(85 85 85 / var(--tw-text-opacity)) !important;
+}
+
+.group\/hover:hover .group-hover\/hover\:text-\[\#222\] {
+  --tw-text-opacity: 1 !important;
+  color: rgb(34 34 34 / var(--tw-text-opacity)) !important;
 }
 
 .group\/hover:hover .group-hover\/hover\:opacity-100 {

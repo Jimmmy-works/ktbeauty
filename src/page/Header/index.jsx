@@ -302,10 +302,11 @@ const Header = () => {
             <ul className="sub min-w-[200px] p-0 shadow-header right-0 left-[unset]">
               <li
                 className=" sub__item w-full justify-start gap-2  
-              group/sub border-b border-[#e5e7eb] border-solid p-[10px_10px] duration-300 transition-colors hover:bg-black-ebe"
+              group/sub border-b border-[#e3e3e3] border-solid p-[10px_10px] 
+              duration-300 transition-colors hover:bg-black-ebe"
               >
                 <a
-                  className="flex items-center gap-2 hover:text-black-555"
+                  className="flex items-center gap-2 group-hover/hover:text-[#222] text-[#222]"
                   href=""
                 >
                   <div className="p-[1px] rounded-[50%]">
@@ -316,44 +317,35 @@ const Header = () => {
                     />
                   </div>
                   Jimmy Adrino
-                  {/* <a className="group-hover/sub:text-white"></a> */}
                 </a>
               </li>
-              {/* <li
-                className=" sub__item w-full justify-start gap-2 duration-400 transition-colors
-                group/sub border-b border-[#e5e7eb] border-solid p-[10px_10px_10px_20px] duration-300 transition-colors hover:bg-black-ebe "
-              >
-                <svg className="h-[24px] w-[24px] " viewBox="0 0 24 24">
-                  <path
-                    className="fill-grey-999"
-                    d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 22c-3.123 0-5.914-1.441-7.749-3.69.259-.588.783-.995 1.867-1.246 2.244-.518 4.459-.981 3.393-2.945-3.155-5.82-.899-9.119 2.489-9.119 3.322 0 5.634 3.177 2.489 9.119-1.035 1.952 1.1 2.416 3.393 2.945 1.082.25 1.61.655 1.871 1.241-1.836 2.253-4.628 3.695-7.753 3.695z"
-                  />
-                </svg>
-                <a className="group-hover/sub:text-white">Your Profile</a>
-              </li> */}
               <li
                 className=" sub__item w-full justify-start
-              group/sub border-b border-[#e5e7eb] border-solid p-[10px_10px_10px_20px] duration-300 transition-colors hover:bg-black-ebe"
+              group/sub border-b border-[#e3e3e3] border-solid p-[10px_10px_10px_20px] duration-300 transition-colors hover:bg-black-ebe"
               >
                 <svg class="w-[22px] h-[22px] " viewBox="0 0 24 24">
                   <path
-                    className="fill-grey-999 "
+                    className="fill-[#222]"
                     d="M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z"
                   ></path>
                 </svg>
-                <a className="group-hover/sub:text-black-555">White List</a>
+                <a className="text-[#222] group-hover/sub:text-black-555">
+                  White List
+                </a>
               </li>
               <li
                 className=" sub__item w-full justify-start gap-2
-              group/sub p-[10px_10px_10px_20px] duration-300 transition-colors hover:bg-black-ebe  border-b border-[#e5e7eb] border-solid"
+              group/sub p-[10px_10px_10px_20px] duration-300 transition-colors hover:bg-black-ebe  border-b border-[#e3e3e3] border-solid"
               >
                 <svg className="h-[24px] w-[24px] " viewBox="0 0 24 24">
                   <path
-                    className="fill-grey-999"
+                    className="fill-[#222]"
                     d="M10 19.5c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm3.5-1.5c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm1.336-5l1.977-7h-16.813l2.938 7h11.898zm4.969-10l-3.432 12h-12.597l.839 2h13.239l3.474-12h1.929l.743-2h-4.195z"
                   />
                 </svg>
-                <a className="group-hover/sub:text-black-555">Your Order</a>
+                <a className="text-[#222] group-hover/sub:text-black-555">
+                  Your Order
+                </a>
               </li>
               <li
                 className=" sub__item w-full justify-start gap-2
@@ -361,21 +353,23 @@ const Header = () => {
               >
                 <svg className=" h-[24px] w-[24px] " viewBox="0 0 256 256">
                   <path
-                    className="fill-grey-999"
+                    className="fill-[#222]"
                     d="M14.7,12.7c-1.6,0.8-2.8,1.9-3.5,3.3L10,18.1v89.8c0,86.9,0.1,89.9,1,92c0.7,1.5,1.7,2.6,3.3,3.4c59.2,33.5,72,40.6,73.4,40.9c2.5,0.5,6.1-1,7.8-3.3l1.4-1.8l0.2-17.1l0.2-17.1l34.8-0.2c34-0.2,34.9-0.2,36.7-1.3c1-0.6,2.4-1.8,3-2.8l1.2-1.7v-28.4v-28.4h-8.1h-8.1v23v23H127H97.2l-0.1-65.7L97,56.7L95.6,55c-0.9-1.2-7.6-5.3-22.5-13.7c-11.6-6.6-21.5-12.2-21.9-12.5c-0.5-0.3,20.2-0.5,52.4-0.5h53.1v29.5v29.5h8.1h8.1V52.4V17.5l-1.1-1.7c-0.7-0.9-1.9-2.2-2.7-2.8l-1.5-1.1l-75.3-0.2L17,11.6L14.7,12.7z"
                   />
                   <path
-                    className="fill-grey-999"
+                    className="fill-[#222]"
                     d="M191.9,78.1l-1.5,1.3l-0.2,11.8l-0.2,11.8h-22c-13.1,0-23,0.3-24.4,0.6c-5.5,1.3-9.1,5.7-9.1,11.2c0.1,4.7,2.1,8.1,6.3,10.3c2,1.1,2.7,1.1,25.7,1.3l23.6,0.2l0.2,11.7l0.2,11.8l1.8,1.6c1.5,1.3,2.1,1.5,3.5,1.3c2.1-0.4,48.7-33.9,49.8-36c0.5-1,0.6-1.8,0.3-3.3c-0.5-1.8-2-3-24.5-19.4c-21.4-15.5-24.2-17.4-26-17.4C194,76.9,192.9,77.3,191.9,78.1z"
                   />
                 </svg>
-                <a className="group-hover/sub:text-black-555">Logout</a>
+                <a className="text-[#222] group-hover/sub:text-black-555">
+                  Logout
+                </a>
               </li>
             </ul>
-            {/* <ul className="sub p-0 border border-[#e5e7eb] border-solid">
+            {/* <ul className="sub p-0 border border-[#e3e3e3] border-solid">
               <li
                 onClick={() => onAuthenModal("login")}
-                className="sub__item min-w-[120px] border-b border-[#e5e7eb] border-solid p-[10px] justify-between group/sub "
+                className="sub__item min-w-[120px] border-b border-[#e3e3e3] border-solid p-[10px] justify-between group/sub "
               >
                 <a>Login</a>
                 <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24">
