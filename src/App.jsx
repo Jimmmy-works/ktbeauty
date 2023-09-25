@@ -24,6 +24,10 @@ import ShopDetail from "./page/Shop/ShopDetail";
 import CartPage from "./page/CartPage";
 import Checkout from "./page/Checkout";
 import OrderComplete from "./page/OrderComplete";
+import ProfileLayout from "./layout/ProfileLayout";
+import Account from "./page/Profile/Account";
+import Order from "./page/Profile/Order";
+import WhiteList from "./page/Profile/WhiteList";
 function App() {
   return (
     // <Suspense fallback={<LoadingPage />}>
@@ -39,6 +43,11 @@ function App() {
           <Route path={PATHS.CART} element={<CartPage />} />
           <Route path={PATHS.CHECKOUT} element={<Checkout />} />
           <Route path={PATHS.COMPLETE} element={<OrderComplete />} />
+          <Route path={PATHS.PROFILE.INDEX} element={<ProfileLayout />}>
+            <Route index element={<Account />} />
+            <Route path={PATHS.PROFILE.ORDER} element={<Order />} />
+            <Route path={PATHS.PROFILE.WHITELIST} element={<WhiteList />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

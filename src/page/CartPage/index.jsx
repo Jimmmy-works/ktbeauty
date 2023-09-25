@@ -47,14 +47,14 @@ const CartPage = () => {
                   <td className="">
                     <a
                       href=""
-                      class="block xs:pb-[80%] xl:pb-[62.2%] overflow-hidden relative cursor-pointer group/hover"
+                      className="block xs:pb-[80%] xl:pb-[62.2%] overflow-hidden relative cursor-pointer group/hover"
                     >
                       <img
                         onError={(e) => {
                           e.target.onerror = null;
                           e.target.src = "/assets/img/error.png";
                         }}
-                        class="center-absolute md:left-0 md:translate-x-0 group-hover/hover:scale-105 object-cover h-full
+                        className="center-absolute md:left-0 md:translate-x-0 group-hover/hover:scale-105 object-cover h-full
                         duration-400 transition-transform "
                         src={item}
                         alt=""
@@ -77,31 +77,31 @@ const CartPage = () => {
                   )}
                   <td className="">
                     <div
-                      class="input flex items-center border border-solid border-[#ececec] rounded-md
+                      className="input flex items-center border border-solid border-[#ececec] rounded-md
                     h-[50px] justify-center w-fit mx-auto"
                     >
-                      <div class="px-[14px] cursor-pointer">
-                        <svg class="h-[10px] w-[10px]" viewBox="0 0 24 24">
+                      <div className="px-[14px] cursor-pointer">
+                        <svg className="h-[10px] w-[10px]" viewBox="0 0 24 24">
                           <path
-                            class="fill-black-555"
+                            className="fill-black-555"
                             d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
                           ></path>
                         </svg>
                       </div>
                       <input
-                        class="w-[30px] text-[15px] tracking-wider text-center text-black-555 font-osb"
+                        className="w-[30px] text-[15px] tracking-wider text-center text-black-555 font-osb"
                         type="number"
                         min="0"
                         max="100"
                         value="1"
                       />
-                      <div class="px-[14px] cursor-pointer">
+                      <div className="px-[14px] cursor-pointer">
                         <svg
-                          class="h-[10px] w-[10px] rotate-[180deg]"
+                          className="h-[10px] w-[10px] rotate-[180deg]"
                           viewBox="0 0 24 24"
                         >
                           <path
-                            class="fill-black-555"
+                            className="fill-black-555"
                             d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
                           ></path>
                         </svg>
@@ -116,7 +116,7 @@ const CartPage = () => {
                   {width >= 768 ? (
                     <td className="">
                       <button
-                        class="px-[10px] block xs:text-[12px] lg:text-[14px] text-white rounded-md 
+                        className="px-[10px] block xs:text-[12px] lg:text-[14px] text-white rounded-md 
                         py-[6px] hover:bg-red-500
                       bg-black-333 transition-all duration-400 mx-auto"
                       >

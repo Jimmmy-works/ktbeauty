@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-
 const Accordion = ({ item, renderProps, className }) => {
   const [activeIndex, setActiveIndex] = useState("product-1");
   const [activeChildrenIndex, setActiveChildrenIndex] = useState("");

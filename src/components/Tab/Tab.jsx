@@ -5,22 +5,25 @@ import React, {
   useContext,
   useState,
 } from "react";
+import { twMerge } from "tailwind-merge";
 const TabContext = createContext({});
-const Tab = ({ children }) => {
+const Tab = ({ children, className }) => {
   const [activeTab, setActiveTab] = useState(0);
   const onChangeActiveTab = (index) => {
     setActiveTab(index);
   };
+
   return (
     <TabContext.Provider value={{ activeTab, onChangeActiveTab }}>
-      <div className="tab">{children}</div>
+      <div className={`tab ${className ?? ""}`}>{children}</div>
     </TabContext.Provider>
   );
 };
-const TabHeader = ({ children: childrenHeader }) => {
+const TabHeader = ({ children: childrenHeader, className }) => {
   const { activeTab, onChangeActiveTab } = useContext(TabContext);
+
   return (
-    <ul className="tab__header ">
+    <ul className={twMerge(`tab__header ${className ?? ""}`)}>
       {Children.map(childrenHeader, (headerItem, index) => {
         if (headerItem?.type?.name === "TabHeaderItem") {
           return cloneElement(headerItem, {
@@ -34,20 +37,27 @@ const TabHeader = ({ children: childrenHeader }) => {
     </ul>
   );
 };
-const TabHeaderItem = ({ children: childrenHeaderItem, onClick, isActive }) => {
+const TabHeaderItem = ({
+  children: childrenHeaderItem,
+  onClick,
+  isActive,
+  className,
+}) => {
   return (
     <li
       onClick={onClick}
-      className={`tab__header-item  ${isActive ? "active" : ""}`}
+      className={`tab__header-item ${className ?? ""}  ${
+        isActive ? "active" : ""
+      }`}
     >
       <a className={`${isActive ? "active" : ""} `}> {childrenHeaderItem}</a>
     </li>
   );
 };
-const TabContent = ({ children: childrenContent }) => {
+const TabContent = ({ children: childrenContent, className }) => {
   const { activeTab } = useContext(TabContext);
   return (
-    <div className="tab__content ">
+    <div className={`tab__content ${className ?? ""}`}>
       {Children?.map(childrenContent, (contentItem, index) => {
         if (contentItem?.type?.name === "TabContentItem") {
           return cloneElement?.(contentItem, {
@@ -58,9 +68,17 @@ const TabContent = ({ children: childrenContent }) => {
     </div>
   );
 };
-const TabContentItem = ({ children: childrenContentItem, isActiveContent }) => {
+const TabContentItem = ({
+  children: childrenContentItem,
+  isActiveContent,
+  className,
+}) => {
   return (
-    <div className={`tab__content-pane ${isActiveContent ? "active" : ""}`}>
+    <div
+      className={`tab__content-pane ${className ?? ""} ${
+        isActiveContent ? "active" : ""
+      }`}
+    >
       {childrenContentItem}
     </div>
   );

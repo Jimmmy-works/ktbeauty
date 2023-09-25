@@ -1,10 +1,13 @@
 .cartpage {
   &__table {
-    @apply md:mt-[30px] xs:mt-[20px] w-full font-mar text-black-555 text-[16px] lg:text-md;
+    @apply md:mt-[30px] xs:mt-[20px] w-full font-mar text-black-555 text-[16px] 
+   border-collapse border-spacing-0  lg:text-md;
     thead {
       @apply uppercase font-mam xs:hidden md:table-row-group;
-      td {
-        @apply py-[14px];
+      tr {
+        td {
+          @apply py-[14px] first:text-left;
+        }
       }
     }
     tbody {

@@ -22,7 +22,6 @@ const Header = () => {
     "/assets/img/product-10.jpg",
     "/assets/img/product-10.jpg",
   ];
-
   const changeBackground = () => {
     if (window.scrollY > refHeader?.current?.clientHeight) {
       setColorLogo("fill-primary");
@@ -305,9 +304,9 @@ const Header = () => {
               group/sub border-b border-[#e3e3e3] border-solid p-[10px_10px] 
               duration-300 transition-colors hover:bg-black-ebe"
               >
-                <a
+                <Link
                   className="flex items-center gap-2 group-hover/hover:text-[#222] text-[#222]"
-                  href=""
+                  to={PATHS.PROFILE.INDEX}
                 >
                   <div className="p-[1px] rounded-[50%]">
                     <img
@@ -317,21 +316,7 @@ const Header = () => {
                     />
                   </div>
                   Jimmy Adrino
-                </a>
-              </li>
-              <li
-                className=" sub__item w-full justify-start
-              group/sub border-b border-[#e3e3e3] border-solid p-[10px_10px_10px_20px] duration-300 transition-colors hover:bg-black-ebe"
-              >
-                <svg class="w-[22px] h-[22px] " viewBox="0 0 24 24">
-                  <path
-                    className="fill-[#222]"
-                    d="M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z"
-                  ></path>
-                </svg>
-                <a className="text-[#222] group-hover/sub:text-black-555">
-                  White List
-                </a>
+                </Link>
               </li>
               <li
                 className=" sub__item w-full justify-start gap-2
@@ -343,10 +328,31 @@ const Header = () => {
                     d="M10 19.5c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm3.5-1.5c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm1.336-5l1.977-7h-16.813l2.938 7h11.898zm4.969-10l-3.432 12h-12.597l.839 2h13.239l3.474-12h1.929l.743-2h-4.195z"
                   />
                 </svg>
-                <a className="text-[#222] group-hover/sub:text-black-555">
+                <Link
+                  to={PATHS.PROFILE.ORDER}
+                  className="text-[#222] group-hover/sub:text-black-555"
+                >
                   Your Order
-                </a>
+                </Link>
               </li>
+              <li
+                className=" sub__item w-full justify-start
+              group/sub border-b border-[#e3e3e3] border-solid p-[10px_10px_10px_20px] duration-300 transition-colors hover:bg-black-ebe"
+              >
+                <svg className="w-[22px] h-[22px] " viewBox="0 0 24 24">
+                  <path
+                    className="fill-[#222]"
+                    d="M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z"
+                  ></path>
+                </svg>
+                <Link
+                  to={PATHS.PROFILE.WHITELIST}
+                  className="text-[#222] group-hover/sub:text-black-555"
+                >
+                  White List
+                </Link>
+              </li>
+
               <li
                 className=" sub__item w-full justify-start gap-2
               group/sub p-[10px_10px_10px_24px] duration-300 transition-colors hover:bg-black-ebe"
@@ -373,7 +379,7 @@ const Header = () => {
               group/sub border-b border-[#e3e3e3] border-solid p-[10px] 
               duration-300 transition-colors hover:bg-black-ebe"
               >
-                <svg class="w-[20px] h-[20px] " viewBox="0 0 24 24">
+                <svg className="w-[20px] h-[20px] " viewBox="0 0 24 24">
                   <path
                     className="fill-[#222]"
                     d="M8 9v-4l8 7-8 7v-4h-8v-6h8zm6-7c-1.787 0-3.46.474-4.911 1.295l.228.2 1.395 1.221c1.004-.456 2.115-.716 3.288-.716 4.411 0 8 3.589 8 8s-3.589 8-8 8c-1.173 0-2.284-.26-3.288-.715l-1.395 1.221-.228.2c1.451.82 3.124 1.294 4.911 1.294 5.522 0 10-4.477 10-10s-4.478-10-10-10z"
@@ -389,7 +395,7 @@ const Header = () => {
               group/sub border-b border-[#e3e3e3] border-solid p-[10px] 
               duration-300 transition-colors hover:bg-black-ebe"
               >
-                <svg class="w-[20px] h-[20px] " viewBox="0 0 24 24">
+                <svg className="w-[20px] h-[20px] " viewBox="0 0 24 24">
                   <path
                     className="fill-[#222]"
                     d="M12.408 13.032c1.158-.062 2.854-.388 4.18-1.128.962-1.478 1.598-2.684 2.224-4-.86.064-1.852-.009-2.736-.257 1.068-.183 2.408-.565 3.422-1.216 1.255-1.784 2.185-4.659 2.502-6.429-2.874-.048-5.566.89-7.386 2.064-.614.7-1.146 2.389-1.272 3.283-.277-.646-.479-1.68-.242-2.542-1.458.767-2.733 1.643-4.177 2.86-.72 1.528-.834 3.29-.768 4.276-.391-.553-.915-1.63-.842-2.809-2.59 2.504-4.377 5.784-2.682 9.324 1.879-1.941 4.039-3.783 5.354-4.639-3.036 3.474-5.866 8.047-7.985 12.181l2.504-.786c1.084-1.979 2.059-3.684 2.933-4.905 3.229.423 6.096-2.168 8.028-4.795-.77.19-2.246-.058-3.057-.482z"

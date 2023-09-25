@@ -1,21 +1,4 @@
 .checkout {
-  &__details {
-    @apply xs:pt-[10px] md:p-[10px_0px_0px_10px];
-    & > div {
-      @apply mt-[20px];
-    }
-    &-wrapper {
-      @apply font-mar text-sm text-black-333 flex flex-col gap-3;
-      input {
-        @apply border-b border-solid border-grey-999 p-[10px]
-        bg-[#f9f9f9];
-      }
-      textarea {
-        @apply border-b border-solid border-grey-999 p-[10px] 
-         bg-[#f9f9f9];
-      }
-    }
-  }
   .ant-checkbox-wrapper {
     span {
       font-size: 14px;

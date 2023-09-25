@@ -17,7 +17,7 @@ const Checkout = () => {
   const { width } = useWindowSize();
   return (
     <main className="checkout main-wrapper relative">
-      {/* <div class="md:block xs:hidden absolute top-0 -left-[40%] bg-[#d6d6d6] w-full h-full"></div> */}
+      {/* <div className="md:block xs:hidden absolute top-0 -left-[40%] bg-[#d6d6d6] w-full h-full"></div> */}
       <div className="container ">
         <div className="relative z-10">
           <BreadCrumb>
@@ -28,72 +28,73 @@ const Checkout = () => {
               <Link>Checkout</Link>
             </BreadCrumb.Item>
           </BreadCrumb>
-          <div class="bg-advertising-banner-2 bg-no-repeat bg-cover xs:h-[100px] md:h-[140px] w-full relative ">
-            <h3 class="font-mam xs:text-[26px] w-full text-center md:text-[40px] text-white center-absolute z-20">
+          <div className="bg-advertising-banner-2 bg-no-repeat bg-cover xs:h-[100px] md:h-[140px] w-full relative ">
+            <h3 className="font-mam xs:text-[26px] w-full text-center md:text-[40px] text-white center-absolute z-20">
               Checkout
             </h3>
           </div>
           <div className="flex lg:flex-row xs:flex-col items-start mt-[30px] gap-[40px]">
             <div className="xs:w-full lg:w-[60%] screen-1200:w-[65%]">
-              <form
-                className="checkout__information checkout__details pb-[20px] pt-0"
-                action=""
-              >
-                <h3 className="font-mab text-black-333 text-md">
-                  Contact Information
-                </h3>
-                <div className="flex items-center gap-3 md:flex-row xs:flex-col">
-                  <div className="checkout__details-wrapper xs:w-full md:w-1/2">
+              <form className="checkout__information  form" action="">
+                <h3 className="form__title">Contact Information</h3>
+                <div className="form__container">
+                  <div className="form__container-wrapper success xs:w-full md:w-1/2">
                     <label htmlFor="phone">Phone</label>
                     <input id="phone" placeholder="+84" type="text" />
+                    <p className=""> Please try again</p>
                   </div>
-                  <div className="checkout__details-wrapper xs:w-full md:w-1/2">
+                  <div className="form__container-wrapper success xs:w-full md:w-1/2">
                     <label htmlFor="email">Email</label>
                     <input id="email" placeholder="abc@gmail.com" type="text" />
+                    <p className=""> Please try again</p>
                   </div>
                 </div>
                 <div>
                   <Checkbox>Contact me with news and offers</Checkbox>
                 </div>
               </form>
-              <form className="checkout__details" action="">
-                <h3 className="font-mab text-black-333 text-md">
-                  Billing Details
-                </h3>
-                <div className="flex items-center gap-3 md:flex-row xs:flex-col">
-                  <div className="checkout__details-wrapper xs:w-full md:w-1/2">
+              <form className="form mt-[20px]" action="">
+                <h3 className="form__title">Billing Details</h3>
+                <div className="form__container">
+                  <div className="form__container-wrapper xs:w-full md:w-1/2">
                     <label htmlFor="first-name">First Name</label>
                     <input type="text" id="first-name" />
+                    <p className=""> Please try again</p>
                   </div>
-                  <div className="checkout__details-wrapper xs:w-full md:w-1/2">
+                  <div className="form__container-wrapper xs:w-full md:w-1/2">
                     <label htmlFor="last-name">Last Name</label>
                     <input type="text" id="last-name" />
+                    <p className=""> Please try again</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 md:flex-row xs:flex-col">
-                  <div className="checkout__details-wrapper xs:w-full md:w-1/3">
+                <div className="form__container">
+                  <div className="form__container-wrapper xs:w-full md:w-1/3">
                     <label htmlFor="city">City</label>
                     <input type="text" id="city" />
+                    <p className=""> Please try again</p>
                   </div>
-                  <div className="checkout__details-wrapper xs:w-full md:w-1/3">
+                  <div className="form__container-wrapper xs:w-full md:w-1/3">
                     <label htmlFor="district">District</label>
                     <input type="text" id="district" />
+                    <p className=""> Please try again</p>
                   </div>
-                  <div className="checkout__details-wrapper xs:w-full md:w-1/3">
+                  <div className="form__container-wrapper xs:w-full md:w-1/3">
                     <label htmlFor="ward">Ward</label>
                     <input type="text" id="ward" />
+                    <p className=""> Please try again</p>
                   </div>
                 </div>
-                <div className="checkout__details-wrapper">
+                <div className="form__container-wrapper">
                   <label htmlFor="address">Address</label>
                   <input
                     id="address"
                     placeholder="ID home & Street name"
                     type="text"
                   />
+                  <p className=""> Please try again</p>
                 </div>
-                <div className="checkout__details-wrapper">
+                <div className="form__container-wrapper error">
                   <label htmlFor="note">Note</label>
                   <textarea
                     placeholder="Notes your order"
@@ -102,6 +103,7 @@ const Checkout = () => {
                     cols="30"
                     rows="10"
                   ></textarea>
+                  <p className=""> Please try again</p>
                 </div>
               </form>
             </div>
@@ -137,7 +139,7 @@ const Checkout = () => {
                           />
                           <span
                             to={PATHS.SHOP.DETAIL}
-                            class="text-[13px] text-white font-mam rounded-[50%] bg-[#7d7c7c] h-[20px] w-[20px]
+                            className="text-[13px] text-white font-mam rounded-[50%] bg-[#7d7c7c] h-[20px] w-[20px]
                                      flex items-center justify-center absolute right-[-8px] top-[3px] -translate-y-1/2
                                   group-hover/hover:bg-primary duration-400 transition-colors "
                           >

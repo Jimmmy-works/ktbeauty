@@ -1,10 +1,16 @@
 const BLOG_PATH = "/blog";
 const SHOP_PATH = "/shop";
+const PROFILE_PATH = "/profile";
 export const PATHS = {
   HOME: "/",
   ABOUT: "/about",
   CONTACT: "/contact",
-  PROFILE: "/profile",
+  PROFILE: {
+    INDEX: PROFILE_PATH,
+    ORDER: `${PROFILE_PATH}/order`,
+    WHITELIST: `${PROFILE_PATH}/whitelist`,
+    ADDRESS: `${PROFILE_PATH}/address`,
+  },
   BLOG: {
     INDEX: BLOG_PATH,
     DETAIL: BLOG_PATH + "/:slug",

@@ -14,11 +14,11 @@ const Button = ({
     switch (variant) {
       case "outline":
         return ` hover:bg-primary hover:text-white border-solid border border-primary bg-white  
-        rounded-[50px] text-primary ${
+        rounded-[50px] text-primary group/hover ${
           isActive === true ? "bg-primary text-white" : ""
         }`;
       case "filled":
-        return `text-white bg-primary hover:bg-gray-100 hover:text-black  ${
+        return `text-white bg-primary hover:bg-gray-100 hover:text-black  group/hover ${
           isActive === true ? "bg-gray-100 text-black" : ""
         }`;
       default:

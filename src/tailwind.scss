@@ -9,6 +9,7 @@
 @import "/src/scss/cart.scss";
 @import "/src/scss/checkout.scss";
 @import "/src/scss/authen.scss";
+@import "/src/scss/profile.scss";
 @import "/src/scss/hamburger.scss";
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
@@ -243,6 +244,48 @@
           }
         }
       }
+    }
+  }
+  .form {
+    @apply xs:pt-[10px] md:p-[10px_0px_0px_0px]  pb-[20px] pt-0;
+    & > div {
+      @apply mt-[10px];
+    }
+    &__container {
+      @apply flex items-center gap-3 md:flex-row xs:flex-col;
+      &-wrapper {
+        @apply font-mar text-sm text-black-333 flex flex-col;
+        &.success {
+          input,
+          textarea {
+            @apply border-b border-solid border-green-700;
+          }
+        }
+        &.error {
+          input,
+          textarea {
+            @apply border border-solid border-red-500;
+          }
+
+          p {
+            @apply visible opacity-100;
+          }
+        }
+        input {
+          @apply border-b border-solid border-grey-999 p-[10px] mt-[12px]
+        bg-[#f9f9f9];
+        }
+        p {
+          @apply mt-[6px] mb-[-2px] invisible opacity-0 text-xs text-red-500;
+        }
+        textarea {
+          @apply border-b border-solid  border-grey-999 p-[10px] mt-[12px]
+         bg-[#f9f9f9];
+        }
+      }
+    }
+    &__title {
+      @apply font-mab text-black-333 text-md;
     }
   }
 }

@@ -1,0 +1,70 @@
+.sidebar-profile {
+  @apply h-full mt-[30px];
+  .list {
+    &__item {
+      @apply duration-300 transition-colors cursor-pointer p-[20px]
+       border-b-[2px] border-solid border-transparent;
+      a {
+        @apply font-mar md:text-[14px] lg:text-[16px] text-black-555 
+        duration-300 transition-colors w-full flex items-center
+        xs:gap-2 md:gap-4;
+      }
+      svg {
+        @apply w-[18px] h-[18px];
+        path {
+          @apply fill-black-555 duration-300 transition-colors;
+        }
+      }
+      &.active,
+      &:hover {
+        @apply bg-gray-100 border-gray-300;
+        a {
+          @apply text-black;
+        }
+        svg {
+          path {
+            @apply fill-black;
+          }
+        }
+      }
+    }
+  }
+}
+.order {
+  .cartpage {
+    &__table {
+      td {
+        @apply text-center align-middle xs:pt-[10px] md:pt-[14px] 
+      xs:[&:nth-child(1)]:w-[320px] md:[&:nth-child(1)]:w-[500px]  
+      xs:[&:nth-child(2)]:w-[320px] md:[&:nth-child(2)]:w-[150px] 
+      xs:[&:nth-child(3)]:w-[320px]  md:[&:nth-child(3)]:w-[100px]  
+    xs:[&:nth-child(4)]:w-[320px]  md:[&:nth-child(4)]:w-[100px]
+      xs:text-sm lg:text-[16px];
+      }
+      thead {
+        tr {
+          td {
+            @apply lg:text-[16px] md:text-sm;
+          }
+        }
+      }
+      tbody {
+        tr {
+          td {
+            @apply md:text-xs lg:text-sm;
+          }
+          &:last-child {
+            td {
+              @apply pb-[14px];
+            }
+          }
+        }
+      }
+      tfoot {
+        td {
+          @apply py-[14px];
+        }
+      }
+    }
+  }
+}
