@@ -1,34 +1,3 @@
-.cartpage {
-  &__table {
-    @apply md:mt-[30px] xs:mt-[20px] w-full font-mar text-black-555 text-[16px] 
-   border-collapse border-spacing-0  lg:text-md;
-    thead {
-      @apply uppercase font-mam xs:hidden md:table-row-group;
-      tr {
-        td {
-          @apply py-[14px] first:text-left;
-        }
-      }
-    }
-    tbody {
-      @apply xs:block md:table-row-group;
-      tr {
-        @apply xs:flex xs:items-center xs:justify-center xs:flex-col xs:gap-[8px]
-       md:items-baseline md:justify-normal md:table-row  xs:border-b
-       border-black-ebe border-solid pb-[20px]
-       [&:not(:first-child)]:mt-[20px]  md:border-none;
-      }
-    }
-    td {
-      @apply text-center align-middle xs:pt-[10px] md:pt-[14px] 
-      [&:nth-child(1)]:w-[100px] lg:[&:nth-child(2)]:w-[300px] xs:[&:nth-child(2)]:w-[320px]
-      [&:nth-child(3)]:w-[100px] [&:nth-child(4)]:w-[100px]
-      xs:[&:nth-child(5)]:w-[300px] md:[&:nth-child(5)]:w-[100px] [&:nth-child(6)]:w-[100px]  
-      xs:text-sm lg:text-[16px];
-    }
-  }
-}
-
 .ant-select-dropdown {
   min-width: 130px !important;
 }

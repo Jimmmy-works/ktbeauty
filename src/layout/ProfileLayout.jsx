@@ -2,6 +2,7 @@ import BreadCrumb from "@/components/BreadCrumb";
 import Tab from "@/components/Tab/Tab";
 import { PATHS } from "@/contants/path";
 import Account from "@/page/Profile/Account";
+import Address from "@/page/Profile/Address";
 import Order from "@/page/Profile/Order";
 import WhiteList from "@/page/Profile/WhiteList";
 import React from "react";
@@ -191,7 +192,7 @@ const ProfileLayout = () => {
                   </div>
                 </Tab.ContentItem>
                 <Tab.ContentItem>
-                  <div className="description">Address</div>
+                  <Address />
                 </Tab.ContentItem>
               </Tab.Content>
             </Tab>

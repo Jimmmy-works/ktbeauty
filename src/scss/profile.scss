@@ -30,39 +30,80 @@
     }
   }
 }
-.order {
-  .cartpage {
-    &__table {
-      td {
-        @apply text-center align-middle xs:pt-[10px] md:pt-[14px] 
+.order,
+.whitelist {
+  .table {
+    td {
+      @apply text-center align-middle xs:pt-[10px] md:pt-[14px] 
       xs:[&:nth-child(1)]:w-[320px] md:[&:nth-child(1)]:w-[500px]  
       xs:[&:nth-child(2)]:w-[320px] md:[&:nth-child(2)]:w-[150px] 
       xs:[&:nth-child(3)]:w-[320px]  md:[&:nth-child(3)]:w-[100px]  
-    xs:[&:nth-child(4)]:w-[320px]  md:[&:nth-child(4)]:w-[100px]
+       xs:[&:nth-child(4)]:w-[320px]  md:[&:nth-child(4)]:w-[100px]
       xs:text-sm lg:text-[16px];
+    }
+    thead {
+      @apply border-b border-solid border-black-be;
+      tr {
+        td {
+          @apply text-sm;
+        }
       }
-      thead {
-        tr {
+    }
+    tbody {
+      tr {
+        td {
+          @apply md:text-xs lg:text-sm;
+          div {
+            @apply flex md:flex-row xs:flex-col items-center md:gap-[10px]
+             xs:gap-[12px];
+          }
+        }
+        &:last-child {
           td {
-            @apply lg:text-[16px] md:text-sm;
+            @apply pb-[14px];
           }
         }
       }
-      tbody {
-        tr {
-          td {
-            @apply md:text-xs lg:text-sm;
-          }
-          &:last-child {
-            td {
-              @apply pb-[14px];
+    }
+    tfoot {
+      td {
+        @apply py-[14px];
+      }
+    }
+  }
+}
+.whitelist {
+  .table {
+    td {
+      @apply text-center align-middle xs:pt-[10px] md:pt-[14px] 
+      xs:[&:nth-child(1)]:w-[320px] md:[&:nth-child(1)]:w-[400px]  
+      xs:[&:nth-child(2)]:w-[320px] md:[&:nth-child(2)]:w-[150px] 
+      xs:[&:nth-child(3)]:w-[320px]  md:[&:nth-child(3)]:w-[200px]  
+      xs:[&:nth-child(4)]:w-[320px]  md:[&:nth-child(4)]:w-[200px]
+      xs:[&:nth-child(5)]:w-[320px] md:[&:nth-child(5)]:w-[40px] 
+      xs:text-sm lg:text-[16px];
+    }
+  }
+}
+.address {
+  .accordion {
+    @apply pb-[10px] first:pt-0 first:mt-0 mt-[10px] pt-[10px];
+    &__heading {
+      @apply font-mam text-md text-black-555 capitalize;
+    }
+    &__content {
+      &-heading {
+        a {
+          @apply font-mar text-[15px] pointer-events-none;
+        }
+      }
+      &-list {
+        .item {
+          &__list {
+            &-child {
+              @apply text-sm font-mar text-black-555 pointer-events-none;
             }
           }
-        }
-      }
-      tfoot {
-        td {
-          @apply py-[14px];
         }
       }
     }

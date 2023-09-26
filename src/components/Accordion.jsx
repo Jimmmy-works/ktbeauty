@@ -3,6 +3,7 @@ const Accordion = ({ item, renderProps, className }) => {
   const [activeIndex, setActiveIndex] = useState("product-1");
   const [activeChildrenIndex, setActiveChildrenIndex] = useState("");
   const refAccordion = useRef(null);
+  const refAccordionChild = useRef(null);
   const handleAccordion = (id) => {
     if (activeIndex === id) {
       return setActiveIndex(null);
@@ -42,15 +43,23 @@ const Accordion = ({ item, renderProps, className }) => {
         item?.subCate?.map((itemSub) => {
           return (
             <div
+              style={{
+                maxHeight: `${
+                  activeIndex === item?.id
+                    ? `${
+                        refAccordion?.current?.scrollHeight +
+                        refAccordionChild?.current?.scrollHeight
+                      }px`
+                    : "0px"
+                }`,
+              }}
               key={itemSub?.id}
               ref={refAccordion}
-              className={` accordion__content 
+              className={` accordion__content overflow-hidden
               ${activeChildrenIndex === itemSub?.id ? "active" : ""} 
-            ${
-              activeIndex === item?.id
-                ? `max-h-[132px] overflow-y-visible opacity-100 `
-                : "max-h-0 overflow-y-hidden opacity-0 "
-            }`}
+              
+           
+            `}
             >
               <div className={`accordion__content-heading `}>
                 <div
@@ -66,7 +75,6 @@ const Accordion = ({ item, renderProps, className }) => {
                     />
                   </svg>
                 </div>
-
                 <a href="" className="leading-[28px] block">
                   {itemSub?.title}{" "}
                   {itemSub?.quantity && `(${itemSub?.quantity})`}
@@ -81,11 +89,15 @@ const Accordion = ({ item, renderProps, className }) => {
                     >
                       <div className="item">
                         <ul
-                          className={`item__list duration-300 transition-all pl-[28px]   ${
-                            activeChildrenIndex === itemSub?.id
-                              ? `h-[48px] overflow-y-visible opacity-100`
-                              : "h-0 overflow-y-hidden opacity-0"
-                          }`}
+                          ref={refAccordionChild}
+                          style={{
+                            maxHeight: `${
+                              activeChildrenIndex === itemSub?.id
+                                ? `${refAccordionChild?.current?.scrollHeight}px`
+                                : "0px"
+                            }`,
+                          }}
+                          className={`item__list duration-300 transition-all pl-[28px] `}
                         >
                           <li className="item item__list-child  p-0">
                             <a className="leading-[22px] block" href="">

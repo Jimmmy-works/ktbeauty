@@ -30,42 +30,39 @@ const CartPage = () => {
             Shopping Cart
           </h3>
         </div>
-        <table className="cartpage__table ">
-          <thead className="border-y border-solid border-black-be">
+        <table className="table ">
+          <thead>
             <tr>
-              <td className="text-left">image</td>
-              <td className="">product</td>
-              <td className="">price</td>
-              <td className="">quantity</td>
-              <td className="">subtotal</td>
+              <td>image</td>
+              <td>product</td>
+              <td>price</td>
+              <td>quantity</td>
+              <td>subtotal</td>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="table__body">
             {images?.map((item, index) => {
               return (
-                <tr key={`${item}${index}`} className="relative">
-                  <td className="">
+                <tr key={`${item}${index}`}>
+                  <td className="table__body-row">
                     <a
                       href=""
-                      className="block xs:pb-[80%] xl:pb-[62.2%] overflow-hidden relative cursor-pointer group/hover"
+                      className="img group/hover
+                      "
                     >
                       <img
                         onError={(e) => {
                           e.target.onerror = null;
                           e.target.src = "/assets/img/error.png";
                         }}
-                        className="center-absolute md:left-0 md:translate-x-0 group-hover/hover:scale-105 object-cover h-full
-                        duration-400 transition-transform "
+                        className="center-absolute  group-hover/hover:scale-105 md:left-0 md:translate-x-0 "
                         src={item}
                         alt=""
                       />
                     </a>
                   </td>
                   <td className="">
-                    <a
-                      className="duration-400 transition-colors hover:text-primary leading-normal"
-                      href=""
-                    >
+                    <a className="text  hover:text-primary " href="">
                       Lorem ipsum dolor sit amet Lorem ipsum dolor .
                     </a>
                   </td>
@@ -77,13 +74,13 @@ const CartPage = () => {
                   )}
                   <td className="">
                     <div
-                      className="input flex items-center border border-solid border-[#ececec] rounded-md
-                    h-[50px] justify-center w-fit mx-auto"
+                      className="flex items-center border border-solid border-[#ececec] rounded-md
+                        h-[50px] justify-center w-fit mx-auto "
                     >
-                      <div className="px-[14px] cursor-pointer">
+                      <div className="px-[14px] cursor-pointer h-full flex items-center justify-center group/hover">
                         <svg className="h-[10px] w-[10px]" viewBox="0 0 24 24">
                           <path
-                            className="fill-black-555"
+                            className="fill-black-555 duration-300 transition-colors group-hover/hover:fill-primary"
                             d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
                           ></path>
                         </svg>
@@ -95,13 +92,13 @@ const CartPage = () => {
                         max="100"
                         value="1"
                       />
-                      <div className="px-[14px] cursor-pointer">
+                      <div className="px-[14px] cursor-pointer h-full flex items-center justify-center group/hover">
                         <svg
                           className="h-[10px] w-[10px] rotate-[180deg]"
                           viewBox="0 0 24 24"
                         >
                           <path
-                            className="fill-black-555"
+                            className="fill-black-555 duration-300 transition-colors group-hover/hover:fill-primary"
                             d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
                           ></path>
                         </svg>
@@ -124,15 +121,13 @@ const CartPage = () => {
                       </button>
                     </td>
                   ) : (
-                    <td className=" absolute top-0 right-3 w-[22px] p-0">
-                      <div className="">
-                        <svg className="w-[22px] h-[22px]" viewBox="0 0 24 24">
-                          <path
-                            fill="#555"
-                            d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"
-                          />
-                        </svg>
-                      </div>
+                    <td className="absolute top-0 right-3 w-[22px] p-0">
+                      <svg className="w-[22px] h-[22px]" viewBox="0 0 24 24">
+                        <path
+                          fill="#555"
+                          d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"
+                        />
+                      </svg>
                     </td>
                   )}
                 </tr>
@@ -142,7 +137,7 @@ const CartPage = () => {
         </table>
         <div
           className="cartpage__total flex md:flex-row xs:flex-col items-start justify-start gap-[30px] pt-[30px] mt-[30px]
-        border-t border-solid border-black-be "
+                  border-t border-solid border-black-be "
         >
           <div className="coupon  xs:w-full md:w-[50%] border border-solid  border-grey-999">
             <h3 className="text-white bg-black-555 font-osb text-[16px] py-[10px] px-[20px]">
