@@ -3285,16 +3285,16 @@ input[type="number"] {
   padding-left: 30px !important;
 }
 
-.pl-\[3px\] {
-  padding-left: 3px !important;
-}
-
 .pl-\[50px\] {
   padding-left: 50px !important;
 }
 
 .pl-\[6px\] {
   padding-left: 6px !important;
+}
+
+.pl-\[8px\] {
+  padding-left: 8px !important;
 }
 
 .pr-\[10px\] {
@@ -3337,20 +3337,12 @@ input[type="number"] {
   padding-top: 5px !important;
 }
 
-.pl-\[8px\] {
-  padding-left: 8px !important;
-}
-
 .text-left {
   text-align: left !important;
 }
 
 .text-center {
   text-align: center !important;
-}
-
-.text-right {
-  text-align: right !important;
 }
 
 .font-gvr {
@@ -3665,15 +3657,11 @@ input[type="number"] {
 }
 
 .ease-cubic-authen {
-  transition-timing-function: cubic-bezier(0.93,0.19,0.21,1.24); !important;
+  transition-timing-function: cubic-bezier(0.93,0.19,0.21,1.24) !important;
 }
 
 .ease-linear {
   transition-timing-function: linear !important;
-}
-
-.text-xs {
-  font-size: 12px !important;
 }
 
 .text-sm {
@@ -4374,10 +4362,6 @@ input[type="number"] {
     align-items: flex-start !important;
   }
 
-  .xs\:justify-center {
-    justify-content: center !important;
-  }
-
   .xs\:gap-1 {
     gap: 0.25rem !important;
   }
@@ -4414,10 +4398,6 @@ input[type="number"] {
     gap: 60px !important;
   }
 
-  .xs\:gap-10 {
-    gap: 2.5rem !important;
-  }
-
   .xs\:gap-x-\[14px\] {
     -moz-column-gap: 14px !important;
          column-gap: 14px !important;
@@ -4425,15 +4405,6 @@ input[type="number"] {
 
   .xs\:gap-y-\[20px\] {
     row-gap: 20px !important;
-  }
-
-  .xs\:gap-x-10 {
-    -moz-column-gap: 2.5rem !important;
-         column-gap: 2.5rem !important;
-  }
-
-  .xs\:gap-y-5 {
-    row-gap: 1.25rem !important;
   }
 
   .xs\:border {
