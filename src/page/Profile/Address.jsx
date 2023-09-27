@@ -99,8 +99,6 @@ const Address = () => {
   ];
   return (
     <div className="address">
-      <div className="flex items-center justify-between p-[0_0_8px_0] cursor-pointer group/hover"></div>
-
       <div className="w-full  flex flex-col">
         <h3 className="text-[24px] font-mab text-black-333 xs:my-[16px]">
           Your Address
