@@ -181,9 +181,10 @@ const ProfileLayout = () => {
               <div className="h-[100%] left-[35%] flex items-center justify-center center-absolute">
                 <Spin indicator={antIcon} />
               </div>
-            ) : ( */}
+            ) : (
+              <Outlet />
+            )} */}
             <Outlet />
-            // )}
           </div>
         </div>
       </div>
