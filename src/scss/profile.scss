@@ -2,12 +2,12 @@
   @apply h-full mt-[30px];
   .list {
     &__item {
-      @apply duration-300 transition-colors cursor-pointer p-[20px]
+      @apply duration-300 transition-colors cursor-pointer 
        border-b-[2px] border-solid border-transparent;
       a {
         @apply font-mar md:text-[14px] lg:text-[16px] text-black-555 
         duration-300 transition-colors w-full flex items-center
-        xs:gap-2 md:gap-4;
+        xs:gap-2 md:gap-4 p-[20px];
       }
       svg {
         @apply w-[18px] h-[18px];
@@ -27,6 +27,11 @@
           }
         }
       }
+    }
+  }
+  .tab {
+    &__header {
+      @apply border-b-0;
     }
   }
 }

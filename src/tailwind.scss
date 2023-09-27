@@ -215,7 +215,8 @@
   }
   .tab {
     &__header {
-      @apply mb-[30px] border-b border-solid border-gray-200 flex items-center justify-center;
+      @apply mb-[30px] border-b border-solid border-gray-200 
+      flex items-center justify-center;
       &-item {
         @apply p-[10px_20px_15px] text-grey-999 text-[16px] font-osb duration-400 transition-colors
          relative before:absolute

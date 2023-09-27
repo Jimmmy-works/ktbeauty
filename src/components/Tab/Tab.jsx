@@ -7,31 +7,30 @@ import React, {
 } from "react";
 import { twMerge } from "tailwind-merge";
 const TabContext = createContext({});
-const Tab = ({ children, className, headerActiveTab, setHeaderActiveTab }) => {
-  console.log("headerActiveTab", headerActiveTab);
+const Tab = ({ children, className, setActiveLinkTab, activeLinkTab }) => {
   const [activeTab, setActiveTab] = useState(0);
   const onChangeActiveTab = (index) => {
-    setHeaderActiveTab(index);
+    setActiveTab(index);
+    setActiveLinkTab(index);
   };
-
+  console.log("activeTab", activeTab);
   return (
     <TabContext.Provider
-      value={{ activeTab, onChangeActiveTab, headerActiveTab }}
+      value={{ activeTab, onChangeActiveTab, activeLinkTab }}
     >
       <div className={`tab ${className ?? ""}`}>{children}</div>
     </TabContext.Provider>
   );
 };
 const TabHeader = ({ children: childrenHeader, className }) => {
-  const { activeTab, onChangeActiveTab, headerActiveTab } =
-    useContext(TabContext);
+  const { activeTab, onChangeActiveTab } = useContext(TabContext);
 
   return (
     <ul className={twMerge(`tab__header ${className ?? ""}`)}>
       {Children.map(childrenHeader, (headerItem, index) => {
         if (headerItem?.type?.name === "TabHeaderItem") {
           return cloneElement(headerItem, {
-            isActive: headerActiveTab === index,
+            isActive: activeTab === index,
             onClick: () => {
               onChangeActiveTab(index);
             },
@@ -46,7 +45,19 @@ const TabHeaderItem = ({
   onClick,
   isActive,
   className,
+  isLink,
 }) => {
+  if (isLink)
+    return (
+      <li
+        onClick={onClick}
+        className={`tab__header-item ${className ?? ""}  ${
+          isActive ? "active" : ""
+        }`}
+      >
+        <div className={``}>{childrenHeaderItem}</div>
+      </li>
+    );
   return (
     <li
       onClick={onClick}
@@ -59,13 +70,14 @@ const TabHeaderItem = ({
   );
 };
 const TabContent = ({ children: childrenContent, className }) => {
-  const { activeTab, headerActiveTab } = useContext(TabContext);
+  const { activeTab, activeLinkTab } = useContext(TabContext);
   return (
     <div className={`tab__content ${className ?? ""}`}>
       {Children?.map(childrenContent, (contentItem, index) => {
         if (contentItem?.type?.name === "TabContentItem") {
           return cloneElement?.(contentItem, {
-            isActiveContent: headerActiveTab === index,
+            isActiveContent: activeTab === index,
+            isActiveLinkContent: activeTab === activeLinkTab,
           });
         }
       })}
@@ -75,13 +87,14 @@ const TabContent = ({ children: childrenContent, className }) => {
 const TabContentItem = ({
   children: childrenContentItem,
   isActiveContent,
+  isActiveLinkContent,
   className,
 }) => {
   return (
     <div
       className={`tab__content-pane ${className ?? ""} ${
-        isActiveContent ? "active" : ""
-      }`}
+        isActiveContent ? "active" : " "
+      } ${isActiveLinkContent ? "active" : ""} `}
     >
       {childrenContentItem}
     </div>

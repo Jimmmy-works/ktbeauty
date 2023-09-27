@@ -1,3 +1,4 @@
+import { PATHS } from "@/contants/path";
 import React, { createContext, useContext, useState } from "react";
 const MainContext = createContext({});
 export const MainProvider = ({ children }) => {
@@ -24,11 +25,12 @@ export const MainProvider = ({ children }) => {
     setControlAuthen("register");
   };
   ///// Profile Active Tab
-  const [headerActiveTab, setHeaderActiveTab] = useState(0);
-  const onHeaderActiveTab = (index) => {
-    console.log("index", index);
-    setHeaderActiveTab(index);
+  const [activeLinkTab, setActiveLinkTab] = useState("");
+  const onActiveLinkTab = (link) => {
+    console.log("link", link);
+    setActiveLinkTab(link);
   };
+
   return (
     <MainContext.Provider
       value={{
@@ -44,9 +46,9 @@ export const MainProvider = ({ children }) => {
         isAuthenModal,
         setIsAuthenModal,
         controlAuthen,
-        headerActiveTab,
-        setHeaderActiveTab,
-        onHeaderActiveTab,
+        activeLinkTab,
+        setActiveLinkTab,
+        onActiveLinkTab,
       }}
     >
       {children}

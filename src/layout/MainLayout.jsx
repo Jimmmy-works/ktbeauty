@@ -19,12 +19,12 @@ const MainLayout = () => {
   const [loadingPage, setLoadingPage] = useState(false);
   useEffect(() => {
     () => setIsNavbar(false);
-    setLoadingPage(true);
-    const timeout = setTimeout(() => {
-      setLoadingPage(false);
-    }, 500);
+    // setLoadingPage(true);
+    // const timeout = setTimeout(() => {
+    //   setLoadingPage(false);
+    // }, 500);
     backtotop();
-    return () => clearTimeout(timeout);
+    // return () => clearTimeout(timeout);
   }, [pathname]);
   return (
     <MainProvider>

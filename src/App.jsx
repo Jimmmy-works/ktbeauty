@@ -45,10 +45,10 @@ function App() {
           <Route path={PATHS.CHECKOUT} element={<Checkout />} />
           <Route path={PATHS.COMPLETE} element={<OrderComplete />} />
           <Route path={PATHS.PROFILE.INDEX} element={<ProfileLayout />}>
-            {/* <Route index element={<ProfileLayout />} />
+            <Route index element={<Account />} />
             <Route path={PATHS.PROFILE.ORDER} element={<Order />} />
             <Route path={PATHS.PROFILE.WHITELIST} element={<WhiteList />} />
-            <Route path={PATHS.PROFILE.ADDRESS} element={<Address />} /> */}
+            <Route path={PATHS.PROFILE.ADDRESS} element={<Address />} />
           </Route>
         </Route>
       </Routes>

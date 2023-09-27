@@ -5,7 +5,7 @@ import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
 import Hamburger from "@/components/Hamburger";
 const Header = () => {
-  const { isNavbar, onToggleNav, onAuthenModal, onHeaderActiveTab } =
+  const { isNavbar, onToggleNav, onAuthenModal, onActiveLinkTab } =
     useMainContext();
   const refHeader = useRef(null);
   const [colorLogo, setColorLogo] = useState(0);
@@ -36,7 +36,6 @@ const Header = () => {
       window.removeEventListener("scroll", changeBackground);
     };
   });
-
   return (
     <header className={`header `} ref={refHeader}>
       <div className="container h-full flex items-center justify-between">
@@ -303,7 +302,7 @@ const Header = () => {
                 <Link
                   to={PATHS.PROFILE.INDEX}
                   className=" group-hover/hover:text-[#222] "
-                  onClick={() => onHeaderActiveTab(0)}
+                  onClick={() => onActiveLinkTab(0)}
                 >
                   <div className=" rounded-[50%]">
                     <img
@@ -317,8 +316,8 @@ const Header = () => {
               </li>
               <li className=" sub__item ">
                 <Link
-                  to={PATHS.PROFILE.INDEX}
-                  onClick={() => onHeaderActiveTab(1)}
+                  to={PATHS.PROFILE.ORDER}
+                  onClick={() => onActiveLinkTab(1)}
                   className="text-[#222] "
                 >
                   <svg className="h-[24px] w-[24px] " viewBox="0 0 24 24">
@@ -330,7 +329,7 @@ const Header = () => {
               <li className=" sub__item ">
                 <Link
                   to={PATHS.PROFILE.INDEX}
-                  onClick={() => onHeaderActiveTab(2)}
+                  onClick={() => onActiveLinkTab(2)}
                   className="text-[#222] "
                 >
                   <svg className="w-[22px] h-[22px] " viewBox="0 0 24 24">
@@ -341,8 +340,8 @@ const Header = () => {
               </li>
               <li className=" sub__item ">
                 <Link
-                  to={PATHS.PROFILE.INDEX}
-                  onClick={() => onHeaderActiveTab(3)}
+                  to={PATHS.PROFILE.ADDRESS}
+                  onClick={() => onActiveLinkTab(3)}
                   className="text-[#222] "
                 >
                   <svg viewBox="0 0 64 64" className="w-[20px] h-[20px]">
