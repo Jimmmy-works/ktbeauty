@@ -83,7 +83,6 @@ const TabContent = ({ children: childrenContent, className }) => {
 const TabContentItem = ({
   children: childrenContentItem,
   isActiveContent,
-  isActiveLinkContent,
   className,
 }) => {
   return (

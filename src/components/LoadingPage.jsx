@@ -13,16 +13,17 @@ const LoadingSpin = styled.div`
   z-index: 10000;
   background-color: #171616;
 `;
+//  ${
+//         loadingPage === true
+//           ? "opacity-100 visible"
+//           : "opacity-0 invisible transition-all duration-500"
+//       }
 const LoadingPage = ({ loadingPage }) => {
   return (
     <LoadingSpin
       className={`loading  bg-slider-2 after:w-screen after:h-screen after:z-[1001] after:bg-[rgba(0,0,0,0.3)] 
      after:top-0 after:left-0 after:absolute
-      ${
-        loadingPage === true
-          ? "opacity-100 visible"
-          : "opacity-0 invisible transition-all duration-500"
-      }
+     
      `}
     >
       <span className=" animated-transfer-page w-[20px] h-[20px] bg-green-300 block rounded-[50%]"></span>

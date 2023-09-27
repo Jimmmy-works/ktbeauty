@@ -5,6 +5,7 @@ import BackToTop from "@/components/BackToTop";
 import LoadingPage from "@/components/LoadingPage";
 import { MainProvider } from "@/components/MainContext";
 import Overplay from "@/components/Overplay";
+import { PATHS } from "@/contants/path";
 import useDebounce from "@/hooks/useDebounce";
 import Footer from "@/page/Footer";
 import Header from "@/page/Header";
@@ -17,6 +18,7 @@ const MainLayout = () => {
   const { pathname } = useLocation();
   /////// Loading
   const [loadingPage, setLoadingPage] = useState(false);
+
   useEffect(() => {
     () => setIsNavbar(false);
     // setLoadingPage(true);
@@ -28,7 +30,7 @@ const MainLayout = () => {
   }, [pathname]);
   return (
     <MainProvider>
-      <LoadingPage loadingPage={loadingPage} />
+      {/* <LoadingPage loadingPage={loadingPage} /> */}
       <Header />
       <Outlet />
       <Footer />

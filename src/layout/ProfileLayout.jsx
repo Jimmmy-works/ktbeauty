@@ -2,11 +2,28 @@ import BreadCrumb from "@/components/BreadCrumb";
 import { useMainContext } from "@/components/MainContext";
 import Tab from "@/components/Tab/Tab";
 import { PATHS } from "@/contants/path";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
+const antIcon = (
+  <LoadingOutlined
+    style={{
+      fontSize: 35,
+    }}
+  />
+);
 const ProfileLayout = () => {
-  const { activeLinkTab, onActiveLinkTab, setActiveLinkTab } = useMainContext();
+  const { pathname } = useLocation();
+  const [loadingPage, setLoadingPage] = useState(false);
+
+  useEffect(() => {
+    setLoadingPage(true);
+    const timeout = setTimeout(() => {
+      setLoadingPage(false);
+    }, 400);
+    return () => clearTimeout(timeout);
+  }, [pathname]);
   return (
     <main className="main-wrapper ">
       <div className="container">
@@ -24,8 +41,6 @@ const ProfileLayout = () => {
         <div>
           <div className="sidebar-profile">
             <Tab
-              activeLinkTab={activeLinkTab}
-              setActiveLinkTab={onActiveLinkTab}
               className={`flex md:flex-row xs:flex-col xs:gap-[10px] md:gap-[30px]`}
             >
               <Tab.Header
@@ -167,7 +182,13 @@ const ProfileLayout = () => {
               </Tab.Header>
               <Tab.Content className={`xs:w-full md:w-[75%] max-w-full`}>
                 <Tab.ContentItem>
-                  <Outlet />
+                  {loadingPage ? (
+                    <div className="h-[300px] flex gap-3 items-center justify-center center-absolute">
+                      <Spin indicator={antIcon} />
+                    </div>
+                  ) : (
+                    <Outlet />
+                  )}
                 </Tab.ContentItem>
               </Tab.Content>
             </Tab>
