@@ -27,7 +27,6 @@ export const MainProvider = ({ children }) => {
   ///// Profile Active Tab
   const [activeLinkTab, setActiveLinkTab] = useState("");
   const onActiveLinkTab = (link) => {
-    console.log("link", link);
     setActiveLinkTab(link);
   };
 

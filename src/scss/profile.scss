@@ -32,6 +32,17 @@
   .tab {
     &__header {
       @apply border-b-0;
+      &-item {
+        @apply p-0;
+        & > a {
+          @apply p-0;
+        }
+      }
+    }
+    &__content {
+      &-pane {
+        @apply visible opacity-100;
+      }
     }
   }
 }

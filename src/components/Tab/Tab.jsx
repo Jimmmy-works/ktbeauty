@@ -7,17 +7,14 @@ import React, {
 } from "react";
 import { twMerge } from "tailwind-merge";
 const TabContext = createContext({});
-const Tab = ({ children, className, setActiveLinkTab, activeLinkTab }) => {
+const Tab = ({ children, className }) => {
   const [activeTab, setActiveTab] = useState(0);
   const onChangeActiveTab = (index) => {
     setActiveTab(index);
-    setActiveLinkTab(index);
   };
-  console.log("activeTab", activeTab);
+
   return (
-    <TabContext.Provider
-      value={{ activeTab, onChangeActiveTab, activeLinkTab }}
-    >
+    <TabContext.Provider value={{ activeTab, onChangeActiveTab }}>
       <div className={`tab ${className ?? ""}`}>{children}</div>
     </TabContext.Provider>
   );
@@ -77,7 +74,6 @@ const TabContent = ({ children: childrenContent, className }) => {
         if (contentItem?.type?.name === "TabContentItem") {
           return cloneElement?.(contentItem, {
             isActiveContent: activeTab === index,
-            isActiveLinkContent: activeTab === activeLinkTab,
           });
         }
       })}
@@ -94,7 +90,7 @@ const TabContentItem = ({
     <div
       className={`tab__content-pane ${className ?? ""} ${
         isActiveContent ? "active" : " "
-      } ${isActiveLinkContent ? "active" : ""} `}
+      } `}
     >
       {childrenContentItem}
     </div>

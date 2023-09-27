@@ -328,7 +328,7 @@ const Header = () => {
               </li>
               <li className=" sub__item ">
                 <Link
-                  to={PATHS.PROFILE.INDEX}
+                  to={PATHS.PROFILE.WHITELIST}
                   onClick={() => onActiveLinkTab(2)}
                   className="text-[#222] "
                 >
