@@ -14,6 +14,11 @@ const ShopDetail = lazy(() => import("./page/Shop/ShopDetail"));
 const CartPage = lazy(() => import("./page/CartPage"));
 const Checkout = lazy(() => import("./page/Checkout"));
 const OrderComplete = lazy(() => import("./page/OrderComplete"));
+const ProfileLayout = lazy(() => import("./layout/ProfileLayout"));
+const Account = lazy(() => import("./page/Profile/Account"));
+const Order = lazy(() => import("./page/Profile/Order"));
+const WhiteList = lazy(() => import("./page/Profile/WhiteList"));
+const Address = lazy(() => import("./page/Profile/Address"));
 // import MainLayout from "./layout/MainLayout";
 // import HomePage from "./page/HomePage";
 // import Shop from "./page/Shop";
@@ -24,11 +29,11 @@ const OrderComplete = lazy(() => import("./page/OrderComplete"));
 // import CartPage from "./page/CartPage";
 // import Checkout from "./page/Checkout";
 // import OrderComplete from "./page/OrderComplete";
-import ProfileLayout from "./layout/ProfileLayout";
-import Account from "./page/Profile/Account";
-import Order from "./page/Profile/Order";
-import WhiteList from "./page/Profile/WhiteList";
-import Address from "./page/Profile/Address";
+// import ProfileLayout from "./layout/ProfileLayout";
+// import Account from "./page/Profile/Account";
+// import Order from "./page/Profile/Order";
+// import WhiteList from "./page/Profile/WhiteList";
+// import Address from "./page/Profile/Address";
 function App() {
   return (
     <Suspense fallback={<LoadingPage />}>

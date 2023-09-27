@@ -15,12 +15,12 @@ const WhiteList = () => {
   const { width } = useWindowSize();
   return (
     <div className="whitelist">
-      <h3
+      {/* <h3
         className="text-[24px] xs:text-center md:text-left font-mab text-black-333 xs:my-[16px]"
         o
       >
         Your Whitelist
-      </h3>
+      </h3> */}
       <table className="table md:mt-0 xs:mt-[10px]">
         <thead className="cartpage__table-head">
           <tr>

@@ -16,7 +16,6 @@ const antIcon = (
 const ProfileLayout = () => {
   const { pathname } = useLocation();
   const [loadingPage, setLoadingPage] = useState(false);
-
   useEffect(() => {
     setLoadingPage(true);
     const timeout = setTimeout(() => {
@@ -24,6 +23,7 @@ const ProfileLayout = () => {
     }, 400);
     return () => clearTimeout(timeout);
   }, [pathname]);
+
   return (
     <main className="main-wrapper ">
       <div className="container">
@@ -180,19 +180,19 @@ const ProfileLayout = () => {
                   </a>
                 </Tab.HeaderItem>
               </Tab.Header>
-              <Tab.Content className={`xs:w-full md:w-[75%] max-w-full`}>
-                <Tab.ContentItem>
-                  {loadingPage ? (
-                    <div className="h-[300px] flex gap-3 items-center justify-center center-absolute">
-                      <Spin indicator={antIcon} />
-                    </div>
-                  ) : (
-                    <Outlet />
-                  )}
-                </Tab.ContentItem>
-              </Tab.Content>
+
+              {/* <Tab.Content className={`xs:w-full md:w-[75%] max-w-full`}>
+                <Tab.ContentItem></Tab.ContentItem>
+              </Tab.Content> */}
             </Tab>
           </div>
+          {loadingPage ? (
+            <div className="h-[300px] flex items-center justify-center center-absolute">
+              <Spin indicator={antIcon} />
+            </div>
+          ) : (
+            <Outlet />
+          )}
         </div>
       </div>
     </main>

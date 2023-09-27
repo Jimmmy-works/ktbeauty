@@ -62,7 +62,7 @@ const TabHeaderItem = ({
         isActive ? "active" : ""
       }`}
     >
-      <a className={`${isActive ? "active" : ""} `}> {childrenHeaderItem}</a>
+      <div className={`${isActive ? "active" : ""} `}>{childrenHeaderItem}</div>
     </li>
   );
 };

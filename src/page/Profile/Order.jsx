@@ -15,9 +15,9 @@ const Order = () => {
 
   return (
     <div className="order">
-      <h3 className="text-[24px] font-mab text-black-333 xs:my-[16px]" o>
+      {/* <h3 className="text-[24px] font-mab text-black-333 xs:my-[16px]" o>
         Your Order List
-      </h3>
+      </h3> */}
       {images.map((item, index) => {
         return (
           <div key={`${item}${index}`} className="not-firstChild:mt-[20px]">
