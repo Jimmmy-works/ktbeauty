@@ -28,6 +28,7 @@ import ProfileLayout from "./layout/ProfileLayout";
 import Account from "./page/Profile/Account";
 import Order from "./page/Profile/Order";
 import WhiteList from "./page/Profile/WhiteList";
+import Address from "./page/Profile/Address";
 function App() {
   return (
     // <Suspense fallback={<LoadingPage />}>
@@ -47,6 +48,7 @@ function App() {
             <Route index element={<Account />} />
             <Route path={PATHS.PROFILE.ORDER} element={<Order />} />
             <Route path={PATHS.PROFILE.WHITELIST} element={<WhiteList />} />
+            <Route path={PATHS.PROFILE.ADDRESS} element={<Address />} />
           </Route>
         </Route>
       </Routes>

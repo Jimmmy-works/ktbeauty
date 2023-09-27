@@ -7,27 +7,31 @@ import React, {
 } from "react";
 import { twMerge } from "tailwind-merge";
 const TabContext = createContext({});
-const Tab = ({ children, className }) => {
+const Tab = ({ children, className, headerActiveTab, setHeaderActiveTab }) => {
+  console.log("headerActiveTab", headerActiveTab);
   const [activeTab, setActiveTab] = useState(0);
   const onChangeActiveTab = (index) => {
-    setActiveTab(index);
+    setHeaderActiveTab(index);
   };
 
   return (
-    <TabContext.Provider value={{ activeTab, onChangeActiveTab }}>
+    <TabContext.Provider
+      value={{ activeTab, onChangeActiveTab, headerActiveTab }}
+    >
       <div className={`tab ${className ?? ""}`}>{children}</div>
     </TabContext.Provider>
   );
 };
 const TabHeader = ({ children: childrenHeader, className }) => {
-  const { activeTab, onChangeActiveTab } = useContext(TabContext);
+  const { activeTab, onChangeActiveTab, headerActiveTab } =
+    useContext(TabContext);
 
   return (
     <ul className={twMerge(`tab__header ${className ?? ""}`)}>
       {Children.map(childrenHeader, (headerItem, index) => {
         if (headerItem?.type?.name === "TabHeaderItem") {
           return cloneElement(headerItem, {
-            isActive: activeTab === index,
+            isActive: headerActiveTab === index,
             onClick: () => {
               onChangeActiveTab(index);
             },
@@ -55,13 +59,13 @@ const TabHeaderItem = ({
   );
 };
 const TabContent = ({ children: childrenContent, className }) => {
-  const { activeTab } = useContext(TabContext);
+  const { activeTab, headerActiveTab } = useContext(TabContext);
   return (
     <div className={`tab__content ${className ?? ""}`}>
       {Children?.map(childrenContent, (contentItem, index) => {
         if (contentItem?.type?.name === "TabContentItem") {
           return cloneElement?.(contentItem, {
-            isActiveContent: activeTab === index,
+            isActiveContent: headerActiveTab === index,
           });
         }
       })}

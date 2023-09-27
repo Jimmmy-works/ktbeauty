@@ -1,4 +1,5 @@
 import BreadCrumb from "@/components/BreadCrumb";
+import { useMainContext } from "@/components/MainContext";
 import Tab from "@/components/Tab/Tab";
 import { PATHS } from "@/contants/path";
 import Account from "@/page/Profile/Account";
@@ -9,6 +10,7 @@ import React from "react";
 import { Link, Outlet } from "react-router-dom";
 
 const ProfileLayout = () => {
+  const { activeTab, headerActiveTab, setHeaderActiveTab } = useMainContext();
   return (
     <main className="main-wrapper ">
       <div className="container">
@@ -26,6 +28,8 @@ const ProfileLayout = () => {
         <div>
           <div className="sidebar-profile">
             <Tab
+              headerActiveTab={headerActiveTab}
+              setHeaderActiveTab={setHeaderActiveTab}
               className={`flex md:flex-row xs:flex-col xs:gap-[10px] md:gap-[30px]`}
             >
               <Tab.Header

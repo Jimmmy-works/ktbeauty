@@ -23,6 +23,12 @@ export const MainProvider = ({ children }) => {
   const onRegister = () => {
     setControlAuthen("register");
   };
+  ///// Profile Active Tab
+  const [headerActiveTab, setHeaderActiveTab] = useState(0);
+  const onHeaderActiveTab = (index) => {
+    console.log("index", index);
+    setHeaderActiveTab(index);
+  };
   return (
     <MainContext.Provider
       value={{
@@ -38,6 +44,9 @@ export const MainProvider = ({ children }) => {
         isAuthenModal,
         setIsAuthenModal,
         controlAuthen,
+        headerActiveTab,
+        setHeaderActiveTab,
+        onHeaderActiveTab,
       }}
     >
       {children}
