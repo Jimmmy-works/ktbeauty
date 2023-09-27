@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-const Accordion = ({ item, renderProps, className }) => {
+const Accordion = ({ item, renderProps, className, children }) => {
   const [activeIndex, setActiveIndex] = useState("product-1");
   const [activeChildrenIndex, setActiveChildrenIndex] = useState("");
   const refAccordion = useRef(null);
@@ -126,6 +126,7 @@ const Accordion = ({ item, renderProps, className }) => {
           {renderProps && renderProps?.()}
         </div>
       )}
+      {children}
     </div>
   );
 };

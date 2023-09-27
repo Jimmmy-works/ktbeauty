@@ -17,7 +17,7 @@
       }
       &.active,
       &:hover {
-        @apply bg-gray-100 border-gray-300;
+        @apply bg-gray-50 border-gray-300;
         a {
           @apply text-black;
         }
@@ -88,8 +88,36 @@
 .address {
   .accordion {
     @apply pb-[10px] first:pt-0 first:mt-0 mt-[10px] pt-[10px];
+    &.active {
+      .accordion__heading-dropdown {
+        @apply bg-primary;
+        svg {
+          path {
+            @apply fill-white;
+          }
+        }
+      }
+    }
     &__heading {
       @apply font-mam text-md text-black-555 capitalize;
+      .accordion__heading-dropdown {
+        @apply duration-400 transition-all;
+        svg {
+          path {
+            @apply duration-400 transition-all;
+          }
+        }
+      }
+      &:hover {
+        .accordion__heading-dropdown {
+          @apply bg-primary;
+          svg {
+            path {
+              @apply fill-white;
+            }
+          }
+        }
+      }
     }
     &__content {
       &-heading {
