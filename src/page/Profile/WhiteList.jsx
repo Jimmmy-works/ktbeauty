@@ -15,12 +15,9 @@ const WhiteList = () => {
   const { width } = useWindowSize();
   return (
     <div className="whitelist">
-      {/* <h3
-        className="text-[24px] xs:text-center md:text-left font-mab text-black-333 xs:my-[16px]"
-        o
-      >
+      <h3 className="text-[24px] xs:text-center md:text-left font-mab text-black-333 xs:my-[16px]">
         Your Whitelist
-      </h3> */}
+      </h3>
       <table className="table md:mt-0 xs:mt-[10px]">
         <thead className="cartpage__table-head">
           <tr>
@@ -53,11 +50,12 @@ const WhiteList = () => {
                       />
                     </a>
                     <a
-                      className="block duration-400 transition-colors hover:text-primary leading-normal
-                      max-w-[200px]"
+                      className=" duration-400 transition-colors hover:text-primary leading-normal
+                      md:max-w-[160px] xl:max-w-[200px] xs:w-full truncate line-clamp-3 whitespace-normal"
                       href=""
                     >
-                      Lorem ipsum dolor sit amet Lorem ipsum dolor .
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                      Ipsa, dolorum?
                     </a>
                   </div>
                 </td>
@@ -76,12 +74,17 @@ const WhiteList = () => {
 
                 {item !== images[0] ? (
                   <td className="text-black font-mam">
-                    <Button className={`rounded-none `}>Add to cart</Button>
+                    <Button
+                      className={` rounded-none lg:px-[30px] lg:py-[10px] md:px-[10px] md:py-[6px]`}
+                    >
+                      Add to cart
+                    </Button>
                   </td>
                 ) : (
                   <td className="text-black font-mam">
                     <Button
-                      className={`rounded-none text-[#ccc] bg-[#fafafa] border-[#fafafa] pointer-events-none `}
+                      className={` rounded-none text-[#ccc] bg-[#fafafa] border-[#fafafa] pointer-events-none 
+                      lg:px-[30px] lg:py-[10px] md:px-[10px] md:py-[6px]`}
                     >
                       Out of stock
                     </Button>

@@ -66,7 +66,12 @@
       .sub__item {
         @apply not-lastChild:border-b not-lastChild:border-[#e3e3e3]
        not-lastChild:border-solid duration-300 transition-colors
-       first:p-[10px_10px] hover:bg-black-ebe not-firstChild:p-[10px_10px_10px_20px];
+       first:p-[10px_10px] hover:bg-black-ebe p-0;
+        &:not(:first-child) {
+          a {
+            @apply p-[10px_10px_10px_20px];
+          }
+        }
         a {
           @apply flex items-center gap-2  text-[#222] w-full;
         }
