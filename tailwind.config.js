@@ -1030,8 +1030,22 @@ export default {
         ".text-md": {
           fontSize: "18px",
         },
+        ".text-16px": {
+          "@media (min-width: 360px)": {
+            fontSize: "14px",
+          },
+          "@media (min-width: 768px)": {
+            fontSize: "16px",
+          },
+        },
         ".text-lg": {
           fontSize: "30px",
+          "@media (min-width: 360px)": {
+            fontSize: "24px",
+          },
+          "@media (min-width: 768px)": {
+            fontSize: "30px",
+          },
         },
         ".text-xl": {
           fontSize: "60px",

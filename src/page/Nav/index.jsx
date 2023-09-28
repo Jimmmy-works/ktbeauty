@@ -16,14 +16,16 @@ const Nav = () => {
   }, [pathname]);
 
   useEffect(() => {
-    if (width > 1024) setIsNavbar(false);
+    if (width > 1024) {
+      setIsNavbar(false);
+      setDropDown(false);
+    }
   }, [width]);
   const onDropDown = (e) => {
     let target = e.target;
     if (target?.getAttribute("id")) {
       setControlSubNav(target?.getAttribute("id"));
       setDropDown(!dropDown);
-    } else {
     }
   };
   return (

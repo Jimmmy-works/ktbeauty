@@ -71,7 +71,7 @@ const Shop = () => {
         </aside>
         <div className="w-full ">
           <div
-            className="flex items-center justify-between py-[24px] mb-[30px] border-b 
+            className="flex items-center justify-between xs:py-[16px] md:py-[24px] mb-[30px] border-b 
           border-solid border-[#e5e5e5]"
           >
             <h2 className="font-mab text-md leading-[30px] text-black-333 uppercase">

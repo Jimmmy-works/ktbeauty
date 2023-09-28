@@ -26,7 +26,7 @@ const TabHeader = ({ children: childrenHeader, className }) => {
     <ul className={twMerge(`tab__header ${className ?? ""}`)}>
       {React?.Children?.map(childrenHeader, (headerItem, index) => {
         if (headerItem?.type?.name === "TabHeaderItem") {
-          return cloneElement(headerItem, {
+          return React.cloneElement(headerItem, {
             isActive: activeTab === index,
             onClick: () => {
               onChangeActiveTab(index);
@@ -72,7 +72,7 @@ const TabContent = ({ children: childrenContent, className }) => {
     <div className={`tab__content ${className ?? ""}`}>
       {React?.Children?.map(childrenContent, (contentItem, index) => {
         if (contentItem?.type?.name === "TabContentItem") {
-          return cloneElement?.(contentItem, {
+          return React.cloneElement?.(contentItem, {
             isActiveContent: activeTab === index,
           });
         }

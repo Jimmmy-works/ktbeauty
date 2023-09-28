@@ -3132,11 +3132,6 @@ input[type="number"] {
   padding-right: 27.5px !important;
 }
 
-.px-\[30\.35px\] {
-  padding-left: 30.35px !important;
-  padding-right: 30.35px !important;
-}
-
 .px-\[30px\] {
   padding-left: 30px !important;
   padding-right: 30px !important;
@@ -3649,6 +3644,18 @@ input[type="number"] {
 
 .text-lg {
   font-size: 30px !important;
+}
+
+@media (min-width: 360px) {
+  .text-lg {
+    font-size: 24px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-lg {
+    font-size: 30px !important;
+  }
 }
 
 .text-xl {
@@ -4395,6 +4402,11 @@ input[type="number"] {
     padding-right: 17px !important;
   }
 
+  .xs\:px-\[20px\] {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
   .xs\:py-\[10px\] {
     padding-top: 10px !important;
     padding-bottom: 10px !important;
@@ -4423,6 +4435,16 @@ input[type="number"] {
   .xs\:py-\[5px\] {
     padding-top: 5px !important;
     padding-bottom: 5px !important;
+  }
+
+  .xs\:py-\[7px\] {
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+  }
+
+  .xs\:py-\[16px\] {
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
   }
 
   .xs\:pb-\[66\.6669\%\] {
@@ -4834,6 +4856,11 @@ input[type="number"] {
     padding-bottom: 75px !important;
   }
 
+  .md\:py-\[24px\] {
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+  }
+
   .md\:pb-\[133\.336\%\] {
     padding-bottom: 133.336% !important;
   }
@@ -4882,6 +4909,18 @@ input[type="number"] {
 
   .md\:text-lg {
     font-size: 30px !important;
+  }
+
+  @media (min-width: 360px) {
+    .md\:text-lg {
+      font-size: 24px !important;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .md\:text-lg {
+      font-size: 30px !important;
+    }
   }
 
   .group\/hover:hover .md\:group-hover\/hover\:top-\[76px\] {
