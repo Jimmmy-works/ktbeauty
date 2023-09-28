@@ -2,7 +2,8 @@ import BreadCrumb from "@/components/BreadCrumb";
 import Button from "@/components/Button";
 import ImageZoom from "@/components/ImageZoom";
 import Review from "@/components/Review";
-import Tab from "@/components/Tab/Tab";
+import { Tab, Tabs } from "@/components/Tab/Tab";
+// import Tab from "@/components/Tab/Tab";
 import { PATHS } from "@/contants/path";
 import { Rate } from "antd";
 import React, { useRef, useState } from "react";
@@ -90,7 +91,7 @@ const ShopDetail = () => {
         <BreadCrumb.Item isActive>Shop-detail-slug</BreadCrumb.Item>
       </BreadCrumb>
       <div className="container ">
-        <div className="flex md:flex-row xs:flex-col xs:gap-[60px] md:gap-[14px] mt-[30px]">
+        <div className="flex md:flex-row xs:flex-col xs:gap-[60px] md:gap-[14px] my-[30px]">
           <div className="shopapge__left xs:w-full md:w-1/2 ">
             <div className="shoppage__left-wrapper flex gap-[10px] ">
               <div className=" h-fit w-fit relative ">
@@ -398,7 +399,7 @@ const ShopDetail = () => {
             </div>
           </div>
         </div>
-        <Tab>
+        {/* <Tab>
           <Tab.Header>
             <Tab.HeaderItem>Description</Tab.HeaderItem>
             <Tab.HeaderItem> Reviews (11)</Tab.HeaderItem>
@@ -455,7 +456,59 @@ const ShopDetail = () => {
               <Review />
             </Tab.ContentItem>
           </Tab.Content>
-        </Tab>
+        </Tab> */}
+        <Tabs>
+          <Tab label="Description">
+            <div className="description">
+              <h3 className="font-osr text-black-555 text-[15px] leading-[24px] ">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores
+                nisi, voluptatibus architecto non ratione aliquam impedit
+                commodi officiis corrupti, amet repudiandae sit rem deleniti
+                sint, esse vitae maiores! Illum maxime veritatis sunt non
+                possimus, tempore eveniet magnam hic pariatur odio?
+              </h3>
+              <div className="mt-[30px] flex flex-col gap-5">
+                <div className="flex gap-6">
+                  <div className="mt-[8px] ">
+                    <svg className="w-[34px] h-[34px]" viewBox="0 0 24 24">
+                      <path
+                        fill="#555"
+                        d="M12.408 13.032c1.158-.062 2.854-.388 4.18-1.128.962-1.478 1.598-2.684 2.224-4-.86.064-1.852-.009-2.736-.257 1.068-.183 2.408-.565 3.422-1.216 1.255-1.784 2.185-4.659 2.502-6.429-2.874-.048-5.566.89-7.386 2.064-.614.7-1.146 2.389-1.272 3.283-.277-.646-.479-1.68-.242-2.542-1.458.767-2.733 1.643-4.177 2.86-.72 1.528-.834 3.29-.768 4.276-.391-.553-.915-1.63-.842-2.809-2.59 2.504-4.377 5.784-2.682 9.324 1.879-1.941 4.039-3.783 5.354-4.639-3.036 3.474-5.866 8.047-7.985 12.181l2.504-.786c1.084-1.979 2.059-3.684 2.933-4.905 3.229.423 6.096-2.168 8.028-4.795-.77.19-2.246-.058-3.057-.482z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="font-osr text-grey-999 text-[15px] leading-[24px] tracking-wider ">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Consequuntur nisi fugit esse corrupti qui obcaecati,
+                    reprehenderit aliquam sunt labore, quae nam repellendus
+                    blanditiis laborum? Dolore sequi facere quas necessitatibus
+                    quisquam!
+                  </p>
+                </div>
+                <div className="flex gap-6">
+                  <div className="mt-[8px] ">
+                    <svg className="w-[34px] h-[34px]" viewBox="0 0 24 24">
+                      <path
+                        fill="#555"
+                        d="M12.408 13.032c1.158-.062 2.854-.388 4.18-1.128.962-1.478 1.598-2.684 2.224-4-.86.064-1.852-.009-2.736-.257 1.068-.183 2.408-.565 3.422-1.216 1.255-1.784 2.185-4.659 2.502-6.429-2.874-.048-5.566.89-7.386 2.064-.614.7-1.146 2.389-1.272 3.283-.277-.646-.479-1.68-.242-2.542-1.458.767-2.733 1.643-4.177 2.86-.72 1.528-.834 3.29-.768 4.276-.391-.553-.915-1.63-.842-2.809-2.59 2.504-4.377 5.784-2.682 9.324 1.879-1.941 4.039-3.783 5.354-4.639-3.036 3.474-5.866 8.047-7.985 12.181l2.504-.786c1.084-1.979 2.059-3.684 2.933-4.905 3.229.423 6.096-2.168 8.028-4.795-.77.19-2.246-.058-3.057-.482z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="font-osr text-grey-999 text-[15px] leading-[24px] tracking-wider ">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Consequuntur nisi fugit esse corrupti qui obcaecati,
+                    reprehenderit aliquam sunt labore, quae nam repellendus
+                    blanditiis laborum? Dolore sequi facere quas necessitatibus
+                    quisquam!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Tab>
+          <Tab label={`Reviews ${`11`}`}>
+            <Review />
+          </Tab>
+        </Tabs>
         {/* <div className="tab">
           <ul className="tab__header mb-[30px] border-b border-solid border-gray-200 flex items-center justify-center ">
             <li
