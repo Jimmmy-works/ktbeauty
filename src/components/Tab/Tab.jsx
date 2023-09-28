@@ -24,7 +24,7 @@ const TabHeader = ({ children: childrenHeader, className }) => {
 
   return (
     <ul className={twMerge(`tab__header ${className ?? ""}`)}>
-      {Children.map(childrenHeader, (headerItem, index) => {
+      {React?.Children?.map(childrenHeader, (headerItem, index) => {
         if (headerItem?.type?.name === "TabHeaderItem") {
           return cloneElement(headerItem, {
             isActive: activeTab === index,
@@ -70,7 +70,7 @@ const TabContent = ({ children: childrenContent, className }) => {
   const { activeTab, activeLinkTab } = useContext(TabContext);
   return (
     <div className={`tab__content ${className ?? ""}`}>
-      {Children?.map(childrenContent, (contentItem, index) => {
+      {React?.Children?.map(childrenContent, (contentItem, index) => {
         if (contentItem?.type?.name === "TabContentItem") {
           return cloneElement?.(contentItem, {
             isActiveContent: activeTab === index,

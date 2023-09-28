@@ -16,21 +16,13 @@ import { Outlet, useLocation, useParams } from "react-router-dom";
 
 const MainLayout = () => {
   const { pathname } = useLocation();
-  /////// Loading
-  const [loadingPage, setLoadingPage] = useState(false);
 
   useEffect(() => {
     () => setIsNavbar(false);
-    // setLoadingPage(true);
-    // const timeout = setTimeout(() => {
-    //   setLoadingPage(false);
-    // }, 500);
     backtotop();
-    // return () => clearTimeout(timeout);
   }, [pathname]);
   return (
     <MainProvider>
-      {/* <LoadingPage loadingPage={loadingPage} /> */}
       <Header />
       <Outlet />
       <Footer />
