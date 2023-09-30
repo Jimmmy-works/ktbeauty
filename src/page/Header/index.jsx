@@ -107,6 +107,9 @@ const Header = () => {
           <li className="header__menu-item ">
             <Link to={`${PATHS.CONTACT}`}> CONTACT</Link>
           </li>
+          <li className="header__menu-item ">
+            <Link to={`${PATHS.CMS.INDEX}`}>CMS</Link>
+          </li>
         </ul>
         <div className="header__info xs:hidden md:flex h-full items-center relative">
           <div className="header__info-search  group/hover peer/hover">

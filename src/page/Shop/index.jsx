@@ -28,17 +28,16 @@ const Shop = () => {
   const { width } = useWindowSize();
 
   const images = [
-    "product-9.jpg",
-    "product-8.jpg",
-    "product-7.jpg",
-    "product-6.jpg",
-    "product-5.jpg",
-    "product-4.jpg",
-    "product-3.jpg",
-    "product-2.jpg",
-    "product-1.jpg",
+    "/assets/img/product-9.jpg",
+    "/assets/img/product-8.jpg",
+    "/assets/img/product-7.jpg",
+    "/assets/img/product-6.jpg",
+    "/assets/img/product-5.jpg",
+    "/assets/img/product-4.jpg",
+    "/assets/img/product-3.jpg",
+    "/assets/img/product-2.jpg",
+    "/assets/img/product-1.jpg",
   ];
-  const baseURL = `/assets/img/`;
   return (
     <main className="main-wrapper">
       <BreadCrumb>
@@ -113,7 +112,6 @@ const Shop = () => {
                 <ProductCard
                   key={`${item}${index}`}
                   className={` xs:w-[calc(50%-7px)] md:w-[calc(50%-10px)] lg:w-[calc(33.333333%-20px)]`}
-                  baseURL={baseURL}
                   item={item}
                   isProductDetail={true}
                 />
