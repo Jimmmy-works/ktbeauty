@@ -130,7 +130,7 @@ const Header = () => {
                 className=" border-black-be border font-mam text-black-555 text-sm duration-500 transition-all 
                 w-full h-[34px] pl-[10px] rounded-none"
               />
-              <Button className={`px-[12px] py-[6.5px] rounded-none`}>
+              <Button className={`md:px-[12px] md:py-[6.5px] rounded-none`}>
                 Search
               </Button>
             </form>

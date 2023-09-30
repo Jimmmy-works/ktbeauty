@@ -69,6 +69,7 @@ const Pagination = () => {
       </div>
       <ul className="pagination__list">
         <PaginationItem
+          className={`hover:text-primary border-0`}
           isDisable={pageNumber < 3 ? true : false}
           onClick={() => onChangePage(1)}
         >
@@ -88,6 +89,7 @@ const Pagination = () => {
         })}
 
         <PaginationItem
+          className={`hover:text-primary border-0`}
           isDisable={pageNumber > totalPage - 2}
           onClick={() => onChangePage(totalPage)}
         >
@@ -120,13 +122,14 @@ const PaginationItem = ({
   isDisable = false,
   onClick,
   pageNumber,
+  className,
 }) => {
   return (
     <li
       className={`${
         isHover ? "hover" : "hover:text-primary"
       } pagination__list-item  ${isActive ? " active" : ""}
-    ${isDisable ? "disable" : ""}
+    ${isDisable ? "disable" : ""} ${className ?? ""}
     `}
       onClick={onClick}
     >

@@ -173,9 +173,10 @@
         &.active {
           @apply text-primary border-primary;
         }
-        &.hover {
+        &:hover {
           @apply hover:text-primary hover:border-primary;
         }
+
         &.disable {
           @apply pointer-events-none text-gray-300;
         }
@@ -411,40 +412,179 @@
     animation-delay: 200ms;
   }
 }
-:where(.css-dev-only-do-not-override-18iikkb).ant-checkbox-wrapper:not(
-    .ant-checkbox-wrapper-disabled
-  ):hover
-  .ant-checkbox-inner,
-:where(.css-dev-only-do-not-override-18iikkb).ant-checkbox:not(
-    .ant-checkbox-disabled
-  ):hover
-  .ant-checkbox-inner {
-  border-color: #ff887b;
+.ant {
+  :where(.css-dev-only-do-not-override-18iikkb).ant-checkbox-wrapper:not(
+      .ant-checkbox-wrapper-disabled
+    ):hover
+    .ant-checkbox-inner,
+  :where(.css-dev-only-do-not-override-18iikkb).ant-checkbox:not(
+      .ant-checkbox-disabled
+    ):hover
+    .ant-checkbox-inner {
+    border-color: #ff887b;
+  }
+  :where(.css-dev-only-do-not-override-18iikkb).ant-checkbox-wrapper:not(
+      .ant-checkbox-wrapper-disabled
+    ):hover
+    .ant-checkbox-checked:not(.ant-checkbox-disabled)
+    .ant-checkbox-inner {
+    background-color: #ff887b;
+    border-color: transparent;
+  }
+  .ant-checkbox-wrapper {
+    .ant-checkbox {
+      &-inner {
+        span {
+        }
+      }
+      &:hover {
+        .ant-checkbox-inner {
+          border-color: #ff887b !important;
+        }
+      }
+      &-checked {
+        .ant-checkbox-inner {
+          background-color: #ff887b;
+          border-color: #ff887b;
+        }
+      }
+    }
+  }
 }
-:where(.css-dev-only-do-not-override-18iikkb).ant-checkbox-wrapper:not(
-    .ant-checkbox-wrapper-disabled
-  ):hover
-  .ant-checkbox-checked:not(.ant-checkbox-disabled)
-  .ant-checkbox-inner {
+
+.ant-tabs {
+  &-nav {
+    &-operations {
+    }
+    &-wrap {
+    }
+    &-list {
+      .ant-tabs-tab {
+      }
+      .ant-tabs-tab-active {
+      }
+      .ant-tabs-ink-bar {
+      }
+    }
+  }
+  &-content {
+    &-holder {
+      .ant-tabs-content {
+        .ant-tabs-tabpane {
+        }
+        .ant-tabs-tabpane-active {
+        }
+      }
+    }
+  }
+}
+.double-img {
+  transition: all 0.4s;
+  img:nth-child(1) {
+    opacity: 100%;
+    visibility: visible;
+  }
+  img:nth-child(2) {
+    opacity: 0;
+    visibility: hidden;
+  }
+  &:hover {
+    img:nth-child(2) {
+      opacity: 100%;
+      visibility: visible;
+    }
+    img:nth-child(1) {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}
+.shine {
+  &:hover {
+    &::before {
+      animation: shine 1.2s;
+    }
+  }
+  &::before {
+    position: absolute;
+    top: 0;
+    left: -75%;
+    display: block;
+    content: "";
+    width: 30%;
+    height: 100%;
+    z-index: 300;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 225, 0) 0,
+      rgba(255, 255, 255, 0.6) 100%
+    );
+    transform: skewX(-25deg);
+    transition: all 1.2s;
+  }
+  @keyframes shine {
+    100% {
+      left: 100%;
+    }
+  }
+}
+input[type="file"]::file-selector-button {
+  cursor: pointer;
+  border: 1px solid #fafafa;
+  border-radius: 10px;
+  color: #fff;
+  padding: 8px;
+  background-color: #868686;
+  transition: 0.4s;
+}
+input[type="file"]::file-selector-button:hover {
   background-color: #ff887b;
-  border-color: transparent;
 }
-.ant-checkbox-wrapper {
-  .ant-checkbox {
-    &-inner {
-      span {
+.custom-button-ok {
+  &:hover {
+    background-color: #ff887b !important;
+  }
+  @apply bg-black-555;
+}
+.custom-button-cancel {
+  &:hover {
+    border-color: #ff887b !important;
+    color: #ff887b !important;
+  }
+}
+.ant-layout {
+  @apply bg-white;
+  .pagination {
+    &__list {
+      &-item {
+        a {
+          @apply delay-0 pointer-events-none;
+        }
       }
     }
-    &:hover {
-      .ant-checkbox-inner {
-        border-color: #ff887b !important;
+  }
+}
+.productcms,
+.usercms {
+  .pagination {
+    @apply bg-transparent;
+  }
+  .table {
+    @apply mt-0;
+
+    thead {
+      tr {
+        td {
+          @apply py-[20px];
+        }
       }
     }
-    &-checked {
-      .ant-checkbox-inner {
-        background-color: #ff887b;
-        border-color: #ff887b;
-      }
+    td {
+      @apply text-center align-middle xs:pt-[7px] md:pt-[14px] 
+      [&:nth-child(1)]:w-[50px] [&:nth-child(2)]:w-[100px]
+      [&:nth-child(3)]:w-[300px]  [&:nth-child(4)]:w-[150px] 
+       [&:nth-child(5)]:w-[150px] 
+      xs:text-sm lg:text-[16px];
     }
   }
 }

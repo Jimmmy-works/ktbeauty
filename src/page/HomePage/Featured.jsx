@@ -33,17 +33,16 @@ const Featured = ({ onChangeFeaturedTab, featuerdTab }) => {
     ],
   };
   const images = [
-    "product-1.jpg",
-    "product-2.jpg",
-    "product-3.jpg",
-    "product-4.jpg",
-    "product-5.jpg",
-    "product-6.jpg",
-    "product-7.jpg",
-    "product-8.jpg",
-    "product-9.jpg",
+    "/assets/img/product-1.jpg",
+    "/assets/img/product-2.jpg",
+    "/assets/img/product-3.jpg",
+    "/assets/img/product-4.jpg",
+    "/assets/img/product-5.jpg",
+    "/assets/img/product-6.jpg",
+    "/assets/img/product-7.jpg",
+    "/assets/img/product-8.jpg",
+    "/assets/img/product-9.jpg",
   ];
-  const baseURL = `/assets/img/`;
   return (
     <section className="scfeatured mt-section  bg-[#333] lg:py-[80px] md:py-[60px] xs:py-[50px]">
       <div className="container">
@@ -123,7 +122,6 @@ const Featured = ({ onChangeFeaturedTab, featuerdTab }) => {
                     className={`item`}
                     key={`${item}${index}`}
                     item={item}
-                    baseURL={baseURL}
                   />
                 );
               })}

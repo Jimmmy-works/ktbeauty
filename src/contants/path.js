@@ -1,6 +1,8 @@
 const BLOG_PATH = "/blog";
 const SHOP_PATH = "/shop";
 const PROFILE_PATH = "/profile";
+const CMS__PATH = "/cms";
+
 export const PATHS = {
   HOME: "/",
   ABOUT: "/about",
@@ -18,6 +20,10 @@ export const PATHS = {
   SHOP: {
     INDEX: SHOP_PATH,
     DETAIL: SHOP_PATH + "/:slug",
+  },
+  CMS: {
+    INDEX: CMS__PATH,
+    PRODUCT: `${CMS__PATH}/product`,
   },
   CHECKOUT: "/checkout",
   CART: "/cart",

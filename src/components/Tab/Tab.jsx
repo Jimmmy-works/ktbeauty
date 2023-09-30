@@ -114,14 +114,11 @@ const Tabs = ({ children, className }) => {
     const timeout = setTimeout(() => {
       setActiveTab(index);
       setLoadingTab(false);
-    }, 300);
+    }, 200);
     return () => {
       clearTimeout(timeout);
     };
   };
-  const refContent = useRef(null);
-  console.log("loadingTab", loadingTab);
-  console.log("activeTab", activeTab);
   return (
     <div className={`tab ${className ?? ""}`}>
       <ul className={`tab__header`}>

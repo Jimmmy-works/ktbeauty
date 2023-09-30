@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "./Button";
 import { Rate, Tooltip } from "antd";
 import { Link } from "react-router-dom";
@@ -14,7 +14,12 @@ const StyleRate = styled.div`
     }
   }
 `;
-const ProductCard = ({ item, baseURL, className, isProductDetail = false }) => {
+const ProductCard = ({
+  item,
+  onChangeImg,
+  className,
+  isProductDetail = false,
+}) => {
   if (isProductDetail)
     return (
       <div className={`card  ${className ?? ""} transition-all duration-400  `}>
@@ -25,7 +30,7 @@ const ProductCard = ({ item, baseURL, className, isProductDetail = false }) => {
           <img
             className="center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105
               h-full w-full"
-            src={`${baseURL}${item}`}
+            src={item}
             alt=""
             onError={(e) => {
               e.target.onerror = null;
@@ -123,17 +128,22 @@ const ProductCard = ({ item, baseURL, className, isProductDetail = false }) => {
     );
   return (
     <div
-      className={`card shadow-header  ${
+      className={`card shadow-header   ${
         className ?? ""
       } transition-all duration-400`}
     >
       <Link
         to={PATHS.SHOP.DETAIL}
-        className="block relative h-0 pb-[100%] group/img overflow-hidden"
+        className="block relative h-0 pb-[100%] double-img group/img overflow-hidden shine"
       >
         <img
-          className="center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105"
-          src={`${baseURL}${item}`}
+          className="center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105 "
+          src={item}
+          alt=""
+        />
+        <img
+          className="center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105 "
+          src={"/assets/img/product-9.jpg"}
           alt=""
         />
         <span

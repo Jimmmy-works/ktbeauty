@@ -1,6 +1,5 @@
 import BreadCrumb from "@/components/BreadCrumb";
 import { useMainContext } from "@/components/MainContext";
-import Tab from "@/components/Tab/Tab";
 import { PATHS } from "@/contants/path";
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";

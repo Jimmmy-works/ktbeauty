@@ -2,7 +2,7 @@ import Button from "@/components/Button";
 import ProductCard from "@/components/ProductCard";
 import Textbox from "@/components/Textbox";
 import { CATEGORIES_OPTIONS } from "@/contants/general";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Slider from "react-slick";
 
 const ShowcaseProduct = ({ onChangeCategoryTab, categoryTab }) => {
@@ -14,8 +14,8 @@ const ShowcaseProduct = ({ onChangeCategoryTab, categoryTab }) => {
     speed: 600,
     slidesToShow: 4,
     variableWidth: true,
-    autoplay: true,
-    autoplaySpeed: 2000,
+    // autoplay: true,
+    // autoplaySpeed: 2000,
     responsive: [
       {
         breakpoint: 1023,
@@ -32,17 +32,16 @@ const ShowcaseProduct = ({ onChangeCategoryTab, categoryTab }) => {
     ],
   };
   const images = [
-    "product-9.jpg",
-    "product-8.jpg",
-    "product-7.jpg",
-    "product-6.jpg",
-    "product-5.jpg",
-    "product-4.jpg",
-    "product-3.jpg",
-    "product-2.jpg",
-    "product-1.jpg",
+    "/assets/img/product-9.jpg",
+    "/assets/img/product-8.jpg",
+    "/assets/img/product-7.jpg",
+    "/assets/img/product-6.jpg",
+    "/assets/img/product-5.jpg",
+    "/assets/img/product-4.jpg",
+    "/assets/img/product-3.jpg",
+    "/assets/img/product-2.jpg",
+    "/assets/img/product-1.jpg",
   ];
-  const baseURL = `/assets/img/`;
   return (
     <section className="scshowcaseproduct pt-section">
       <div className="container">
@@ -159,7 +158,6 @@ const ShowcaseProduct = ({ onChangeCategoryTab, categoryTab }) => {
                     className={`item`}
                     key={`${item}${index}`}
                     item={item}
-                    baseURL={baseURL}
                   />
                 );
               })}

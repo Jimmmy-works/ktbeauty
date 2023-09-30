@@ -1,43 +1,47 @@
-.ant-select-dropdown {
-  min-width: 130px !important;
-}
-.ant-select-item-option-content {
-  font-size: 14px;
-  font-family: "MontserratAlternates-Regular";
-  text-overflow: unset !important;
-}
-.ant-select-item-option-selected {
-  background: #ff887b !important;
-  color: #fff !important;
-}
-.ant-select {
-  &:hover {
-    .ant-select-selector {
-      border-color: #ff887b !important;
+.cartpage {
+  .ant-select {
+    .ant-select-dropdown {
+      min-width: 130px !important;
     }
-  }
+    .ant-select-item-option-content {
+      font-size: 14px;
+      font-family: "MontserratAlternates-Regular";
+      text-overflow: unset !important;
+    }
+    .ant-select-item-option-selected {
+      background: #ff887b !important;
+      color: #fff !important;
+    }
+    .ant-select {
+      &:hover {
+        .ant-select-selector {
+          border-color: #ff887b !important;
+        }
+      }
 
-  .ant-select-selection-item {
-    font-size: 14px;
-    font-family: "MontserratAlternates-Medium";
-  }
-  .ant-select-arrow {
-    @apply transition-transform duration-400 rotate-[0];
-    path {
-      @apply fill-[#000000e0];
+      .ant-select-selection-item {
+        font-size: 14px;
+        font-family: "MontserratAlternates-Medium";
+      }
+      .ant-select-arrow {
+        @apply transition-transform duration-400 rotate-[0];
+        path {
+          @apply fill-[#000000e0];
+        }
+      }
+      &.ant-select-open {
+        .ant-select-arrow {
+          @apply transition-transform duration-400 rotate-[-180deg];
+        }
+      }
+    }
+    .ant-select-item-option-content {
+      font-size: 14px;
+      font-family: "MontserratAlternates-Medium";
+    }
+    .ant-select-focused .ant-select-selector {
+      border-color: #ff887b !important;
+      box-shadow: none !important;
     }
   }
-  &.ant-select-open {
-    .ant-select-arrow {
-      @apply transition-transform duration-400 rotate-[-180deg];
-    }
-  }
-}
-.ant-select-item-option-content {
-  font-size: 14px;
-  font-family: "MontserratAlternates-Medium";
-}
-.ant-select-focused .ant-select-selector {
-  border-color: #ff887b !important;
-  box-shadow: none !important;
 }
