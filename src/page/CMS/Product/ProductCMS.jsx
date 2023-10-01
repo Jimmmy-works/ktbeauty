@@ -3,36 +3,27 @@ import useWindowSize from "@/utils/windowResize";
 import { Modal, Pagination, message } from "antd";
 import { list } from "postcss";
 import React, { useState } from "react";
-import ModalProduct from "./ModalProduct";
+import ModalProduct from "../ModalProduct";
+import useDashboard from "../useDashboard";
 
-const ProductCMS = () => {
-  const images = [
-    "/assets/img/product-1.jpg",
-    "/assets/img/product-2.jpg",
-    "/assets/img/product-3.jpg",
-    "/assets/img/product-4.jpg",
-    "/assets/img/product-5.jpg",
-  ];
+const ProductCMS = ({
+  list,
+  onShowModal,
+  onCloseModal,
+  openModalAndt,
+  onAddProduct,
+  productList,
+  setProductList,
+}) => {
   const { width } = useWindowSize();
-
-  const [listProduct, setListProduct] = useState([]);
   const handleDelete = (index) => {
-    const newList = [...listProduct];
+    const newList = [...productList];
     newList.splice(index, 1);
-    setListProduct(newList);
+    setProductList(newList);
   };
-  const modifyValue = (value) => {
-    if (value > max) {
-      return (value = max);
-    } else if (value < min) {
-      return (value = min);
-    } else {
-      return value;
-    }
-  };
+  console.log("list", list);
   return (
-    <div className="productcms flex flex-col  h-full justify-between pb-[20px]">
-      <ModalProduct setListProduct={setListProduct} listProduct={listProduct} />
+    <div className="productcms ">
       <table className="table">
         <thead>
           <tr>
@@ -44,11 +35,11 @@ const ProductCMS = () => {
           </tr>
         </thead>
         <tbody>
-          {listProduct?.length ? (
-            listProduct?.map((item, index) => {
+          {productList?.length ? (
+            productList?.map((item, index) => {
               console.log("item", item);
               return (
-                <tr>
+                <tr key={index}>
                   {width >= 768 ? (
                     <td className="text-black-333 font-mam xs:text-center md:text-left">
                       {index}

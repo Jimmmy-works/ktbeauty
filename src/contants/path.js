@@ -24,6 +24,9 @@ export const PATHS = {
   CMS: {
     INDEX: CMS__PATH,
     PRODUCT: `${CMS__PATH}/product`,
+    IMAGE: `${CMS__PATH}/image`,
+    TEAM: `${CMS__PATH}/team`,
+    FILE: `${CMS__PATH}/file`,
   },
   CHECKOUT: "/checkout",
   CART: "/cart",

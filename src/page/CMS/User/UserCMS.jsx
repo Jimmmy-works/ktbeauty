@@ -1,11 +1,9 @@
 import Button from "@/components/Button";
 import useWindowSize from "@/utils/windowResize";
 import { Modal, Pagination, message } from "antd";
-import { list } from "postcss";
 import React, { useState } from "react";
-import ModalProduct from "./ModalProduct";
 
-const ProductCMS = () => {
+const UserCMS = () => {
   const { width } = useWindowSize();
   const [listProduct, setListProduct] = useState([]);
   const handleDelete = (index) => {
@@ -14,8 +12,8 @@ const ProductCMS = () => {
     setListProduct(newList);
   };
   return (
-    <div className="usercms flex flex-col  h-full justify-between pb-[20px]">
-      <ModalProduct setListProduct={setListProduct} listProduct={listProduct} />
+    <div className="usercms">
+      {/* <ModalUser setListProduct={setListProduct} listProduct={listProduct} /> */}
       <table className="table">
         <thead>
           <tr>
@@ -94,4 +92,4 @@ const ProductCMS = () => {
   );
 };
 
-export default ProductCMS;
+export default UserCMS;

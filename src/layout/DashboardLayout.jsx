@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import {
   DesktopOutlined,
@@ -10,10 +10,17 @@ import {
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import HeaderCMS from "@/page/CMS/HeaderCMS";
-import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Link,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import SubMenu from "antd/es/menu/SubMenu";
 import { PATHS } from "@/contants/path";
-import Button from "@/components/Button";
+import useDashboard from "@/page/CMS/useDashboard";
 
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children, labelChildren) {
@@ -30,22 +37,50 @@ const items = [
     <Link to={PATHS.CMS.INDEX}>
       <span>User</span>
     </Link>,
-    "1",
+    `1`,
     <UserOutlined />
   ),
   getItem(
     <Link to={PATHS.CMS.PRODUCT}>
       <span>Product</span>
     </Link>,
-    "2",
+    `2`,
     <DesktopOutlined />
   ),
 
-  getItem("Image", "3", <PieChartOutlined />),
-  getItem("Team", "4", <TeamOutlined />),
-  getItem("Files", "5", <FileOutlined />),
+  getItem(
+    <Link to={PATHS.CMS.IMAGE}>
+      <span>IMAGE</span>
+    </Link>,
+    "3",
+    <PieChartOutlined />
+  ),
+  getItem(
+    <Link to={PATHS.CMS.TEAM}>
+      <span>TEAM</span>
+    </Link>,
+    "4",
+    <TeamOutlined />
+  ),
+  getItem(
+    <Link to={PATHS.CMS.FILE}>
+      <span>FILE</span>
+    </Link>,
+    "5",
+    <FileOutlined />
+  ),
 ];
-const CMSLayout = () => {
+const DashboardLayout = () => {
+  const { modalProps } = useDashboard();
+  const { findPath, pathname } = modalProps || {};
+  const findItems = items?.find((item) => item?.key === findPath?.id);
+  useEffect(() => {
+    if (findPath) {
+      localStorage.setItem("id", `${findItems?.key}`);
+    } else {
+      return;
+    }
+  }, [pathname, findPath]);
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
@@ -62,7 +97,13 @@ const CMSLayout = () => {
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
       >
-        <Menu className="font-mar" theme="dark" mode="inline" items={items} />
+        <Menu
+          className="font-mar"
+          theme="dark"
+          mode="inline"
+          items={items}
+          defaultSelectedKeys={localStorage.getItem("id")}
+        />
       </Sider>
       <Layout className="">
         <Header
@@ -94,4 +135,4 @@ const CMSLayout = () => {
     </Layout>
   );
 };
-export default CMSLayout;
+export default DashboardLayout;

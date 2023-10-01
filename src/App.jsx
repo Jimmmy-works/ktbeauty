@@ -15,7 +15,8 @@ const CartPage = lazy(() => import("./page/CartPage"));
 const Checkout = lazy(() => import("./page/Checkout"));
 const OrderComplete = lazy(() => import("./page/OrderComplete"));
 const ProfileLayout = lazy(() => import("./layout/ProfileLayout"));
-const CMSLayout = lazy(() => import("./layout/CMSLayout")); // const Account = lazy(() => import("./page/Profile/Account"));
+const DashboardLayout = lazy(() => import("./layout/DashboardLayout"));
+// const Account = lazy(() => import("./page/Profile/Account"));
 // const Order = lazy(() => import("./page/Profile/Order"));
 // const WhiteList = lazy(() => import("./page/Profile/WhiteList"));
 // const Address = lazy(() => import("./page/Profile/Address"));
@@ -35,10 +36,14 @@ import Account from "./page/Profile/Account";
 import Order from "./page/Profile/Order";
 import WhiteList from "./page/Profile/WhiteList";
 import Address from "./page/Profile/Address";
-import CMS from "./page/CMS";
-// import CMSLayout from "./layout/CMSLayout";
-import UserCMS from "./page/CMS/UserCMS";
-import ProductCMS from "./page/CMS/ProductCMS";
+import UserCMS from "./page/CMS/User/UserCMS";
+import ProductCMS from "./page/CMS/Product/ProductCMS";
+import DashBoardProduct from "./page/CMS/Product";
+import DashboardUser from "./page/CMS/User";
+import DashboardFile from "./page/CMS/File";
+import DashboardTeam from "./page/CMS/Team";
+import DashboardImage from "./page/CMS/ImageProduct";
+// import DashboardLayout from "./layout/DashboardLayout";
 function App() {
   return (
     <Suspense fallback={<LoadingPage />}>
@@ -63,9 +68,12 @@ function App() {
           </Route>
         </Routes>
         <Routes>
-          <Route path={PATHS.CMS.INDEX} element={<CMSLayout />}>
-            <Route index element={<UserCMS />} />
-            <Route path={PATHS.CMS.PRODUCT} element={<ProductCMS />} />
+          <Route path={PATHS.CMS.INDEX} element={<DashboardLayout />}>
+            <Route index element={<DashboardUser />} />
+            <Route path={PATHS.CMS.PRODUCT} element={<DashBoardProduct />} />
+            <Route path={PATHS.CMS.IMAGE} element={<DashboardImage />} />
+            <Route path={PATHS.CMS.TEAM} element={<DashboardTeam />} />
+            <Route path={PATHS.CMS.FILE} element={<DashboardFile />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1869,10 +1869,6 @@ input[type="number"] {
   bottom: 120px !important;
 }
 
-.bottom-\[50px\] {
-  bottom: 50px !important;
-}
-
 .bottom-\[60px\] {
   bottom: 60px !important;
 }
@@ -1943,10 +1939,6 @@ input[type="number"] {
 
 .right-\[3px\] {
   right: 3px !important;
-}
-
-.right-\[50px\] {
-  right: 50px !important;
 }
 
 .right-\[8px\] {
@@ -3998,6 +3990,11 @@ input[type="file"]::file-selector-button:hover {
 
 .productcms,
 .usercms {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 20px;
   .pagination {
     background-color: transparent;
   }
@@ -4621,6 +4618,11 @@ input[type="file"]::file-selector-button:hover {
     padding: 0 !important;
   }
 
+  .xs\:px-\[13\.6px\] {
+    padding-left: 13.6px !important;
+    padding-right: 13.6px !important;
+  }
+
   .xs\:px-\[17px\] {
     padding-left: 17px !important;
     padding-right: 17px !important;
@@ -4664,6 +4666,11 @@ input[type="file"]::file-selector-button:hover {
   .xs\:py-\[5px\] {
     padding-top: 5px !important;
     padding-bottom: 5px !important;
+  }
+
+  .xs\:py-\[6px\] {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
   }
 
   .xs\:py-\[7px\] {

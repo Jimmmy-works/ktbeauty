@@ -566,6 +566,7 @@ input[type="file"]::file-selector-button:hover {
 }
 .productcms,
 .usercms {
+  @apply flex flex-col h-full justify-between pb-[20px];
   .pagination {
     @apply bg-transparent;
   }
