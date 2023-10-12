@@ -1,8 +1,25 @@
 import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const Countdown = ({ seconds, minutes, hours, days, weeks }) => {
+const Countdown = () => {
+  /// Marketing
+  const [currentTime, setCurrentTime] = useState(Date.now());
+  const targetTime = new Date("2023-10-11").getTime();
+  const timeBetween = targetTime - currentTime;
+  const seconds = Math.floor((timeBetween / 1000) % 60);
+  const minutes = Math.floor((timeBetween / 1000 / 60) % 60);
+  const hours = Math.floor((timeBetween / (1000 * 60 * 60)) % 24);
+  const days = Math.floor(timeBetween / (1000 * 60 * 60 * 24));
+  const weeks = Math.floor(timeBetween / (1000 * 60 * 60 * 24 * 7));
+
+  useEffect(() => {
+    const countDown = setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 1000);
+    return () => clearInterval(countDown);
+  }, []);
+  // const countDownProps = { seconds, minutes, hours, days, weeks };
   return (
     <section
       className="sccountdown bg-marketing-banner mt-section xs:py-[40px] md:py-[75px] bg-no-repeat bg-center bg-cover

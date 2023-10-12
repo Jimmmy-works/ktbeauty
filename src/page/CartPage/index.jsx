@@ -3,7 +3,7 @@ import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
 import useWindowSize from "@/utils/windowResize";
 import { Radio, Select } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 const CartPage = () => {
   const images = [
@@ -14,6 +14,31 @@ const CartPage = () => {
     "/assets/img/product-5.jpg",
   ];
   const { width } = useWindowSize();
+  const [renderValue, setRenderValue] = useState(1);
+  const min = 1;
+  const max = 100;
+  const onInputOnchange = (e) => {
+    setRenderValue(e.target.value);
+  };
+  const onIncrease = () => {
+    const value = modifyValue(Number(renderValue) + Number(1));
+    console.log("1", value);
+    setRenderValue(value);
+  };
+  const onDecrease = () => {
+    console.log("22", 22);
+    const value = modifyValue(Number(renderValue) - Number(1));
+    setRenderValue(value);
+  };
+  const modifyValue = (value) => {
+    if (value > max) {
+      return (value = max);
+    } else if (value < min) {
+      return (value = min);
+    } else {
+      return value;
+    }
+  };
   return (
     <main className="main-wrapper cartpage">
       <div className="container">
@@ -76,6 +101,7 @@ const CartPage = () => {
                     <div
                       className="flex items-center border border-solid border-[#ececec] rounded-md
                         h-[50px] justify-center w-fit mx-auto "
+                      onClick={onDecrease}
                     >
                       <div className="px-[14px] cursor-pointer h-full flex items-center justify-center group/hover">
                         <svg className="h-[10px] w-[10px]" viewBox="0 0 24 24">
@@ -88,11 +114,15 @@ const CartPage = () => {
                       <input
                         className="w-[30px] text-[15px] tracking-wider text-center text-black-555 font-osb"
                         type="number"
-                        min="0"
-                        max="100"
-                        value="1"
+                        min={min}
+                        max={max}
+                        value={renderValue}
+                        onChange={onInputOnchange}
                       />
-                      <div className="px-[14px] cursor-pointer h-full flex items-center justify-center group/hover">
+                      <div
+                        className="px-[14px] cursor-pointer h-full flex items-center justify-center group/hover"
+                        onClick={onIncrease}
+                      >
                         <svg
                           className="h-[10px] w-[10px] rotate-[180deg]"
                           viewBox="0 0 24 24"

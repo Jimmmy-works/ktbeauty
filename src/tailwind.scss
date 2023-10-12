@@ -11,8 +11,13 @@
 @import "/src/scss/authen.scss";
 @import "/src/scss/profile.scss";
 @import "/src/scss/hamburger.scss";
-@import "slick-carousel/slick/slick.css";
-@import "slick-carousel/slick/slick-theme.css";
+
+@import "swiper/css";
+@import "swiper/css/effect-cube";
+@import "swiper/css/pagination";
+@import "swiper/css/effect-flip";
+@import "swiper/css/effect-creative";
+
 @layer base {
   html {
     @apply font-mar text-base text-black-555 overflow-x-hidden;
@@ -254,7 +259,7 @@
       @apply mt-[10px];
     }
     &__container {
-      @apply flex items-center gap-3 md:flex-row xs:flex-col;
+      @apply flex w-full items-center gap-3 md:flex-row xs:flex-col;
       &-wrapper {
         @apply font-mar text-sm text-black-333 flex flex-col;
         &.success {
@@ -268,7 +273,6 @@
           textarea {
             @apply border border-solid border-red-500;
           }
-
           p {
             @apply visible opacity-100;
           }
@@ -334,6 +338,18 @@
       [&:nth-child(3)]:w-[100px] [&:nth-child(4)]:w-[100px]
       xs:[&:nth-child(5)]:w-[300px] md:[&:nth-child(5)]:w-[100px] [&:nth-child(6)]:w-[100px]  
       xs:text-sm lg:text-[16px];
+    }
+  }
+  .error-desc {
+    @apply mt-[6px] mb-[-2px] invisible opacity-0 text-xs text-red-500;
+  }
+  .error-input {
+    input,
+    textarea {
+      @apply border border-solid border-red-500;
+    }
+    p {
+      @apply visible opacity-100;
     }
   }
 }
@@ -412,41 +428,39 @@
     animation-delay: 200ms;
   }
 }
-.ant {
-  :where(.css-dev-only-do-not-override-18iikkb).ant-checkbox-wrapper:not(
-      .ant-checkbox-wrapper-disabled
-    ):hover
-    .ant-checkbox-inner,
-  :where(.css-dev-only-do-not-override-18iikkb).ant-checkbox:not(
-      .ant-checkbox-disabled
-    ):hover
-    .ant-checkbox-inner {
-    border-color: #ff887b;
-  }
-  :where(.css-dev-only-do-not-override-18iikkb).ant-checkbox-wrapper:not(
-      .ant-checkbox-wrapper-disabled
-    ):hover
-    .ant-checkbox-checked:not(.ant-checkbox-disabled)
-    .ant-checkbox-inner {
-    background-color: #ff887b;
-    border-color: transparent;
-  }
-  .ant-checkbox-wrapper {
-    .ant-checkbox {
-      &-inner {
-        span {
-        }
+:where(.css-dev-only-do-not-override-18iikkb).ant-checkbox-wrapper:not(
+    .ant-checkbox-wrapper-disabled
+  ):hover
+  .ant-checkbox-inner,
+:where(.css-dev-only-do-not-override-18iikkb).ant-checkbox:not(
+    .ant-checkbox-disabled
+  ):hover
+  .ant-checkbox-inner {
+  border-color: #ff887b;
+}
+:where(.css-dev-only-do-not-override-18iikkb).ant-checkbox-wrapper:not(
+    .ant-checkbox-wrapper-disabled
+  ):hover
+  .ant-checkbox-checked:not(.ant-checkbox-disabled)
+  .ant-checkbox-inner {
+  background-color: #ff887b;
+  border-color: transparent;
+}
+.ant-checkbox-wrapper {
+  .ant-checkbox {
+    &-inner {
+      span {
       }
-      &:hover {
-        .ant-checkbox-inner {
-          border-color: #ff887b !important;
-        }
+    }
+    &:hover {
+      .ant-checkbox-inner {
+        border-color: #ff887b !important;
       }
-      &-checked {
-        .ant-checkbox-inner {
-          background-color: #ff887b;
-          border-color: #ff887b;
-        }
+    }
+    &-checked {
+      .ant-checkbox-inner {
+        background-color: #ff887b;
+        border-color: #ff887b;
       }
     }
   }
@@ -580,12 +594,57 @@ input[type="file"]::file-selector-button:hover {
         }
       }
     }
-    td {
-      @apply text-center align-middle xs:pt-[7px] md:pt-[14px] 
-      [&:nth-child(1)]:w-[50px] [&:nth-child(2)]:w-[100px]
-      [&:nth-child(3)]:w-[300px]  [&:nth-child(4)]:w-[150px] 
-       [&:nth-child(5)]:w-[150px] 
-      xs:text-sm lg:text-[16px];
+    tbody {
+      tr {
+        @apply md:border-b md:border-solid md:border-black-be;
+      }
+      td {
+        @apply text-center align-middle xs:py-[7px] md:py-[14px] 
+        [&:nth-child(1)]:w-[50px] lg:[&:nth-child(2)]:w-[250px] md:[&:nth-child(2)]:w-[150px]
+        [&:nth-child(3)]:px-[10px]  [&:nth-child(3)]:w-[200px]  
+        [&:nth-child(4)]:w-[250px] 
+        [&:nth-child(5)]:w-[100px]  [&:nth-child(6)]:w-[100px]
+        xs:text-sm lg:text-[16px];
+        ul {
+          li {
+            @apply leading-[20px] text-left;
+          }
+        }
+      }
     }
+  }
+}
+@keyframes delay {
+  0%,
+  40%,
+  100% {
+    transform: scaleY(0.05);
+    -webkit-transform: scaleY(0.05);
+  }
+  20% {
+    transform: scaleY(1);
+    -webkit-transform: scaleY(1);
+  }
+}
+@keyframes delayBefore {
+  0% {
+    top: 0%;
+  }
+  50% {
+    top: 50%;
+  }
+  100% {
+    top: 0%;
+  }
+}
+@keyframes delayAfter {
+  0% {
+    bottom: 0%;
+  }
+  50% {
+    bottom: 50%;
+  }
+  100% {
+    bottom: 0%;
   }
 }

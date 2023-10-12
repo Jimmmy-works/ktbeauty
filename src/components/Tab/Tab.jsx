@@ -123,10 +123,11 @@ const Tabs = ({ children, className }) => {
     <div className={`tab ${className ?? ""}`}>
       <ul className={`tab__header`}>
         {children?.length &&
-          children?.map((child) => {
+          children?.map((child, index) => {
             const isActive = child?.props?.label === activeTab;
             return (
               <li
+                key={`${child}${index}`}
                 onClick={() => onChangeActiveTab(child?.props?.label)}
                 className={twMerge(
                   `tab__header-item ${className ?? ""}  ${

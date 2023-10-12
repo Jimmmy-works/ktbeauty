@@ -1,60 +1,62 @@
 import React from "react";
-import Slider from "react-slick";
+import { Keyboard } from "swiper/modules";
+import { SwiperSlide, Swiper } from "swiper/react";
 
 const Brand = () => {
-  const settings = {
-    infinite: true,
-    arrows: false,
-    dots: false,
-    speed: 600,
-    slidesToShow: 6,
-    variableWidth: true,
-    autoplay: true,
-    autoplaySpeed: 1000,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 5,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 4,
-        },
-      },
-    ],
-  };
   const images = [
-    "brand-2.svg",
-    "brand-3.svg",
-    "brand-4.svg",
-    "brand-5.svg",
-    "brand-6.svg",
-    "brand-7.svg",
-    "brand-2.svg",
-    "brand-3.svg",
-    "brand-4.svg",
-    "brand-5.svg",
-    "brand-6.svg",
-    "brand-7.svg",
+    "/assets/img/brand-2.svg",
+    "/assets/img/brand-3.svg",
+    "/assets/img/brand-4.svg",
+    "/assets/img/brand-5.svg",
+    "/assets/img/brand-6.svg",
+    "/assets/img/brand-7.svg",
+    "/assets/img/brand-2.svg",
+    "/assets/img/brand-3.svg",
+    "/assets/img/brand-4.svg",
+    "/assets/img/brand-5.svg",
+    "/assets/img/brand-6.svg",
+    "/assets/img/brand-7.svg",
   ];
-  const baseURL = `/assets/img/`;
   return (
     <section className="scbrand pt-section">
       <div className="container">
-        <div className="scbrand__list ">
-          <Slider {...settings}>
+        <div className="scbrand__list">
+          <Swiper
+            modules={[Keyboard]}
+            freeMode={true}
+            grabCursor={true}
+            pagination={false}
+            loop={true}
+            keyboard={{
+              enabled: true,
+            }}
+            breakpoints={{
+              360: {
+                slidesPerView: 3,
+                spaceBetween: 10,
+              },
+              768: {
+                slidesPerView: 5,
+                spaceBetween: 20,
+              },
+              1024: {
+                slidesPerView: 6,
+                spaceBetween: 20,
+              },
+            }}
+            className="scbrand__list-wrapper"
+            wrapperClass="scbrand__list"
+          >
             {images?.map((img, index) => (
-              <img
-                key={`${img}${index}`}
-                className="w-full xs:h-[80px] md:h-[100px]"
-                src={`${baseURL}${img}`}
-                alt=""
-              />
+              <SwiperSlide key={`${img}${index}`}>
+                <img
+                  className="w-full xs:h-[80px] md:h-[100px]"
+                  src={img}
+                  alt=""
+                />
+              </SwiperSlide>
             ))}
-          </Slider>
+          </Swiper>
         </div>
       </div>
     </section>

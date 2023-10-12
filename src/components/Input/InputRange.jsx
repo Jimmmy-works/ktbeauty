@@ -49,26 +49,28 @@ const InputRange = () => {
             onChange={handleMaxChange}
           />
         </div>
-        <div className="price-input flex items-center mt-[26px]  gap-1   ">
-          <p className="font-mar text-md w-fit ">$</p>
-          <p
-            className="price-min border-solid border border-[#e5e5e5] rounded-[4px] px-[10px]
-              py-[5px] min-w-[60px] min-h-[30px]
-              text-black-333 text-sm font-mar flex items-center justify-center "
-          >
-            {minValue}
-          </p>
-          <p className="w-[5px] h-[1px] mx-[5px] bg-black-555"></p>
-          <p
-            className="price-max border-solid border border-[#e5e5e5] rounded-[4px] px-[10px]
-              py-[5px] min-w-[60px] min-h-[30px]
-              text-black-333 text-sm font-mar flex items-center justify-center "
-          >
-            {maxValue}
-          </p>
+        <div className="price-input flex items-center mt-[26px] gap-3 flex-wrap xl:flex-nowrap">
+          <div className="flex items-center gap-1">
+            <p className="font-mar text-md w-fit ">$</p>
+            <p
+              className="price-min border-solid border border-[#e5e5e5] rounded-[4px] px-[10px]
+                py-[5px] min-w-[60px] min-h-[30px]
+                text-black-333 text-sm font-mar flex items-center justify-center "
+            >
+              {minValue}
+            </p>
+            <p className="w-[5px] h-[1px] mx-[5px] bg-black-555"></p>
+            <p
+              className="price-max border-solid border border-[#e5e5e5] rounded-[4px] px-[10px]
+                py-[5px] min-w-[60px] min-h-[30px]
+                text-black-333 text-sm font-mar flex items-center justify-center "
+            >
+              {maxValue}
+            </p>
+          </div>
           <Button
             variant="filled"
-            className={`rounded-[4px] py-[5.5px] px-[16.55px] ml-[6px]`}
+            className={`rounded-[4px] xl:py-[5.5px] xl:px-[16.55px] ml-[6px]`}
           >
             FILTER
           </Button>

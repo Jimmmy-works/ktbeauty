@@ -1,32 +1,19 @@
 .shoppage {
-  .slick-current {
-    @apply duration-400 transition-all;
-    .item {
-      @apply border-dashed border-primary border;
-    }
-  }
   &__left {
     &-wrapper {
       .item {
+        &.active {
+          @apply border-dashed border-primary border;
+        }
         @apply h-[68px] w-[68px] duration-300 transition-all
-        border-dashed border-transparent border;
+        border-dashed border-transparent border block;
       }
     }
   }
-  .slick-list {
-    @apply w-[68px];
-  }
-  .slick-slider {
-    @apply w-[68px];
-  }
-  .slick-track {
-    @apply w-full justify-start items-start mr-[15px];
-  }
-
-  .slick-slide {
-    @apply cursor-pointer border-none;
-    & > div {
-      @apply mb-[5px];
+  &-swiper {
+    @apply max-h-[400px];
+    &-item {
+      @apply cursor-pointer border-none h-[68px] w-[68px] #{!important};
     }
   }
 }

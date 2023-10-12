@@ -6,18 +6,18 @@ import Brand from "./Brand";
 import ShowcaseProduct from "./ShowcaseProduct";
 import Countdown from "./Countdown";
 import Advertising from "./Advertising";
+import Testermonial from "./Testermonial";
 
 const HomePage = () => {
-  const { featuredProps, categoryProps, countDownProps } = useHome();
+  const { featuredProps, categoryProps } = useHome();
 
   return (
     <main className="text-3xl text-green-400">
       <Hero />
-      {/* <Outstanding /> */}
       <Advertising />
       <Featured {...featuredProps} />
       <Brand />
-      <Countdown {...countDownProps} />
+      <Countdown />
       <ShowcaseProduct {...categoryProps} />
     </main>
   );

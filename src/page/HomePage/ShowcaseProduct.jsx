@@ -3,34 +3,10 @@ import ProductCard from "@/components/ProductCard";
 import Textbox from "@/components/Textbox";
 import { CATEGORIES_OPTIONS } from "@/contants/general";
 import React, { useRef, useState } from "react";
-import Slider from "react-slick";
+import { Navigation, Keyboard } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 const ShowcaseProduct = ({ onChangeCategoryTab, categoryTab }) => {
-  const refShowcaseProductSlider = useRef(null);
-  const settings = {
-    infinite: true,
-    arrows: false,
-    dots: false,
-    speed: 600,
-    slidesToShow: 4,
-    variableWidth: true,
-    // autoplay: true,
-    // autoplaySpeed: 2000,
-    responsive: [
-      {
-        breakpoint: 1023,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 500,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-    ],
-  };
   const images = [
     "/assets/img/product-9.jpg",
     "/assets/img/product-8.jpg",
@@ -48,7 +24,7 @@ const ShowcaseProduct = ({ onChangeCategoryTab, categoryTab }) => {
         <Textbox title={`Product`}>
           <div
             className="scshowcaseproduct__top-category flex items-center justify-center gap-3
-          md:flex-nowrap xs:flex-wrap"
+          lg:flex-nowrap xs:flex-wrap"
           >
             <Button
               variant="outline"
@@ -108,13 +84,9 @@ const ShowcaseProduct = ({ onChangeCategoryTab, categoryTab }) => {
             </Button>
           </div>
         </Textbox>
-
         <div className="scshowcaseproduct__bottom">
           <div className="scshowcaseproduct__bottom-list">
-            <div
-              className="prev "
-              onClick={() => refShowcaseProductSlider?.current?.slickPrev()}
-            >
+            <div className="prev ">
               <div
                 className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors rotate-180
             group-hover/hover:bg-white"
@@ -131,10 +103,7 @@ const ShowcaseProduct = ({ onChangeCategoryTab, categoryTab }) => {
                 </svg>
               </div>
             </div>
-            <div
-              className="next"
-              onClick={() => refShowcaseProductSlider?.current?.slickNext()}
-            >
+            <div className="next">
               <div
                 className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors 
             group-hover/hover:bg-white"
@@ -151,17 +120,42 @@ const ShowcaseProduct = ({ onChangeCategoryTab, categoryTab }) => {
                 </svg>
               </div>
             </div>
-            <Slider ref={refShowcaseProductSlider} {...settings}>
+            <Swiper
+              modules={[Navigation, Keyboard]}
+              keyboard={{
+                enabled: true,
+              }}
+              breakpoints={{
+                360: {
+                  slidesPerView: 2,
+                  spaceBetween: 20,
+                },
+                576: {
+                  slidesPerView: 3,
+                  spaceBetween: 30,
+                },
+                1024: {
+                  slidesPerView: 4,
+                  spaceBetween: 30,
+                },
+              }}
+              navigation={{
+                prevEl: ".scshowcaseproduct .prev",
+                nextEl: ".scshowcaseproduct .next",
+              }}
+              freeMode
+              grabCursor={true}
+              pagination={false}
+              loop={true}
+            >
               {images.map((item, index) => {
                 return (
-                  <ProductCard
-                    className={`item`}
-                    key={`${item}${index}`}
-                    item={item}
-                  />
+                  <SwiperSlide key={`${item}${index}`}>
+                    <ProductCard className={`item`} item={item} />
+                  </SwiperSlide>
                 );
               })}
-            </Slider>
+            </Swiper>
           </div>
         </div>
       </div>

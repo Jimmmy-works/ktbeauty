@@ -1,37 +1,9 @@
-import Button from "@/components/Button";
-import React, { useRef } from "react";
-import Slider from "react-slick";
-import useHome from "./useHome";
+import React, { useRef, useState } from "react";
 import { FEATURED_OPTIONS } from "@/contants/general";
 import ProductCard from "@/components/ProductCard";
-import Textbox from "@/components/Textbox";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Keyboard, Navigation } from "swiper/modules";
 const Featured = ({ onChangeFeaturedTab, featuerdTab }) => {
-  const refFeaturedSlider = useRef(null);
-  const settings = {
-    infinite: true,
-    arrows: false,
-    dots: false,
-    speed: 600,
-    slidesToShow: 3,
-    variableWidth: true,
-    // autoplay: true,
-    // autoplaySpeed: 2000,
-    responsive: [
-      {
-        breakpoint: 1023,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 500,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
   const images = [
     "/assets/img/product-1.jpg",
     "/assets/img/product-2.jpg",
@@ -74,10 +46,7 @@ const Featured = ({ onChangeFeaturedTab, featuerdTab }) => {
         </div>
         <div className="scfeatured__content">
           <div className={`scfeatured__content-list`}>
-            <div
-              className="prev"
-              onClick={() => refFeaturedSlider?.current?.slickPrev()}
-            >
+            <div className="prev">
               <div
                 className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors rotate-180
             group-hover/hover:bg-white"
@@ -94,10 +63,7 @@ const Featured = ({ onChangeFeaturedTab, featuerdTab }) => {
                 </svg>
               </div>
             </div>
-            <div
-              className="next"
-              onClick={() => refFeaturedSlider?.current?.slickNext()}
-            >
+            <div className="next">
               <div
                 className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors 
             group-hover/hover:bg-white"
@@ -114,18 +80,52 @@ const Featured = ({ onChangeFeaturedTab, featuerdTab }) => {
                 </svg>
               </div>
             </div>
-            <Slider ref={refFeaturedSlider} {...settings}>
+            <Swiper
+              modules={[Navigation, Keyboard]}
+              keyboard={{
+                enabled: true,
+              }}
+              breakpoints={{
+                360: {
+                  slidesPerView: 2,
+                  spaceBetween: 10,
+                },
+                768: {
+                  slidesPerView: 2,
+                  spaceBetween: 20,
+                },
+                1024: {
+                  spaceBetween: 30,
+                  slidesPerView: 3,
+                },
+              }}
+              navigation={{
+                prevEl: ".scfeatured .prev",
+                nextEl: ".scfeatured .next",
+              }}
+              freeMode
+              grabCursor={true}
+              pagination={false}
+              loop={true}
+              wrapperClass="swiperFeatured__wrapper"
+              className="swiperFeatured"
+            >
               {images.map((item, index) => {
                 return (
-                  <ProductCard
-                    isProductDetail
-                    className={`item`}
+                  <SwiperSlide
                     key={`${item}${index}`}
-                    item={item}
-                  />
+                    className="swiperFeatured__wrapper-item "
+                  >
+                    <ProductCard
+                      isProductDetail
+                      className={`item`}
+                      key={`${item}${index}`}
+                      item={item}
+                    />
+                  </SwiperSlide>
                 );
               })}
-            </Slider>
+            </Swiper>
           </div>
         </div>
       </div>

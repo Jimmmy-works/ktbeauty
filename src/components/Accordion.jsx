@@ -76,7 +76,7 @@ const Accordion = ({ item, renderProps, className, children }) => {
                   </svg>
                 </div>
                 <a href="" className="leading-[28px] block">
-                  {itemSub?.title}{" "}
+                  {itemSub?.title}
                   {itemSub?.quantity && `(${itemSub?.quantity})`}
                 </a>
               </div>
@@ -101,7 +101,7 @@ const Accordion = ({ item, renderProps, className, children }) => {
                         >
                           <li className="item item__list-child  p-0">
                             <a className="leading-[22px] block" href="">
-                              {itemSubChild?.title}{" "}
+                              {itemSubChild?.title}
                               {itemSubChild?.quantity &&
                                 `(${itemSubChild?.quantity})`}
                             </a>

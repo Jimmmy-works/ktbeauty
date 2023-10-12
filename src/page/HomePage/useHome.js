@@ -1,5 +1,5 @@
 import { CATEGORIES_OPTIONS, FEATURED_OPTIONS } from "@/contants/general";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 const useHome = () => {
   /// categoryProps
@@ -12,26 +12,9 @@ const useHome = () => {
   const onChangeFeaturedTab = (tab) => {
     setFeaturedTab(tab);
   };
-  /// Marketing
-  const [currentTime, setCurrentTime] = useState(Date.now());
-  const targetTime = new Date("2023-10-11").getTime();
-  const timeBetween = targetTime - currentTime;
-  const seconds = Math.floor((timeBetween / 1000) % 60);
-  const minutes = Math.floor((timeBetween / 1000 / 60) % 60);
-  const hours = Math.floor((timeBetween / (1000 * 60 * 60)) % 24);
-  const days = Math.floor(timeBetween / (1000 * 60 * 60 * 24));
-  const weeks = Math.floor(timeBetween / (1000 * 60 * 60 * 24 * 7));
-  useEffect(() => {
-    const countDown = setInterval(() => {
-      setCurrentTime(Date.now());
-    }, 1000);
-    return () => clearInterval(countDown);
-  }, []);
-  //////////////////////////  ////////////////////////////////////////
-  const countDownProps = { seconds, minutes, hours, days, weeks };
   const featuredProps = { onChangeFeaturedTab, featuerdTab };
   const categoryProps = { onChangeCategoryTab, categoryTab };
-  return { featuredProps, categoryProps, countDownProps };
+  return { featuredProps, categoryProps };
 };
 
 export default useHome;

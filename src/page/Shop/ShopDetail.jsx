@@ -1,16 +1,14 @@
 import BreadCrumb from "@/components/BreadCrumb";
-import Button from "@/components/Button";
 import ImageZoom from "@/components/ImageZoom";
 import Review from "@/components/Review";
 import { Tab, Tabs } from "@/components/Tab/Tab";
-// import Tab from "@/components/Tab/Tab";
 import { PATHS } from "@/contants/path";
 import { Rate } from "antd";
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import Slider from "react-slick";
-
 import styled from "styled-components";
+import { Keyboard, Navigation, Pagination, Thumbs } from "swiper/modules";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 const StyleRate = styled.div`
   display: flex;
   gap: 8px;
@@ -29,17 +27,6 @@ const StyleRate = styled.div`
   }
 `;
 const ShopDetail = () => {
-  const settings = {
-    dots: false,
-    infinite: true,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    vertical: true,
-    verticalSwiping: true,
-    swipeToSlide: true,
-    arrows: false,
-  };
-  const refSliderShopDetail = useRef(null);
   const images = [
     "product-1.jpg",
     "product-2.jpg",
@@ -54,7 +41,7 @@ const ShopDetail = () => {
   const baseURL = `/assets/img/`;
   const max = 100;
   const min = 0;
-  const [currentImg, setCurrentImg] = useState("");
+  const [currentImg, setCurrentImg] = useState(images[0]);
   const [numbInput, setNumbInput] = useState(1);
   const onIncrease = () => {
     const value = modifyValue(Number(numbInput) + 1);
@@ -98,7 +85,6 @@ const ShopDetail = () => {
                 <div
                   className="up cursor-pointer absolute z-10 top-[calc(100%+20px)] left-[8px]  p-[5.5px] group/hover
                  bg-white rounded-[50%] hover:shadow-[0_0px_10px_0_rgba(0,0,0,0.2)] duration-300 transition-shadow"
-                  onClick={() => refSliderShopDetail?.current?.slickNext()}
                 >
                   <div className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors  rotate-[-90deg]">
                     <svg viewBox="0 0 24 24" className="h-[10px] w-[10px]">
@@ -112,7 +98,6 @@ const ShopDetail = () => {
                 <div
                   className="down cursor-pointer absolute z-10 top-[calc(100%+20px)] right-[8px]  p-[5.5px] group/hover
                  bg-white rounded-[50%] hover:shadow-[0_0px_10px_0_rgba(0,0,0,0.2)] duration-300 transition-shadow"
-                  onClick={() => refSliderShopDetail?.current?.slickPrev()}
                 >
                   <div className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors rotate-[90deg]">
                     <svg viewBox="0 0 24 24" className="h-[10px] w-[10px]">
@@ -123,21 +108,38 @@ const ShopDetail = () => {
                     </svg>
                   </div>
                 </div>
-                <Slider
-                  focusOnSelect={true}
-                  ref={refSliderShopDetail}
-                  {...settings}
+                <Swiper
+                  grabCursor={true}
+                  modules={[Navigation, Keyboard]}
+                  keyboard={{ enabled: true }}
+                  className="shoppage-swiper"
+                  spaceBetween={10}
+                  direction={"vertical"}
+                  slidesPerView={"auto"}
+                  navigation={{
+                    prevEl: ".shoppage .up",
+                    nextEl: ".shoppage .down",
+                  }}
                 >
                   {images?.map((img, index) => (
-                    <a
-                      key={img}
-                      className="item"
-                      onClick={() => setCurrentImg(img)}
+                    <SwiperSlide
+                      key={`${img}${index}`}
+                      className="shoppage-swiper-item"
                     >
-                      <img src={`${baseURL}${img}`} alt="" />
-                    </a>
+                      <a
+                        key={img}
+                        className={`item  ${
+                          currentImg === img ? "active" : ""
+                        }`}
+                        onClick={() => {
+                          setCurrentImg(img);
+                        }}
+                      >
+                        <img src={`${baseURL}${img}`} alt="" />
+                      </a>
+                    </SwiperSlide>
                   ))}
-                </Slider>
+                </Swiper>
               </div>
               <div className="w-full h-full ">
                 <a className="block relative pb-[100%] h-0 overflow-hidden group/zoom">
@@ -505,7 +507,7 @@ const ShopDetail = () => {
               </div>
             </div>
           </Tab>
-          <Tab label={`Reviews ${`11`}`}>
+          <Tab label={`Reviews ${`(11)`}`}>
             <Review />
           </Tab>
         </Tabs>

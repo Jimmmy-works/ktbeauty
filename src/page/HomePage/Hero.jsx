@@ -1,34 +1,15 @@
 import Button from "@/components/Button";
 import Textbox from "@/components/Textbox";
 import React, { useRef, useState } from "react";
-import Slider from "react-slick";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper/modules";
+import { twMerge } from "tailwind-merge";
 const Hero = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [dots, setDots] = useState();
-  const sliderRef = useRef(null);
-  const settings = {
-    infinite: true,
-    arrows: false,
-    adaptiveHeight: true,
-    dots: true,
-    speed: 600,
-    slidesToShow: 1,
-    responsive: [
-      {
-        breakpoint: 500,
-        settings: {
-          dots: false,
-        },
-      },
-    ],
-  };
+  const pagi = Pagination;
   return (
     <section className="schero relative  w-full h-full ">
       <div className="schero__slider relative">
-        <div
-          className="schero__slider-prev "
-          onClick={() => sliderRef?.current?.slickPrev()}
-        >
+        <div className="schero__slider-prev ">
           <div
             className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors rotate-180
             group-hover/hover:bg-white"
@@ -45,10 +26,7 @@ const Hero = () => {
             </svg>
           </div>
         </div>
-        <div
-          className="schero__slider-next "
-          onClick={() => sliderRef?.current?.slickNext()}
-        >
+        <div className="schero__slider-next ">
           <div
             className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors 
             group-hover/hover:bg-white"
@@ -65,33 +43,57 @@ const Hero = () => {
             </svg>
           </div>
         </div>
-        <Slider {...settings} ref={sliderRef}>
-          <div className="schero__slider-item">
-            <Textbox textSlider title={`Mega Store`} desc={`UP TO SALE 70%`}>
-              <div className="xs:mt-[20px] lg:mt-[38px] ">
-                <Button link={`#`}>Browse Now</Button>
-              </div>
-            </Textbox>
-          </div>
-          <div className="schero__slider-item ">
-            <Textbox textSlider title={`Gift Store Mockup`} desc={`Great shop`}>
-              <div className="xs:mt-[20px] lg:mt-[38px] ">
-                <Button link={`#`}>Browse Now</Button>
-              </div>
-            </Textbox>
-          </div>
-          <div className="schero__slider-item  ">
-            <Textbox
-              textSlider
-              title={`Kanebo Cosmetic`}
-              desc={`Skincare night`}
-            >
-              <div className="xs:mt-[20px] lg:mt-[38px] ">
-                <Button link={`#`}>Browse Now</Button>
-              </div>
-            </Textbox>
-          </div>
-        </Slider>
+        <Swiper
+          modules={[Navigation, Pagination]}
+          navigation={{
+            prevEl: ".schero__slider-prev",
+            nextEl: ".schero__slider-next",
+          }}
+          grabCursor={true}
+          pagination={{
+            horizontalClass: `schero__pagination-horizontal`,
+            bulletActiveClass: "active",
+            clickable: true,
+            bulletClass: "schero__pagination-item",
+          }}
+          loop={true}
+        >
+          <SwiperSlide>
+            <div className="schero__slider-item bg-slider-1">
+              <Textbox textSlider title={`Mega Store`} desc={`UP TO SALE 70%`}>
+                <div className="xs:mt-[20px] lg:mt-[38px] ">
+                  <Button link={`#`}>Browse Now</Button>
+                </div>
+              </Textbox>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="schero__slider-item  bg-slider-2">
+              <Textbox
+                textSlider
+                title={`Gift Store Mockup`}
+                desc={`Great shop`}
+              >
+                <div className="xs:mt-[20px] lg:mt-[38px] ">
+                  <Button link={`#`}>Browse Now</Button>
+                </div>
+              </Textbox>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="schero__slider-item bg-slider-3">
+              <Textbox
+                textSlider
+                title={`Kanebo Cosmetic`}
+                desc={`Skincare night`}
+              >
+                <div className="xs:mt-[20px] lg:mt-[38px] ">
+                  <Button link={`#`}>Browse Now</Button>
+                </div>
+              </Textbox>
+            </div>
+          </SwiperSlide>
+        </Swiper>
       </div>
     </section>
   );

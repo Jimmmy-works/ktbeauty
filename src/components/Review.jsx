@@ -84,15 +84,14 @@ const Review = () => {
             </div>
           </div>
         </div>
-
         {/* <div className="mt-[30px]">
-                  <h4 className="font-osr text-md text-black-333 mb-[10px]">
-                    Add a review
-                  </h4>
-                  <p className="font-osr text-[15px] text-black-555">
-                    You must be logged in to post a review.
-                  </p>
-                </div> */}
+          <h4 className="font-osr text-md text-black-333 mb-[10px]">
+            Add a review
+          </h4>
+          <p className="font-osr text-[15px] text-black-555">
+            You must be logged in to post a review.
+          </p>
+        </div> */}
       </div>
     </div>
   );

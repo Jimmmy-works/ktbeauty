@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { useLocation } from "react-router-dom";
+import { firebaseStore } from "@/config/firebase";
+import { collection, getDocs } from "firebase/firestore";
 const useDashboard = () => {
   ///// Modal
   const [openModalAndt, setOpenModalAndt] = useState(false);
@@ -12,21 +15,8 @@ const useDashboard = () => {
     setOpenModalAndt(false);
   };
   const onAddProduct = (payload) => {
-    console.log("payload", payload);
     setProductList([...productList, payload]);
   };
-  //   const onOk = (payload) => {
-  //     const payload = {
-  //       name: name,
-  //       price: price,
-  //       image: img,
-  //     };
-  //     console.log("payload", payload);
-  //     setListProduct([...listProduct, payload]);
-  //     message.success("Success add product");
-  //     setOpen(false);
-  //     setConfirmLoading(false);
-  //   };
   //// Header CMS
   const { pathname } = useLocation();
   const [path, setPath] = useState("");
@@ -63,7 +53,23 @@ const useDashboard = () => {
     },
   ];
   const findPath = pathCMS?.find((item) => item?.path === path);
-  console.log("productList", productList);
+  ////// firebase
+  const productCollectionRef = collection(firebaseStore, "product-card");
+  const getFirebaseStore = async () => {
+    try {
+      const data = await getDocs(productCollectionRef);
+      const filterData = data?.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      return setProductList(filterData);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  useEffect(() => {
+    getFirebaseStore();
+  }, [JSON.stringify(productCollectionRef)]);
   useEffect(() => {
     setPath(pathname);
   }, [pathname, findPath]);
@@ -76,6 +82,7 @@ const useDashboard = () => {
     setProductList,
     findPath,
     pathCMS,
+    getFirebaseStore,
   };
   return { modalProps };
 };
