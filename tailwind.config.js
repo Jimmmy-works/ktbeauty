@@ -99,6 +99,10 @@ export default {
       8: "8px",
     },
     boxShadow: {
+      dashboard: `0 0.46875rem 2.1875rem rgba(0, 0, 0, 0.03),
+          0 0.9375rem 1.40625rem rgba(0, 0, 0, 0.03),
+          0 0.25rem 0.53125rem rgba(0, 0, 0, 0.05),
+          0 0.125rem 0.1875rem rgba(0, 0, 0, 0.03)`,
       header: "0 5px 5px 0 rgba(0, 0, 0, 0.1)",
       authen: "5px 5px 5px 0 rgba(255, 255, 255, 0.9)",
       sm: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
@@ -856,6 +860,7 @@ export default {
       out: "cubic-bezier(0, 0, 0.2, 1)",
       "in-out": "cubic-bezier(0.4, 0, 0.2, 1)",
     },
+
     translate: ({ theme }) => ({
       ...theme("spacing"),
       "1/2": "50%",
@@ -1095,6 +1100,12 @@ export default {
           "@media (min-width: 1024px)": {
             marginTop: "80px",
           },
+        },
+        ".rotate-y-180": {
+          transform: "rotateY(-180deg)",
+        },
+        ".rotate-y-0": {
+          transform: "rotateY(0deg)",
         },
       });
       addVariant("not-lastChild", "&:not(:last-child)");

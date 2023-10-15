@@ -14,6 +14,7 @@ const useDashboard = () => {
   const [userList, setUserList] = useState([]);
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const [toggleInputSearch, setToggleInputSearch] = useState(false);
+  const [toggleInputSeacrhMobile, setToggleInputSeacrhMobile] = useState(false);
   const onShowModal = (id) => {
     setOpenModalAndt(id);
   };
@@ -96,6 +97,8 @@ const useDashboard = () => {
     toggleInputSearch,
     setToggleInputSearch,
     width,
+    toggleInputSeacrhMobile,
+    setToggleInputSeacrhMobile,
   };
   return { modalProps };
 };

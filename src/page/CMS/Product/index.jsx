@@ -15,7 +15,6 @@ const DashBoardProduct = () => {
     toggleSidebar,
     width,
   } = modalProps || {};
-  const [tableLayout, setTableLayout] = useState("");
   const columns = [
     {
       title: "ProductID",
@@ -49,10 +48,6 @@ const DashBoardProduct = () => {
       align: "center",
     },
   ];
-  useEffect(() => {
-    if (width > 1024) setTableLayout("auto");
-    if (width <= 1024) setTableLayout("fixed");
-  }, [width]);
   const data = [];
   for (let i = 0; i < 20; i++) {
     data.push({
@@ -208,12 +203,12 @@ const DashBoardProduct = () => {
         cancel={onCloseModal}
       />
       <div
-        className={`  h-fit py-[10px] flex  items-center xs:justify-center  md:justify-between
-      gap-3 xs:fixed lg:static md:top-[60px] xs:top-[40px] z-10 xs:bg-gray-100 lg:bg-white xs:px-[15px] lg:px-[30px]
+        className={`  h-fit  flex  items-center xs:justify-center  md:justify-between
+      gap-3 xs:fixed lg:static top-[60px] z-10 xs:bg-gray-100 lg:bg-white xs:px-[15px] lg:px-[30px] py-[14px]
       ${
         toggleSidebar
           ? "xs:w-[calc(100%-200px)] md:w-[calc(100%-280px)] lg:w-[100%] left-[200px]"
-          : "xs:w-[calc(100%-120px)] lg:w-[100%]"
+          : "xs:w-[100%]"
       }`}
       >
         <h2 className="text-16px font-mam xs:hidden md:block text-[#033C73]">
@@ -236,13 +231,15 @@ const DashBoardProduct = () => {
             <span className="xs:text-[16px] md:text-[22px]  font-osr font-bold">
               &#43;
             </span>
-            <span className="xs:text-xs md:text-sm font-osr  ">Create New</span>
+            <span className="xs:text-xs md:text-sm font-osr  ">
+              Create Product
+            </span>
           </button>
         </div>
       </div>
       <Table
         style={{ verticalAlign: "middle" }}
-        tableLayout={tableLayout}
+        tableLayout={"auto"}
         pagination={{
           position: ["bottomCenter"],
         }}

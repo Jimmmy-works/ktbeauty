@@ -11,7 +11,6 @@
     transition: all 0.3s;
     position: relative;
   }
-
   span + span {
     margin-top: 5px;
   }
@@ -218,6 +217,7 @@
       transform: scale(1);
     }
   }
+
   &.active {
     span:nth-child(1) {
       animation: ease 0.7s topMobile forwards;

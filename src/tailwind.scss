@@ -651,7 +651,7 @@ input[type="file"]::file-selector-button:hover {
 .table__dashboard {
   &-product,
   &-user {
-    @apply md:mt-[60px] xs:mt-[33px] lg:mt-0;
+    @apply xs:mt-[60px] lg:mt-0;
   }
   &-product {
     .ant-table-wrapper {
@@ -665,7 +665,6 @@ input[type="file"]::file-selector-button:hover {
             lg:[&:nth-child(5)]:table-cell lg:[&:nth-child(6)]:table-cell lg:[&:nth-child(7)]:table-cell;
             }
           }
-
           .ant-table-tbody {
             @apply xs:block lg:table-row-group;
             .ant-table-row-selected {
@@ -682,10 +681,10 @@ input[type="file"]::file-selector-button:hover {
             }
             .ant-table-cell {
               @apply border-0 bg-white  align-middle  lg:p-[16px] xs:p-[10px]
-              xs:[&:nth-child(2)]:w-[300px] lg:[&:nth-child(2)]:w-[150px]
-              xs:[&:nth-child(3)]:w-[400px] lg:[&:nth-child(3)]:w-[350px]
-              xs:[&:nth-child(4)]:w-[300px] lg:[&:nth-child(4)]:w-[200px]
-              xs:[&:nth-child(5)]:w-[300px] lg:[&:nth-child(5)]:w-[200px]
+              xs:[&:nth-child(2)]:w-[300px]  lg:[&:nth-child(2)]:w-[150px] [&:nth-child(3)]:min-w-[200px]
+              xs:[&:nth-child(3)]:w-[400px] md:[&:nth-child(3)]:w-[600px] lg:[&:nth-child(3)]:w-[350px]
+              xs:[&:nth-child(4)]:w-[300px] md:[&:nth-child(4)]:w-[600px] lg:[&:nth-child(4)]:w-[200px]
+              xs:[&:nth-child(5)]:w-[300px] md:[&:nth-child(5)]:w-[600px] lg:[&:nth-child(5)]:w-[200px]
               xs:[&:nth-child(6)]:w-[300px] lg:[&:nth-child(6)]:w-[100px]
                xs:[&:nth-child(7)]:w-[300px] lg:[&:nth-child(7)]:w-[100px];
             }
@@ -701,9 +700,10 @@ input[type="file"]::file-selector-button:hover {
           .ant-table-thead {
             .ant-table-cell {
               @apply xs:[&:nth-child(2)]:hidden xs:[&:nth-child(3)]:hidden xs:[&:nth-child(4)]:hidden
-            xs:[&:nth-child(5)]:hidden xs:[&:nth-child(6)]:hidden xs:[&:nth-child(7)]:hidden
+            xs:[&:nth-child(5)]:hidden xs:[&:nth-child(6)]:hidden
              xs:[&:nth-child(1)]:table-cell  md:[&:nth-child(2)]:table-cell md:[&:nth-child(3)]:table-cell md:[&:nth-child(4)]:table-cell
-            md:[&:nth-child(5)]:table-cell md:[&:nth-child(6)]:table-cell md:[&:nth-child(7)]:table-cell;
+            md:[&:nth-child(5)]:table-cell md:[&:nth-child(6)]:table-cell 
+             [&:nth-child(6)]:w-[350px];
             }
           }
           .ant-table-tbody {

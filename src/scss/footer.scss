@@ -1,10 +1,3 @@
-.payment {
-  img {
-    &:hover {
-    }
-  }
-}
-
 .annimated {
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
@@ -19,6 +12,11 @@
     animation-timing-function: ease-in-out;
     -webkit-animation-iteration-count: 1;
   }
+  animation: bounceVertical;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in-out;
+  -webkit-animation-iteration-count: 1;
 }
 @keyframes bounceVertical {
   16.65% {

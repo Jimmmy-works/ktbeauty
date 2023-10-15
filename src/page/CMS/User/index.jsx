@@ -54,7 +54,7 @@ const DashboardUser = () => {
     data.push({
       key: i,
       userid:
-        width > 1024 ? (
+        width >= 768 ? (
           `admin${i}abc`
         ) : (
           <strong className="text-sm font-osr font-semibold ">
@@ -63,7 +63,7 @@ const DashboardUser = () => {
           </strong>
         ),
       email:
-        width > 1024 ? (
+        width >= 768 ? (
           `email${i}@gmail.com`
         ) : (
           <strong className="text-sm font-osr font-semibold ">
@@ -72,7 +72,7 @@ const DashboardUser = () => {
           </strong>
         ),
       password:
-        width > 1024 ? (
+        width >= 768 ? (
           `password *** ${i}`
         ) : (
           <strong className="text-sm font-osr font-semibold ">
@@ -95,12 +95,12 @@ const DashboardUser = () => {
       ),
       action: (
         <>
-          {width < 1024 && (
+          {width < 768 && (
             <h4 className="text-center mb-[10px] text-sm font-osr font-semibold">
               Action:
             </h4>
           )}
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center gap-2 flex-wrap ">
             <button
               onClick={() => onShowModal(MODAL_OPTION.USER.AVATAR)}
               className="border-solid border-slate-400 border p-[6px_12px] text-sm duration-400 transition-colors
@@ -151,12 +151,12 @@ const DashboardUser = () => {
         cancel={onCloseModal}
       />
       <div
-        className={`  h-fit py-[10px] flex  items-center xs:justify-center  md:justify-between
-      gap-3 xs:fixed lg:static md:top-[60px] xs:top-[40px] z-10 xs:bg-gray-100 lg:bg-white xs:px-[15px] lg:px-[30px]
+        className={`  h-fit  flex  items-center xs:justify-center  md:justify-between
+      gap-3 xs:fixed lg:static top-[60px] z-10 xs:bg-gray-100 lg:bg-white xs:px-[15px] lg:px-[30px] py-[14px]
       ${
         toggleSidebar
           ? "xs:w-[calc(100%-200px)] md:w-[calc(100%-280px)] lg:w-[100%] left-[200px]"
-          : "xs:w-[calc(100%-120px)] lg:w-[100%]"
+          : "xs:w-[100%]"
       }`}
       >
         <h2 className="text-16px font-mam xs:hidden md:block text-[#033C73]">
@@ -179,7 +179,9 @@ const DashboardUser = () => {
             <span className="xs:text-[16px] md:text-[22px]  font-osr font-bold">
               &#43;
             </span>
-            <span className="xs:text-xs md:text-sm font-osr  ">Create New</span>
+            <span className="xs:text-xs md:text-sm font-osr  ">
+              Create User
+            </span>
           </button>
         </div>
       </div>
