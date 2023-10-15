@@ -39,14 +39,12 @@ const Address = lazy(() => import("./page/Profile/Address"));
 // import WhiteList from "./page/Profile/WhiteList";
 // import Address from "./page/Profile/Address";
 // import DashboardLayout from "./layout/DashboardLayout";
-import UserCMS from "./page/CMS/User/UserCMS";
-import DashBoardProduct from "./page/CMS/Product";
-import DashboardUser from "./page/CMS/User";
 import DashboardFile from "./page/CMS/File";
-import DashboardTeam from "./page/CMS/Team";
 import DashboardImage from "./page/CMS/ImageProduct";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import DashboardUser from "./page/CMS/User";
+import DashBoardProduct from "./page/CMS/Product";
 function App() {
   return (
     <Provider store={store}>
@@ -76,7 +74,7 @@ function App() {
               <Route index element={<DashboardUser />} />
               <Route path={PATHS.CMS.PRODUCT} element={<DashBoardProduct />} />
               <Route path={PATHS.CMS.IMAGE} element={<DashboardImage />} />
-              <Route path={PATHS.CMS.TEAM} element={<DashboardTeam />} />
+              <Route path={PATHS.CMS.USER} element={<DashboardUser />} />
               <Route path={PATHS.CMS.FILE} element={<DashboardFile />} />
             </Route>
           </Routes>

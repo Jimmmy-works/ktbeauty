@@ -3,8 +3,8 @@ const plugin = require("tailwindcss/plugin");
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   presets: [],
-  darkMode: "media", // or 'class',
   important: true,
+  darkMode: "media", // or 'class',
   theme: {
     accentColor: ({ theme }) => ({
       ...theme("colors"),

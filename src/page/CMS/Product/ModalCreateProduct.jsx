@@ -1,11 +1,11 @@
-import Button from "@/components/Button";
 import { firebaseStorage, firebaseStore } from "@/config/firebase";
 import { Modal, Rate, message } from "antd";
 import { addDoc, collection, doc, getDocs } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React, { useEffect, useState } from "react";
-import useDashboard from "./useDashboard";
-const ModalProduct = ({ open, cancel, add, messageAndt }) => {
+import useDashboard from "../useDashboard";
+import { MODAL_OPTION } from "@/utils/const";
+const ModalCreateProduct = ({ open, cancel, add, messageAndt }) => {
   const { modalProps } = useDashboard();
   const { getFirebaseStore } = modalProps || {};
   const [descIntro, setDescIntro] = useState("");
@@ -82,7 +82,7 @@ const ModalProduct = ({ open, cancel, add, messageAndt }) => {
     /// upload Image from onchange input files
     uploadImages(allImages);
   };
-  const handleOk = async () => {
+  const handleCreateProduct = async () => {
     const initialState = {
       title: title,
       price: price,
@@ -97,9 +97,6 @@ const ModalProduct = ({ open, cancel, add, messageAndt }) => {
       image: [],
     };
     try {
-      /// add card with convert from files to URL fisebase
-      await addDoc(productCollectionRef, { ...initialState, image: URLs });
-      getFirebaseStore();
       setPrice("");
       setTitle("");
       setBrand("");
@@ -119,14 +116,13 @@ const ModalProduct = ({ open, cancel, add, messageAndt }) => {
       console.log("error", error);
     }
   };
-  console.log("images", images);
   return (
     <>
       <Modal
         className="dashboard-modal"
-        onOk={handleOk}
+        onOk={handleCreateProduct}
         onCancel={cancel}
-        open={open}
+        open={open === MODAL_OPTION.PRODUCT}
         okButtonProps={{ className: "custom-button-ok" }}
         cancelButtonProps={{ className: "custom-button-cancel" }}
       >
@@ -298,4 +294,4 @@ const ModalProduct = ({ open, cancel, add, messageAndt }) => {
   );
 };
 
-export default ModalProduct;
+export default ModalCreateProduct;

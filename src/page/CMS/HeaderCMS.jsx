@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
-import { Modal } from "antd";
+import { Modal, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ModalProduct from "./ModalProduct";

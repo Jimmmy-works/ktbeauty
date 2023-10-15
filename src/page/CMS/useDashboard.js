@@ -3,16 +3,22 @@ import { v4 as uuidv4 } from "uuid";
 import { useLocation } from "react-router-dom";
 import { firebaseStore } from "@/config/firebase";
 import { collection, getDocs } from "firebase/firestore";
+import useWindowSize from "@/utils/windowResize";
 const useDashboard = () => {
+  /// window size
+  const { width } = useWindowSize();
+
   ///// Modal
   const [openModalAndt, setOpenModalAndt] = useState(false);
   const [productList, setProductList] = useState([]);
   const [userList, setUserList] = useState([]);
-  const onShowModal = () => {
-    setOpenModalAndt(true);
+  const [toggleSidebar, setToggleSidebar] = useState(false);
+  const [toggleInputSearch, setToggleInputSearch] = useState(false);
+  const onShowModal = (id) => {
+    setOpenModalAndt(id);
   };
-  const onCloseModal = () => {
-    setOpenModalAndt(false);
+  const onCloseModal = (id) => {
+    setOpenModalAndt(id);
   };
   const onAddProduct = (payload) => {
     setProductList([...productList, payload]);
@@ -62,14 +68,16 @@ const useDashboard = () => {
         ...doc.data(),
         id: doc.id,
       }));
-      return setProductList(filterData);
+      setProductList(filterData);
+      return filterData;
     } catch (error) {
       console.log("error", error);
     }
   };
   useEffect(() => {
     getFirebaseStore();
-  }, [JSON.stringify(productCollectionRef)]);
+  }, []);
+
   useEffect(() => {
     setPath(pathname);
   }, [pathname, findPath]);
@@ -83,6 +91,11 @@ const useDashboard = () => {
     findPath,
     pathCMS,
     getFirebaseStore,
+    toggleSidebar,
+    setToggleSidebar,
+    toggleInputSearch,
+    setToggleInputSearch,
+    width,
   };
   return { modalProps };
 };
