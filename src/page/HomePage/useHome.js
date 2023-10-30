@@ -1,15 +1,13 @@
 import { CATEGORIES_OPTIONS, FEATURED_OPTIONS } from "@/contants/general";
-import {
-  getAllCategories,
-  getAllProduct,
-} from "@/store/reducer/productReducer";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const useHome = () => {
   //// redux
   const dispatch = useDispatch();
-  const { products, categories } = useSelector((state) => state.product);
+  const { products, categories, statusGetProduct } = useSelector(
+    (state) => state.product
+  );
   /// categoryProps
   const [categoryTab, setCategoryTab] = useState(CATEGORIES_OPTIONS.FACE);
   const onChangeCategoryTab = (tab) => {
@@ -26,12 +24,18 @@ const useHome = () => {
     categoryTab,
     categories,
     products,
+    statusGetProduct,
   };
   // useEffect(() => {
   //   dispatch(getAllProduct());
   //   dispatch(getAllCategories());
   // }, []);
-  const featuredProps = { onChangeFeaturedTab, featuerdTab, products };
+  const featuredProps = {
+    onChangeFeaturedTab,
+    featuerdTab,
+    products,
+    statusGetProduct,
+  };
   const categoryProps = { onChangeCategoryTab, categoryTab };
   return { featuredProps, showcaseProductProps };
 };

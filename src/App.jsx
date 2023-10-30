@@ -2,7 +2,6 @@ import { useState } from "react";
 import "./tailwind.scss";
 import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
-import LoadingPage from "./components/LoadingPage";
 import { PATHS } from "./contants/path";
 
 const MainLayout = lazy(() => import("./layout/MainLayout"));
@@ -46,6 +45,7 @@ import { Provider } from "react-redux";
 import DashboardUser from "./page/CMS/User";
 import DashBoardProduct from "./page/CMS/Product";
 import store from "./store";
+import LoadingPage from "./components/Loading/LoadingPage";
 function App() {
   return (
     <Provider store={store}>

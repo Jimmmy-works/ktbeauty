@@ -28,7 +28,7 @@ const ProductCard = ({
     return (
       <div className={`card  ${className ?? ""} transition-all duration-400  `}>
         <Link
-          to={PATHS.SHOP.DETAIL}
+          to={`${PATHS.SHOP.INDEX}/${item?._id}`}
           className="block relative h-0 pb-[100%] group/img overflow-hidden"
         >
           <img
@@ -114,7 +114,7 @@ const ProductCard = ({
         </Link>
         <div className="pt-[20px]">
           <Link
-            to={PATHS.SHOP.DETAIL}
+            to={`${PATHS.SHOP.INDEX}/${item?._id}`}
             className="font-osb text-[15px] uppercase text-black-555 
                     leading-[18px] truncate whitespace-normal line-clamp-2 hover:text-primary
                     duration-400 transition-colors min-h-[36px]"
@@ -137,7 +137,7 @@ const ProductCard = ({
       } transition-all duration-400`}
     >
       <Link
-        to={PATHS.SHOP.DETAIL}
+        to={`${PATHS.SHOP.INDEX}/${item?._id}`}
         className={`block relative h-0 pb-[100%] ${
           image?.length > 1 ? "double-img" : ""
         } group/img overflow-hidden shine`}
@@ -186,7 +186,7 @@ const ProductCard = ({
       </Link>
       <div className="text-center p-[20px_12px_14px]">
         <Link
-          to={PATHS.SHOP.DETAIL}
+          to={`${PATHS.SHOP.INDEX}/${item?._id}`}
           className="font-osb text-sm uppercase text-black-555 
                     leading-[18px] truncate whitespace-normal line-clamp-2 hover:text-primary
                     duration-400 transition-colors  min-h-[36px]"

@@ -3,7 +3,14 @@ import { FEATURED_OPTIONS } from "@/contants/general";
 import ProductCard from "@/components/ProductCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard, Navigation } from "swiper/modules";
-const Featured = ({ onChangeFeaturedTab, featuerdTab, products }) => {
+import { THUNK_STATUS } from "@/contants/thunkstatus";
+import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
+const Featured = ({
+  onChangeFeaturedTab,
+  featuerdTab,
+  products,
+  statusGetProduct,
+}) => {
   return (
     <section className="scfeatured mt-section  bg-[#333] lg:py-[80px] md:py-[60px] xs:py-[50px]">
       <div className="container">
@@ -103,11 +110,19 @@ const Featured = ({ onChangeFeaturedTab, featuerdTab, products }) => {
                     key={`${item?._id}`}
                     className="swiperFeatured__wrapper-item "
                   >
-                    <ProductCard
-                      isProductDetail
-                      className={`item`}
-                      item={item}
-                    />
+                    {statusGetProduct ? (
+                      <ProductCard
+                        isProductDetail
+                        className={`item`}
+                        item={item}
+                      />
+                    ) : (
+                      <LoadingSkeleton
+                        isArray={1}
+                        isLoading={statusGetProduct}
+                        isParagraph={3}
+                      />
+                    )}
                   </SwiperSlide>
                 );
               })}

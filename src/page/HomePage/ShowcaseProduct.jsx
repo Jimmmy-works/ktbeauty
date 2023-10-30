@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
 import ProductCard from "@/components/ProductCard";
 import Textbox from "@/components/Textbox";
 import { CATEGORIES_OPTIONS } from "@/contants/general";
@@ -11,6 +12,7 @@ const ShowcaseProduct = ({
   categoryTab,
   products,
   categories,
+  statusGetProduct,
 }) => {
   return (
     <section className="scshowcaseproduct pt-section">
@@ -105,7 +107,15 @@ const ShowcaseProduct = ({
                 products.map((item, index) => {
                   return (
                     <SwiperSlide key={`${item?._id}`}>
-                      <ProductCard className={`item`} item={item} />
+                      {statusGetProduct ? (
+                        <ProductCard className={`item`} item={item} />
+                      ) : (
+                        <LoadingSkeleton
+                          isArray={1}
+                          isLoading={statusGetProduct}
+                          isParagraph={3}
+                        />
+                      )}
                     </SwiperSlide>
                   );
                 })}

@@ -185,7 +185,7 @@ const Header = () => {
                         $300
                       </p>
                       <button
-                        className=" block font-om text-sm   hover:text-red-500
+                        className=" block font-om text-sm mt-[6px]  hover:text-red-500
                       text-black-555 transition-all duration-400 "
                       >
                         Xóa

@@ -14,6 +14,8 @@ import useWindowSize from "@/utils/windowResize";
 import InputRange from "@/components/Input/InputRange";
 import { useSelector } from "react-redux";
 import AccordionM from "@/components/Accordion/index.jsx";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
+import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
 
 const Shop = () => {
   const {
@@ -26,7 +28,9 @@ const Shop = () => {
     setIsFilter,
     categories,
     products,
+    statusGetProduct,
   } = useShop();
+
   const { width } = useWindowSize();
   return (
     <main className="main-wrapper">
@@ -38,6 +42,7 @@ const Shop = () => {
           <Link>Shop</Link>
         </BreadCrumb.Item>
       </BreadCrumb>
+
       <div className="container flex lg:flex-row xs:flex-col gap-[30px]">
         <aside
           className="sidebar-shop xs:w-full lg:max-w-[265px] lg:w-1/4 border-r-[5px] 
@@ -53,6 +58,7 @@ const Shop = () => {
             />
           </div>
         </aside>
+
         <div className="w-full ">
           <div
             className="flex items-center justify-between xs:py-[16px] md:py-[24px] mb-[30px] border-b 
@@ -88,21 +94,31 @@ const Shop = () => {
               <SelectCustom />
             </div>
           </div>
-          <div
-            className="flex items-center flex-wrap  xs:gap-y-[20px] xs:gap-x-[14px] md:gap-[20px] 
+          {statusGetProduct === THUNK_STATUS.fulfilled ? (
+            <div
+              className="flex items-center flex-wrap  xs:gap-y-[20px] xs:gap-x-[14px] md:gap-[20px] 
           lg:gap-[30px] mb-[30px]"
-          >
-            {products.map((item) => {
-              return (
-                <ProductCard
-                  key={`${item?._id}`}
-                  className={` xs:w-[calc(50%-7px)] md:w-[calc(50%-10px)] lg:w-[calc(33.333333%-20px)]`}
-                  item={item}
-                  isProductDetail={true}
-                />
-              );
-            })}
-          </div>
+            >
+              {products.map((item) => {
+                return (
+                  <ProductCard
+                    key={`${item?._id}`}
+                    className={` xs:w-[calc(50%-7px)] md:w-[calc(50%-10px)] lg:w-[calc(33.333333%-20px)]`}
+                    item={item}
+                    isProductDetail={true}
+                  />
+                );
+              })}
+            </div>
+          ) : (
+            <LoadingSkeleton
+              isClassName={`mb-[30px]`}
+              isImageStyle={{ height: "350px" }}
+              isLoading={statusGetProduct}
+              isParagraph={5}
+              isArray={1}
+            />
+          )}
           <Pagination />
         </div>
       </div>

@@ -7,6 +7,7 @@ const ImageZoom = ({
   magnifierHeight = 100,
   magnifierWidth = 100,
   zoomLevel = 2,
+  classNameImg,
 }) => {
   const [[x, y], setXY] = useState([0, 0]);
   const [[imgWidth, imgHeight], setSize] = useState([0, 0]);
@@ -31,13 +32,20 @@ const ImageZoom = ({
   const onMouseLeave = () => {
     setShowMagnifier(false);
   };
+
   return (
     <div
-      className={`relative pb-[100%] h-0 overflow-hidden h-[${height}] w-[${width}]`}
+      className={`relative pb-[100%] h-0 overflow-hidden h-[${height}] w-[${width}] ${
+        classNameImg ?? ""
+      }`}
     >
       <img
         className="object-cover center-absolute w-full h-full cursor-zoom-in"
-        src={src}
+        src={src || `assets/img/error.png`}
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = "/assets/img/error.png";
+        }}
         style={{ height: height, width: width }}
         onMouseEnter={onMouseEnter}
         onMouseMove={onMouseMove}

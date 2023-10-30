@@ -11,7 +11,6 @@ const NavbarFilter = ({ onToggleFilter, data, isFilter, setIsFilter }) => {
       setIsFilter(false);
     }
   }, [width]);
-  console.log("data", data);
   return (
     <div
       className={`fixed h-screen w-screen bg-white top-0 left-0 z-[10000] transition-all duration-[400ms] ease-linear
