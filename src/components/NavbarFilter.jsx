@@ -2,15 +2,16 @@ import React, { useEffect } from "react";
 import Accordion from "./Accordion";
 import useWindowSize from "@/utils/windowResize";
 import InputRange from "./Input/InputRange";
+import AccordionM from "@/components/Accordion/index.jsx";
 
-const NavbarFilter = ({ onToggleFilter, options, isFilter, setIsFilter }) => {
+const NavbarFilter = ({ onToggleFilter, data, isFilter, setIsFilter }) => {
   const { width } = useWindowSize();
   useEffect(() => {
     if (width >= 1024) {
       setIsFilter(false);
     }
   }, [width]);
-  console.log("options", options);
+  console.log("data", data);
   return (
     <div
       className={`fixed h-screen w-screen bg-white top-0 left-0 z-[10000] transition-all duration-[400ms] ease-linear
@@ -41,14 +42,11 @@ const NavbarFilter = ({ onToggleFilter, options, isFilter, setIsFilter }) => {
         </div>
 
         <div className="w-full p-[20px] flex flex-col">
-          {options?.map((item, index) => {
-            return (
-              <Accordion key={`${item}${index}`} item={item} index={index} />
-            );
-          })}
-          <div className="mt-[40px]">
-            <InputRange />
-          </div>
+          <AccordionM heading={`Danh mục sản phẩm`} data={data} />
+          <AccordionM
+            heading={`Lọc sản phảm theo giá`}
+            renderProps={() => <InputRange />}
+          />
         </div>
       </div>
     </div>

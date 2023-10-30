@@ -1,8 +1,7 @@
 const BLOG_PATH = "/blog";
 const SHOP_PATH = "/shop";
 const PROFILE_PATH = "/profile";
-const CMS__PATH = "/cms";
-
+const CMS_PATH = "/cms";
 export const PATHS = {
   HOME: "/",
   ABOUT: "/about",
@@ -22,12 +21,13 @@ export const PATHS = {
     DETAIL: SHOP_PATH + "/:slug",
   },
   CMS: {
-    INDEX: CMS__PATH,
-    PRODUCT: `${CMS__PATH}/product`,
-    IMAGE: `${CMS__PATH}/image`,
-    USER: `${CMS__PATH}/user`,
-    FILE: `${CMS__PATH}/file`,
+    INDEX: CMS_PATH,
+    PRODUCT: `${CMS_PATH}/product`,
+    IMAGE: `${CMS_PATH}/image`,
+    USER: `${CMS_PATH}/user`,
+    FILE: `${CMS_PATH}/file`,
   },
+
   CHECKOUT: "/checkout",
   CART: "/cart",
   COMPLETE: "/complete" + "/:slug",

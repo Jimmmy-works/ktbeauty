@@ -4,10 +4,24 @@ export const FEATURED_OPTIONS = {
   POPULAR: "popular",
 };
 export const CATEGORIES_OPTIONS = {
-  LIPSTICK: "lipstick",
-  EYESHADOW: "eyeshadow",
-  MASCARA: "mascara",
-  EYELINER: "eyeliner",
-  CHEER: "cheer",
-  NAIL: "nail",
+  OTHER: "other",
+  SUPPLEMENT: "supplement",
+  BODY: "body",
+  SKIN: "skin",
+  FACE: "face",
+};
+export const NAV_OPTION = {
+  SHOP: "shop",
+  BLOG: "blog",
+};
+export const MODAL_OPTION = {
+  USER: {
+    INDEX: "user",
+    AVATAR: "user-avatar",
+  },
+  PRODUCT: "product",
+};
+export const SELECT_TOKEN = {
+  token: "access_token",
+  refreshToken: "refresh_token",
 };

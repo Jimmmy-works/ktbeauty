@@ -9,7 +9,7 @@ import Advertising from "./Advertising";
 import Testermonial from "./Testermonial";
 
 const HomePage = () => {
-  const { featuredProps, categoryProps } = useHome();
+  const { featuredProps, showcaseProductProps } = useHome();
 
   return (
     <main className="text-3xl text-green-400">
@@ -18,7 +18,7 @@ const HomePage = () => {
       <Featured {...featuredProps} />
       <Brand />
       <Countdown />
-      <ShowcaseProduct {...categoryProps} />
+      <ShowcaseProduct {...showcaseProductProps} />
     </main>
   );
 };

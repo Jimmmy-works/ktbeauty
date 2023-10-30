@@ -1,17 +1,22 @@
-import { Button, Modal, Table, Upload } from "antd";
-import React, { useState } from "react";
+import { Button, Modal, Popconfirm, Table, Upload, message } from "antd";
+import React, { useEffect, useState } from "react";
 import ModalCreateUser from "./ModalCreateUser";
 import useDashboard from "../useDashboard";
-import { MODAL_OPTION } from "@/utils/const";
+import { MODAL_OPTION } from "@/contants/general";
+
 import ModalUpdateAvatar from "./ModalUpdateAvatar";
 import styled from "styled-components";
+import { clearAllListeners } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllUsers } from "@/store/reducer/dashboardReducer";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
 const TableCustom = styled.div`
   .ant-table-cell {
     vertical-align: middle;
   }
 `;
 const DashboardUser = () => {
-  const { modalProps } = useDashboard();
+  const { modalProps, userProps } = useDashboard();
   const {
     findPath,
     onShowModal,
@@ -21,15 +26,35 @@ const DashboardUser = () => {
     toggleSidebar,
     width,
   } = modalProps || {};
+  const dispatch = useDispatch();
+  const { users } = useSelector((state) => state.dashboard);
+  const { onDeleteUser, onCreateUser } = userProps || {};
   const columns = [
+    {
+      title: "Number",
+      dataIndex: "number",
+      align: "center",
+    },
     {
       title: "Avatar",
       dataIndex: "avatar",
       align: "center",
+      render: () => (
+        <a
+          className={`text-[24px] cursor-pointer duration-400 transition-colors
+                         hover:text-[#033C73] hover:border-[#033C73] rounded-[50%] 
+                         flex items-end justify-center `}
+        >
+          <img
+            className="rounded-[50%] h-[60px] w-[60px] border-solid border-[1px] border-black-ebe "
+            src={`/assets/img/avartar.png`}
+          />
+        </a>
+      ),
     },
     {
       title: "UserID",
-      dataIndex: "userid",
+      dataIndex: "_id",
       align: "center",
     },
     {
@@ -38,8 +63,8 @@ const DashboardUser = () => {
       align: "center",
     },
     {
-      title: "Password",
-      dataIndex: "password",
+      title: "Phone",
+      dataIndex: "phone",
       align: "center",
     },
 
@@ -49,42 +74,49 @@ const DashboardUser = () => {
       align: "center",
     },
   ];
-  const data = [];
-  for (let i = 0; i < 46; i++) {
-    data.push({
-      key: i,
-      userid:
+  const data = users.map((user, index) => {
+    return {
+      key: `${user?._id}${index}`,
+      number:
         width >= 768 ? (
-          `admin${i}abc`
+          `${index + 1}`
         ) : (
           <strong className="text-sm font-osr font-semibold ">
-            Id:{" "}
-            <span className="text-sm font-osr font-normal ml-[4px]">{`admin${i}abc`}</span>
+            Key:
+            <span className="text-sm font-osr font-normal ml-[4px]">{`${user?._id}`}</span>
+          </strong>
+        ),
+      _id:
+        width >= 768 ? (
+          `${user?._id}`
+        ) : (
+          <strong className="text-sm font-osr font-semibold ">
+            Id:
+            <span className="text-sm font-osr font-normal ml-[4px]">{`${user?._id}`}</span>
           </strong>
         ),
       email:
         width >= 768 ? (
-          `email${i}@gmail.com`
+          `${user?.email}`
         ) : (
-          <strong className="text-sm font-osr font-semibold ">
+          <strong className="text-sm font-osr font-semibold">
             Email:
-            <span className="text-sm font-osr font-normal ml-[4px]">{`email${i}@gmail.com`}</span>
+            <span className="text-sm font-osr font-normal ml-[4px]">{`${user?.email}`}</span>
           </strong>
         ),
-      password:
+      phone:
         width >= 768 ? (
-          `password *** ${i}`
+          `${user?.phone} `
         ) : (
           <strong className="text-sm font-osr font-semibold ">
-            Password:
-            <span className="text-sm font-osr font-normal ml-[4px]">{`password *** ${i}`}</span>
+            Phone:
+            <span className="text-sm font-osr font-normal ml-[4px]">{`${user?.phone}`}</span>
           </strong>
         ),
       avatar: (
         <a
-          key={i}
           className={`text-[24px] cursor-pointer duration-400 transition-colors
-                         hover:text-[#033C73] hover:border-[#033C73] rounded-[50%] 
+                         hover:text-[#033C73] hover:border-[#033C73] rounded-[50%]
                          flex items-end justify-center `}
         >
           <img
@@ -106,27 +138,41 @@ const DashboardUser = () => {
               className="border-solid border-slate-400 border p-[6px_12px] text-sm duration-400 transition-colors
                 hover:bg-slate-400 hover:text-white"
             >
-              Edit Avatar
+              Avatar
             </button>
-            <button
-              className="border-solid border-red-500 border p-[6px_12px] text-sm duration-400 transition-colors
-                hover:bg-red-500 hover:text-white"
+            <Popconfirm
+              title="Bạn có muốn xóa?"
+              onConfirm={() => onConfirmDelete(user?._id)}
+              onCancel={null}
+              okText="Yes"
+              cancelText="No"
+              okButtonProps={{ className: "custom-button-ok" }}
+              cancelButtonProps={{ className: "custom-button-cancel" }}
             >
-              Delete
-            </button>
+              <button
+                className="border-solid border-red-500 border p-[6px_12px] text-sm duration-400 transition-colors
+                hover:bg-red-500 hover:text-white"
+              >
+                Delete
+              </button>
+            </Popconfirm>
           </div>
         </>
       ),
-    });
-  }
+    };
+  });
+  console.log("users", users);
+  ///// Confirm
+  const onConfirmDelete = (id) => {
+    onDeleteUser(id);
+  };
+  /// handle selected
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
   const rowSelection = {
     selectedRowKeys,
-
     onChange: onSelectChange,
     selections: [
       Table.SELECTION_INVERT,
@@ -134,6 +180,15 @@ const DashboardUser = () => {
       Table.SELECTION_ALL,
     ],
   };
+  const filterUsers = data?.filter((item) => {
+    return selectedRowKeys.indexOf(item.key) !== -1;
+  });
+  const handleDeleteUserSelected = () => {
+    for (let index = 0; index < filterUsers.length; index++) {
+      onDeleteUser(filterUsers[index]?._id);
+    }
+  };
+
   return (
     <TableCustom className="table__dashboard-user">
       <ModalUpdateAvatar
@@ -148,6 +203,7 @@ const DashboardUser = () => {
         open={openModalAndt}
         add={onAddProduct}
         setShowModal={onShowModal}
+        onCreateUser={onCreateUser}
         cancel={onCloseModal}
       />
       <div
@@ -166,6 +222,7 @@ const DashboardUser = () => {
           <button
             className=" bg-[#b05a4b] text-white rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
           flex items-center gap-1 hover:bg-[#f84e4e] xs:p-[8px]"
+            onClick={handleDeleteUserSelected}
           >
             <span className="xs:text-xs md:text-sm font-osr  ">
               Delete Seleted

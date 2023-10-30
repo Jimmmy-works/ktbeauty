@@ -1,4 +1,5 @@
 import { useMainContext } from "@/components/MainContext";
+import { NAV_OPTION } from "@/contants/general";
 import { PATHS } from "@/contants/path";
 import useWindowSize from "@/utils/windowResize";
 
@@ -7,32 +8,34 @@ import { Link, useLocation } from "react-router-dom";
 
 const Nav = () => {
   const { pathname } = useLocation();
-  const { isNavbar, setIsNavbar } = useMainContext();
-  const [dropDown, setDropDown] = useState(false);
-  const [controlSubNav, setControlSubNav] = useState("");
+  const {
+    isNavbar,
+    setIsNavbar,
+    dropDownNav,
+    controlSubNav,
+    onShowSubNav,
+    onCloseSubNav,
+  } = useMainContext();
   const { width } = useWindowSize();
+
   useEffect(() => {
     setIsNavbar(false);
+    onCloseSubNav();
   }, [pathname]);
-
   useEffect(() => {
     if (width > 1024) {
       setIsNavbar(false);
-      setDropDown(false);
+      onCloseSubNav();
     }
   }, [width]);
-  const onDropDown = (e) => {
-    let target = e.target;
-    if (target?.getAttribute("id")) {
-      setControlSubNav(target?.getAttribute("id"));
-      setDropDown(!dropDown);
-    }
+  const onDropDown = (id) => {
+    onShowSubNav((prev) => (prev === id ? "" : id));
   };
   return (
     <nav
       className={`nav  ${
         isNavbar ? "translate-x-0" : "-translate-x-[100%]"
-      } duration-300  transition-transform`}
+      } duration-200  transition-transform`}
     >
       <div className="nav__inner">
         <ul className="nav__inner-list">
@@ -55,11 +58,14 @@ const Nav = () => {
           <li className="item">
             <Link to={PATHS.HOME}>HOME</Link>
           </li>
-          <li className="item has-sub  relative" onClick={onDropDown}>
-            <div className="item__wrap" id="blog-sub">
+          <li
+            className="item relative"
+            onClick={() => onDropDown(NAV_OPTION.BLOG)}
+          >
+            <div className="item__wrap has-sub">
               <Link
                 className={` ${
-                  dropDown && controlSubNav === "blog-sub"
+                  dropDownNav && controlSubNav === NAV_OPTION.BLOG
                     ? "text-primary"
                     : "text-white"
                 }`}
@@ -69,15 +75,15 @@ const Nav = () => {
               </Link>
               <div
                 className={`arrow-down ${
-                  dropDown && controlSubNav === "blog-sub"
-                    ? "rotate-[180deg]"
+                  dropDownNav && controlSubNav === NAV_OPTION.BLOG
+                    ? "rotate-[-90deg]"
                     : "rotate-0"
                 }`}
               >
                 <svg className="w-3 h-3" viewBox="0 0 1024 1024">
                   <path
                     className={`duration-400 transition-colors ${
-                      dropDown && controlSubNav === "blog-sub"
+                      dropDownNav && controlSubNav === NAV_OPTION.BLOG
                         ? "fill-primary"
                         : "fill-white"
                     }`}
@@ -89,7 +95,7 @@ const Nav = () => {
             </div>
             <div
               className={`item__sub ${
-                dropDown && controlSubNav === "blog-sub"
+                dropDownNav && controlSubNav === NAV_OPTION.BLOG
                   ? "visible opacity-100"
                   : "invisible opacity-0"
               }`}
@@ -111,11 +117,14 @@ const Nav = () => {
               </ul>
             </div>
           </li>
-          <li className="item has-sub relative" onClick={onDropDown}>
-            <div className="item__wrap" id="shop-sub">
+          <li
+            className="item  relative"
+            onClick={() => onDropDown(NAV_OPTION.SHOP)}
+          >
+            <div className="item__wrap has-sub">
               <Link
                 className={` ${
-                  dropDown && controlSubNav === "shop-sub"
+                  dropDownNav && controlSubNav === NAV_OPTION.SHOP
                     ? "text-primary"
                     : "text-white"
                 }`}
@@ -125,15 +134,15 @@ const Nav = () => {
               </Link>
               <div
                 className={`arrow-down ${
-                  dropDown && controlSubNav === "shop-sub"
-                    ? "rotate-[180deg]"
+                  dropDownNav && controlSubNav === NAV_OPTION.SHOP
+                    ? "rotate-[-90deg]"
                     : "rotate-0"
                 }`}
               >
                 <svg className="w-3 h-3" viewBox="0 0 1024 1024">
                   <path
                     className={`duration-400 transition-colors ${
-                      dropDown && controlSubNav === "shop-sub"
+                      dropDownNav && controlSubNav === NAV_OPTION.SHOP
                         ? "fill-primary"
                         : "fill-white"
                     }`}
@@ -145,7 +154,7 @@ const Nav = () => {
             </div>
             <div
               className={`item__sub ${
-                dropDown && controlSubNav === "shop-sub"
+                dropDownNav && controlSubNav === NAV_OPTION.SHOP
                   ? "visible opacity-100"
                   : "invisible opacity-0"
               }`}

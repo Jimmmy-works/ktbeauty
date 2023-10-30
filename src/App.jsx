@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "./tailwind.scss";
 import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
-import { PATHS } from "./contants/path";
 import { Suspense, lazy } from "react";
 import LoadingPage from "./components/LoadingPage";
+import { PATHS } from "./contants/path";
 
 const MainLayout = lazy(() => import("./layout/MainLayout"));
 const HomePage = lazy(() => import("./page/HomePage"));
@@ -38,18 +38,20 @@ const Address = lazy(() => import("./page/Profile/Address"));
 // import Order from "./page/Profile/Order";
 // import WhiteList from "./page/Profile/WhiteList";
 // import Address from "./page/Profile/Address";
+
 // import DashboardLayout from "./layout/DashboardLayout";
 import DashboardFile from "./page/CMS/File";
 import DashboardImage from "./page/CMS/ImageProduct";
 import { Provider } from "react-redux";
-import { store } from "./store";
 import DashboardUser from "./page/CMS/User";
 import DashBoardProduct from "./page/CMS/Product";
+import store from "./store";
 function App() {
   return (
     <Provider store={store}>
       <Suspense fallback={<LoadingPage />}>
         <BrowserRouter>
+          <Routes></Routes>
           <Routes>
             <Route path={PATHS.HOME} element={<MainLayout />}>
               <Route index element={<HomePage />} />

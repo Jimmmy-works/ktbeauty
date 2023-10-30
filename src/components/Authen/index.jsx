@@ -4,17 +4,26 @@ import Login from "./Login";
 import { useMainContext } from "../MainContext";
 
 const AuthenModal = () => {
-  const { onLogin, onRegister, onAuthenModal, isAuthenModal, controlAuthen } =
-    useMainContext();
+  const {
+    onOpenLogin,
+    onOpenRegister,
+    onAuthenModal,
+    isAuthenModal,
+    controlAuthen,
+    onLogin,
+    onRegister,
+  } = useMainContext();
   const loginProps = {
     controlAuthen,
-    onRegister,
+    onOpenRegister,
     onAuthenModal,
+    onLogin,
   };
   const registerProps = {
-    onLogin,
+    onOpenLogin,
     controlAuthen,
     onAuthenModal,
+    onRegister,
   };
   return (
     <div
@@ -25,7 +34,7 @@ const AuthenModal = () => {
      }`}
     >
       <div
-        className={`login__inner  flex items-center justify-center h-full w-full center-absolute z-[1002] bg-transparent
+        className={` flex items-center justify-center h-full w-full center-absolute z-[1002] bg-transparent
           overflow-hidden `}
       >
         <div

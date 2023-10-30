@@ -28,16 +28,13 @@ const Countdown = () => {
       <div className="container flex lg:flex-row xs:flex-col lg:gap-0 gap-7 items-center justify-between">
         <div className="sccountdown__left x:w-full md:w-1/2 text-center ">
           <h3
-            className="sccountdown__left-heading text-md text-white font-mab uppercase mb-[20px]
+            className="sccountdown__left-heading text-[24px] text-white font-mab uppercase mb-[20px]
             relative w-fit mx-auto before:absolute before:bg-primary  before:-bottom-2 before:-left-0
             before:w-full before:h-[5px]"
           >
             sale up to 40%
           </h3>
-          <p
-            className="sccountdown__left-title text-lg text-white font-gvr mb-[20px] truncate
-          line-clamp-3 whitespace-normal "
-          >
+          <p className="sccountdown__left-title text-md leading-[24px] text-white font-om mb-[20px]  ">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae
             eos provident aspernatur quidem consequuntur ex voluptatem officia
             amet. Consectetur.

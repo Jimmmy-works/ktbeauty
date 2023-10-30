@@ -22,11 +22,9 @@ const CartPage = () => {
   };
   const onIncrease = () => {
     const value = modifyValue(Number(renderValue) + Number(1));
-    console.log("1", value);
     setRenderValue(value);
   };
   const onDecrease = () => {
-    console.log("22", 22);
     const value = modifyValue(Number(renderValue) - Number(1));
     setRenderValue(value);
   };

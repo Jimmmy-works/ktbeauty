@@ -1,4 +1,4 @@
-import { MODAL_OPTION } from "@/utils/const";
+import { MODAL_OPTION } from "@/contants/general";
 import { Modal } from "antd";
 import React, { useState } from "react";
 
@@ -17,7 +17,6 @@ const ModalUpdateAvatar = ({
   const handleChangeAvatar = () => {
     cancel();
   };
-  console.log("avatar", avatar);
   return (
     <Modal
       className="dashboard-modal"

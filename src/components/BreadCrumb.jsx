@@ -4,7 +4,7 @@ const BreadCrumb = ({ children, className }) => {
   return (
     <div
       className={`breadcrumb 
-      ${className}`}
+      ${className ?? ""}`}
     >
       <div className="container">
         <ol className="breadcrumb__list ">{children}</ol>

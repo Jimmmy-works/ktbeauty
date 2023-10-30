@@ -6,18 +6,12 @@ import React, { useRef, useState } from "react";
 import { Navigation, Keyboard } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-const ShowcaseProduct = ({ onChangeCategoryTab, categoryTab }) => {
-  const images = [
-    "/assets/img/product-9.jpg",
-    "/assets/img/product-8.jpg",
-    "/assets/img/product-7.jpg",
-    "/assets/img/product-6.jpg",
-    "/assets/img/product-5.jpg",
-    "/assets/img/product-4.jpg",
-    "/assets/img/product-3.jpg",
-    "/assets/img/product-2.jpg",
-    "/assets/img/product-1.jpg",
-  ];
+const ShowcaseProduct = ({
+  onChangeCategoryTab,
+  categoryTab,
+  products,
+  categories,
+}) => {
   return (
     <section className="scshowcaseproduct pt-section">
       <div className="container">
@@ -26,62 +20,21 @@ const ShowcaseProduct = ({ onChangeCategoryTab, categoryTab }) => {
             className="scshowcaseproduct__top-category flex items-center justify-center gap-3
           lg:flex-nowrap xs:flex-wrap"
           >
-            <Button
-              variant="outline"
-              className={`py-[5px] px-[10px] `}
-              isActive={
-                categoryTab === CATEGORIES_OPTIONS.LIPSTICK ? true : false
-              }
-              onClick={() => onChangeCategoryTab(CATEGORIES_OPTIONS.LIPSTICK)}
-            >
-              Lipstick
-            </Button>
-            <Button
-              variant="outline"
-              className={`py-[5px] px-[10px] `}
-              isActive={
-                categoryTab === CATEGORIES_OPTIONS.EYESHADOW ? true : false
-              }
-              onClick={() => onChangeCategoryTab(CATEGORIES_OPTIONS.EYESHADOW)}
-            >
-              Eye Shadow
-            </Button>
-            <Button
-              variant="outline"
-              className={`py-[5px] px-[10px] `}
-              isActive={
-                categoryTab === CATEGORIES_OPTIONS.MASCARA ? true : false
-              }
-              onClick={() => onChangeCategoryTab(CATEGORIES_OPTIONS.MASCARA)}
-            >
-              Mascara
-            </Button>
-            <Button
-              variant="outline"
-              className={`py-[5px] px-[10px] `}
-              isActive={
-                categoryTab === CATEGORIES_OPTIONS.EYELINER ? true : false
-              }
-              onClick={() => onChangeCategoryTab(CATEGORIES_OPTIONS.EYELINER)}
-            >
-              Eyeliner
-            </Button>
-            <Button
-              variant="outline"
-              className={`py-[5px] px-[10px] `}
-              isActive={categoryTab === CATEGORIES_OPTIONS.CHEER ? true : false}
-              onClick={() => onChangeCategoryTab(CATEGORIES_OPTIONS.CHEER)}
-            >
-              Cheer color
-            </Button>
-            <Button
-              variant="outline"
-              className={`py-[5px] px-[10px] `}
-              isActive={categoryTab === CATEGORIES_OPTIONS.NAIL ? true : false}
-              onClick={() => onChangeCategoryTab(CATEGORIES_OPTIONS.NAIL)}
-            >
-              Nail color
-            </Button>
+            {categories?.length &&
+              categories?.map((cate) => {
+                const { _id, name } = cate || {};
+                return (
+                  <Button
+                    key={_id}
+                    variant="outline"
+                    className={`py-[5px] px-[10px] uppercase`}
+                    isActive={categoryTab === name ? true : false}
+                    onClick={() => onChangeCategoryTab(name)}
+                  >
+                    {name}
+                  </Button>
+                );
+              })}
           </div>
         </Textbox>
         <div className="scshowcaseproduct__bottom">
@@ -148,13 +101,14 @@ const ShowcaseProduct = ({ onChangeCategoryTab, categoryTab }) => {
               pagination={false}
               loop={true}
             >
-              {images.map((item, index) => {
-                return (
-                  <SwiperSlide key={`${item}${index}`}>
-                    <ProductCard className={`item`} item={item} />
-                  </SwiperSlide>
-                );
-              })}
+              {products?.length &&
+                products.map((item, index) => {
+                  return (
+                    <SwiperSlide key={`${item?._id}`}>
+                      <ProductCard className={`item`} item={item} />
+                    </SwiperSlide>
+                  );
+                })}
             </Swiper>
           </div>
         </div>

@@ -9,6 +9,8 @@ const Button = ({
   children,
   isActive = false,
   onClick,
+  outStock,
+  disabled,
 }) => {
   const variantButton = useMemo(() => {
     switch (variant) {
@@ -18,9 +20,10 @@ const Button = ({
           isActive === true ? "bg-primary text-white" : ""
         }`;
       case "filled":
-        return `text-white bg-primary hover:bg-gray-100 hover:text-black  group/hover ${
-          isActive === true ? "bg-gray-100 text-black" : ""
+        return `text-white bg-primary hover:opacity-90   group/hover ${
+          isActive === true ? "opacity-90" : "opacity-100"
         }`;
+
       default:
         return "";
     }
@@ -32,10 +35,14 @@ const Button = ({
         className={twMerge(
           ` font-osb xs:text-xs md:text-sm  xs:px-[20px] md:px-[30.35px] xs:py-[7px] md:py-[10px] duration-[500ms] transition-all ${variantButton} ${
             className ?? ""
-          }`
+          } ${
+            disabled || outStock
+              ? "pointer-events-none "
+              : "pointer-events-auto "
+          } ${outStock ? "bg-[#ddd]" : ""}`
         )}
       >
-        {children}
+        {outStock ? "OUT STOCK" : children}
       </Link>
     );
   }
@@ -45,10 +52,12 @@ const Button = ({
       className={twMerge(
         ` font-osb xs:text-xs md:text-sm xs:px-[20px] md:px-[30.35px] xs:py-[7px] md:py-[10px] duration-[500ms] transition-all ${variantButton} ${
           className ?? ""
-        }`
+        } ${
+          disabled || outStock ? "pointer-events-none " : "pointer-events-auto "
+        } ${outStock ? "bg-[#ddd] border-[#ddd] text-black" : ""}`
       )}
     >
-      {children}
+      {outStock ? "Out Stock" : children}
     </button>
   );
 };

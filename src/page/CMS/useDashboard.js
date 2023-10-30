@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { useLocation } from "react-router-dom";
-import { firebaseStore } from "@/config/firebase";
-import { collection, getDocs } from "firebase/firestore";
 import useWindowSize from "@/utils/windowResize";
+import dashboardService from "@/service/dashboardService";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
+import { useDispatch, useSelector } from "react-redux";
+import { message } from "antd";
+import { register } from "@/store/reducer/authReducer";
+import { createProduct, getAllUsers } from "@/store/reducer/dashboardReducer";
+import { getAllProduct } from "@/store/reducer/productReducer";
 const useDashboard = () => {
   /// window size
   const { width } = useWindowSize();
-
+  //// redux
+  const dispatch = useDispatch();
+  const { profile } = useSelector((state) => state.auth);
+  const { categories, products } = useSelector((state) => state.product);
   ///// Modal
   const [openModalAndt, setOpenModalAndt] = useState(false);
   const [productList, setProductList] = useState([]);
-  const [userList, setUserList] = useState([]);
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const [toggleInputSearch, setToggleInputSearch] = useState(false);
   const [toggleInputSeacrhMobile, setToggleInputSeacrhMobile] = useState(false);
+  ////
   const onShowModal = (id) => {
     setOpenModalAndt(id);
   };
@@ -24,64 +30,71 @@ const useDashboard = () => {
   const onAddProduct = (payload) => {
     setProductList([...productList, payload]);
   };
-  //// Header CMS
-  const { pathname } = useLocation();
-  const [path, setPath] = useState("");
-  const pathCMS = [
-    {
-      id: "1",
-      path: "/cms",
-      button: " Create User",
-      success: "Success Create User",
-    },
-    {
-      id: "2",
-      path: "/cms/product",
-      button: "Create Product",
-      success: "Success Create Product",
-    },
-    {
-      id: "3",
-      path: "/cms/image",
-      button: "Create Product",
-      success: "Success Create Product",
-    },
-    {
-      id: "4",
-      path: "/cms/team",
-      button: "Create Product",
-      success: "Success Create Product",
-    },
-    {
-      id: "5",
-      path: "/cms/file",
-      button: "Create Product",
-      success: "Success Create Product",
-    },
-  ];
-  const findPath = pathCMS?.find((item) => item?.path === path);
-  ////// firebase
-  const productCollectionRef = collection(firebaseStore, "product-card");
-  const getFirebaseStore = async () => {
+  ///// API
+  const adminToken = localStorage.getItem(LOCAL_STORAGE.token);
+  //// API USER
+  const onCreateUser = async (payload) => {
     try {
-      const data = await getDocs(productCollectionRef);
-      const filterData = data?.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setProductList(filterData);
-      return filterData;
+      await dispatch(register(payload));
+      dispatch(getAllUsers());
+    } catch (error) {
+      message.error(error?.response?.data?.message);
+      console.log("error", error);
+    }
+  };
+  const onEditAvatar = async () => {
+    try {
+      const response = await dashboardService.deleteProfile();
     } catch (error) {
       console.log("error", error);
     }
   };
-  useEffect(() => {
-    getFirebaseStore();
-  }, []);
+  const onDeleteUser = async (id) => {
+    try {
+      const _token = localStorage.getItem(LOCAL_STORAGE.token);
+      const response = await dashboardService.deleteProfile(id, _token);
+      dispatch(getAllUsers());
 
-  useEffect(() => {
-    setPath(pathname);
-  }, [pathname, findPath]);
+      message.success(response?.data?.message);
+    } catch (error) {
+      message.error(error?.response?.data?.message);
+      console.log("error", error);
+    }
+  };
+  //// API PRODUCT
+  const onCreateProduct = async (payload) => {
+    try {
+      const _token = localStorage.getItem(LOCAL_STORAGE.token);
+      const response = await dispatch(createProduct(payload));
+      console.log("response", response);
+      dispatch(getAllProduct(_token));
+    } catch (error) {
+      message.error(error?.response?.data?.message);
+      console.log("error", error);
+    }
+  };
+  const onDeleteProduct = async (id) => {
+    console.log("id", id);
+    try {
+      const _token = localStorage.getItem(LOCAL_STORAGE.token);
+      const response = await dashboardService.deleteProduct(id, _token);
+      dispatch(getAllProduct());
+      message.success(response?.data?.message);
+    } catch (error) {
+      message.error(error?.response?.data?.message);
+      console.log("error", error);
+    }
+  };
+  // console.log("categories", categories);
+  const userProps = {
+    onDeleteUser,
+    onCreateUser,
+  };
+  const productProps = {
+    categories,
+    onCreateProduct,
+    onDeleteProduct,
+  };
   const modalProps = {
     onShowModal,
     onCloseModal,
@@ -89,9 +102,9 @@ const useDashboard = () => {
     onAddProduct,
     productList,
     setProductList,
-    findPath,
-    pathCMS,
-    getFirebaseStore,
+    profile,
+    products,
+    // getFirebaseStore,
     toggleSidebar,
     setToggleSidebar,
     toggleInputSearch,
@@ -100,7 +113,7 @@ const useDashboard = () => {
     toggleInputSeacrhMobile,
     setToggleInputSeacrhMobile,
   };
-  return { modalProps };
+  return { modalProps, userProps, productProps };
 };
 
 export default useDashboard;

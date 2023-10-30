@@ -12,6 +12,8 @@ import NavbarFilter from "@/components/NavbarFilter";
 import { useMainContext } from "@/components/MainContext";
 import useWindowSize from "@/utils/windowResize";
 import InputRange from "@/components/Input/InputRange";
+import { useSelector } from "react-redux";
+import AccordionM from "@/components/Accordion/index.jsx";
 
 const Shop = () => {
   const {
@@ -19,25 +21,13 @@ const Shop = () => {
     // max,
     // onChangeMax,
     // onChangeMin,
-    OPTIONS,
     isFilter,
     onToggleFilter,
-    OPTIONS__MOBILE,
     setIsFilter,
+    categories,
+    products,
   } = useShop();
   const { width } = useWindowSize();
-
-  const images = [
-    "/assets/img/product-9.jpg",
-    "/assets/img/product-8.jpg",
-    "/assets/img/product-7.jpg",
-    "/assets/img/product-6.jpg",
-    "/assets/img/product-5.jpg",
-    "/assets/img/product-4.jpg",
-    "/assets/img/product-3.jpg",
-    "/assets/img/product-2.jpg",
-    "/assets/img/product-1.jpg",
-  ];
   return (
     <main className="main-wrapper">
       <BreadCrumb>
@@ -54,18 +44,13 @@ const Shop = () => {
         border-solid border-[#e5e5e5] lg:block xs:hidden"
         >
           <div className=" lg:pr-[18.4px] xs:flex gap-4 lg:block">
-            {OPTIONS?.map((item, index) => {
-              return (
-                <Accordion
-                  key={`${item}${index}`}
-                  item={item}
-                  index={index}
-                  renderProps={() => {
-                    return <InputRange />;
-                  }}
-                />
-              );
-            })}
+            <AccordionM heading={`Danh mục sản phẩm`} data={categories} />
+            <AccordionM
+              heading={`Lọc sản phảm theo giá`}
+              renderProps={() => {
+                return <InputRange />;
+              }}
+            />
           </div>
         </aside>
         <div className="w-full ">
@@ -93,7 +78,7 @@ const Shop = () => {
               </div>
             )}
             <NavbarFilter
-              options={OPTIONS__MOBILE}
+              data={categories}
               isFilter={isFilter}
               onToggleFilter={onToggleFilter}
               setIsFilter={setIsFilter}
@@ -107,10 +92,10 @@ const Shop = () => {
             className="flex items-center flex-wrap  xs:gap-y-[20px] xs:gap-x-[14px] md:gap-[20px] 
           lg:gap-[30px] mb-[30px]"
           >
-            {images.map((item, index) => {
+            {products.map((item) => {
               return (
                 <ProductCard
-                  key={`${item}${index}`}
+                  key={`${item?._id}`}
                   className={` xs:w-[calc(50%-7px)] md:w-[calc(50%-10px)] lg:w-[calc(33.333333%-20px)]`}
                   item={item}
                   isProductDetail={true}

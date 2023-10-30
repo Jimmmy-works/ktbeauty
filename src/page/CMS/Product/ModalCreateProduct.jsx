@@ -1,18 +1,21 @@
 import { firebaseStorage, firebaseStore } from "@/config/firebase";
-import { Modal, Rate, message } from "antd";
+import { Modal, Rate, Select, Space, message } from "antd";
 import { addDoc, collection, doc, getDocs } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import useDashboard from "../useDashboard";
-import { MODAL_OPTION } from "@/utils/const";
-const ModalCreateProduct = ({ open, cancel, add, messageAndt }) => {
-  const { modalProps } = useDashboard();
-  const { getFirebaseStore } = modalProps || {};
+import { MODAL_OPTION } from "@/contants/general";
+import { useSelector } from "react-redux";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
+const ModalCreateProduct = ({ open, cancel, add, messageAndt, categories }) => {
+  const { productProps } = useDashboard();
+  const { onCreateProduct } = productProps || {};
   const [descIntro, setDescIntro] = useState("");
   const [price, setPrice] = useState("");
-  const [title, setTitle] = useState("");
-  const [brand, setBrand] = useState("");
-  const [createAt, setCreateAt] = useState();
+  const [countInStock, setCountInStock] = useState("");
+  const [discount, setDiscount] = useState("");
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState({});
   const [rating, setRating] = useState();
   const [desc, setDesc] = useState([]);
   const [descHeading, setDescHeading] = useState("");
@@ -21,20 +24,21 @@ const ModalCreateProduct = ({ open, cancel, add, messageAndt }) => {
     setRenderDesc([...renderDesc, payload]);
     setDesc("");
   };
-  const handleChangeInputDate = (e) => {
-    setCreateAt(e.target.value);
-  };
+  ////
+  const { getStatusCreateProduct } = useSelector((state) => state.dashboard);
   ////
   const [images, setImages] = useState([]);
   const [URLs, setURLs] = useState([]);
   const [progress, setProgress] = useState("");
-  ////
-  const productCollectionRef = collection(firebaseStore, "product-card");
+  //// firebase
   const uploadImages = (files) => {
     const promises = [];
-    if (files?.length > 1) {
+    if (files?.length >= 1) {
       files.map((file) => {
-        const storageRef = ref(firebaseStorage, `images/${file.name}`);
+        const storageRef = ref(
+          firebaseStorage,
+          `ktbeauty/products/${file.name}`
+        );
         const uploadTask = uploadBytesResumable(storageRef, file);
         promises.push(uploadTask);
         uploadTask.on(
@@ -71,6 +75,11 @@ const ModalCreateProduct = ({ open, cancel, add, messageAndt }) => {
     }
   };
   ////
+  const handleChangeCategories = (e, cate) => {
+    e.preventDefault();
+    setCategory(cate?.value);
+  };
+
   const handleImageChange = (e) => {
     let allImages = [];
     for (let i = 0; i < e.target.files.length; i++) {
@@ -83,39 +92,53 @@ const ModalCreateProduct = ({ open, cancel, add, messageAndt }) => {
     uploadImages(allImages);
   };
   const handleCreateProduct = async () => {
-    const initialState = {
-      title: title,
+    const payload = {
+      name: name,
       price: price,
-      brand: brand,
-      createAt: createAt,
+      category_id: category,
+      countInStock: countInStock,
+      discount: discount,
       rating: rating,
-      description: {
-        heading: descHeading,
-        intro: descIntro,
-        subDesc: renderDesc,
-      },
-      image: [],
+      descTitle: descHeading,
+      descIntro: descIntro,
+      descSub: renderDesc,
+      // description: {
+      //   heading: descHeading,
+      //   intro: descIntro,
+      //   subDesc: renderDesc,
+      // },
+      image: URLs,
     };
     try {
-      setPrice("");
-      setTitle("");
-      setBrand("");
-      setCreateAt(0);
-      setDesc([]);
-      setDescHeading("");
-      setDescIntro("");
-      setRating(null);
-      setRenderDesc([]);
-      setProgress("0");
-      setImages([]);
-      //// Message
-      message.success(messageAndt);
-      /// Close Modal
-      cancel();
+      const res = await onCreateProduct(payload);
+      console.log("res", res);
+      if (res) {
+        setPrice("");
+        setName("");
+        setDesc([]);
+        setDescHeading("");
+        setCountInStock("300");
+        setDiscount("");
+        setCategory("");
+        setDescIntro("");
+        setRating(null);
+        setRenderDesc([]);
+        setProgress(null);
+        setImages([]);
+        /// Close Modal
+        // cancel();
+      }
     } catch (error) {
       console.log("error", error);
     }
   };
+  const optionCategories = categories?.map((cate) => {
+    let value = {
+      value: cate?._id,
+      label: cate?.name,
+    };
+    return value;
+  });
   return (
     <>
       <Modal
@@ -129,12 +152,12 @@ const ModalCreateProduct = ({ open, cancel, add, messageAndt }) => {
         <form className="form p-0" action="">
           <div className="form__container mt-0 ">
             <div className="form__container-wrapper w-full mb-[20px] ">
-              <label htmlFor="title">Title</label>
+              <label htmlFor="name">Name</label>
               <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className=" "
-                id="title"
+                id="name"
                 type="text"
               />
             </div>
@@ -147,20 +170,73 @@ const ModalCreateProduct = ({ open, cancel, add, messageAndt }) => {
                 onChange={(e) => setPrice(e.target.value)}
                 className=" "
                 id="price"
-                type="text"
+                type="number"
               />
             </div>
           </div>
           <div className="form__container mt-0 ">
             <div className="form__container-wrapper w-full mb-[20px]  ">
-              <label htmlFor="brand">Brand</label>
+              <label htmlFor="count">Count In Stock</label>
               <input
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
+                value={countInStock}
+                onChange={(e) => setCountInStock(e.target.value)}
                 className=" "
-                id="brand"
-                type="text"
+                id="count"
+                type="number"
               />
+            </div>
+          </div>
+          <div className="form__container mt-0 ">
+            <div className="form__container-wrapper w-full mb-[20px]  ">
+              <label htmlFor="discount">Discount</label>
+              <input
+                value={discount}
+                onChange={(e) => setDiscount(e.target.value)}
+                className=" "
+                id="discount"
+                type="number"
+              />
+            </div>
+          </div>
+          <div className="form__container mt-0 ">
+            <div className="form__container-wrapper w-full mb-[20px]  ">
+              <label htmlFor="category" className="mb-[12px]">
+                Category
+              </label>
+              <div className="flex items-center gap-2 flex-wrap">
+                {optionCategories?.length &&
+                  optionCategories?.map((cate) => {
+                    return (
+                      <button
+                        onClick={(e) => handleChangeCategories(e, cate)}
+                        key={cate?.value}
+                        className={` rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
+                         flex items-center gap-1 hover:bg-[#555] hover:text-white xs:p-[8px] 
+                         ${
+                           cate?.value === category
+                             ? "bg-[#555] text-white"
+                             : "bg-black-be text-black"
+                         }`}
+                      >
+                        <span className="xs:text-xs md:text-sm font-osr  capitalize">
+                          {cate?.label}
+                        </span>
+                      </button>
+                    );
+                  })}
+              </div>
+              {/* <Select
+                onChange={handleChangeCategories}
+                value={optionCategories?.value}
+                defaultValue={optionCategories[1]}
+                style={{
+                  width: "100%",
+                  textTransform: "capitalize",
+                }}
+                optionLabelProp=""
+                allowClear
+                options={optionCategories}
+              /> */}
             </div>
           </div>
           <div className="form__container mt-0 ">
@@ -207,6 +283,7 @@ const ModalCreateProduct = ({ open, cancel, add, messageAndt }) => {
                   );
                 })}
               </ul>
+
               <textarea
                 value={descIntro}
                 id="desc-intro"
@@ -217,17 +294,7 @@ const ModalCreateProduct = ({ open, cancel, add, messageAndt }) => {
               />
             </div>
           </div>
-          <div className="form__container mt-0 ">
-            <div className="form__container-wrapper w-full mb-[20px]  ">
-              <label htmlFor="first-name">Create At</label>
-              <input
-                value={createAt}
-                onChange={handleChangeInputDate}
-                className=" "
-                type="date"
-              />
-            </div>
-          </div>
+
           <div className="form__container mt-0 ">
             <div className="form__container-wrapper w-full mb-[20px]  ">
               <label htmlFor="first-name">Rating</label>
@@ -247,7 +314,7 @@ const ModalCreateProduct = ({ open, cancel, add, messageAndt }) => {
                   className="invisible opacity-0 p-0 w-0 h-0  border-0 cursor-pointer bg-transparent"
                   type="file"
                   id="file"
-                  accept=" image/png, image/jpg , image/avif, image/jpeg"
+                  accept=" image/png, image/jpg , image/avif, image/jpeg , image/webp"
                 />
                 <label
                   htmlFor="file"

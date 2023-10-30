@@ -982,15 +982,23 @@ export default {
       rose: colors.rose,
     }),
     fontFamily: {
+      // gvr: ["MontserratAlternates-Regular"],
       gvr: ["GreatVibes-Regular"],
+
       mam: ["MontserratAlternates-Medium"],
       mal: ["MontserratAlternates-Light"],
       mab: ["MontserratAlternates-Bold"],
       mar: ["MontserratAlternates-Regular"],
-      osb: ["OpenSans-Bold"],
-      osr: ["OpenSans-Regular"],
-      osl: ["OpenSans-Light"],
-      om: ["OpenSans-Medium"],
+
+      // osb: ["OpenSans-Bold"],
+      // osr: ["OpenSans-Regular"],
+      // osl: ["OpenSans-Light"],
+      // om: ["OpenSans-Medium"],
+
+      osb: ["SVN-Gilroy-Bold"],
+      ossb: ["SVN-Gilroy-Semibold"],
+      osr: ["SVN-Gilroy-Regular"],
+      om: ["SVN-Gilroy-Medidum"],
     },
     container: {
       center: true,

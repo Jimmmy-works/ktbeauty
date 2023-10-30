@@ -1,7 +1,14 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { useState } from "react";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAEIMjevWJJQM3E81h14QZx0YIssKwBXMo",
@@ -15,6 +22,65 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+// export const authFisebase = getAuth(app);
 export const firebaseStore = getFirestore(app);
 export const firebaseStorage = getStorage(app);
+export const uploadImagesFirebase = (files, folder) => {
+  let progressCurrent = "";
+  let URLs = [];
+  const promises = [];
+  if (files?.length >= 1) {
+    files.map((file) => {
+      console.log("file", file);
+      const storageRef = ref(firebaseStorage, `${folder}/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      promises.push(uploadTask);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100 * 3.6
+          );
+          // setProcess(progress);
+          progressCurrent = progress;
+          return progressCurrent;
+        },
+        (error) => {
+          console.log(error);
+        },
+        async () => {
+          try {
+            await getDownloadURL(uploadTask?.snapshot?.ref).then(
+              (downloadURL) => {
+                console.log("downloadURL", downloadURL);
+                URLs = URLs.push(downloadURL);
+                // setURLs((prevState) => [...prevState, downloadURL]);
+                return downloadURL;
+              }
+            );
+          } catch (error) {
+            console.log("error", error);
+          }
+        }
+      );
+    });
+    Promise.all(promises)
+      .then(() => {
+        message.success("All images uploaded");
+      })
+      .catch((err) => console.log(files));
+  } else {
+    console.log("folder", folder);
+    console.log("files", files);
+    const storageRef = ref(firebaseStorage, `${folder}/${files?.name}`);
+    return uploadBytes(storageRef, files).then(() => {
+      getDownloadURL(storageRef)
+        .then((url) => {
+          console.log("url", url);
+          return (URLs = url);
+        })
+        .catch((error) => console.log("error", error));
+    });
+  }
+  console.log("URLs", URLs);
+};

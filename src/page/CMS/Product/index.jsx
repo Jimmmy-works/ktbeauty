@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import useDashboard from "../useDashboard";
 import { Checkbox, Collapse, Image, Table } from "antd";
-import { MODAL_OPTION } from "@/utils/const";
 import ModalCreateProduct from "./ModalCreateProduct";
+import { MODAL_OPTION } from "@/contants/general";
+import { formatPriceVND } from "@/utils/formatPrice";
 
 const DashBoardProduct = () => {
-  const { modalProps } = useDashboard();
+  const { modalProps, productProps } = useDashboard();
+  const { onDeleteProduct } = productProps || {};
   const {
     findPath,
     onShowModal,
@@ -14,6 +16,7 @@ const DashBoardProduct = () => {
     onAddProduct,
     toggleSidebar,
     width,
+    products,
   } = modalProps || {};
   const columns = [
     {
@@ -48,26 +51,25 @@ const DashBoardProduct = () => {
       align: "center",
     },
   ];
-  const data = [];
-  for (let i = 0; i < 20; i++) {
-    data.push({
-      key: i,
+  const data = products.map((product, index) => {
+    return {
+      key: product?._id,
       productid:
         width > 1024 ? (
-          `6${i}ab09uy${i}ba${i}pc`
+          `${product?._id}`
         ) : (
           <strong className="text-sm font-osr font-semibold ">
             Id:{" "}
-            <span className="text-sm font-osr font-normal ml-[4px]">{` 6${i}ab09uy${i}ba${i}pc`}</span>
+            <span className="text-sm font-osr font-normal ml-[4px]">{`${product?._id}`}</span>
           </strong>
         ),
       name:
         width > 1024 ? (
-          `Lorem ipsum dolor sit amet consectetur ${i}.`
+          `${product?.name}`
         ) : (
           <strong className="text-sm font-osr font-semibold ">
             Name:
-            <span className="text-sm font-osr font-normal ml-[4px]">{`Lorem ipsum dolor sit amet consectetur ${i}.`}</span>
+            <span className="text-sm font-osr font-normal ml-[4px]">{`${product?.name}`}</span>
           </strong>
         ),
       description: (
@@ -81,10 +83,10 @@ const DashBoardProduct = () => {
             <Collapse>
               <Collapse.Panel
                 style={{ textAlign: "left" }}
-                header="Title:"
+                header="Heading"
                 key="1"
               >
-                Lorem ipsum dolor sit amet.{i}
+                {product?.description?.heading}
               </Collapse.Panel>
             </Collapse>
           </li>
@@ -92,31 +94,16 @@ const DashBoardProduct = () => {
             <Collapse>
               <Collapse.Panel
                 style={{ textAlign: "left" }}
-                header="Intro:"
+                header="Subcase"
                 key="1"
               >
-                <>
-                  <p> </p>
-                  Lorem ipsum dolor sit amet.{i + 5}
-                </>
-              </Collapse.Panel>
-            </Collapse>
-          </li>
-          <li className="mt-[5px]">
-            <Collapse>
-              <Collapse.Panel
-                style={{ textAlign: "left" }}
-                header="Subcase:"
-                key="1"
-              >
-                {Array(5)
-                  .fill("")
-                  .map((sub, index) => {
+                {product?.description?.subDesc?.length &&
+                  product?.description?.subDesc.map((sub, index) => {
                     return (
                       <div key={`${sub}${index}`}>
                         <a>
                           <strong className=" mr-[4px]">{index + 1}/</strong>
-                          Lorem ipsum dolor sit. {index}
+                          {sub || ""}
                         </a>
                         <br></br>
                       </div>
@@ -125,39 +112,56 @@ const DashBoardProduct = () => {
               </Collapse.Panel>
             </Collapse>
           </li>
+          <li className="mt-[5px]">
+            <Collapse>
+              <Collapse.Panel
+                style={{ textAlign: "left" }}
+                header="Intro"
+                key="1"
+              >
+                <>
+                  <p> </p>
+                  {product?.description?.intro}
+                </>
+              </Collapse.Panel>
+            </Collapse>
+          </li>
         </ul>
       ),
       price:
         width > 1024 ? (
-          `120${i}`
+          `${formatPriceVND(product?.price)}`
         ) : (
           <strong className="text-sm font-osr font-semibold ">
             Price:
-            <span className="text-sm font-osr font-normal ml-[4px]">{`120${i}`}</span>
+            <span className="text-sm font-osr font-normal ml-[4px]">{`120$`}</span>
           </strong>
         ),
       image: (
         <div className="  flex items-center xs:justify-center xs:gap-4 lg:gap-3 flex-wrap rounded-md ">
           <Image.PreviewGroup>
-            {Array(7)
-              .fill("")
-              .map((img, index) => (
-                <div
-                  key={`${img}${index}`}
-                  className=" flex items-center gap-2 "
-                >
-                  <Checkbox />
-                  <Image
-                    className="object-cover w-[60px] h-[60px]"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "/assets/img/error.png";
-                    }}
-                    src={`/assets/img/product-${index + 1}.jpg`}
-                    alt=""
-                  />
-                </div>
-              ))}
+            {Array(product?.image?.length)
+              ?.fill(product?.image)
+              ?.map((item, index) => {
+                return (
+                  <div key={item?._id} className=" flex items-center gap-2 ">
+                    <Checkbox />
+                    <Image
+                      className="object-cover w-[60px] h-[60px]"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/assets/img/error.png";
+                      }}
+                      src={
+                        product?.image?.length
+                          ? item?.[index]
+                          : "/assets/img/error.png"
+                      }
+                      alt=""
+                    />
+                  </div>
+                );
+              })}
           </Image.PreviewGroup>
         </div>
       ),
@@ -178,8 +182,9 @@ const DashBoardProduct = () => {
           </div>
         </>
       ),
-    });
-  }
+    };
+  });
+
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -193,9 +198,18 @@ const DashBoardProduct = () => {
       Table.SELECTION_ALL,
     ],
   };
+  const filterProducts = data?.filter((item) => {
+    return selectedRowKeys.indexOf(item.key) !== -1;
+  });
+  const handleDeleteProductSelected = () => {
+    for (let index = 0; index < filterProducts.length; index++) {
+      onDeleteProduct(filterProducts[index]?.productid);
+    }
+  };
   return (
     <div className="table__dashboard-product ">
       <ModalCreateProduct
+        {...productProps}
         messageAndt={findPath?.success}
         open={openModalAndt}
         add={onAddProduct}
@@ -216,6 +230,7 @@ const DashBoardProduct = () => {
         </h2>
         <div className="flex items-center gap-2">
           <button
+            onClick={handleDeleteProductSelected}
             className=" bg-[#b05a4b] text-white rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
           flex items-center gap-1 hover:bg-[#f84e4e] xs:p-[8px]"
           >

@@ -4,6 +4,7 @@ import { Rate, Tooltip } from "antd";
 import { Link } from "react-router-dom";
 import { PATHS } from "@/contants/path";
 import styled from "styled-components";
+import { formatPriceVND } from "@/utils/formatPrice";
 const StyleRate = styled.div`
   .ant-rate {
     margin-top: 4px;
@@ -20,6 +21,9 @@ const ProductCard = ({
   className,
   isProductDetail = false,
 }) => {
+  const { _id, name, price, rating, image, discount, countInStock } =
+    item || {};
+
   if (isProductDetail)
     return (
       <div className={`card  ${className ?? ""} transition-all duration-400  `}>
@@ -28,14 +32,14 @@ const ProductCard = ({
           className="block relative h-0 pb-[100%] group/img overflow-hidden"
         >
           <img
-            className="center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105
-              h-full w-full"
-            src={item}
-            alt=""
             onError={(e) => {
               e.target.onerror = null;
               e.target.src = "/assets/img/error.png";
             }}
+            className="center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105
+              h-full w-full"
+            src={image?.length ? image?.[0] : "/assets/img/error.png"}
+            alt={name}
           />
           <span
             className="absolute xs:top-4 md:top-7 left-5 xs:w-[30px] md:w-[40px] xs:h-[30px] md:h-[40px] border-dashed
@@ -113,15 +117,15 @@ const ProductCard = ({
             to={PATHS.SHOP.DETAIL}
             className="font-osb text-[15px] uppercase text-black-555 
                     leading-[18px] truncate whitespace-normal line-clamp-2 hover:text-primary
-                    duration-400 transition-colors "
+                    duration-400 transition-colors min-h-[36px]"
           >
-            Hollywood Lights Beauty
+            {name || ""}
           </Link>
           <StyleRate>
             <Rate />
           </StyleRate>
           <p className="font-osb text-[15px] text-primary mt-[8px] leading-[18px]">
-            $89.00
+            {formatPriceVND(price)}
           </p>
         </div>
       </div>
@@ -134,25 +138,39 @@ const ProductCard = ({
     >
       <Link
         to={PATHS.SHOP.DETAIL}
-        className="block relative h-0 pb-[100%] double-img group/img overflow-hidden shine"
+        className={`block relative h-0 pb-[100%] ${
+          image?.length > 1 ? "double-img" : ""
+        } group/img overflow-hidden shine`}
       >
         <img
           className="center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105 "
-          src={item}
+          src={image?.length ? image?.[0] : "/assets/img/error.png"}
           alt=""
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "/assets/img/error.png";
+          }}
         />
-        <img
-          className="center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105 "
-          src={"/assets/img/product-9.jpg"}
-          alt=""
-        />
-        <span
-          className="absolute xs:top-4 md:top-7 left-5 xs:w-[30px] md:w-[40px] xs:h-[30px] md:h-[40px] border-dashed
+        {image?.length > 1 && (
+          <img
+            className="center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105 "
+            src={image?.length ? image?.[1] : "/assets/img/error.png"}
+            alt=""
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "/assets/img/error.png";
+            }}
+          />
+        )}
+        {discount > 0 && (
+          <span
+            className="absolute xs:top-4 md:top-7 left-5 xs:w-[30px] md:w-[40px] xs:h-[30px] md:h-[40px] border-dashed
                     border border-[#46d47f] rounded-[50%] xs:text-xs md:text-sm flex justify-center 
                     bg-white items-center z-50"
-        >
-          Sale
-        </span>
+          >
+            Sale
+          </span>
+        )}
         <button className="absolute z-50 xs:top-6 md:top-9 right-5 group/hover">
           <svg
             className="xs:w-[18px] md:w-[22px] xs:h-[18px] md:h-[22px] "
@@ -171,16 +189,16 @@ const ProductCard = ({
           to={PATHS.SHOP.DETAIL}
           className="font-osb text-sm uppercase text-black-555 
                     leading-[18px] truncate whitespace-normal line-clamp-2 hover:text-primary
-                    duration-400 transition-colors "
+                    duration-400 transition-colors  min-h-[36px]"
         >
-          Soy Wax for Container Candles Soy Wax for Container Candles les Soy
-          Wax for Container Candles
+          {name}
         </Link>
 
         <p className="font-osb text-sm text-primary mt-[6px] xs:mb-[4px] md:mb-[10px] leading-[18px]">
-          $150.00
+          {formatPriceVND(price)}
         </p>
         <Button
+          outStock={countInStock === 0 && true}
           className={`md:px-[30.35px] md:py-[10px] xs:px-[17px] xs:py-[5px] md:text-sm
           xs:text-xs`}
         >

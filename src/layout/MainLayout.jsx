@@ -1,41 +1,48 @@
 import AuthenModal from "@/components/Authen";
-import Login from "@/components/Authen/Login";
-import Register from "@/components/Authen/Register";
 import BackToTop from "@/components/BackToTop";
-import LoadingPage from "@/components/LoadingPage";
-import { MainProvider } from "@/components/MainContext";
+import { MainProvider, useMainContext } from "@/components/MainContext";
 import Overplay from "@/components/Overplay";
-import { PATHS } from "@/contants/path";
-import useDebounce from "@/hooks/useDebounce";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
 import Footer from "@/page/Footer";
 import Header from "@/page/Header";
 import Nav from "@/page/Nav";
+import { getProfileSlug } from "@/store/reducer/authReducer";
+import {
+  getAllCategories,
+  getAllProduct,
+} from "@/store/reducer/productReducer";
 import backtotop from "@/utils/backtotop";
-import React, { useEffect, useRef, useState } from "react";
-import { Outlet, useLocation, useParams } from "react-router-dom";
-
+import React, { useEffect, useState } from "react";
+import { decodeToken } from "react-jwt";
+import { useDispatch } from "react-redux";
+import { Outlet, useLocation } from "react-router-dom";
 const MainLayout = () => {
   const { pathname } = useLocation();
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   useEffect(() => {
-    setLoading(true);
-    const timeLoading = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+    document.querySelector("html").setAttribute("style", "overflow-y : scroll");
     () => setIsNavbar(false);
     backtotop();
-    return () => {
-      clearTimeout(timeLoading);
-    };
   }, [pathname]);
+
+  useEffect(() => {
+    const _token = localStorage.getItem(LOCAL_STORAGE.token);
+    const resultDecode = decodeToken(_token);
+    const _id = resultDecode?.id;
+    if (_token) {
+      dispatch(getProfileSlug(_id));
+      dispatch(getAllProduct());
+      dispatch(getAllCategories());
+      // dispatch(getCart(_token));
+    }
+  }, []);
   return (
     <MainProvider>
-      {/* <LoadingPage loadingPage={loading} /> */}
       <Header />
       <Outlet />
       <Footer />
       <AuthenModal />
-      <Overplay />
+      <Overplay className={`z-50`} />
       <Nav />
       <BackToTop />
     </MainProvider>
