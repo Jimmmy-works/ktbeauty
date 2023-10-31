@@ -144,16 +144,20 @@ const ProductCard = ({
     >
       <Link
         to={`${PATHS.SHOP.INDEX}/${item?._id}`}
-        className={`block relative h-0 pb-[100%] ${
-          image?.length > 1 ? "double-img" : ""
-        } group/img overflow-hidden shine`}
+        className={`block relative h-0 pb-[100%] 
+        group overflow-hidden shine  transition-all duration-400`}
       >
         <img
-          className={twMerge(`center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105
-              h-full w-full ${!imageloading ? "opacity-100" : "opacity-0"}`)}
+          onLoad={onLoadingImage}
+          className={twMerge(
+            `center-absolute z-0 object-cover  group-hover:scale-105  transition-all duration-400
+             group-hover:opacity-100 group-hover:visible  ${
+               !imageloading ? "opacity-100" : "opacity-0"
+             }
+          `
+          )}
           src={image?.length ? image?.[0] : "/assets/img/error.png"}
           alt=""
-          onLoad={onLoadingImage}
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = "/assets/img/error.png";
@@ -162,8 +166,13 @@ const ProductCard = ({
         {image?.length > 1 && (
           <img
             onLoad={onLoadingImage}
-            className={twMerge(`center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105
-              h-full w-full ${!imageloading ? "opacity-100" : "opacity-0"}`)}
+            className={twMerge(
+              `center-absolute z-0 object-cover  group-hover:scale-105  transition-all duration-400
+               group-hover:opacity-0 group-hover:invisible  ${
+                 !imageloading ? "opacity-100" : "opacity-0"
+               }
+            `
+            )}
             src={image?.length ? image?.[1] : "/assets/img/error.png"}
             alt=""
             onError={(e) => {

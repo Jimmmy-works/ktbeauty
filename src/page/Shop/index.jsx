@@ -33,6 +33,7 @@ const Shop = () => {
     onImageLoading,
   } = useShop();
   const { width } = useWindowSize();
+  console.log("imageloading", imageloading);
   return (
     <main className="main-wrapper">
       <BreadCrumb>
@@ -104,23 +105,21 @@ const Shop = () => {
               products?.length &&
               products.map((item) => {
                 return (
-                  <>
-                    <ProductCard
-                      onLoadingImage={onImageLoading}
-                      imageloading={imageloading}
-                      key={`${item?._id}`}
-                      className={` xs:w-[calc(50%-7px)] md:w-[calc(50%-10px)] lg:w-[calc(33.333333%-20px)]`}
-                      item={item}
-                      isProductDetail={true}
-                    />
-                  </>
+                  <ProductCard
+                    onLoadingImage={onImageLoading}
+                    imageloading={imageloading}
+                    key={`${item?._id}`}
+                    className={` xs:w-[calc(50%-7px)] md:w-[calc(50%-10px)] lg:w-[calc(33.333333%-20px)]`}
+                    item={item}
+                    isProductDetail={true}
+                  />
                 );
               })
             ) : (
               <div className="w-full flex flex-wrap gap-[10px]">
                 <LoadingSkeleton
                   isClassName={`mb-[30px] xs:w-[calc(50%-7px)] md:w-[calc(50%-10px)] lg:w-[calc(33.33333%-20px)]`}
-                  isLoading={statusGetProduct}
+                  isLoading={imageloading}
                   isParagraph={2}
                   isArray={9}
                 />

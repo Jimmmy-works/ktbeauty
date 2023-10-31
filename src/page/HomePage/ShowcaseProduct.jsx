@@ -13,6 +13,8 @@ const ShowcaseProduct = ({
   products,
   categories,
   statusGetProduct,
+  imageloading,
+  onImageLoading,
 }) => {
   return (
     <section className="scshowcaseproduct pt-section">
@@ -75,40 +77,45 @@ const ShowcaseProduct = ({
                 </svg>
               </div>
             </div>
-            <Swiper
-              modules={[Navigation, Keyboard]}
-              keyboard={{
-                enabled: true,
-              }}
-              breakpoints={{
-                360: {
-                  slidesPerView: 2,
-                  spaceBetween: 20,
-                },
-                576: {
-                  slidesPerView: 3,
-                  spaceBetween: 30,
-                },
-                1024: {
-                  slidesPerView: 4,
-                  spaceBetween: 30,
-                },
-              }}
-              navigation={{
-                prevEl: ".scshowcaseproduct .prev",
-                nextEl: ".scshowcaseproduct .next",
-              }}
-              freeMode
-              grabCursor={true}
-              pagination={false}
-              loop={true}
-            >
-              {products?.length &&
-                products.map((item, index) => {
+            {products?.length > 0 ? (
+              <Swiper
+                modules={[Navigation, Keyboard]}
+                keyboard={{
+                  enabled: true,
+                }}
+                breakpoints={{
+                  360: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                  },
+                  576: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                  },
+                  1024: {
+                    slidesPerView: 4,
+                    spaceBetween: 30,
+                  },
+                }}
+                navigation={{
+                  prevEl: ".scshowcaseproduct .prev",
+                  nextEl: ".scshowcaseproduct .next",
+                }}
+                freeMode
+                grabCursor={true}
+                pagination={false}
+                loop={true}
+              >
+                {products.map((item, index) => {
                   return (
                     <SwiperSlide key={`${item?._id}`}>
                       {statusGetProduct ? (
-                        <ProductCard className={`item`} item={item} />
+                        <ProductCard
+                          className={`item`}
+                          item={item}
+                          onLoadingImage={onImageLoading}
+                          imageloading={imageloading}
+                        />
                       ) : (
                         <LoadingSkeleton
                           isArray={1}
@@ -119,7 +126,50 @@ const ShowcaseProduct = ({
                     </SwiperSlide>
                   );
                 })}
-            </Swiper>
+              </Swiper>
+            ) : (
+              <Swiper
+                modules={[Navigation, Keyboard]}
+                keyboard={{
+                  enabled: true,
+                }}
+                breakpoints={{
+                  360: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                  },
+                  576: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                  },
+                  1024: {
+                    slidesPerView: 4,
+                    spaceBetween: 30,
+                  },
+                }}
+                navigation={{
+                  prevEl: ".scshowcaseproduct .prev",
+                  nextEl: ".scshowcaseproduct .next",
+                }}
+                freeMode
+                grabCursor={true}
+                pagination={false}
+                loop={true}
+              >
+                {Array(9)
+                  ?.fill("")
+                  ?.map((item) => (
+                    <SwiperSlide>
+                      <LoadingSkeleton
+                        isClassName={` duration-700 transition-all`}
+                        isArray={1}
+                        isLoading={statusGetProduct}
+                        isParagraph={4}
+                      />
+                    </SwiperSlide>
+                  ))}
+              </Swiper>
+            )}
           </div>
         </div>
       </div>

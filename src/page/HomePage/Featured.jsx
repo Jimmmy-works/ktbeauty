@@ -10,6 +10,8 @@ const Featured = ({
   featuerdTab,
   products,
   statusGetProduct,
+  imageloading,
+  onImageLoading,
 }) => {
   return (
     <section className="scfeatured mt-section  bg-[#333] lg:py-[80px] md:py-[60px] xs:py-[50px]">
@@ -74,59 +76,92 @@ const Featured = ({
                 </svg>
               </div>
             </div>
-            <Swiper
-              modules={[Navigation, Keyboard]}
-              keyboard={{
-                enabled: true,
-              }}
-              breakpoints={{
-                360: {
-                  slidesPerView: 2,
-                  spaceBetween: 10,
-                },
-                768: {
-                  slidesPerView: 2,
-                  spaceBetween: 20,
-                },
-                1024: {
-                  spaceBetween: 30,
-                  slidesPerView: 3,
-                },
-              }}
-              navigation={{
-                prevEl: ".scfeatured .prev",
-                nextEl: ".scfeatured .next",
-              }}
-              freeMode
-              grabCursor={true}
-              pagination={false}
-              loop={true}
-              wrapperClass="swiperFeatured__wrapper"
-              className="swiperFeatured"
-            >
-              {products.map((item, index) => {
-                return (
-                  <SwiperSlide
-                    key={`${item?._id}`}
-                    className="swiperFeatured__wrapper-item "
-                  >
-                    {statusGetProduct ? (
+            {products?.length > 0 ? (
+              <Swiper
+                modules={[Navigation, Keyboard]}
+                keyboard={{
+                  enabled: true,
+                }}
+                breakpoints={{
+                  360: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                  },
+                  768: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                  },
+                  1024: {
+                    spaceBetween: 30,
+                    slidesPerView: 3,
+                  },
+                }}
+                navigation={{
+                  prevEl: ".scfeatured .prev",
+                  nextEl: ".scfeatured .next",
+                }}
+                freeMode
+                grabCursor={true}
+                pagination={false}
+                loop={true}
+              >
+                {products.map((item, index) => {
+                  return (
+                    <SwiperSlide key={`${item?._id}`}>
                       <ProductCard
+                        onLoadingImage={onImageLoading}
+                        imageloading={imageloading}
                         isProductDetail
                         className={`item`}
                         item={item}
                       />
-                    ) : (
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            ) : (
+              <Swiper
+                modules={[Navigation, Keyboard]}
+                keyboard={{
+                  enabled: true,
+                }}
+                breakpoints={{
+                  360: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                  },
+                  768: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                  },
+                  1024: {
+                    spaceBetween: 30,
+                    slidesPerView: 3,
+                  },
+                }}
+                navigation={{
+                  prevEl: ".scfeatured .prev",
+                  nextEl: ".scfeatured .next",
+                }}
+                freeMode
+                grabCursor={true}
+                pagination={false}
+                loop={true}
+              >
+                {Array(9)
+                  ?.fill("")
+                  ?.map((item) => (
+                    <SwiperSlide>
                       <LoadingSkeleton
+                        isClassName={`item`}
                         isArray={1}
                         isLoading={statusGetProduct}
-                        isParagraph={3}
+                        isParagraph={4}
                       />
-                    )}
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
+                    </SwiperSlide>
+                  ))}
+              </Swiper>
+            )}
           </div>
         </div>
       </div>

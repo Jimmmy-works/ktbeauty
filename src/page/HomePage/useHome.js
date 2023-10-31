@@ -3,6 +3,10 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const useHome = () => {
+  const [imageloading, setImageLoading] = useState(true);
+  const onImageLoading = () => {
+    setImageLoading(false);
+  };
   //// redux
   const dispatch = useDispatch();
   const { products, categories, statusGetProduct } = useSelector(
@@ -25,6 +29,8 @@ const useHome = () => {
     categories,
     products,
     statusGetProduct,
+    imageloading,
+    onImageLoading,
   };
   // useEffect(() => {
   //   dispatch(getAllProduct());
@@ -35,6 +41,8 @@ const useHome = () => {
     featuerdTab,
     products,
     statusGetProduct,
+    imageloading,
+    onImageLoading,
   };
   const categoryProps = { onChangeCategoryTab, categoryTab };
   return { featuredProps, showcaseProductProps };
