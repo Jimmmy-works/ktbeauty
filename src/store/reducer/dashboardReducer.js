@@ -73,7 +73,6 @@ export const createProduct = createAsyncThunk(
     try {
       const _token = localStorage.getItem(LOCAL_STORAGE.token);
       const productData = await dashboardService.createProduct(payload, _token);
-      console.log("productData", productData);
       thunkAPI.dispatch(getAllProduct(_token));
       message.success(productData?.data?.message);
       return productData?.data?.data;

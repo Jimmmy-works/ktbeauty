@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { PATHS } from "@/contants/path";
 import styled from "styled-components";
 import { formatPriceVND } from "@/utils/formatPrice";
+import LoadingSkeleton from "./Loading/LoadingSkeleton";
+import { twMerge } from "tailwind-merge";
 const StyleRate = styled.div`
   .ant-rate {
     margin-top: 4px;
@@ -20,11 +22,13 @@ const ProductCard = ({
   onChangeImg,
   className,
   isProductDetail = false,
+  imageloading,
+  onLoadingImage,
 }) => {
   const { _id, name, price, rating, image, discount, countInStock } =
     item || {};
 
-  if (isProductDetail)
+  if (isProductDetail) {
     return (
       <div className={`card  ${className ?? ""} transition-all duration-400  `}>
         <Link
@@ -32,12 +36,13 @@ const ProductCard = ({
           className="block relative h-0 pb-[100%] group/img overflow-hidden"
         >
           <img
+            onLoad={onLoadingImage}
             onError={(e) => {
               e.target.onerror = null;
               e.target.src = "/assets/img/error.png";
             }}
-            className="center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105
-              h-full w-full"
+            className={twMerge(`center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105
+              h-full w-full ${!imageloading ? "opacity-100" : "opacity-0"}`)}
             src={image?.length ? image?.[0] : "/assets/img/error.png"}
             alt={name}
           />
@@ -130,6 +135,7 @@ const ProductCard = ({
         </div>
       </div>
     );
+  }
   return (
     <div
       className={`card shadow-header   ${
@@ -143,9 +149,11 @@ const ProductCard = ({
         } group/img overflow-hidden shine`}
       >
         <img
-          className="center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105 "
+          className={twMerge(`center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105
+              h-full w-full ${!imageloading ? "opacity-100" : "opacity-0"}`)}
           src={image?.length ? image?.[0] : "/assets/img/error.png"}
           alt=""
+          onLoad={onLoadingImage}
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = "/assets/img/error.png";
@@ -153,7 +161,9 @@ const ProductCard = ({
         />
         {image?.length > 1 && (
           <img
-            className="center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105 "
+            onLoad={onLoadingImage}
+            className={twMerge(`center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105
+              h-full w-full ${!imageloading ? "opacity-100" : "opacity-0"}`)}
             src={image?.length ? image?.[1] : "/assets/img/error.png"}
             alt=""
             onError={(e) => {

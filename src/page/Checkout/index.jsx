@@ -97,6 +97,7 @@ const Checkout = () => {
                 <div className="form__container-wrapper error">
                   <label htmlFor="note">Note</label>
                   <textarea
+                    className="textarea"
                     placeholder="Notes your order"
                     name=""
                     id="note"

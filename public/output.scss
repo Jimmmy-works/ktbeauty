@@ -1471,30 +1471,30 @@ input[type="number"] {
     &-wrapper {
       &.success {
         input,
-          textarea {
+          .textarea {
           border-bottom-width: 1px;
         }
         input,
-          textarea {
+          .textarea {
           border-style: solid;
         }
         input,
-          textarea {
+          .textarea {
           --tw-border-opacity: 1;
           border-color: rgb(21 128 61 / var(--tw-border-opacity));
         }
       }
       &.error {
         input,
-          textarea {
+          .textarea {
           border-width: 1px;
         }
         input,
-          textarea {
+          .textarea {
           border-style: solid;
         }
         input,
-          textarea {
+          .textarea {
           --tw-border-opacity: 1;
           border-color: rgb(239 68 68 / var(--tw-border-opacity));
         }
@@ -1544,24 +1544,24 @@ input[type="number"] {
       p {
         font-size: 12px;
       }
-      textarea {
+      .textarea {
         margin-top: 12px;
       }
-      textarea {
+      .textarea {
         border-bottom-width: 1px;
       }
-      textarea {
+      .textarea {
         border-style: solid;
       }
-      textarea {
+      .textarea {
         --tw-border-opacity: 1;
         border-color: rgb(153 153 153 / var(--tw-border-opacity));
       }
-      textarea {
+      .textarea {
         --tw-bg-opacity: 1;
         background-color: rgb(249 249 249 / var(--tw-bg-opacity));
       }
-      textarea {
+      .textarea {
         padding: 10px;
       }
     }
@@ -2549,10 +2549,6 @@ input[type="number"] {
   max-width: 500px !important;
 }
 
-.max-w-\[750px\] {
-  max-width: 750px !important;
-}
-
 .-translate-x-1\/2 {
   --tw-translate-x: -50% !important;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
@@ -2937,11 +2933,6 @@ input[type="number"] {
   border-color: rgb(235 235 235 / var(--tw-border-opacity)) !important;
 }
 
-.border-gray-200 {
-  --tw-border-opacity: 1 !important;
-  border-color: rgb(229 231 235 / var(--tw-border-opacity)) !important;
-}
-
 .border-grey-999 {
   --tw-border-opacity: 1 !important;
   border-color: rgb(153 153 153 / var(--tw-border-opacity)) !important;
@@ -3239,10 +3230,6 @@ input[type="number"] {
 
 .p-\[10px_14px\] {
   padding: 10px 14px !important;
-}
-
-.p-\[10px_20px_15px\] {
-  padding: 10px 20px 15px !important;
 }
 
 .p-\[11\.5px\] {
@@ -3736,6 +3723,10 @@ input[type="number"] {
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
 }
 
+.line-through {
+  text-decoration-line: line-through !important;
+}
+
 .opacity-0 {
   opacity: 0 !important;
 }
@@ -3776,6 +3767,11 @@ input[type="number"] {
   outline-style: solid !important;
 }
 
+.blur {
+  --tw-blur: blur(8px) !important;
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow) !important;
+}
+
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow) !important;
 }
@@ -3796,6 +3792,12 @@ input[type="number"] {
 
 .transition-colors {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke !important;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-duration: 150ms !important;
+}
+
+.transition-opacity {
+  transition-property: opacity !important;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
   transition-duration: 150ms !important;
 }
@@ -3826,6 +3828,10 @@ input[type="number"] {
 
 .duration-500 {
   transition-duration: 500ms !important;
+}
+
+.duration-700 {
+  transition-duration: 700ms !important;
 }
 
 .duration-\[400ms\] {
@@ -4886,11 +4892,6 @@ input[type="file"]::file-selector-button:hover {
   top: 40px !important;
 }
 
-.before\:top-\[calc\(100\%\)\]::before {
-  content: var(--tw-content) !important;
-  top: calc(100%) !important;
-}
-
 .before\:block::before {
   content: var(--tw-content) !important;
   display: block !important;
@@ -4909,11 +4910,6 @@ input[type="file"]::file-selector-button:hover {
 .before\:h-\[20px\]::before {
   content: var(--tw-content) !important;
   height: 20px !important;
-}
-
-.before\:h-\[2px\]::before {
-  content: var(--tw-content) !important;
-  height: 2px !important;
 }
 
 .before\:h-\[44px\]::before {
@@ -4941,20 +4937,9 @@ input[type="file"]::file-selector-button:hover {
   width: 100% !important;
 }
 
-.before\:origin-right::before {
-  content: var(--tw-content) !important;
-  transform-origin: right !important;
-}
-
 .before\:-translate-y-1\/2::before {
   content: var(--tw-content) !important;
   --tw-translate-y: -50% !important;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
-}
-
-.before\:scale-x-0::before {
-  content: var(--tw-content) !important;
-  --tw-scale-x: 0 !important;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
 }
 
@@ -4984,13 +4969,6 @@ input[type="file"]::file-selector-button:hover {
 .before\:transition-colors::before {
   content: var(--tw-content) !important;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke !important;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
-  transition-duration: 150ms !important;
-}
-
-.before\:transition-transform::before {
-  content: var(--tw-content) !important;
-  transition-property: transform !important;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
   transition-duration: 150ms !important;
 }
@@ -5155,11 +5133,6 @@ input[type="file"]::file-selector-button:hover {
   color: rgb(3 60 115 / var(--tw-text-opacity)) !important;
 }
 
-.hover\:text-black-555:hover {
-  --tw-text-opacity: 1 !important;
-  color: rgb(85 85 85 / var(--tw-text-opacity)) !important;
-}
-
 .hover\:text-primary:hover {
   --tw-text-opacity: 1 !important;
   color: rgb(255 136 123 / var(--tw-text-opacity)) !important;
@@ -5192,17 +5165,6 @@ input[type="file"]::file-selector-button:hover {
 .before\:hover\:block:hover::before {
   content: var(--tw-content) !important;
   display: block !important;
-}
-
-.hover\:before\:origin-left:hover::before {
-  content: var(--tw-content) !important;
-  transform-origin: left !important;
-}
-
-.hover\:before\:scale-x-100:hover::before {
-  content: var(--tw-content) !important;
-  --tw-scale-x: 1 !important;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
 }
 
 .hover\:before\:bg-primary:hover::before {

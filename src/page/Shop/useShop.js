@@ -7,6 +7,10 @@ const useShop = () => {
   const { isFilter, onToggleFilter, setIsFilter } = useMainContext();
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(5000);
+  const [imageloading, setImageLoading] = useState(true);
+  const onImageLoading = () => {
+    setImageLoading(false);
+  };
   const {
     products,
     productDetail,
@@ -34,6 +38,8 @@ const useShop = () => {
     productDetail,
     statusGetProductDetail,
     statusGetProduct,
+    imageloading,
+    onImageLoading,
   };
 };
 

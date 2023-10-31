@@ -16,6 +16,8 @@ import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import LoadingPage from "@/components/Loading/LoadingPage";
 import LoadingSpin from "@/components/Loading/LoadingSpin";
+import MDEditor from "@uiw/react-md-editor";
+import useDebounce from "@/hooks/useDebounce";
 const StyleRate = styled.div`
   display: flex;
   gap: 8px;
@@ -34,7 +36,12 @@ const StyleRate = styled.div`
   }
 `;
 const ShopDetail = () => {
-  const { productDetail, statusGetProductDetail } = useShop();
+  const {
+    productDetail,
+    statusGetProductDetail,
+    imageloading,
+    onImageLoading,
+  } = useShop();
   const {
     _id,
     name,
@@ -154,9 +161,9 @@ const ShopDetail = () => {
                                 }}
                               >
                                 <img
-                                  onLoad={handleImageLoading}
-                                  className={`h-full w-full object-cover duration-700 transition-opacity ${
-                                    !imgLoading ? "opacity-100" : "opacity-0"
+                                  onLoad={onImageLoading}
+                                  className={`h-full w-full object-cover duration-500 transition-opacity ${
+                                    !imageloading ? "opacity-100" : "opacity-0"
                                   }`}
                                   onError={(e) => {
                                     e.target.onerror = null;
@@ -165,9 +172,6 @@ const ShopDetail = () => {
                                   src={img || `/assets/img/error.png`}
                                   alt=""
                                 />
-                                {!imgLoading && (
-                                  <LoadingSpin isloading={imgLoading} />
-                                )}
                               </a>
                             </SwiperSlide>
                           );
@@ -177,16 +181,13 @@ const ShopDetail = () => {
                   <div className="w-full h-full ">
                     {image?.length && (
                       <a className="block relative pb-[100%] h-0 overflow-hidden group/zoom">
-                        {!imgLoading && (
-                          <LoadingSpin isloading={imgLoading} size={40} />
-                        )}
                         <ImageZoom
-                          classNameImg={`duration-700 transition-opacity ${
-                            !imgLoading ? "opacity-100" : "opacity-0"
+                          classNameImg={`duration-500 transition-opacity ${
+                            !imageloading ? "opacity-100" : "opacity-0"
                           }`}
                           magnifierHeight="250"
                           magnifierWidth="250"
-                          src={`${currentImg || image?.[0]}`}
+                          src={`${currentImg || image[0]}`}
                         />
                       </a>
                     )}
@@ -268,6 +269,7 @@ const ShopDetail = () => {
                       description?.descSub?.map((sub) => {
                         return (
                           <li
+                            key={sub}
                             className="item font-osr text-[15px] text-black-555 leading-[24px] relative pl-[14px] mt-[5px]
                             before:h-[5px] before:w-[5px] before:block before:rounded-[50%] before:bg-black-333 
                             before:top-1/2 before:left-0 before:-translate-y-1/2 before:absolute"
@@ -412,45 +414,14 @@ const ShopDetail = () => {
             <Tabs>
               <Tab label="Description">
                 <div className="description">
-                  <h3 className="font-osr text-black-555 text-[15px] leading-[24px] ">
-                    {description?.descIntro}
-                  </h3>
-                  <div className="mt-[30px] flex flex-col gap-5">
-                    <div className="flex gap-6">
-                      <div className="mt-[8px] ">
-                        <svg className="w-[34px] h-[34px]" viewBox="0 0 24 24">
-                          <path
-                            fill="#555"
-                            d="M12.408 13.032c1.158-.062 2.854-.388 4.18-1.128.962-1.478 1.598-2.684 2.224-4-.86.064-1.852-.009-2.736-.257 1.068-.183 2.408-.565 3.422-1.216 1.255-1.784 2.185-4.659 2.502-6.429-2.874-.048-5.566.89-7.386 2.064-.614.7-1.146 2.389-1.272 3.283-.277-.646-.479-1.68-.242-2.542-1.458.767-2.733 1.643-4.177 2.86-.72 1.528-.834 3.29-.768 4.276-.391-.553-.915-1.63-.842-2.809-2.59 2.504-4.377 5.784-2.682 9.324 1.879-1.941 4.039-3.783 5.354-4.639-3.036 3.474-5.866 8.047-7.985 12.181l2.504-.786c1.084-1.979 2.059-3.684 2.933-4.905 3.229.423 6.096-2.168 8.028-4.795-.77.19-2.246-.058-3.057-.482z"
-                          />
-                        </svg>
-                      </div>
-                      <p className="font-osr text-grey-999 text-[15px] leading-[24px] tracking-wider ">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Consequuntur nisi fugit esse corrupti qui obcaecati,
-                        reprehenderit aliquam sunt labore, quae nam repellendus
-                        blanditiis laborum? Dolore sequi facere quas
-                        necessitatibus quisquam!
-                      </p>
-                    </div>
-                    <div className="flex gap-6">
-                      <div className="mt-[8px] ">
-                        <svg className="w-[34px] h-[34px]" viewBox="0 0 24 24">
-                          <path
-                            fill="#555"
-                            d="M12.408 13.032c1.158-.062 2.854-.388 4.18-1.128.962-1.478 1.598-2.684 2.224-4-.86.064-1.852-.009-2.736-.257 1.068-.183 2.408-.565 3.422-1.216 1.255-1.784 2.185-4.659 2.502-6.429-2.874-.048-5.566.89-7.386 2.064-.614.7-1.146 2.389-1.272 3.283-.277-.646-.479-1.68-.242-2.542-1.458.767-2.733 1.643-4.177 2.86-.72 1.528-.834 3.29-.768 4.276-.391-.553-.915-1.63-.842-2.809-2.59 2.504-4.377 5.784-2.682 9.324 1.879-1.941 4.039-3.783 5.354-4.639-3.036 3.474-5.866 8.047-7.985 12.181l2.504-.786c1.084-1.979 2.059-3.684 2.933-4.905 3.229.423 6.096-2.168 8.028-4.795-.77.19-2.246-.058-3.057-.482z"
-                          />
-                        </svg>
-                      </div>
-                      <p className="font-osr text-grey-999 text-[15px] leading-[24px] tracking-wider ">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Consequuntur nisi fugit esse corrupti qui obcaecati,
-                        reprehenderit aliquam sunt labore, quae nam repellendus
-                        blanditiis laborum? Dolore sequi facere quas
-                        necessitatibus quisquam!
-                      </p>
-                    </div>
-                  </div>
+                  <MDEditor.Markdown
+                    source={description?.descIntro}
+                    style={{
+                      whiteSpace: "pre-wrap",
+                      backgroundColor: "#fff",
+                      color: "#000",
+                    }}
+                  />
                 </div>
               </Tab>
               <Tab label={`Reviews ${`(11)`}`}>

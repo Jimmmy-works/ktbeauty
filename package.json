@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.6",
+    "@uiw/react-md-editor": "^3.24.1",
     "axios": "^1.5.1",
     "firebase": "^10.4.0",
     "query-string": "^8.1.0",

@@ -31,10 +31,10 @@ const MainLayout = () => {
     const _id = resultDecode?.id;
     if (_token) {
       dispatch(getProfileSlug(_id));
-      dispatch(getAllProduct());
-      dispatch(getAllCategories());
       // dispatch(getCart(_token));
     }
+    dispatch(getAllProduct());
+    dispatch(getAllCategories());
   }, []);
   return (
     <MainProvider>

@@ -35,7 +35,7 @@ const useDashboard = () => {
   //// API USER
   const onCreateUser = async (payload) => {
     try {
-      await dispatch(register(payload));
+      const response = await dispatch(register(payload));
       dispatch(getAllUsers());
     } catch (error) {
       message.error(error?.response?.data?.message);
@@ -68,6 +68,7 @@ const useDashboard = () => {
       const response = await dispatch(createProduct(payload));
       console.log("response", response);
       dispatch(getAllProduct(_token));
+      return response;
     } catch (error) {
       message.error(error?.response?.data?.message);
       console.log("error", error);

@@ -29,8 +29,9 @@ const Shop = () => {
     categories,
     products,
     statusGetProduct,
+    imageloading,
+    onImageLoading,
   } = useShop();
-
   const { width } = useWindowSize();
   return (
     <main className="main-wrapper">
@@ -94,31 +95,47 @@ const Shop = () => {
               <SelectCustom />
             </div>
           </div>
-          {statusGetProduct === THUNK_STATUS.fulfilled ? (
-            <div
-              className="flex items-center flex-wrap  xs:gap-y-[20px] xs:gap-x-[14px] md:gap-[20px] 
+          {/* {statusGetProduct === THUNK_STATUS.fulfilled ? ( */}
+          <div
+            className="flex items-center flex-wrap  xs:gap-y-[20px] xs:gap-x-[14px] md:gap-[20px] 
           lg:gap-[30px] mb-[30px]"
-            >
-              {products.map((item) => {
+          >
+            {statusGetProduct === THUNK_STATUS.fulfilled ? (
+              products?.length &&
+              products.map((item) => {
                 return (
-                  <ProductCard
-                    key={`${item?._id}`}
-                    className={` xs:w-[calc(50%-7px)] md:w-[calc(50%-10px)] lg:w-[calc(33.333333%-20px)]`}
-                    item={item}
-                    isProductDetail={true}
-                  />
+                  <>
+                    <ProductCard
+                      onLoadingImage={onImageLoading}
+                      imageloading={imageloading}
+                      key={`${item?._id}`}
+                      className={` xs:w-[calc(50%-7px)] md:w-[calc(50%-10px)] lg:w-[calc(33.333333%-20px)]`}
+                      item={item}
+                      isProductDetail={true}
+                    />
+                  </>
                 );
-              })}
-            </div>
-          ) : (
-            <LoadingSkeleton
+              })
+            ) : (
+              <div className="w-full flex flex-wrap gap-[10px]">
+                <LoadingSkeleton
+                  isClassName={`mb-[30px] xs:w-[calc(50%-7px)] md:w-[calc(50%-10px)] lg:w-[calc(33.33333%-20px)]`}
+                  isLoading={statusGetProduct}
+                  isParagraph={2}
+                  isArray={9}
+                />
+              </div>
+            )}
+          </div>
+          {/* ) : ( */}
+          {/* <LoadingSkeleton
               isClassName={`mb-[30px]`}
               isImageStyle={{ height: "350px" }}
               isLoading={statusGetProduct}
               isParagraph={5}
               isArray={1}
-            />
-          )}
+            /> */}
+          {/* )} */}
           <Pagination />
         </div>
       </div>

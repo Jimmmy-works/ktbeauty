@@ -273,13 +273,13 @@
         @apply font-mar text-sm text-black-333 flex flex-col;
         &.success {
           input,
-          textarea {
+          .textarea {
             @apply border-b border-solid border-green-700;
           }
         }
         &.error {
           input,
-          textarea {
+          .textarea {
             @apply border border-solid border-red-500;
           }
           p {
@@ -293,7 +293,7 @@
         p {
           @apply mt-[6px] mb-[-2px] invisible opacity-0 text-xs text-red-500;
         }
-        textarea {
+        .textarea {
           @apply border-b border-solid  border-grey-999 p-[10px] mt-[12px]
          bg-[#f9f9f9];
         }

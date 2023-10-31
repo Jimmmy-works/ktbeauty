@@ -6,7 +6,16 @@ import React, { useEffect, useState } from "react";
 import useDashboard from "../useDashboard";
 import { MODAL_OPTION } from "@/contants/general";
 import { useSelector } from "react-redux";
+import MDEditor, { selectWord } from "@uiw/react-md-editor";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
+import styled from "styled-components";
+const MDEditorWrapper = styled.div`
+  margin-top: 20px;
+  p {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+`;
 const ModalCreateProduct = ({ open, cancel, add, messageAndt, categories }) => {
   const { productProps } = useDashboard();
   const { onCreateProduct } = productProps || {};
@@ -79,7 +88,6 @@ const ModalCreateProduct = ({ open, cancel, add, messageAndt, categories }) => {
     e.preventDefault();
     setCategory(cate?.value);
   };
-
   const handleImageChange = (e) => {
     let allImages = [];
     for (let i = 0; i < e.target.files.length; i++) {
@@ -91,6 +99,7 @@ const ModalCreateProduct = ({ open, cancel, add, messageAndt, categories }) => {
     /// upload Image from onchange input files
     uploadImages(allImages);
   };
+  console.log("descIntro", descIntro);
   const handleCreateProduct = async () => {
     const payload = {
       name: name,
@@ -102,11 +111,6 @@ const ModalCreateProduct = ({ open, cancel, add, messageAndt, categories }) => {
       descTitle: descHeading,
       descIntro: descIntro,
       descSub: renderDesc,
-      // description: {
-      //   heading: descHeading,
-      //   intro: descIntro,
-      //   subDesc: renderDesc,
-      // },
       image: URLs,
     };
     try {
@@ -117,13 +121,13 @@ const ModalCreateProduct = ({ open, cancel, add, messageAndt, categories }) => {
         setName("");
         setDesc([]);
         setDescHeading("");
-        setCountInStock("300");
+        setCountInStock("");
         setDiscount("");
         setCategory("");
         setDescIntro("");
         setRating(null);
         setRenderDesc([]);
-        setProgress(null);
+        setProgress("");
         setImages([]);
         /// Close Modal
         // cancel();
@@ -139,6 +143,8 @@ const ModalCreateProduct = ({ open, cancel, add, messageAndt, categories }) => {
     };
     return value;
   });
+  const [value, setValue] = useState();
+
   return (
     <>
       <Modal
@@ -283,15 +289,18 @@ const ModalCreateProduct = ({ open, cancel, add, messageAndt, categories }) => {
                   );
                 })}
               </ul>
-
-              <textarea
-                value={descIntro}
-                id="desc-intro"
-                placeholder="Description intro"
-                onChange={(e) => setDescIntro(e.target.value)}
-                className=""
-                type="text"
-              />
+              <MDEditorWrapper>
+                <h3 className="mb-[12px]">Description intro</h3>
+                <MDEditor
+                  height={200}
+                  value={descIntro}
+                  onChange={setDescIntro}
+                />
+                <MDEditor.Markdown
+                  source={value}
+                  style={{ whiteSpace: "pre-wrap", color: "#000 " }}
+                />
+              </MDEditorWrapper>
             </div>
           </div>
 
