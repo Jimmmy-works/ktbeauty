@@ -6,7 +6,7 @@ const Advertising = () => {
   return (
     <section className="scadvertising pt-section">
       <div className="container ">
-        <Textbox title={`Advertising`} />
+        <Textbox title={`DANH MỤC NỔI BẬT`} />
         <div className="scadvertising__list flex items-center lg:flex-nowrap xs:flex-wrap gap-[30px] md:-mx-[15px]">
           <div
             className="scadvertising__list-item xs:w-full lg:w-1/2 relative
@@ -32,7 +32,7 @@ const Advertising = () => {
                 Lorem ipsum dolor sit amet.
               </p>
               <div className="mx-auto w-fit mt-[10px]">
-                <Button>Shop Now</Button>
+                <Button>Mua ngay</Button>
               </div>
             </div>
           </div>

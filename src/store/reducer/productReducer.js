@@ -84,7 +84,7 @@ export const getProductDetail = createAsyncThunk(
   "product-detail/get/",
   async (slug, thunkAPI) => {
     try {
-      const reponse = await productService.getProductBySlug(slug);
+      const reponse = await productService.getProductById(slug);
       thunkAPI.dispatch(productActions.setProductDetail(reponse?.data?.data));
       return reponse?.data?.data;
     } catch (error) {

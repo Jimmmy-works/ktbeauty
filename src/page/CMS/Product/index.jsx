@@ -4,10 +4,14 @@ import { Checkbox, Collapse, Image, Table } from "antd";
 import ModalCreateProduct from "./ModalCreateProduct";
 import { MODAL_OPTION } from "@/contants/general";
 import { formatPriceVND } from "@/utils/formatPrice";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
+import { firebaseStorage } from "@/config/firebase";
+import ModalUpdateProduct from "./ModalUpdateProduct";
 
 const DashBoardProduct = () => {
   const { modalProps, productProps } = useDashboard();
-  const { onDeleteProduct } = productProps || {};
+  const { onDeleteProduct, onDeleteImage } = productProps || {};
+  const [selectedImage, setSelectedImage] = useState([]);
   const {
     findPath,
     onShowModal,
@@ -51,6 +55,14 @@ const DashBoardProduct = () => {
       align: "center",
     },
   ];
+  const [imgList, setImgList] = useState([]);
+  const onSelectImages = (e) => {
+    const target = e.target.value;
+    selectedImage.push(target);
+    setSelectedImage([...selectedImage]);
+  };
+  const imageListRef = ref(firebaseStorage, `ktbeauty/products`);
+  // console.log("imgList", imgList);
   const data = products.map((product, index) => {
     return {
       key: product?._id,
@@ -138,14 +150,14 @@ const DashBoardProduct = () => {
           </strong>
         ),
       image: (
-        <div className="  flex items-center xs:justify-center xs:gap-4 lg:gap-3 flex-wrap rounded-md ">
+        <div className="flex items-center xs:justify-center xs:gap-4 lg:gap-3 flex-wrap rounded-md ">
           <Image.PreviewGroup>
             {Array(product?.image?.length)
               ?.fill(product?.image)
               ?.map((item, index) => {
                 return (
                   <div key={item?._id} className=" flex items-center gap-2 ">
-                    <Checkbox />
+                    <Checkbox value={item[index]} onChange={onSelectImages} />
                     <Image
                       className="object-cover w-[60px] h-[60px]"
                       onError={(e) => {
@@ -174,7 +186,7 @@ const DashBoardProduct = () => {
           )}
           <div>
             <button
-              className="border-solid border-[#033C73] border p-[6px_12px] text-sm duration-400 transition-colors
+              className=" border-solid border-[#033C73] border p-[6px_12px] text-sm duration-400 transition-colors
               hover:bg-[#033C73] hover:text-white"
             >
               Delete
@@ -184,7 +196,6 @@ const DashBoardProduct = () => {
       ),
     };
   });
-
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -201,16 +212,41 @@ const DashBoardProduct = () => {
   const filterProducts = data?.filter((item) => {
     return selectedRowKeys.indexOf(item.key) !== -1;
   });
+  // const filterImages = products?.filter((product, index) => {
+  //   const newProduct = [...product?.image];
+  //   const toStringSelected = selectedImage.toString();
+  //   const check = newProduct?.filter((item) => {
+  //     return item.toString() === toStringSelected;
+  //   });
+  //   console.log("check", check);
+  // });
   const handleDeleteProductSelected = () => {
-    for (let index = 0; index < filterProducts.length; index++) {
-      onDeleteProduct(filterProducts[index]?.productid);
-    }
+    if (selectedRowKeys)
+      for (let index = 0; index < filterProducts.length; index++) {
+        onDeleteProduct(filterProducts[index]?.productid);
+      }
+  };
+  const handleDeleteImageSelected = () => {
+    // for (let index = 0; index < selectedImage.length; index++) {
+    //   const element = array[index];
+    // }
+    if (selectedImage) onDeleteImage(selectedImage);
+  };
+  const handleDelectSelected = () => {
+    handleDeleteProductSelected();
+    // handleDeleteImageSelected();
   };
   return (
     <div className="table__dashboard-product ">
       <ModalCreateProduct
         {...productProps}
-        messageAndt={findPath?.success}
+        open={openModalAndt}
+        add={onAddProduct}
+        setShowModal={onShowModal}
+        cancel={onCloseModal}
+      />
+      <ModalUpdateProduct
+        {...productProps}
         open={openModalAndt}
         add={onAddProduct}
         setShowModal={onShowModal}
@@ -230,7 +266,7 @@ const DashBoardProduct = () => {
         </h2>
         <div className="flex items-center gap-2">
           <button
-            onClick={handleDeleteProductSelected}
+            onClick={handleDelectSelected}
             className=" bg-[#b05a4b] text-white rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
           flex items-center gap-1 hover:bg-[#f84e4e] xs:p-[8px]"
           >
@@ -239,9 +275,18 @@ const DashBoardProduct = () => {
             </span>
           </button>
           <button
+            onClick={() => onShowModal(MODAL_OPTION.PRODUCT.UPDATE)}
+            className=" bg-yellow-600 text-white rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
+          flex items-center gap-1 hover:bg-yellow-500 xs:p-[8px]"
+          >
+            <span className="xs:text-xs md:text-sm font-osr  ">
+              Update Seleted
+            </span>
+          </button>
+          <button
             className=" bg-[#6c973e] text-white rounded-[5px] md:p-[6px_12px]  duration-400 transition-colors
           flex items-center gap-1 hover:bg-[#80B04B] xs:p-[5.5px_11px]"
-            onClick={() => onShowModal(MODAL_OPTION.PRODUCT)}
+            onClick={() => onShowModal(MODAL_OPTION.PRODUCT.CREATE)}
           >
             <span className="xs:text-[16px] md:text-[22px]  font-osr font-bold">
               &#43;

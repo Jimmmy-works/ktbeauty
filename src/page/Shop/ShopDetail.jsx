@@ -55,7 +55,6 @@ const ShopDetail = () => {
     category_id,
   } = productDetail || {};
   const {} = useShop();
-  const baseURL = `/assets/img/`;
   const max = 100;
   const min = 0;
   const [currentImg, setCurrentImg] = useState();
@@ -83,10 +82,7 @@ const ShopDetail = () => {
       return value;
     }
   };
-  const [imgLoading, setImgLoading] = useState(true);
-  const handleImageLoading = () => {
-    setImgLoading(false);
-  };
+
   return (
     <main className="main-wrapper shoppage">
       <BreadCrumb>
@@ -94,7 +90,7 @@ const ShopDetail = () => {
           <Link to={`${PATHS.HOME}`}>Home</Link>
         </BreadCrumb.Item>
         <BreadCrumb.Item>
-          <Link to={`${PATHS.SHOP.INDEX}`}>Shop</Link>
+          <Link to={`${PATHS.SHOP.INDEX}`}>Sản phẩm</Link>
         </BreadCrumb.Item>
         <BreadCrumb.Item isActive>{name}</BreadCrumb.Item>
       </BreadCrumb>
@@ -257,8 +253,8 @@ const ShopDetail = () => {
                     {formatPriceVND(price)}
                   </span>
                 </p>
-                <h3 className="shoppage__right-desc font-osb text-md text-black-555 my-[18px]">
-                  Product Features
+                <h3 className="shoppage__right-desc font-osb text-md text-black-555 m-[14px_0_10px_0]">
+                  Tính năng sản phẩm
                 </h3>
                 <div className="shoppage__right-list">
                   <h4 className="heading font-osr text-[15px] text-black-555 leading-[24px]">
@@ -412,7 +408,7 @@ const ShopDetail = () => {
               </div>
             </div>
             <Tabs>
-              <Tab label="Description">
+              <Tab label="Mô tả">
                 <div className="description">
                   <MDEditor.Markdown
                     source={description?.descIntro}
@@ -424,7 +420,7 @@ const ShopDetail = () => {
                   />
                 </div>
               </Tab>
-              <Tab label={`Reviews ${`(11)`}`}>
+              <Tab label={`Đánh giá ${`(11)`}`}>
                 <Review />
               </Tab>
             </Tabs>

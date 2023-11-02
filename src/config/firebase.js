@@ -4,6 +4,7 @@ import { getFirestore } from "firebase/firestore";
 import {
   getDownloadURL,
   getStorage,
+  listAll,
   ref,
   uploadBytes,
   uploadBytesResumable,
@@ -70,8 +71,6 @@ export const uploadImagesFirebase = (files, folder) => {
       })
       .catch((err) => console.log(files));
   } else {
-    console.log("folder", folder);
-    console.log("files", files);
     const storageRef = ref(firebaseStorage, `${folder}/${files?.name}`);
     return uploadBytes(storageRef, files).then(() => {
       getDownloadURL(storageRef)

@@ -14,6 +14,7 @@ const Header = () => {
     onActiveLinkTab,
     images,
     onLogout,
+    categories,
   } = headerProps || {};
   const refHeader = useRef(null);
   return (
@@ -30,11 +31,11 @@ const Header = () => {
         <Hamburger isNavbar={isNavbar} onToggleNav={onToggleNav} />
         <ul className="header__menu xs:hidden lg:flex">
           <li className="header__menu-item ">
-            <NavLink to={`${PATHS.HOME}`}>HOME</NavLink>
+            <NavLink to={`${PATHS.HOME}`}>TRANG CHỦ</NavLink>
           </li>
           <li className="header__menu-item relative ">
             <NavLink to={`${PATHS.SHOP.INDEX}`}>
-              SHOP
+              SẢN PHẨM
               <div className="arrow-down">
                 <svg
                   className="w-2 h-2 fill-black-555 duration-400 transition-colors "
@@ -44,17 +45,22 @@ const Header = () => {
                 </svg>
               </div>
             </NavLink>
-            <ul className="sub">
-              {Array(5)
-                .fill("")
-                .map((item, index) => (
-                  <li key={`${item}${index}`} className="sub__item">
+            {categories?.length ? (
+              <ul className="sub">
+                {categories?.map((item, index) => (
+                  <li
+                    key={`${item?._id}`}
+                    className="sub__item capitalize min-w-[150px]"
+                  >
                     <Link to={`${PATHS.SHOP.DETAIL}`}>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      {item?.name || "Lorem ipsum dolor sit amet."}
                     </Link>
                   </li>
                 ))}
-            </ul>
+              </ul>
+            ) : (
+              ""
+            )}
           </li>
           <li className="header__menu-item relative">
             <Link to={`${PATHS.BLOG.INDEX}`}>
@@ -82,10 +88,10 @@ const Header = () => {
             </ul>
           </li>
           <li className="header__menu-item ">
-            <NavLink to={`${PATHS.ABOUT}`}> ABOUT</NavLink>
+            <NavLink to={`${PATHS.ABOUT}`}>CHÚNG TÔI</NavLink>
           </li>
           <li className="header__menu-item ">
-            <NavLink to={`${PATHS.CONTACT}`}> CONTACT</NavLink>
+            <NavLink to={`${PATHS.CONTACT}`}>LIÊN HỆ</NavLink>
           </li>
           <li className="header__menu-item ">
             <NavLink to={`${PATHS.CMS.INDEX}`}>CMS</NavLink>
@@ -196,7 +202,7 @@ const Header = () => {
               </ul>
               <div className="text-sm flex items-center justify-center">
                 <Button
-                  link={PATHS.CART}
+                  link={PATHS.PROFILE.WHITELIST}
                   variant="filled"
                   className={`w-full text-center  md:py-[12px]`}
                 >

@@ -16,7 +16,7 @@ const Order = () => {
   return (
     <div className="order">
       <h3 className="text-[24px] font-mab text-black-333 xs:my-[16px]">
-        Your Order List
+        Giỏ hàng của bạn
       </h3>
       {images.map((item, index) => {
         return (

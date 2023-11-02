@@ -73,9 +73,8 @@ const Review = () => {
               </div>
               <textarea
                 className="textarea w-full font-osr text-black-333 xs:text-sm md:text-[15px] xs:mt-[10px] md:mt-[20px] scrollbar-nav
-                md:border-none xs:border xs:border-solid xs:border-gray-200 p-[10px]
-                "
-                placeholder="Review something..."
+                md:border-none xs:border xs:border-solid xs:border-gray-200 p-[10px]"
+                placeholder="Viết đánh giá..."
                 name=""
                 id=""
                 cols="30"

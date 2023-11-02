@@ -19,7 +19,10 @@ export const MODAL_OPTION = {
     INDEX: "user",
     AVATAR: "user-avatar",
   },
-  PRODUCT: "product",
+  PRODUCT: {
+    CREATE: "product/create",
+    UPDATE: "product/update",
+  },
 };
 export const SELECT_TOKEN = {
   token: "access_token",

@@ -12,15 +12,16 @@ const Footer = () => {
         >
           <div className="footer__subscription-text xs:text-center xl:text-left max-w-[400px] xs:w-full md:w-1/3 ">
             <h3 className="font-mab leading-[24px] text-md text-primary xs:mb-[10px] xl:mb-[14px]">
-              THE LATEST AND GREATEST
+              SẢN PHẨM MỚI - ƯU ĐÃI TỐT
             </h3>
             <p className="font-mam text-sm text-white leading-[24px]">
-              Be the first to hear about new products and exclusive discounts.x
+              Hãy là người đầu tiên nhận được các sản phẩm mới và giảm giá độc
+              quyền
             </p>
           </div>
           <div className="footer__subscription-submit  h-full relative   xs:w-full md:w-[40%] lg:w-1/3  ">
             <input
-              placeholder="Enter your email address"
+              placeholder="Email của bạn"
               type="text"
               className="pr-[70px] pl-[30px] xs:py-[10px] md:py-[14px] lg:py-[18px] rounded-l-[50px] rounded-r-[50px] font-osr
               text-black-555 text-[16px]  border border-primary w-full"
@@ -113,8 +114,7 @@ const Footer = () => {
                   className="font-osr text-sm  group-hover/hover:text-primary duration-400 transition-colors
                   text-black-333 address__desc leading-[20px] xs:max-w-full md:max-w-[180px] lg:max-w-[250px] "
                 >
-                  Our business address is 63 Freelon Street San Francisco, CA
-                  95108
+                  Công ty TNHH KTBEAUTY Số 1, Tôn Đức Thắng, Q1, TP. Hồ Chí Minh
                 </p>
               </a>
               <a
@@ -161,7 +161,7 @@ const Footer = () => {
                   className="font-osr text-sm group-hover/hover:text-primary duration-400 transition-colors
                    text-black-333 email__desc"
                 >
-                  support@shb.com
+                  support@ktbeauty.com
                 </p>
               </a>
             </div>
@@ -181,10 +181,11 @@ const Footer = () => {
                 ></path>
               </svg>
             </a>
-            <p className="font-mar text-sm text-black-333 leading-[20px] text-center w-full">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat
-              sunt deleniti illum mollitia deserunt quam voluptate. Maxime
-              architecto ullam voluptatum?
+            <p className="font-osr text-sm text-black-333 leading-[20px] text-center w-full">
+              Thiên nhiên luôn là người bạn tốt nhất của sắc đẹp <br /> Cảm nhận
+              sự khác biệt với sản phẩm làm đẹp thiên nhiên Nature is Always the
+              Best Friend of Beauty <br /> Feel the Difference with Natural
+              Beauty Products
             </p>
           </div>
           <div className="xs:w-full md:w-fit  footer__middle-menu ">
@@ -198,19 +199,20 @@ const Footer = () => {
                     className="h-full leading-[20px] font-osr text-sm text-black-555  
                     hover:text-primary duration-400 transition-colors"
                   >
-                    <a href="">About Us</a>
+                    <a href="">Về chúng tôi</a>
                   </li>
                   <li
                     className="h-full leading-[20px] font-osr text-sm text-black-555  
                     hover:text-primary duration-400 transition-colors"
                   >
-                    <a href="">Contact US</a>
-                  </li>{" "}
+                    <a href="">Đơn hàng</a>
+                  </li>
+
                   <li
                     className="h-full leading-[20px] font-osr text-sm text-black-555  
                     hover:text-primary duration-400 transition-colors"
                   >
-                    <a href="">White List</a>
+                    <a href="">Giỏ hàng</a>
                   </li>
                 </ul>
                 <ul className="flex flex-col xs:items-center md:items-start gap-[8px] ">
@@ -218,19 +220,19 @@ const Footer = () => {
                     className="h-full leading-[20px] font-osr text-sm text-black-555  
                     hover:text-primary duration-400 transition-colors"
                   >
-                    <a href="">Privacy Policy</a>
+                    <a href="">Liên hệ</a>
                   </li>
                   <li
                     className="h-full leading-[20px] font-osr text-sm text-black-555  
                     hover:text-primary duration-400 transition-colors"
                   >
-                    <a href="">Your Order</a>
+                    <a href="">Bản quyền</a>
                   </li>
                   <li
                     className="h-full leading-[20px] font-osr text-sm text-black-555  
                     hover:text-primary duration-400 transition-colors"
                   >
-                    <a href="">Careers</a>
+                    <a href="">Tuyển dụng</a>
                   </li>
                 </ul>
               </div>

@@ -45,22 +45,22 @@ const CartPage = () => {
             <Link to={`${PATHS.HOME}`}>Home</Link>
           </BreadCrumb.Item>
           <BreadCrumb.Item isActive>
-            <Link>Checkout</Link>
+            <Link>Giỏ Hàng</Link>
           </BreadCrumb.Item>
         </BreadCrumb>
         <div className="bg-advertising-banner-2 bg-no-repeat bg-cover xs:h-[100px] md:h-[140px] w-full relative ">
-          <h3 className="font-mam xs:text-[26px] w-full text-center md:text-[40px] text-white center-absolute z-20">
-            Shopping Cart
+          <h3 className="font-om xs:text-[26px] w-full text-center md:text-[40px] text-white center-absolute z-20">
+            Giỏ hàng
           </h3>
         </div>
         <table className="table ">
           <thead>
             <tr>
-              <td>image</td>
-              <td>product</td>
-              <td>price</td>
-              <td>quantity</td>
-              <td>subtotal</td>
+              <td>Sản phẩm</td>
+              <td>Tên Sản phẩm</td>
+              <td>Giá</td>
+              <td>Số lượng</td>
+              <td>Tổng</td>
             </tr>
           </thead>
           <tbody className="table__body">
@@ -93,7 +93,7 @@ const CartPage = () => {
                   {width >= 768 ? (
                     <td className="">$100</td>
                   ) : (
-                    <td className="">Price: $100</td>
+                    <td className="">Giá: $100</td>
                   )}
                   <td className="">
                     <div
@@ -134,9 +134,9 @@ const CartPage = () => {
                     </div>
                   </td>
                   {width >= 768 ? (
-                    <td className="text-black font-mam">$2000</td>
+                    <td className="text-black font-om">$2000</td>
                   ) : (
-                    <td className="text-black font-mam">Subtotal: $2000</td>
+                    <td className="text-black font-om">Tổng: $2000</td>
                   )}
                   {width >= 768 ? (
                     <td className="">
@@ -145,7 +145,7 @@ const CartPage = () => {
                         py-[6px] hover:bg-red-500
                       bg-black-333 transition-all duration-400 mx-auto"
                       >
-                        Remove
+                        Xóa
                       </button>
                     </td>
                   ) : (
@@ -169,40 +169,40 @@ const CartPage = () => {
         >
           <div className="coupon  xs:w-full md:w-[50%] border border-solid  border-grey-999">
             <h3 className="text-white bg-black-555 font-osb text-[16px] py-[10px] px-[20px]">
-              Coupon
+              Mã giảm giá
             </h3>
             <div className="flex items-center gap-2 p-[20px_20px] ">
               <input
                 type="text"
-                placeholder="Coupon code"
-                className="border border-solid border-grey-999 p-[11px] font-mar text-sm text-black
+                placeholder="Code"
+                className="border border-solid border-grey-999 p-[11px] font-osr text-sm text-black
                   md:max-w-[300px] xs:max-w-[100%] w-full"
               />
               <button
-                className="bg-black-555 font-mam font-semibold p-[11.5px] text-[14px] text-white
+                className="bg-black-555 font-ossb  p-[11.5px] text-[14px] text-white
                 tracking-widest duration-400 transition-colors hover:bg-primary"
               >
-                Apply
+                Sử dụng
               </button>
             </div>
           </div>
           <div className="  xs:w-full md:w-[50%] border border-solid border-grey-999">
             <h3 className="text-white bg-black-555 font-osb text-[16px] py-[10px] px-[20px]">
-              Cart Total
+              Tổng kết
             </h3>
             <div className="flex justify-between items-center p-[16px_20px] ">
-              <h4 className="text-[16px] font-mam text-black">Sub Total:</h4>
-              <p className="text-[16px] font-mam text-black">$340.00</p>
+              <h4 className="text-[16px] font-om text-black">
+                Tổng chưa giảm giá:
+              </h4>
+              <p className="text-[16px] font-om text-black">$340.00</p>
             </div>
 
             <div className="flex justify-between items-center p-[16px_20px] ">
-              <h4 className="text-[16px] font-mam text-black">Discount:</h4>
-              <p className="text-[16px] font-mam text-black">- $340.00</p>
+              <h4 className="text-[16px] font-om text-black">Giảm giá:</h4>
+              <p className="text-[16px] font-om text-black">- $340.00</p>
             </div>
             <div className="flex justify-between items-center p-[8px_20px] ">
-              <h4 className="text-[16px] font-mam text-black">
-                Select Shipping
-              </h4>
+              <h4 className="text-[16px] font-om text-black">Vận chuyển</h4>
               <div>
                 <Select
                   defaultValue="default"
@@ -210,43 +210,43 @@ const CartPage = () => {
                   options={[
                     {
                       value: "default",
-                      label: "Select shipping",
+                      label: "Chọn phương thức",
                     },
                     {
                       value: "free",
-                      label: "Free",
+                      label: "Miễn phí",
                     },
                     {
                       value: "fast",
-                      label: "Fast : $20",
+                      label: "Nhanh : 20.000đ",
                     },
                     {
                       value: "express",
-                      label: "Express : $30",
+                      label: "Hỏa tốc : 35.000đ",
                     },
                   ]}
                 />
               </div>
             </div>
             <div className="flex justify-between items-center p-[16px_20px] ">
-              <h4 className="text-[16px] font-mam text-black">
+              <h4 className="text-[16px] font-om text-black">
                 &#8658; Shipping:
               </h4>
-              <p className="text-[16px] font-mam text-black"> Free</p>
+              <p className="text-[16px] font-om text-black">Miễn phí</p>
             </div>
             <div
               className="flex justify-between items-center p-[16px_20px] border-t border-solid
               border-grey-999"
             >
-              <h4 className="text-[16px] font-mam text-black">Total:</h4>
-              <p className="text-[16px] font-mam text-black">$320.00</p>
+              <h4 className="text-[16px] font-om text-black">Tổng cộng:</h4>
+              <p className="text-[16px] font-om text-black">$340.00</p>
             </div>
-            <div className=" p-[20px] ">
+            <div className=" p-[14px_20px] ">
               <Button
                 link={PATHS.CHECKOUT}
-                className={`block text-center rounded-none w-full  py-[16px]`}
+                className={`block text-center rounded-none w-full  md:p-[14px]`}
               >
-                PROCEED TO CHECKOUT
+                Thanh Toán
               </Button>
             </div>
           </div>

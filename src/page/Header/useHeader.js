@@ -3,6 +3,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const useHeader = () => {
+  const { categories } = useSelector((state) => state.product);
   const images = [
     "/assets/img/product-1.jpg",
     "/assets/img/product-2.jpg",
@@ -28,6 +29,7 @@ const useHeader = () => {
     onActiveLinkTab,
     images,
     onLogout,
+    categories,
   };
   return { headerProps };
 };

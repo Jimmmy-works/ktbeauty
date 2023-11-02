@@ -4,7 +4,7 @@
     &__item {
       @apply duration-300 transition-colors cursor-pointer;
       a {
-        @apply relative font-mar md:text-[14px] lg:text-[16px] text-black-555 
+        @apply relative font-osr md:text-[14px] lg:text-[16px] text-black-555 
         duration-300 transition-colors w-full flex items-center
         xs:gap-2 md:gap-4 p-[20px]  border-b-[2px] border-solid border-transparent  before:absolute
          cursor-pointer before:w-full before:h-[2px] before:bg-primary before:top-[calc(100%)]
@@ -104,7 +104,7 @@
       }
     }
     &__heading {
-      @apply font-mam text-[16px] text-black-555  capitalize;
+      @apply font-om text-[16px] text-black-555  capitalize;
       .accordion__heading-dropdown {
         @apply duration-400 transition-all;
         svg {
@@ -127,14 +127,14 @@
     &__content {
       &-heading {
         a {
-          @apply font-mar text-[15px] pointer-events-none;
+          @apply font-osr text-[15px] pointer-events-none;
         }
       }
       &-list {
         .item {
           &__list {
             &-child {
-              @apply text-sm font-mar text-black-555 pointer-events-none;
+              @apply text-sm font-osr text-black-555 pointer-events-none;
             }
           }
         }

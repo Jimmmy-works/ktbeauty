@@ -25,81 +25,75 @@ const Checkout = () => {
               <Link to={`${PATHS.HOME}`}>Home</Link>
             </BreadCrumb.Item>
             <BreadCrumb.Item isActive>
-              <Link>Checkout</Link>
+              <Link>Thanh Toán</Link>
             </BreadCrumb.Item>
           </BreadCrumb>
           <div className="bg-advertising-banner-2 bg-no-repeat bg-cover xs:h-[100px] md:h-[140px] w-full relative ">
             <h3 className="font-mam xs:text-[26px] w-full text-center md:text-[40px] text-white center-absolute z-20">
-              Checkout
+              Thanh Toán
             </h3>
           </div>
-          <div className="flex lg:flex-row xs:flex-col items-start mt-[30px] gap-[40px]">
+          <div className="flex lg:flex-row xs:flex-col items-start mt-[30px] xs:gap-[20px] md:gap-[40px]">
             <div className="xs:w-full lg:w-[60%] screen-1200:w-[65%]">
               <form className="checkout__information  form" action="">
-                <h3 className="form__title">Contact Information</h3>
+                <h3 className="form__title">Liên hệ</h3>
                 <div className="form__container">
                   <div className="form__container-wrapper success xs:w-full md:w-1/2">
-                    <label htmlFor="phone">Phone</label>
+                    <label htmlFor="phone">Số điện thoại</label>
                     <input id="phone" placeholder="+84" type="text" />
-                    <p className=""> Please try again</p>
+                    <p className="ml-[10px]">{"Please try again"}</p>
                   </div>
                   <div className="form__container-wrapper success xs:w-full md:w-1/2">
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="email">Email của bạn</label>
                     <input id="email" placeholder="abc@gmail.com" type="text" />
-                    <p className=""> Please try again</p>
+                    <p className="ml-[10px]">{"Please try again"}</p>
                   </div>
                 </div>
                 <div>
-                  <Checkbox>Contact me with news and offers</Checkbox>
+                  <Checkbox>Gửi email ưu đãi mới nhất cho bạn</Checkbox>
                 </div>
               </form>
               <form className="form mt-[20px]" action="">
-                <h3 className="form__title">Billing Details</h3>
+                <h3 className="form__title">Chi tiết thanh toán</h3>
                 <div className="form__container">
-                  <div className="form__container-wrapper xs:w-full md:w-1/2">
-                    <label htmlFor="first-name">First Name</label>
+                  <div className="form__container-wrapper w-full ">
+                    <label htmlFor="first-name">Họ và Tên</label>
                     <input type="text" id="first-name" />
-                    <p className=""> Please try again</p>
-                  </div>
-                  <div className="form__container-wrapper xs:w-full md:w-1/2">
-                    <label htmlFor="last-name">Last Name</label>
-                    <input type="text" id="last-name" />
                     <p className=""> Please try again</p>
                   </div>
                 </div>
 
                 <div className="form__container">
                   <div className="form__container-wrapper xs:w-full md:w-1/3">
-                    <label htmlFor="city">City</label>
+                    <label htmlFor="city">Thành/Tỉnh</label>
                     <input type="text" id="city" />
                     <p className=""> Please try again</p>
                   </div>
                   <div className="form__container-wrapper xs:w-full md:w-1/3">
-                    <label htmlFor="district">District</label>
+                    <label htmlFor="district">Quận/Huyện</label>
                     <input type="text" id="district" />
                     <p className=""> Please try again</p>
                   </div>
                   <div className="form__container-wrapper xs:w-full md:w-1/3">
-                    <label htmlFor="ward">Ward</label>
+                    <label htmlFor="ward">Phường/Xã</label>
                     <input type="text" id="ward" />
                     <p className=""> Please try again</p>
                   </div>
                 </div>
                 <div className="form__container-wrapper">
-                  <label htmlFor="address">Address</label>
+                  <label htmlFor="address">Địa chỉ</label>
                   <input
                     id="address"
-                    placeholder="ID home & Street name"
+                    placeholder="Địa chỉ chi tiết (Tòa A, Số 1, Tôn Đức Thắng)"
                     type="text"
                   />
                   <p className=""> Please try again</p>
                 </div>
                 <div className="form__container-wrapper error">
-                  <label htmlFor="note">Note</label>
+                  <label htmlFor="note">Ghi chú</label>
                   <textarea
                     className="textarea"
-                    placeholder="Notes your order"
-                    name=""
+                    placeholder="Ghi chú cho đơn hàng"
                     id="note"
                     cols="30"
                     rows="10"
@@ -113,8 +107,8 @@ const Checkout = () => {
              md:bg-[#f9f9f9]"
             >
               {width < 768 && (
-                <h3 className="font-mab text-black-333 text-md my-[20px]">
-                  Your Order
+                <h3 className="font-osb text-black-333 text-md my-[20px]">
+                  Giỏ hàng của bạn
                 </h3>
               )}
               <div className="pb-[20px] border-b border-solid border-[#e2e0e0]">
@@ -155,7 +149,7 @@ const Checkout = () => {
                           Lorem ipsum dolor sit amet {index}.
                         </Link>
                       </div>
-                      <p className="text-sm text-primary font-mab">$40.00</p>
+                      <p className="text-sm text-primary font-osb">400.000đ</p>
                     </div>
                   );
                 })}
@@ -179,53 +173,57 @@ const Checkout = () => {
               </div>
               <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
                 <div className="flex items-center justify-between ">
-                  <h4 className="font-mab text-sm text-black-333">Subtotal</h4>
-                  <p className="font-mab text-sm text-primary">$390.00</p>
+                  <h4 className="font-osb text-sm text-black-333">
+                    Tổng chưa giảm giá
+                  </h4>
+                  <p className="font-osb text-sm text-primary">$390.00</p>
                 </div>
                 {/* <div className="flex items-center justify-between mt-[20px]">
-                  <h4 className="font-mab text-sm text-black-333">Shipping</h4>
-                  <p className="font-mab text-sm text-primary">Free</p>
+                  <h4 className="font-osb text-sm text-black-333">Vận chuyển</h4>
+                  <p className="font-osb text-sm text-primary">Free</p>
                 </div> */}
                 <div className="flex items-center justify-between mt-[20px]">
-                  <h4 className="font-mab text-sm text-black-333">Shipping</h4>
+                  <h4 className="font-osb text-sm text-black-333">
+                    Vận chuyển
+                  </h4>
                   <p
-                    className="font-mab text-sm text-black-333 relative before:w-full before:h-[1px]
+                    className="font-osb text-sm text-black-333 relative before:w-full before:h-[1px]
                   before:absolute before:bg-black-333 before:bottom-[-4px] duration-400 transition-colors
                   before:duration-400 before:transition-colors hover:before:bg-primary hover:text-primary
                   cursor-pointer"
                   >
-                    Select delivery
+                    Chọn phương thức
                   </p>
                 </div>
               </div>
               <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
                 <div className="flex items-start justify-between">
-                  <h4 className="font-mab text-sm text-black-333">Discount</h4>
-                  <p className="font-mab text-sm text-primary">-$43.00</p>
+                  <h4 className="font-osb text-sm text-black-333">Giảm giá</h4>
+                  <p className="font-osb text-sm text-primary">-43.000đ</p>
                 </div>
                 <div className="flex items-start justify-between mt-[14px] ">
                   <h4 className="pl-[6px] font-mam text-[12px] text-black-333">
                     COUPON20
                   </h4>
-                  <p className="font-mab text-[12px] text-primary">-$20.00</p>
+                  <p className="font-osb text-[12px] text-primary">-20.000đ</p>
                 </div>
                 <div className="flex items-start justify-between mt-[14px] ">
                   <h4 className="pl-[6px] font-mam text-[12px] text-black-333">
                     SALEOFF
                   </h4>
-                  <p className="font-mab text-[12px] text-primary">-20%</p>
+                  <p className="font-osb text-[12px] text-primary">-20%</p>
                 </div>
               </div>
               <div className=" py-[20px] flex items-center justify-between">
-                <h4 className="font-mab text-md text-black-333">Total</h4>
-                <p className="font-mab text-md text-primary ">$1000</p>
+                <h4 className="font-osb text-md text-black-333">Tổng cộng</h4>
+                <p className="font-osb text-md text-primary ">1.200.000đ</p>
               </div>
               <div className="mt-[10px]">
                 <Button
                   link={PATHS.COMPLETE}
-                  className={`block text-center rounded-none w-full py-[16px]`}
+                  className={`block text-center rounded-none w-full md:p-[14px]`}
                 >
-                  PROCEED TO CHECKOUT
+                  Đặt hàng
                 </Button>
               </div>
             </div>

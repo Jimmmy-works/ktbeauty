@@ -161,7 +161,6 @@ const DashboardUser = () => {
       ),
     };
   });
-  console.log("users", users);
   ///// Confirm
   const onConfirmDelete = (id) => {
     onDeleteUser(id);

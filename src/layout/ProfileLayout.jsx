@@ -30,11 +30,11 @@ const ProfileLayout = () => {
           <BreadCrumb.Item>
             <Link to={`${PATHS.HOME}`}>Home</Link>
           </BreadCrumb.Item>
-          <BreadCrumb.Item isActive>Profile</BreadCrumb.Item>
+          <BreadCrumb.Item isActive>Thông tin cá nhân</BreadCrumb.Item>
         </BreadCrumb>
         <div className="bg-advertising-banner-2 bg-no-repeat bg-cover xs:h-[100px] md:h-[140px] w-full relative ">
-          <h3 className="font-mam xs:text-[26px] w-full text-center md:text-[40px] text-white center-absolute z-20">
-            Profile
+          <h3 className="font-om xs:text-[26px] w-full text-center md:text-[40px] text-white center-absolute z-20">
+            Thông tin cá nhân
           </h3>
         </div>
         <div className="flex md:flex-row xs:flex-col xs:gap-[10px] md:gap-[20px] lg:gap-[30px] mt-[30px]">

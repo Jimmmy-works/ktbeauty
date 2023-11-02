@@ -23,7 +23,7 @@
     }
   }
   &__menu {
-    @apply h-full center-absolute flex items-center gap-[40px];
+    @apply h-full center-absolute flex items-center lg:gap-[20px] xl:gap-[40px];
     &-item {
       @apply h-full flex items-center;
       &:hover {

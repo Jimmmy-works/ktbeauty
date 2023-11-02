@@ -27,6 +27,9 @@ const dashboardService = {
       }
     );
   },
+  updateProduct: (id, payload) => {
+    return instanceAxios.put(`/product/update-product/${id}`, payload);
+  },
   createProduct: (payload, token) => {
     return instanceAxios.post(
       `${BASE_URL}/api/product/create-product`,

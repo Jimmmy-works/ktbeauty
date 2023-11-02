@@ -1,14 +1,8 @@
-import { firebaseStorage, firebaseStore } from "@/config/firebase";
-import { Modal, Rate, Select, Space, message } from "antd";
-import { addDoc, collection, doc, getDocs } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import React, { useEffect, useState } from "react";
+import { Modal, Rate } from "antd";
+import React, { useState } from "react";
 import useDashboard from "../useDashboard";
 import { MODAL_OPTION } from "@/contants/general";
-import { useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
-import MDEditor, { selectWord } from "@uiw/react-md-editor";
-import { THUNK_STATUS } from "@/contants/thunkstatus";
+import MDEditor from "@uiw/react-md-editor";
 import styled from "styled-components";
 const MDEditorWrapper = styled.div`
   margin-top: 20px;
@@ -17,9 +11,13 @@ const MDEditorWrapper = styled.div`
     opacity: 1 !important;
   }
 `;
-const ModalCreateProduct = ({ open, cancel, add, categories }) => {
-  const { productProps } = useDashboard();
-  const { onCreateProduct } = productProps || {};
+const ModalUpdateProduct = ({
+  open,
+  cancel,
+  add,
+  categories,
+  onGetProductDetail,
+}) => {
   const [descIntro, setDescIntro] = useState("");
   const [price, setPrice] = useState("");
   const [countInStock, setCountInStock] = useState("");
@@ -35,12 +33,9 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
     setDesc("");
   };
   ////
-  const { getStatusCreateProduct } = useSelector((state) => state.dashboard);
-  ////
   const [images, setImages] = useState([]);
   const [URLs, setURLs] = useState([]);
   const [progress, setProgress] = useState("");
-  //// firebase
   const uploadImages = (files) => {
     const promises = [];
     if (files?.length >= 1) {
@@ -84,11 +79,6 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
         .catch((err) => console.log(files));
     }
   };
-  ////
-  const handleChangeCategories = (e, cate) => {
-    e.preventDefault();
-    setCategory(cate?.value);
-  };
   const handleImageChange = (e) => {
     let allImages = [];
     for (let i = 0; i < e.target.files.length; i++) {
@@ -100,42 +90,6 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
     /// upload Image from onchange input files
     uploadImages(allImages);
   };
-  const handleCreateProduct = async () => {
-    const payload = {
-      name: name,
-      price: price,
-      category_id: category,
-      countInStock: countInStock,
-      discount: discount,
-      rating: rating,
-      descTitle: descHeading,
-      descIntro: descIntro,
-      descSub: renderDesc,
-      image: URLs,
-    };
-    try {
-      const res = await onCreateProduct(payload);
-      console.log("res", res);
-      if (res) {
-        setPrice("");
-        setName("");
-        setDesc([]);
-        setDescHeading("");
-        setCountInStock("");
-        setDiscount("");
-        setCategory("");
-        setDescIntro("");
-        setRating(null);
-        setRenderDesc([]);
-        setProgress("");
-        setImages([]);
-        /// Close Modal
-        // cancel();
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
   const optionCategories = categories?.map((cate) => {
     let value = {
       value: cate?._id,
@@ -143,13 +97,13 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
     };
     return value;
   });
-
+  const handleUpdateProduct = () => {};
   return (
     <Modal
       className="dashboard-modal"
-      onOk={handleCreateProduct}
+      onOk={handleUpdateProduct}
       onCancel={cancel}
-      open={open === MODAL_OPTION.PRODUCT.CREATE}
+      open={open === MODAL_OPTION.PRODUCT.UPDATE}
       okButtonProps={{ className: "custom-button-ok" }}
       cancelButtonProps={{ className: "custom-button-cancel" }}
     >
@@ -358,4 +312,4 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
   );
 };
 
-export default ModalCreateProduct;
+export default ModalUpdateProduct;

@@ -23,7 +23,7 @@ const Featured = ({
             }`}
             onClick={() => onChangeFeaturedTab(FEATURED_OPTIONS.FEATURED)}
           >
-            Feactured
+            Dành cho bạn
           </div>
           <div
             className={`scfeatured__tabs-item ${
@@ -31,7 +31,7 @@ const Featured = ({
             }`}
             onClick={() => onChangeFeaturedTab(FEATURED_OPTIONS.BEST_SELLER)}
           >
-            Best sellers
+            Bán chạy nhất
           </div>
           <div
             className={`scfeatured__tabs-item ${
@@ -39,7 +39,7 @@ const Featured = ({
             }`}
             onClick={() => onChangeFeaturedTab(FEATURED_OPTIONS.POPULAR)}
           >
-            Popular
+            Ưu đãi
           </div>
         </div>
         <div className="scfeatured__content">

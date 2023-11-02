@@ -65,7 +65,7 @@
     @apply xs:flex-wrap xs:gap-[14px] lg:flex-nowrap flex items-center justify-center
            xs:mb-[30px] md:mb-[50px];
     &-item {
-      @apply bg-white font-mab xs:text-[14px] md:text-[18px] text-black-555  cursor-pointer uppercase
+      @apply bg-white font-osb xs:text-[14px] md:text-[18px] text-black-555  cursor-pointer uppercase
             xs:py-[3px] md:py-[7px] xs:px-[20px] md:px-[72.2px]  rounded-[50px]  duration-400 
           transition-all relative  before:absolute before:w-[10px] before:h-[10px]  before:top-1/2 
          before:-translate-y-1/2 before:left-[52px] before:rounded-[50%] before:bg-white 

@@ -26,7 +26,6 @@ instanceAxios.interceptors.response.use(
       try {
         // Gọi API để cập nhật token mới
         const result = await authService.refreshToken(_refreshToken);
-        console.log("result", result);
         // if (!access_token) throw new Error();
         localStorage.setItem(LOCAL_STORAGE.token, access_token);
         // // Thay đổi token trong header của yêu cầu ban đầu
@@ -56,7 +55,6 @@ instanceAxios.interceptors.request.use(
       const res = await authService.refreshToken(_refreshToken);
       localStorage.setItem(LOCAL_STORAGE.token, res?.data?.data?.access_token);
       const newAccessToken = localStorage.getItem(LOCAL_STORAGE.token);
-      console.log("newAccessToken", newAccessToken);
       config.headers["token"] = `Bearer ${newAccessToken}`;
     }
     return config;

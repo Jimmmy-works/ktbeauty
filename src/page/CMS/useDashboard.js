@@ -6,7 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { message } from "antd";
 import { register } from "@/store/reducer/authReducer";
 import { createProduct, getAllUsers } from "@/store/reducer/dashboardReducer";
-import { getAllProduct } from "@/store/reducer/productReducer";
+import {
+  getAllProduct,
+  getProductDetail,
+} from "@/store/reducer/productReducer";
+import { deleteObject, ref } from "firebase/storage";
+import { firebaseStorage } from "@/config/firebase";
 const useDashboard = () => {
   /// window size
   const { width } = useWindowSize();
@@ -31,6 +36,7 @@ const useDashboard = () => {
     setProductList([...productList, payload]);
   };
   ///// API
+
   const adminToken = localStorage.getItem(LOCAL_STORAGE.token);
   //// API USER
   const onCreateUser = async (payload) => {
@@ -62,11 +68,43 @@ const useDashboard = () => {
     }
   };
   //// API PRODUCT
+  const onGetProductDetail = (id) => {
+    try {
+      const response = dispatch(getProductDetail(id));
+      console.log("response", response);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  const onUpdateProduct = async (id, payload) => {
+    try {
+      const response = await dashboardService.updateProduct(id, payload);
+      console.log("response", response);
+      return response;
+    } catch (error) {
+      console.log("error", error);
+      throw error;
+    }
+  };
+  const onDeleteImage = async (urls) => {
+    console.log("urls", urls);
+    try {
+      // const responseUrls = await urls?.map((url) => {
+      //   deleteObject(ref(firebaseStorage, url)).then((res) => {
+      //     console.log("res");
+      //   });
+      // });
+      // onUpdateProduct(ids, payload);
+      // return responseUrls;
+    } catch (error) {
+      console.log("error", error);
+      throw error;
+    }
+  };
   const onCreateProduct = async (payload) => {
     try {
       const _token = localStorage.getItem(LOCAL_STORAGE.token);
       const response = await dispatch(createProduct(payload));
-      console.log("response", response);
       dispatch(getAllProduct(_token));
       return response;
     } catch (error) {
@@ -75,7 +113,6 @@ const useDashboard = () => {
     }
   };
   const onDeleteProduct = async (id) => {
-    console.log("id", id);
     try {
       const _token = localStorage.getItem(LOCAL_STORAGE.token);
       const response = await dashboardService.deleteProduct(id, _token);
@@ -95,6 +132,8 @@ const useDashboard = () => {
     categories,
     onCreateProduct,
     onDeleteProduct,
+    onDeleteImage,
+    onGetProductDetail,
   };
   const modalProps = {
     onShowModal,

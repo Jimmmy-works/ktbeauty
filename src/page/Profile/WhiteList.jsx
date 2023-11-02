@@ -16,14 +16,14 @@ const WhiteList = () => {
   return (
     <div className="whitelist">
       <h3 className="text-[24px] xs:text-center md:text-left font-mab text-black-333 xs:my-[16px]">
-        Your Whitelist
+        Sản phẩm yêu thích của bạn
       </h3>
       <table className="table md:mt-0 xs:mt-[10px]">
         <thead className="cartpage__table-head">
           <tr>
-            <td className="text-left">Product</td>
-            <td className="">price</td>
-            <td className="">Stock Status</td>
+            <td className="text-left">Sản phẩm</td>
+            <td className="">Giá</td>
+            <td className="">Kho</td>
             <td className=""></td>
             <td className=""></td>
           </tr>
@@ -61,15 +61,15 @@ const WhiteList = () => {
                 </td>
 
                 {width >= 768 ? (
-                  <td className="">$100</td>
+                  <td className="">150.000đ</td>
                 ) : (
-                  <td className="">Price: $100</td>
+                  <td className="">Giá: 150.000đ</td>
                 )}
 
                 {item !== images[0] ? (
-                  <td className="instock">Instock: {`${index}`}</td>
+                  <td className="instock">Kho HCM: {`${index}`}</td>
                 ) : (
-                  <td className="outstock">Out of stock </td>
+                  <td className="outstock">Hết hàng</td>
                 )}
 
                 {item !== images[0] ? (
@@ -83,10 +83,11 @@ const WhiteList = () => {
                 ) : (
                   <td className="text-black font-mam">
                     <Button
+                      disabled={true}
                       className={` rounded-none text-[#ccc] bg-[#fafafa] border-[#fafafa] pointer-events-none 
                       lg:px-[30px] lg:py-[10px] md:px-[10px] md:py-[6px]`}
                     >
-                      Out of stock
+                      Hết hàng
                     </Button>
                   </td>
                 )}

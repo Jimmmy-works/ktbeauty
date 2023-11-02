@@ -9,7 +9,7 @@ export const productService = {
   getAllProduct: () => {
     return axios.get(`${BASE_URL}/api/product/get-all-product`);
   },
-  getProductBySlug: (id) => {
+  getProductById: (id) => {
     return axios.get(`${BASE_URL}/api/product/get-detail-product/${id}`);
   },
 };

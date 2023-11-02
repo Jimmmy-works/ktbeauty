@@ -33,7 +33,6 @@ const Shop = () => {
     onImageLoading,
   } = useShop();
   const { width } = useWindowSize();
-  console.log("imageloading", imageloading);
   return (
     <main className="main-wrapper">
       <BreadCrumb>
@@ -41,7 +40,7 @@ const Shop = () => {
           <Link to={`${PATHS.HOME}`}>Home</Link>
         </BreadCrumb.Item>
         <BreadCrumb.Item isActive>
-          <Link>Shop</Link>
+          <Link>Sản phẩm</Link>
         </BreadCrumb.Item>
       </BreadCrumb>
 

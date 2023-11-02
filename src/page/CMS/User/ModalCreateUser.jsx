@@ -59,13 +59,6 @@ const ModalCreateUser = ({
     }
   };
   const handleImageChange = (files) => {
-    // try {
-    //   const res = await ImageResizer(files);
-    //   if (res) await setImage(res);
-    //   return res;
-    // } catch (error) {
-    //   console.log("error", error);
-    // }
     setImage(files);
   };
 

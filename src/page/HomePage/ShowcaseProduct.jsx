@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
+import LoadingSpin from "@/components/Loading/LoadingSpin";
 import ProductCard from "@/components/ProductCard";
 import Textbox from "@/components/Textbox";
 import { CATEGORIES_OPTIONS } from "@/contants/general";
@@ -19,26 +20,41 @@ const ShowcaseProduct = ({
   return (
     <section className="scshowcaseproduct pt-section">
       <div className="container">
-        <Textbox title={`Product`}>
+        <Textbox title={`Sản phẩm`}>
           <div
             className="scshowcaseproduct__top-category flex items-center justify-center gap-3
           lg:flex-nowrap xs:flex-wrap"
           >
-            {categories?.length &&
-              categories?.map((cate) => {
-                const { _id, name } = cate || {};
-                return (
-                  <Button
-                    key={_id}
-                    variant="outline"
-                    className={`py-[5px] px-[10px] uppercase`}
-                    isActive={categoryTab === name ? true : false}
-                    onClick={() => onChangeCategoryTab(name)}
-                  >
-                    {name}
-                  </Button>
-                );
-              })}
+            {categories?.length
+              ? categories?.map((cate) => {
+                  const { _id, name } = cate || {};
+                  return (
+                    <Button
+                      key={_id}
+                      variant="outline"
+                      className={`py-[5px] px-[10px] uppercase`}
+                      isActive={categoryTab === name ? true : false}
+                      onClick={() => onChangeCategoryTab(name)}
+                    >
+                      {name}
+                    </Button>
+                  );
+                })
+              : ["Face", "Skin", "Body", "Supplement", "Other"].map(
+                  (item, index) => {
+                    return (
+                      <Button
+                        key={`${item}${index}`}
+                        variant="outline"
+                        className={`py-[5px] px-[10px] uppercase`}
+                        isActive={categoryTab === item ? true : false}
+                        onClick={() => onChangeCategoryTab(item)}
+                      >
+                        {item}
+                      </Button>
+                    );
+                  }
+                )}
           </div>
         </Textbox>
         <div className="scshowcaseproduct__bottom">
@@ -158,8 +174,8 @@ const ShowcaseProduct = ({
               >
                 {Array(9)
                   ?.fill("")
-                  ?.map((item) => (
-                    <SwiperSlide>
+                  ?.map((item, index) => (
+                    <SwiperSlide key={`${item}${index}`}>
                       <LoadingSkeleton
                         isClassName={` duration-700 transition-all`}
                         isArray={1}
