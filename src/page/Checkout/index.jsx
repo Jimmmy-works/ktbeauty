@@ -3,8 +3,8 @@ import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
 import useWindowSize from "@/utils/windowResize";
 import { Checkbox, Select, Switch, Tooltip } from "antd";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Await, Link } from "react-router-dom";
 import useCheckout from "./useCheckout";
 import { Controller, useForm } from "react-hook-form";
 import useProfile from "../Profile/useProfile";
@@ -101,20 +101,11 @@ const Checkout = () => {
   } = useForm({ mode: "all" });
   const handleChangeSwitch = () => {
     onToggleSwitch();
-
-    trigger([
-      "phone",
-      "email",
-      "address",
-      "name",
-      "province",
-      "district",
-      "ward",
-    ]);
   };
   const handleOrder = (data) => {
     console.log("data", data);
   };
+  console.log("controlSwitch", controlSwitch);
   useEffect(() => {
     if (profile) {
       if (!controlSwitch) {
@@ -132,6 +123,20 @@ const Checkout = () => {
       }
     }
   }, [profile, controlSwitch]);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      trigger([
+        "phone",
+        "email",
+        "address",
+        "name",
+        "province",
+        "district",
+        "ward",
+      ]);
+    }, 400);
+    return () => clearTimeout(timeout);
+  }, [controlSwitch]);
   useEffect(() => {
     setValue(
       "address",
@@ -165,7 +170,7 @@ const Checkout = () => {
                   <div className="">
                     <Tooltip
                       title={`${
-                        controlSwitch ? "Bật" : "Tắt"
+                        !controlSwitch ? "Bật" : "Tắt"
                       } tự động điền thông tin`}
                     >
                       <Switch
