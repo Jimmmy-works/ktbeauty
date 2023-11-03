@@ -1472,27 +1472,11 @@ input[type="number"] {
       &.success {
         input,
           .textarea {
-          border-bottom-width: 1px;
-        }
-        input,
-          .textarea {
-          border-style: solid;
-        }
-        input,
-          .textarea {
           --tw-border-opacity: 1;
-          border-color: rgb(21 128 61 / var(--tw-border-opacity));
+          border-bottom-color: rgb(21 128 61 / var(--tw-border-opacity));
         }
       }
       &.error {
-        input,
-          .textarea {
-          border-width: 1px;
-        }
-        input,
-          .textarea {
-          border-style: solid;
-        }
         input,
           .textarea {
           --tw-border-opacity: 1;
@@ -1509,14 +1493,20 @@ input[type="number"] {
         margin-top: 12px;
       }
       input {
+        border-width: 1px;
+      }
+      input {
         border-bottom-width: 1px;
       }
       input {
         border-style: solid;
       }
       input {
+        border-color: transparent;
+      }
+      input {
         --tw-border-opacity: 1;
-        border-color: rgb(153 153 153 / var(--tw-border-opacity));
+        border-bottom-color: rgb(153 153 153 / var(--tw-border-opacity));
       }
       input {
         --tw-bg-opacity: 1;
@@ -1557,8 +1547,11 @@ input[type="number"] {
         border-style: solid;
       }
       .textarea {
+        border-color: transparent;
+      }
+      .textarea {
         --tw-border-opacity: 1;
-        border-color: rgb(153 153 153 / var(--tw-border-opacity));
+        border-bottom-color: rgb(153 153 153 / var(--tw-border-opacity));
       }
       .textarea {
         --tw-bg-opacity: 1;

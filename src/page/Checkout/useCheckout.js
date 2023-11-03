@@ -63,8 +63,8 @@ const useCheckout = () => {
   const onChangeProvince = (_provinceId) => {
     getDistricts(_provinceId);
     setProvinceId(_provinceId);
-    // setWardId("");
-    // setDistrictId("");
+    setWardId("");
+    setDistrictId("");
   };
   const onChangeDistrict = (_districtId) => {
     getWards(_districtId);

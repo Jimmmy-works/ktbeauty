@@ -99,9 +99,18 @@ const Checkout = () => {
     trigger,
     formState: { isSubmitting, isDirty, isValid, errors }, // here
   } = useForm({ mode: "all" });
-  const handleChangeSwitch = async () => {
+  const handleChangeSwitch = () => {
     onToggleSwitch();
-    await trigger();
+
+    trigger([
+      "phone",
+      "email",
+      "address",
+      "name",
+      "province",
+      "district",
+      "ward",
+    ]);
   };
   const handleOrder = (data) => {
     console.log("data", data);
@@ -111,13 +120,13 @@ const Checkout = () => {
       if (!controlSwitch) {
         setValue("name");
         setValue("email");
-        setValue("call");
+        setValue("phone");
         setValue("address");
         setValue("note");
       } else {
         setValue("name", profile?.name);
         setValue("email", profile?.email);
-        setValue("call", profile?.phone);
+        setValue("phone", profile?.phone);
         setValue("address", profile?.address);
         setValue("note", profile?.note);
       }
@@ -172,14 +181,14 @@ const Checkout = () => {
                 <div className="form__container">
                   <div
                     className={`form__container-wrapper xs:w-full md:w-1/2 ${
-                      errors?.call?.message
+                      errors?.phone?.message
                         ? "annimated-horizontal error animated-bounceHorizontal"
                         : "success"
                     }`}
                   >
-                    <label htmlFor="call">Số điện thoại</label>
+                    <label htmlFor="phone">Số điện thoại</label>
                     <input
-                      {...register("call", {
+                      {...register("phone", {
                         required: "Số điện thoại không được bỏ trống",
                         pattern: {
                           value: /(84|0[3|5|7|8|9])+([0-9]{8})\b/,
@@ -187,10 +196,10 @@ const Checkout = () => {
                         },
                       })}
                       placeholder="+84"
-                      type="text"
-                      id="call"
+                      type="number"
+                      id="phone"
                     />
-                    <p className="">{errors?.call?.message || ""}</p>
+                    <p className="">{errors?.phone?.message || ""}</p>
                   </div>
 
                   <div
@@ -242,7 +251,24 @@ const Checkout = () => {
                     <p className="">{errors?.name?.message || ""}</p>
                   </div>
                 </div>
-
+                <div
+                  className={`form__container-wrapper ${
+                    errors?.address?.message
+                      ? "annimated-horizontal error animated-bounceHorizontal"
+                      : "success"
+                  }`}
+                >
+                  <label htmlFor="address">Địa chỉ</label>
+                  <input
+                    {...register("address", {
+                      required: "Xin vui lòng điền địa chỉ cụ thể",
+                    })}
+                    id="address"
+                    placeholder="Địa chỉ chi tiết (Tòa A, Số 1, Tôn Đức Thắng)"
+                    type="text"
+                  />
+                  <p className="">{errors?.address?.message}</p>
+                </div>
                 <div className="form__container xs:flex-wrap lg:flex-nowrap">
                   <div
                     className={`form__container-wrapper xs:w-full lg:w-1/3 ${
@@ -394,24 +420,7 @@ const Checkout = () => {
                     <p className="">{errors?.ward?.message || ""}</p>
                   </div>
                 </div>
-                <div
-                  className={`form__container-wrapper ${
-                    errors?.address?.message
-                      ? "annimated-horizontal error animated-bounceHorizontal"
-                      : "success"
-                  }`}
-                >
-                  <label htmlFor="address">Địa chỉ</label>
-                  <input
-                    {...register("address", {
-                      required: "Xin vui lòng điền địa chỉ cụ thể",
-                    })}
-                    id="address"
-                    placeholder="Địa chỉ chi tiết (Tòa A, Số 1, Tôn Đức Thắng)"
-                    type="text"
-                  />
-                  <p className="">{errors?.address?.message}</p>
-                </div>
+
                 <div className="form__container-wrapper ">
                   <label htmlFor="note">Ghi chú</label>
                   <textarea

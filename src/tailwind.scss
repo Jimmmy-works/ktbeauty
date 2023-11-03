@@ -274,27 +274,27 @@
         &.success {
           input,
           .textarea {
-            @apply border-b border-solid border-green-700;
+            @apply border-b-green-700;
           }
         }
         &.error {
           input,
           .textarea {
-            @apply border border-solid border-red-500;
+            @apply border-red-500;
           }
           p {
             @apply visible opacity-100;
           }
         }
         input {
-          @apply border-b border-solid border-grey-999 p-[10px] mt-[12px]
+          @apply border border-transparent border-b border-solid border-b-grey-999 p-[10px] mt-[12px]
         bg-[#f9f9f9];
         }
         p {
           @apply min-h-[12px] mt-[6px] mb-[-2px] invisible opacity-0 text-xs text-red-500;
         }
         .textarea {
-          @apply border-b border-solid  border-grey-999 p-[10px] mt-[12px]
+          @apply border-transparent border-b border-solid  border-b-grey-999 p-[10px] mt-[12px]
          bg-[#f9f9f9];
         }
       }
