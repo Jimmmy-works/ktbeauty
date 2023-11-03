@@ -19,11 +19,11 @@ import { Outlet, useLocation } from "react-router-dom";
 const MainLayout = () => {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   document.querySelector("html").setAttribute("style", "overflow-y : scroll");
-  //   () => setIsNavbar(false);
-  //   backtotop();
-  // }, [pathname]);
+  useEffect(() => {
+    document.querySelector("html").setAttribute("style", "overflow-y : scroll");
+    () => setIsNavbar(false);
+    backtotop();
+  }, [pathname]);
 
   useEffect(() => {
     const _token = localStorage.getItem(LOCAL_STORAGE.token);
