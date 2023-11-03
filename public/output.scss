@@ -1535,6 +1535,9 @@ input[type="number"] {
         margin-bottom: -2px;
       }
       p {
+        min-height: 12px;
+      }
+      p {
         --tw-text-opacity: 1;
         color: rgb(239 68 68 / var(--tw-text-opacity));
       }
@@ -1889,10 +1892,6 @@ input[type="number"] {
 
 .relative {
   position: relative !important;
-}
-
-.-left-\[40\%\] {
-  left: -40% !important;
 }
 
 .bottom-0 {
@@ -2728,6 +2727,10 @@ input[type="number"] {
   gap: 16px !important;
 }
 
+.gap-\[20px\] {
+  gap: 20px !important;
+}
+
 .gap-\[2px\] {
   gap: 2px !important;
 }
@@ -3021,11 +3024,6 @@ input[type="number"] {
 .bg-\[\#b05a4b\] {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(176 90 75 / var(--tw-bg-opacity)) !important;
-}
-
-.bg-\[\#d6d6d6\] {
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(214 214 214 / var(--tw-bg-opacity)) !important;
 }
 
 .bg-\[\#ddd\] {

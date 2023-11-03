@@ -291,7 +291,7 @@
         bg-[#f9f9f9];
         }
         p {
-          @apply mt-[6px] mb-[-2px] invisible opacity-0 text-xs text-red-500;
+          @apply min-h-[12px] mt-[6px] mb-[-2px] invisible opacity-0 text-xs text-red-500;
         }
         .textarea {
           @apply border-b border-solid  border-grey-999 p-[10px] mt-[12px]

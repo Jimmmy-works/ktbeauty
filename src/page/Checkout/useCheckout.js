@@ -1,18 +1,17 @@
-import { provinceService } from "@/service/provinceService";
-import { changePassword, updateProfile } from "@/store/reducer/authReducer";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import useProfile from "../Profile/useProfile";
+import { provinceService } from "@/service/provinceService";
 
-const useProfile = () => {
+const useCheckout = () => {
+  const { profile } = useSelector((state) => state.auth);
+  const [controlSwitch, setControlSwitch] = useState(true);
   const [provinces, setProvinces] = useState([]);
   const [provinceId, setProvinceId] = useState("");
   const [districts, setDistricts] = useState([]);
   const [districtId, setDistrictId] = useState("");
   const [wards, setWards] = useState([]);
   const [wardId, setWardId] = useState("");
-  const { profile } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  //// Handle Province
   const getProvinces = async () => {
     try {
       const dataProvince = await provinceService.getCity();
@@ -75,20 +74,8 @@ const useProfile = () => {
   const onChangeWard = (_wardId) => {
     setWardId(_wardId);
   };
-  ////////
-  const onUpdateProfile = async (payload) => {
-    try {
-      const response = await dispatch(updateProfile(payload));
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-  const onChangePassword = async (payload) => {
-    try {
-      const response = await dispatch(changePassword(payload));
-    } catch (error) {
-      console.log("error", error);
-    }
+  const onToggleSwitch = () => {
+    setControlSwitch(!controlSwitch);
   };
   useEffect(() => {
     getProvinces();
@@ -98,24 +85,21 @@ const useProfile = () => {
     if (districtId) {
       getWards();
     }
-  }, [profile]);
+  }, []);
   return {
+    onToggleSwitch,
+    controlSwitch,
+    profile,
     provinces,
     districts,
     wards,
-    profile,
     provinceId,
     districtId,
     wardId,
     onChangeProvince,
     onChangeDistrict,
     onChangeWard,
-    onUpdateProfile,
-    onChangePassword,
-    getProvinces,
-    getDistricts,
-    getWards,
   };
 };
 
-export default useProfile;
+export default useCheckout;

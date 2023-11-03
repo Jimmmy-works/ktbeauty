@@ -119,3 +119,42 @@ export const getProfileSlug = createAsyncThunk(
     }
   }
 );
+export const updateProfile = createAsyncThunk(
+  "auth/profile/put/info",
+  async (payload, thunkAPI) => {
+    try {
+      const _token = localStorage.getItem(LOCAL_STORAGE.token);
+      const dataUpdateProfilce = await authService.updateProfile(
+        payload.id,
+        payload.value,
+        _token
+      );
+      const _id = decodeToken(_token);
+      if (dataUpdateProfilce?.status === 200) {
+        thunkAPI.dispatch(getProfileSlug(_id?.id));
+      }
+      message.success(dataUpdateProfilce?.data?.message);
+      return dataUpdateProfilce?.data?.data;
+    } catch (error) {
+      message.error(error?.response?.data?.message);
+      console.log("error", error);
+      throw error;
+    }
+  }
+);
+export const changePassword = createAsyncThunk(
+  "auth/profile/put/password",
+  async (payload) => {
+    try {
+      const dataChangePassword = await authService.changePassword(payload);
+      console.log("dataChangePassword", dataChangePassword);
+      message.success(dataChangePassword?.data?.message);
+
+      return dataChangePassword?.data?.data;
+    } catch (error) {
+      console.log("error", error);
+      message.error(error?.response?.data?.message);
+      throw error;
+    }
+  }
+);

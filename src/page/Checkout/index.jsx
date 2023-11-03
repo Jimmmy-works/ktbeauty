@@ -2,9 +2,64 @@ import BreadCrumb from "@/components/BreadCrumb";
 import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
 import useWindowSize from "@/utils/windowResize";
-import { Checkbox } from "antd";
-import React, { useState } from "react";
+import { Checkbox, Select, Switch, Tooltip } from "antd";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import useCheckout from "./useCheckout";
+import { Controller, useForm } from "react-hook-form";
+import useProfile from "../Profile/useProfile";
+import styled from "styled-components";
+import { removeAccents } from "@/utils/removeAccents";
+const SelectWrapper = styled.div`
+  .select-antd-wrapper {
+    background-color: #f9f9f9;
+    margin-top: 12px;
+    padding: 4.5px 0;
+    max-height: 42px;
+    border-bottom: 1px solid #999 !important;
+    position: relative;
+    &.error {
+      border: 1px solid rgb(239 68 68) !important;
+    }
+    &.success {
+      border-bottom: 1px solid rgb(21 128 61) !important;
+    }
+  }
+  .ant-select {
+    color: #000 !important;
+    position: unset !important;
+    border: 0 !important;
+    :focus,
+    :focus-within,
+    :focus-visible {
+      border-color: transparent !important;
+      color: #000 !important;
+      box-shadow: unset !important;
+    }
+    .ant-select-selection-item {
+    }
+    .ant-select-selector {
+      border: 0 !important;
+      background-color: #f9f9f9 !important;
+      font-size: 14px !important;
+      color: #333 !important;
+      border-radius: 0;
+      position: unset !important;
+      font-family: "OpenSans-Regular" !important;
+      .ant-select-selection-search {
+      }
+      .ant-select-selection-search-input {
+        height: 100% !important;
+      }
+    }
+  }
+`;
+const FormWrapper = styled.div`
+  .ant-switch {
+    cursor: pointer;
+    box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1) !important;
+  }
+`;
 const Checkout = () => {
   const images = [
     "/assets/img/product-1.jpg",
@@ -14,12 +69,72 @@ const Checkout = () => {
     "/assets/img/product-10.jpg",
     "/assets/img/product-5.jpg",
   ];
+  const [nameProvince, setNameProvince] = useState("");
+  const [nameDistrist, setNameDistrist] = useState("");
+  const [nameWard, setNameWard] = useState("");
   const { width } = useWindowSize();
+  const {
+    onToggleSwitch,
+    controlSwitch,
+    profile,
+    provinces,
+    districts,
+    wards,
+    provinceId,
+    districtId,
+    wardId,
+    onChangeProvince,
+    onChangeDistrict,
+    onChangeWard,
+  } = useCheckout();
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    setValue,
+    watch,
+    setError,
+    control,
+    reset,
+    trigger,
+    formState: { isSubmitting, isDirty, isValid, errors }, // here
+  } = useForm({ mode: "all" });
+  const handleChangeSwitch = async () => {
+    onToggleSwitch();
+    await trigger();
+  };
+  const handleOrder = (data) => {
+    console.log("data", data);
+  };
+  useEffect(() => {
+    if (profile) {
+      if (!controlSwitch) {
+        setValue("name");
+        setValue("email");
+        setValue("call");
+        setValue("address");
+        setValue("note");
+      } else {
+        setValue("name", profile?.name);
+        setValue("email", profile?.email);
+        setValue("call", profile?.phone);
+        setValue("address", profile?.address);
+        setValue("note", profile?.note);
+      }
+    }
+  }, [profile, controlSwitch]);
+  useEffect(() => {
+    setValue(
+      "address",
+      ` ${nameWard && nameWard + ","} ${nameDistrist && nameDistrist + ","} ${
+        nameProvince && nameProvince
+      }` || profile?.address
+    );
+  }, [nameWard, nameDistrist, nameProvince]);
   return (
     <main className="checkout main-wrapper relative">
-      {/* <div className="md:block xs:hidden absolute top-0 -left-[40%] bg-[#d6d6d6] w-full h-full"></div> */}
       <div className="container ">
-        <div className="relative z-10">
+        <FormWrapper className="relative z-10">
           <BreadCrumb>
             <BreadCrumb.Item>
               <Link to={`${PATHS.HOME}`}>Home</Link>
@@ -35,61 +150,269 @@ const Checkout = () => {
           </div>
           <div className="flex lg:flex-row xs:flex-col items-start mt-[30px] xs:gap-[20px] md:gap-[40px]">
             <div className="xs:w-full lg:w-[60%] screen-1200:w-[65%]">
-              <form className="checkout__information  form" action="">
-                <h3 className="form__title">Liên hệ</h3>
-                <div className="form__container">
-                  <div className="form__container-wrapper success xs:w-full md:w-1/2">
-                    <label htmlFor="phone">Số điện thoại</label>
-                    <input id="phone" placeholder="+84" type="text" />
-                    <p className="ml-[10px]">{"Please try again"}</p>
+              <div className="checkout__information  form" action="">
+                <div className="flex items-center justify-between">
+                  <h3 className="form__title">Liên hệ</h3>
+                  <div className="">
+                    <Tooltip
+                      title={`${
+                        controlSwitch ? "Bật" : "Tắt"
+                      } tự động điền thông tin`}
+                    >
+                      <Switch
+                        size="large"
+                        checkedChildren="Auto"
+                        unCheckedChildren="None"
+                        defaultChecked={controlSwitch}
+                        onChange={handleChangeSwitch}
+                      />
+                    </Tooltip>
                   </div>
-                  <div className="form__container-wrapper success xs:w-full md:w-1/2">
+                </div>
+                <div className="form__container">
+                  <div
+                    className={`form__container-wrapper xs:w-full md:w-1/2 ${
+                      errors?.call?.message
+                        ? "annimated-horizontal error animated-bounceHorizontal"
+                        : "success"
+                    }`}
+                  >
+                    <label htmlFor="call">Số điện thoại</label>
+                    <input
+                      {...register("call", {
+                        required: "Số điện thoại không được bỏ trống",
+                        pattern: {
+                          value: /(84|0[3|5|7|8|9])+([0-9]{8})\b/,
+                          message: "Số điện thoại không đúng định dạng VN",
+                        },
+                      })}
+                      placeholder="+84"
+                      type="text"
+                      id="call"
+                    />
+                    <p className="">{errors?.call?.message || ""}</p>
+                  </div>
+
+                  <div
+                    className={`form__container-wrapper  xs:w-full md:w-1/2 ${
+                      errors?.email?.message
+                        ? "annimated-horizontal error animated-bounceHorizontal"
+                        : "success"
+                    } `}
+                  >
                     <label htmlFor="email">Email của bạn</label>
-                    <input id="email" placeholder="abc@gmail.com" type="text" />
-                    <p className="ml-[10px]">{"Please try again"}</p>
+                    <input
+                      {...register("email", {
+                        required: "Email không được bỏ trống.",
+                        pattern: {
+                          value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                          message: `Nhập đúng định dạng abc@gmail.com`,
+                        },
+                      })}
+                      placeholder="abc@gmail.com"
+                      id="email"
+                      type="text"
+                    />
+                    <p className="">{errors?.email?.message || ""}</p>
                   </div>
                 </div>
                 <div>
                   <Checkbox>Gửi email ưu đãi mới nhất cho bạn</Checkbox>
                 </div>
-              </form>
+              </div>
               <form className="form mt-[20px]" action="">
                 <h3 className="form__title">Chi tiết thanh toán</h3>
                 <div className="form__container">
-                  <div className="form__container-wrapper w-full ">
-                    <label htmlFor="first-name">Họ và Tên</label>
-                    <input type="text" id="first-name" />
-                    <p className=""> Please try again</p>
+                  <div
+                    className={`form__container-wrapper w-full  ${
+                      errors?.name?.message
+                        ? "annimated-horizontal error animated-bounceHorizontal"
+                        : "success"
+                    }`}
+                  >
+                    <label htmlFor="name">Họ và tên</label>
+                    <input
+                      {...register("name", {
+                        required: "Họ và tên không được bỏ trống.",
+                      })}
+                      className=" "
+                      type="text"
+                      id="name"
+                    />
+                    <p className="">{errors?.name?.message || ""}</p>
                   </div>
                 </div>
 
-                <div className="form__container">
-                  <div className="form__container-wrapper xs:w-full md:w-1/3">
-                    <label htmlFor="city">Thành/Tỉnh</label>
-                    <input type="text" id="city" />
-                    <p className=""> Please try again</p>
+                <div className="form__container xs:flex-wrap lg:flex-nowrap">
+                  <div
+                    className={`form__container-wrapper xs:w-full lg:w-1/3 ${
+                      errors?.province?.message
+                        ? "annimated-horizontal error animated-bounceHorizontal"
+                        : "successsuccess"
+                    } `}
+                  >
+                    <label htmlFor="province">Thành/Tỉnh</label>
+                    <Controller
+                      control={control}
+                      name="province"
+                      rules={{
+                        required: "Xin vui lòng chọn Tỉnh/Thành",
+                      }}
+                      render={({ field }) => (
+                        // :{ onChange, onBlur, value }
+                        <SelectWrapper>
+                          <div
+                            className={`select-antd-wrapper ${
+                              errors?.province?.message ? " error " : ""
+                            } ${getValues("province") && "success"}`}
+                          >
+                            <Select
+                              // status={errors?.province && "error"}
+                              optionFilterProp="children"
+                              filterOption={(input, option) =>
+                                removeAccents(option?.label ?? "")
+                                  .toLowerCase()
+                                  .includes(removeAccents(input.toLowerCase()))
+                              }
+                              style={{ width: "100%" }}
+                              placeholder="Tỉnh/Thành"
+                              options={provinces}
+                              value={provinceId || null}
+                              showSearch
+                              labelInValue={provinces?.label}
+                              onChange={(value, e) => {
+                                field.onChange(value);
+                                onChangeProvince(value);
+                                setNameProvince(e.label);
+                              }}
+                            />
+                          </div>
+                        </SelectWrapper>
+                      )}
+                    />
+                    <p className="">{errors?.province?.message || ""}</p>
                   </div>
-                  <div className="form__container-wrapper xs:w-full md:w-1/3">
+
+                  <div
+                    className={`form__container-wrapper xs:w-full lg:w-1/3 ${
+                      errors?.district?.message
+                        ? "annimated-horizontal error animated-bounceHorizontal"
+                        : ""
+                    } `}
+                  >
                     <label htmlFor="district">Quận/Huyện</label>
-                    <input type="text" id="district" />
-                    <p className=""> Please try again</p>
+                    <Controller
+                      control={control}
+                      name="district"
+                      rules={{
+                        required: "Xin vui lòng chọn Quận/Huyện",
+                      }}
+                      render={(
+                        { field } // :{ onChange, onBlur, value }
+                      ) => (
+                        <SelectWrapper>
+                          <div
+                            className={`select-antd-wrapper ${
+                              errors?.district?.message
+                                ? "annimated-horizontal error animated-bounceHorizontal"
+                                : ""
+                            } ${getValues("district") && "success"}`}
+                          >
+                            <Select
+                              status={errors?.district && "error"}
+                              filterOption={(input, option) =>
+                                removeAccents(option?.label ?? "")
+                                  .toLowerCase()
+                                  .includes(removeAccents(input.toLowerCase()))
+                              }
+                              optionFilterProp="children"
+                              style={{ width: "100%" }}
+                              placeholder="Quận/Huyện"
+                              options={districts}
+                              value={districtId || null}
+                              showSearch
+                              onChange={(value, e) => {
+                                field.onChange(value);
+                                onChangeDistrict(value);
+                                setNameDistrist(e.label);
+                              }}
+                            />
+                          </div>
+                        </SelectWrapper>
+                      )}
+                    />
+                    <p className="">{errors?.district?.message || ""}</p>
                   </div>
-                  <div className="form__container-wrapper xs:w-full md:w-1/3">
-                    <label htmlFor="ward">Phường/Xã</label>
-                    <input type="text" id="ward" />
-                    <p className=""> Please try again</p>
+                  <div
+                    className={`form__container-wrapper xs:w-full lg:w-1/3 ${
+                      errors?.ward?.message
+                        ? "annimated-horizontal error animated-bounceHorizontal"
+                        : ""
+                    }`}
+                  >
+                    <label htmlFor="ward">Phường/xã</label>
+                    <Controller
+                      control={control}
+                      name="ward"
+                      rules={{
+                        required: "Xin vui lòng nhập Phường/Xã",
+                      }}
+                      render={(
+                        { field } // :{ onChange, onBlur, value }
+                      ) => (
+                        <SelectWrapper>
+                          <div
+                            className={`select-antd-wrapper ${
+                              errors?.ward?.message
+                                ? "annimated-horizontal error animated-bounceHorizontal"
+                                : ""
+                            }  ${getValues("ward") && "success"}`}
+                          >
+                            <Select
+                              status={errors?.ward && "error"}
+                              filterOption={(input, option) =>
+                                removeAccents(option?.label ?? "")
+                                  .toLowerCase()
+                                  .includes(removeAccents(input.toLowerCase()))
+                              }
+                              optionFilterProp="children"
+                              style={{ width: "100%" }}
+                              placeholder="Phường/Xã"
+                              options={wards}
+                              value={wardId || null}
+                              showSearch
+                              onChange={(value, e) => {
+                                field.onChange(value);
+                                onChangeWard(value);
+                                setNameWard(e.label);
+                              }}
+                            />
+                          </div>
+                        </SelectWrapper>
+                      )}
+                    />
+                    <p className="">{errors?.ward?.message || ""}</p>
                   </div>
                 </div>
-                <div className="form__container-wrapper">
+                <div
+                  className={`form__container-wrapper ${
+                    errors?.address?.message
+                      ? "annimated-horizontal error animated-bounceHorizontal"
+                      : "success"
+                  }`}
+                >
                   <label htmlFor="address">Địa chỉ</label>
                   <input
+                    {...register("address", {
+                      required: "Xin vui lòng điền địa chỉ cụ thể",
+                    })}
                     id="address"
                     placeholder="Địa chỉ chi tiết (Tòa A, Số 1, Tôn Đức Thắng)"
                     type="text"
                   />
-                  <p className=""> Please try again</p>
+                  <p className="">{errors?.address?.message}</p>
                 </div>
-                <div className="form__container-wrapper error">
+                <div className="form__container-wrapper ">
                   <label htmlFor="note">Ghi chú</label>
                   <textarea
                     className="textarea"
@@ -98,7 +421,7 @@ const Checkout = () => {
                     cols="30"
                     rows="10"
                   ></textarea>
-                  <p className=""> Please try again</p>
+                  <p className="">{errors?.note?.message}</p>
                 </div>
               </form>
             </div>
@@ -220,7 +543,9 @@ const Checkout = () => {
               </div>
               <div className="mt-[10px]">
                 <Button
-                  link={PATHS.COMPLETE}
+                  // disabled={!isDirty || !isValid}
+                  // link={PATHS.COMPLETE}
+                  onClick={handleSubmit(handleOrder)}
                   className={`block text-center rounded-none w-full md:p-[14px]`}
                 >
                   Đặt hàng
@@ -228,7 +553,7 @@ const Checkout = () => {
               </div>
             </div>
           </div>
-        </div>
+        </FormWrapper>
       </div>
     </main>
   );

@@ -16,6 +16,16 @@ const authService = {
       },
     });
   },
+  updateProfile: (id, payload, token) => {
+    return instanceAxios.put(`/api/user/update-user/${id}`, payload, {
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
+  },
+  changePassword: (payload) => {
+    return instanceAxios.put(`/api/user/updatePassword`, payload);
+  },
   refreshToken: (token) => {
     return axios.post(
       `${BASE_URL}/api/user/refresh-token`,
