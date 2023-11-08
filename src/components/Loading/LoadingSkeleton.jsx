@@ -1,5 +1,5 @@
 import { Empty, Skeleton } from "antd";
-import React from "react";
+import React, { forwardRef } from "react";
 import { styled } from "styled-components";
 
 const SkeletonWrapper = styled.div`
@@ -33,17 +33,20 @@ const SkeletonWrapper = styled.div`
     }
   }
 `;
-export default function LoadingSkeleton({
-  isArray = 1,
-  isData,
-  isLoading,
-  isStyled,
-  isParagraph,
-  isSize,
-  isClassName,
-  itemStyles,
-  isImageStyle,
-}) {
+function LoadingSkeletonM(
+  {
+    isArray = 1,
+    isData,
+    isLoading,
+    isStyled,
+    isParagraph,
+    isSize,
+    isClassName,
+    itemStyles,
+    isImageStyle,
+  },
+  ref
+) {
   return (
     <>
       {!isLoading && isData?.length === 0 && (
@@ -58,7 +61,12 @@ export default function LoadingSkeleton({
           .fill("")
           .map((_, index) => {
             return (
-              <div style={itemStyles} className={isClassName} key={index}>
+              <div
+                ref={ref}
+                style={itemStyles}
+                className={isClassName}
+                key={index}
+              >
                 <SkeletonWrapper>
                   <Skeleton.Image style={isImageStyle} />
                   <Skeleton
@@ -78,3 +86,5 @@ export default function LoadingSkeleton({
     </>
   );
 }
+const LoadingSkeleton = forwardRef(LoadingSkeletonM);
+export default LoadingSkeleton;

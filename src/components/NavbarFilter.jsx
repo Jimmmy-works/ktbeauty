@@ -4,7 +4,15 @@ import useWindowSize from "@/utils/windowResize";
 import InputRange from "./Input/InputRange";
 import AccordionM from "@/components/Accordion/index.jsx";
 
-const NavbarFilter = ({ onToggleFilter, data, isFilter, setIsFilter }) => {
+const NavbarFilter = ({
+  onToggleFilter,
+  data,
+  isFilter,
+  setIsFilter,
+  children,
+  onChangeCategoryTab,
+  categoryTab,
+}) => {
   const { width } = useWindowSize();
   useEffect(() => {
     if (width >= 1024) {
@@ -17,19 +25,16 @@ const NavbarFilter = ({ onToggleFilter, data, isFilter, setIsFilter }) => {
     ${isFilter ? " visible translate-x-0" : " invisible -translate-x-[100%]"}`}
     >
       <div className="flex flex-col items-center h-full w-full">
-        <div className="flex justify-between items-center w-full py-[20px] px-[30px]">
-          <p className="font-osr md:text-[16px] xs:text-sm text-black-555  p-3">
-            Delete Filter
-          </p>
+        <div className=" w-full p-[20px_20px_10px_20px] ">
           <div
-            className="flex items-center  p-2 cursor-pointer"
+            className="flex items-center justify-end  p-2 cursor-pointer border-b border-solid border-[#c4c2c2]"
             onClick={onToggleFilter}
           >
             <p className="font-osr md:text-[16px] xs:text-sm text-black-555 ">
               Close
             </p>
             <svg
-              className="md:w-[24px] xs:md:w-[18px] md:h-[24px] xs:md:h-[18px] "
+              className="md:w-[24px] xs:w-[18px] md:h-[24px] xs:h-[18px] "
               viewBox="0 0 24 24"
             >
               <path
@@ -40,8 +45,14 @@ const NavbarFilter = ({ onToggleFilter, data, isFilter, setIsFilter }) => {
           </div>
         </div>
 
-        <div className="w-full p-[20px] flex flex-col">
-          <AccordionM heading={`Danh mục sản phẩm`} data={data} />
+        {children}
+
+        <div className="w-full px-[20px] flex flex-col">
+          <AccordionM
+            onChangeCategoryTab={onChangeCategoryTab}
+            heading={`Danh mục sản phẩm`}
+            data={data}
+          />
           <AccordionM
             heading={`Lọc sản phảm theo giá`}
             renderProps={() => <InputRange />}

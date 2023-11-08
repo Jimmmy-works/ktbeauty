@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import { useMainContext } from "@/components/MainContext";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "@/store/reducer/authReducer";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
+import { useLocation } from "react-router-dom";
 const DashboardHeader = ({
   toggleSidebar,
   toggleInputSeacrhMobile,
@@ -13,15 +14,31 @@ const DashboardHeader = ({
   setToggleSidebar,
   setToggleInputSeacrhMobile,
   profile,
+  onSearchUser,
+  onSearchProduct,
 }) => {
   const { onAuthenModal, onLogout } = useMainContext();
   const dispath = useDispatch();
-  const { errorGetUserAll } = useSelector((state) => state?.dashboard);
+  const { pathname } = useLocation();
+  const [searchTerm, setSearchTerm] = useState();
+  const onChangeSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
   useEffect(() => {
-    if (errorGetUserAll === THUNK_STATUS.rejected) {
-      dispath(authActions.setProfile(null));
-    }
-  }, [profile]);
+    const time = setTimeout(() => {
+      if (pathname === `/cms/user`) {
+        onSearchUser(searchTerm);
+      } else if (pathname === `/cms/product`) {
+        onSearchProduct(searchTerm);
+      }
+    }, 500);
+
+    return () => clearTimeout(time);
+  }, [searchTerm]);
+  useEffect(() => {
+    setSearchTerm("");
+  }, [pathname]);
+
   return (
     <div
       className={` flex items-center justify-between shadow-header h-[60px] bg-white fixed top-0 left-0
@@ -86,6 +103,8 @@ const DashboardHeader = ({
       >
         <div className="relative w-fit">
           <input
+            value={searchTerm}
+            onChange={onChangeSearch}
             className={` rounded-[50px] text-sm text-black-555 font-osr duration-400 transition-all
                 
                  ${

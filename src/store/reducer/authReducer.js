@@ -10,6 +10,7 @@ const initialState = {
   updateStatusRegister: THUNK_STATUS.fulfilled,
   updateStatusLogin: THUNK_STATUS.fulfilled,
   loginError: null,
+  checkLogin: false,
 };
 export const { reducer: authReducer, actions: authActions } = createSlice({
   initialState,
@@ -19,6 +20,7 @@ export const { reducer: authReducer, actions: authActions } = createSlice({
       localStorage.removeItem(LOCAL_STORAGE.token);
       localStorage.removeItem(LOCAL_STORAGE.refreshToken);
       state.profile = null;
+      state.checkLogin = false;
       message.success(`Đăng xuất thành công`);
     },
     setProfile: (state, action) => {
@@ -26,6 +28,9 @@ export const { reducer: authReducer, actions: authActions } = createSlice({
     },
     setLoginError: (state, action) => {
       state.loginError = action.payload;
+    },
+    checkLogin: (state, action) => {
+      state.checkLogin = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -60,7 +65,6 @@ export const signin = createAsyncThunk(
       // connect  admin
       const signinRes = resUserSignin?.data?.data;
       // save localStorage => refreshToken interceptors
-      console.log("signinRes", signinRes);
       localStorage.setItem(LOCAL_STORAGE.token, signinRes?.access_token);
       localStorage.setItem(
         LOCAL_STORAGE.refreshToken,
@@ -75,9 +79,9 @@ export const signin = createAsyncThunk(
         decodeTokenRes?.id,
         localStorage.getItem(LOCAL_STORAGE.token)
       );
-      console.log("resUserDetail", resUserDetail);
       if (resUserDetail?.status === 200) {
         thunkAPI.dispatch(authActions.setProfile(resUserDetail?.data?.data));
+        thunkAPI.dispatch(authActions.checkLogin(true));
         message.success(resUserSignin?.data?.message);
       }
     } catch (error) {

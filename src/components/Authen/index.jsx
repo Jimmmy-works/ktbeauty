@@ -12,18 +12,22 @@ const AuthenModal = () => {
     controlAuthen,
     onLogin,
     onRegister,
+    updateStatusRegister,
+    updateStatusLogin,
   } = useMainContext();
   const loginProps = {
     controlAuthen,
     onOpenRegister,
     onAuthenModal,
     onLogin,
+    updateStatusLogin,
   };
   const registerProps = {
     onOpenLogin,
     controlAuthen,
     onAuthenModal,
     onRegister,
+    updateStatusRegister,
   };
   return (
     <div

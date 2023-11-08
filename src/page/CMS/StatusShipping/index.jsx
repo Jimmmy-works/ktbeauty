@@ -1,22 +1,18 @@
 import { Button, Modal, Popconfirm, Table, Upload, message } from "antd";
 import React, { useEffect, useState } from "react";
-import ModalCreateUser from "./ModalCreateUser";
 import useDashboard from "../useDashboard";
 import { MODAL_OPTION } from "@/contants/general";
 
-import ModalUpdateAvatar from "./ModalUpdateAvatar";
 import styled from "styled-components";
 import { clearAllListeners } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers } from "@/store/reducer/dashboardReducer";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
-import { decodeToken } from "react-jwt";
 const TableCustom = styled.div`
   .ant-table-cell {
     vertical-align: middle;
   }
 `;
-const DashboardUser = () => {
+const StatusShipping = () => {
   const { modalProps, userProps } = useDashboard();
   const {
     findPath,
@@ -26,13 +22,13 @@ const DashboardUser = () => {
     onAddProduct,
     toggleSidebar,
     width,
-    onSearchUser,
   } = modalProps || {};
   const dispatch = useDispatch();
-  const { onDeleteUser, onCreateUser, searchUsers } = userProps || {};
+  const { users } = useSelector((state) => state.dashboard);
+  const { onDeleteUser, onCreateUser } = userProps || {};
   const columns = [
     {
-      title: "",
+      title: "Number",
       dataIndex: "number",
       align: "center",
     },
@@ -75,8 +71,7 @@ const DashboardUser = () => {
       align: "center",
     },
   ];
-  console.log("searchUsers", searchUsers);
-  const data = searchUsers.map((user, index) => {
+  const data = users.map((user, index) => {
     return {
       key: `${user?._id}${index}`,
       number:
@@ -167,6 +162,7 @@ const DashboardUser = () => {
   const onConfirmDelete = (id) => {
     onDeleteUser(id);
   };
+
   /// handle selected
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const onSelectChange = (newSelectedRowKeys) => {
@@ -177,8 +173,22 @@ const DashboardUser = () => {
     onChange: onSelectChange,
     selections: [
       Table.SELECTION_INVERT,
-      Table.SELECTION_NONE,
       Table.SELECTION_ALL,
+      Table.SELECTION_NONE,
+      {
+        key: "odd",
+        text: "Select Odd Row",
+        onSelect: (changeableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
+            if (index % 2 !== 0) {
+              return false;
+            }
+            return true;
+          });
+          setSelectedRowKeys(newSelectedRowKeys);
+        },
+      },
     ],
   };
   const filterUsers = data?.filter((item) => {
@@ -189,23 +199,9 @@ const DashboardUser = () => {
       onDeleteUser(filterUsers[index]?._id);
     }
   };
+
   return (
-    <TableCustom className="table__dashboard-shipping">
-      <ModalUpdateAvatar
-        messageAndt={findPath?.success}
-        open={openModalAndt}
-        add={onAddProduct}
-        setShowModal={onShowModal}
-        cancel={onCloseModal}
-      />
-      <ModalCreateUser
-        messageAndt={findPath?.success}
-        open={openModalAndt}
-        add={onAddProduct}
-        setShowModal={onShowModal}
-        onCreateUser={onCreateUser}
-        cancel={onCloseModal}
-      />
+    <TableCustom className="table__dashboard-user">
       <div
         className={`  h-fit  flex  items-center xs:justify-center  md:justify-between
       gap-3 xs:fixed lg:static top-[60px] z-10 xs:bg-gray-100 lg:bg-white xs:px-[15px] lg:px-[30px] py-[14px]
@@ -216,7 +212,7 @@ const DashboardUser = () => {
       }`}
       >
         <h2 className="text-16px font-mam xs:hidden md:block text-[#033C73]">
-          Dashboard User
+          Dashboard Order
         </h2>
         <div className="flex items-center gap-2">
           <button
@@ -255,4 +251,4 @@ const DashboardUser = () => {
   );
 };
 
-export default DashboardUser;
+export default StatusShipping;

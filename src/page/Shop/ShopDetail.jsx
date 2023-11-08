@@ -54,25 +54,23 @@ const ShopDetail = () => {
     slug,
     category_id,
   } = productDetail || {};
-  const {} = useShop();
-  const max = 100;
-  const min = 0;
+  const { addToCart } = useShop();
+  const max = countInStock;
+  const min = 1;
   const [currentImg, setCurrentImg] = useState();
-  const [numbInput, setNumbInput] = useState(1);
+  const [numbInput, setNumbInput] = useState(min);
   const onIncrease = () => {
     const value = modifyValue(Number(numbInput) + 1);
     setNumbInput(value);
   };
   const onDecrease = () => {
-    if (numbInput < min) {
-      return setNumbInput(min);
-    }
     const value = modifyValue(Number(numbInput) - 1);
     setNumbInput(value);
   };
   const onChangeInput = (e) => {
-    setNumbInput(modifyValue(e.target.value));
+    setNumbInput(modifyValue(Number(e.target.value)));
   };
+
   const modifyValue = (value) => {
     if (value > max) {
       return (value = max);
@@ -82,7 +80,6 @@ const ShopDetail = () => {
       return value;
     }
   };
-
   return (
     <main className="main-wrapper shoppage">
       <BreadCrumb>
@@ -283,11 +280,12 @@ const ShopDetail = () => {
                   >
                     <div
                       onClick={onDecrease}
-                      className="px-[22px] cursor-pointer"
+                      className="h-full flex items-center justify-center px-[16px] cursor-pointer
+                      group"
                     >
                       <svg className="h-[10px] w-[10px]" viewBox="0 0 24 24">
                         <path
-                          className="fill-black-555"
+                          className="fill-black-555 group-hover:fill-primary duration-300 transition-colors "
                           d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
                         />
                       </svg>
@@ -302,20 +300,24 @@ const ShopDetail = () => {
                     />
                     <div
                       onClick={onIncrease}
-                      className="px-[22px] cursor-pointer"
+                      className="h-full flex items-center justify-center px-[16px] cursor-pointer
+                      group"
                     >
                       <svg
                         className="h-[10px] w-[10px] rotate-[180deg]"
                         viewBox="0 0 24 24"
                       >
                         <path
-                          className="fill-black-555"
+                          className="fill-black-555 group-hover:fill-primary duration-300 transition-colors "
                           d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
                         />
                       </svg>
                     </div>
                   </div>
                   <button
+                    onClick={() =>
+                      addToCart({ ...productDetail, quantity: numbInput })
+                    }
                     className="font-osb text-white text-[15px] flex items-center border 
                   border-solid border-[#ececec] rounded-md bg-black-555 px-[27.5px]
                 h-[60px] duration-400 transition-colors hover:bg-primary"

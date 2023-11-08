@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useProfile from "../Profile/useProfile";
 import { provinceService } from "@/service/provinceService";
 
 const useCheckout = () => {
+  const dispatch = useDispatch();
+  const { cartInfo, shipping, discountCode, total, subTotal } = useSelector(
+    (state) => state.cart
+  );
   const { profile } = useSelector((state) => state.auth);
   const [controlSwitch, setControlSwitch] = useState(true);
   const [provinces, setProvinces] = useState([]);
@@ -99,6 +103,11 @@ const useCheckout = () => {
     onChangeProvince,
     onChangeDistrict,
     onChangeWard,
+    cartInfo,
+    shipping,
+    discountCode,
+    total: cartInfo?.total,
+    subTotal: cartInfo?.subTotal,
   };
 };
 

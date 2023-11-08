@@ -37,7 +37,7 @@ const Button = ({
             className ?? ""
           } ${
             disabled || outStock
-              ? "pointer-events-none "
+              ? "pointer-events-none cursor-none"
               : "pointer-events-auto "
           } ${outStock ? "bg-[#ddd]" : ""}`
         )}
@@ -53,7 +53,9 @@ const Button = ({
         ` font-osb xs:text-xs md:text-sm xs:px-[20px] md:px-[30.35px] xs:py-[7px] md:py-[10px] duration-[500ms] transition-all ${variantButton} ${
           className ?? ""
         } ${
-          disabled || outStock ? "pointer-events-none " : "pointer-events-auto "
+          disabled || outStock
+            ? "pointer-events-none cursor-none"
+            : "pointer-events-auto "
         } ${outStock ? "bg-[#ddd] border-[#ddd] text-black" : ""}`
       )}
     >

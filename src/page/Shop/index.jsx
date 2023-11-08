@@ -1,21 +1,20 @@
-import Accordion from "@/components/Accordion";
 import BreadCrumb from "@/components/BreadCrumb";
 import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import useShop from "./useShop";
 import SelectCustom from "@/components/Select/SelectCustom";
 import ProductCard from "@/components/ProductCard";
 import Pagination from "@/components/Pagination";
 import NavbarFilter from "@/components/NavbarFilter";
-import { useMainContext } from "@/components/MainContext";
 import useWindowSize from "@/utils/windowResize";
 import InputRange from "@/components/Input/InputRange";
-import { useSelector } from "react-redux";
-import AccordionM from "@/components/Accordion/index.jsx";
+import Accordion from "@/components/Accordion/index.jsx";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
+import { Tooltip } from "antd";
+import { CATEGORIES_OPTIONS } from "@/contants/general";
 
 const Shop = () => {
   const {
@@ -31,8 +30,88 @@ const Shop = () => {
     statusGetProduct,
     imageloading,
     onImageLoading,
+    addToCart,
+    onChangeCategoryTab,
+    categoryTab,
   } = useShop();
+  const filterMobileProps = {
+    onChangeCategoryTab,
+    categoryTab,
+  };
   const { width } = useWindowSize();
+  const [filterList, setFilterList] = useState([CATEGORIES_OPTIONS.ALL]);
+  const [renderFilter, setRenderFiliter] = useState([]);
+  const [currentFilter, setCurrentFilter] = useState("");
+  const onClearFilter = () => {
+    setFilterList([CATEGORIES_OPTIONS.ALL]);
+    setCurrentFilter("");
+    setRenderFiliter([]);
+  };
+  const filterCategories = useMemo(() => {
+    const findList = filterList.indexOf(categoryTab);
+    switch (findList) {
+      case -1:
+        setFilterList([...filterList, categoryTab]);
+      case 0:
+        return;
+      default:
+        break;
+    }
+  }, [categoryTab]);
+  const filterAll = () => {
+    return products?.filter((item) => {
+      return item?.category_id?.name === currentFilter;
+    });
+  };
+  // const filterTest = useMemo(() => {
+  //   const findList = filterList.includes(categoryTab);
+  //   console.log("findList", findList);
+  //   switch (findList) {
+  //     case findList:
+  //       setCurrentFilter(categoryTab);
+  //       setRenderFiliter([...filterAll, filterAll()]);
+  //     // setRenderFiliter([...filterList, categoryTab]);
+
+  //     default:
+  //       break;
+  //   }
+  // }, [filterList, categoryTab]);
+  const filterFace = products?.filter((item) => {
+    if (categoryTab === CATEGORIES_OPTIONS.FACE) {
+      return item?.category_id?.name === CATEGORIES_OPTIONS.FACE;
+    }
+  });
+  const filterSkin = products?.filter((item) => {
+    if (categoryTab === CATEGORIES_OPTIONS.FACE) {
+      return item?.category_id?.name === CATEGORIES_OPTIONS.SKIN;
+    }
+  });
+  const filterBody = products?.filter((item) => {
+    if (categoryTab === CATEGORIES_OPTIONS.FACE) {
+      return item?.category_id?.name === CATEGORIES_OPTIONS.BODY;
+    }
+  });
+  const filterSupplement = products?.filter((item) => {
+    if (categoryTab === CATEGORIES_OPTIONS.FACE) {
+      return item?.category_id?.name === CATEGORIES_OPTIONS.SUPPLEMENT;
+    }
+  });
+  const filterOther = products?.filter((item) => {
+    if (categoryTab === CATEGORIES_OPTIONS.FACE) {
+      return item?.category_id?.name === CATEGORIES_OPTIONS.OTHER;
+    }
+  });
+
+  useEffect(() => {
+    let newList = [];
+    const findCategory = filterList?.find((item) => {
+      return item;
+    });
+    // const filterProducts = filterList?.filter((item) => {
+    //   return filterList.indexOf(categoryTab) !== -1;
+    // });
+    // console.log("filterProducts", filterProducts);
+  }, [categoryTab]);
   return (
     <main className="main-wrapper">
       <BreadCrumb>
@@ -46,12 +125,16 @@ const Shop = () => {
 
       <div className="container flex lg:flex-row xs:flex-col gap-[30px]">
         <aside
-          className="sidebar-shop xs:w-full lg:max-w-[265px] lg:w-1/4 border-r-[5px] 
-        border-solid border-[#e5e5e5] lg:block xs:hidden"
+          className="sidebar-shop xs:w-full xl:max-w-[265px]  xl:w-1/4 border-r-[5px] 
+        border-solid border-[#e5e5e5] xl:block xs:hidden"
         >
           <div className=" lg:pr-[18.4px] xs:flex gap-4 lg:block">
-            <AccordionM heading={`Danh mục sản phẩm`} data={categories} />
-            <AccordionM
+            <Accordion
+              heading={`Danh mục sản phẩm`}
+              onChangeCategoryTab={onChangeCategoryTab}
+              data={categories}
+            />
+            <Accordion
               heading={`Lọc sản phảm theo giá`}
               renderProps={() => {
                 return <InputRange />;
@@ -62,13 +145,47 @@ const Shop = () => {
 
         <div className="w-full ">
           <div
-            className="flex items-center justify-between xs:py-[16px] md:py-[24px] mb-[30px] border-b 
+            className="flex xl:items-center md:items-start  justify-between xs:py-[16px] md:py-[24px] mb-[30px] border-b 
           border-solid border-[#e5e5e5]"
           >
-            <h2 className="font-mab text-md leading-[30px] text-black-333 uppercase">
-              Shop
-            </h2>
-            {width < 1024 && (
+            <div className=" flex xl:items-center md:items-start gap-5">
+              <h2 className="font-mab text-md leading-[30px] text-black-333 uppercase">
+                Shop
+              </h2>
+              {width >= 1280 && filterList?.length > 0 && (
+                <div className="flex items-center justify-center gap-2 flex-wrap">
+                  <ul className=" flex items-center justify-center gap-2 flex-wrap">
+                    {filterList?.map((item, index) => {
+                      return (
+                        <Tooltip
+                          key={`${item}${index}`}
+                          placement={`top`}
+                          color="#999"
+                          title={`Bỏ filter ${item}`}
+                        >
+                          <li
+                            className="cursor-pointer font-om text-white text-sm bg-primary border-solid
+                     border-primary border p-[7px_13px] uppercase"
+                          >
+                            {item}
+                          </li>
+                        </Tooltip>
+                      );
+                    })}
+                  </ul>
+                  {filterList?.length && (
+                    <button
+                      onClick={onClearFilter}
+                      className="cursor-pointer font-om text-black-333 text-sm bg-[#e5e5e5] border-solid
+                     border-[#e5e5e5] border p-[5px_13px] uppercase"
+                    >
+                      Clear filter
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+            {width < 1280 && (
               <div
                 className="flex items-center  gap-2 p-2 bg-black-be rounded-[20px]"
                 onClick={onToggleFilter}
@@ -85,17 +202,50 @@ const Shop = () => {
               </div>
             )}
             <NavbarFilter
+              {...filterMobileProps}
               data={categories}
               isFilter={isFilter}
               onToggleFilter={onToggleFilter}
               setIsFilter={setIsFilter}
-            />
-            <div className=" gap-2 items-center xs:hidden lg:flex">
+            >
+              {width < 1280 && filterList?.length > 0 && (
+                <div className="flex w-full p-[20px_20px_0_20px]  gap-4 flex-wrap">
+                  <ul className=" flex w-full   gap-2 flex-wrap">
+                    {filterList?.map((item, index) => {
+                      return (
+                        <Tooltip
+                          key={`${item}${index}`}
+                          placement={`top`}
+                          color="#999"
+                          title={`Bỏ filter ${item}`}
+                        >
+                          <li
+                            className="cursor-pointer font-om text-white text-sm bg-primary border-solid
+                     border-primary border p-[7px_13px] uppercase"
+                          >
+                            {item}
+                          </li>
+                        </Tooltip>
+                      );
+                    })}
+                  </ul>
+                  {filterList?.length && (
+                    <button
+                      onClick={onClearFilter}
+                      className="cursor-pointer font-om text-black-333 text-sm bg-[#e5e5e5] border-solid
+                     border-[#e5e5e5] border p-[5px_13px] uppercase"
+                    >
+                      Clear filter
+                    </button>
+                  )}
+                </div>
+              )}
+            </NavbarFilter>
+            <div className=" gap-2 items-center xs:hidden xl:flex">
               <label className="font-osl text-black-333 text-sm">Sort:</label>
               <SelectCustom />
             </div>
           </div>
-          {/* {statusGetProduct === THUNK_STATUS.fulfilled ? ( */}
           <div
             className="flex items-center flex-wrap  xs:gap-y-[20px] xs:gap-x-[14px] md:gap-[20px] 
           lg:gap-[30px] mb-[30px]"
@@ -111,6 +261,7 @@ const Shop = () => {
                     className={` xs:w-[calc(50%-7px)] md:w-[calc(50%-10px)] lg:w-[calc(33.333333%-20px)]`}
                     item={item}
                     isProductDetail={true}
+                    addToCart={addToCart}
                   />
                 );
               })

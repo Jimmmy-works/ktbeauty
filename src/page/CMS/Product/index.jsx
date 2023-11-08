@@ -7,10 +7,15 @@ import { formatPriceVND } from "@/utils/formatPrice";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { firebaseStorage } from "@/config/firebase";
 import ModalUpdateProduct from "./ModalUpdateProduct";
+import { getAllProduct } from "@/store/reducer/productReducer";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
+import { decodeToken } from "react-jwt";
+import { useDispatch } from "react-redux";
 
 const DashBoardProduct = () => {
+  const dispatch = useDispatch();
   const { modalProps, productProps } = useDashboard();
-  const { onDeleteProduct, onDeleteImage } = productProps || {};
+  const { onDeleteProduct, onDeleteImage, searchProducts } = productProps || {};
   const [selectedImage, setSelectedImage] = useState([]);
   const {
     findPath,
@@ -62,8 +67,7 @@ const DashBoardProduct = () => {
     setSelectedImage([...selectedImage]);
   };
   const imageListRef = ref(firebaseStorage, `ktbeauty/products`);
-  // console.log("imgList", imgList);
-  const data = products.map((product, index) => {
+  const data = searchProducts.map((product, index) => {
     return {
       key: product?._id,
       productid:
@@ -98,7 +102,7 @@ const DashBoardProduct = () => {
                 header="Heading"
                 key="1"
               >
-                {product?.description?.heading}
+                {product?.description?.descTitle}
               </Collapse.Panel>
             </Collapse>
           </li>
@@ -109,8 +113,8 @@ const DashBoardProduct = () => {
                 header="Subcase"
                 key="1"
               >
-                {product?.description?.subDesc?.length &&
-                  product?.description?.subDesc.map((sub, index) => {
+                {product?.description?.descSub?.length &&
+                  product?.description?.descSub.map((sub, index) => {
                     return (
                       <div key={`${sub}${index}`}>
                         <a>
@@ -133,7 +137,7 @@ const DashBoardProduct = () => {
               >
                 <>
                   <p> </p>
-                  {product?.description?.intro}
+                  {product?.description?.descIntro}
                 </>
               </Collapse.Panel>
             </Collapse>
@@ -236,6 +240,7 @@ const DashBoardProduct = () => {
     handleDeleteProductSelected();
     // handleDeleteImageSelected();
   };
+
   return (
     <div className="table__dashboard-product ">
       <ModalCreateProduct

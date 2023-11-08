@@ -1,0 +1,28 @@
+import { cartActions } from "@/store/reducer/cartReducer";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+const useCartPage = () => {
+  const dispatch = useDispatch();
+  const { cartInfo } = useSelector((state) => state.cart);
+  const onChangeQuantity = async (updateValue, updateIndex) => {
+    try {
+      const map = cartInfo?.products?.find((_, index) => {
+        return index === updateIndex;
+      });
+      let customItem = {
+        id: map?._id,
+        updateQuantity: updateValue,
+      };
+      const res = await dispatch(cartActions.addToCart(customItem));
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  return {
+    cartInfo,
+    onChangeQuantity,
+  };
+};
+
+export default useCartPage;

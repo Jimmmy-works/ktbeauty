@@ -12,6 +12,7 @@ const Featured = ({
   statusGetProduct,
   imageloading,
   onImageLoading,
+  addToCart,
 }) => {
   return (
     <section className="scfeatured mt-section  bg-[#333] lg:py-[80px] md:py-[60px] xs:py-[50px]">
@@ -109,6 +110,7 @@ const Featured = ({
                   return (
                     <SwiperSlide key={`${item?._id}`}>
                       <ProductCard
+                        addToCart={addToCart}
                         onLoadingImage={onImageLoading}
                         imageloading={imageloading}
                         isProductDetail
@@ -150,8 +152,8 @@ const Featured = ({
               >
                 {Array(9)
                   ?.fill("")
-                  ?.map((item) => (
-                    <SwiperSlide>
+                  ?.map((item, index) => (
+                    <SwiperSlide key={`${item}${index}`}>
                       <LoadingSkeleton
                         isClassName={`item`}
                         isArray={1}

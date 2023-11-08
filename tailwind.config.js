@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 const plugin = require("tailwindcss/plugin");
 export default {
+  darkMode: "class",
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   presets: [],
   important: true,
@@ -952,6 +953,8 @@ export default {
       "black-ebe": "#ebebeb",
       "grey-999": "#999",
       "grey-f7f6": "#f7f6f6",
+      // primary: "#bf4352 ",
+      // secondary: "#967ADC",
       primary: "#ff887b",
       inherit: colors.inherit,
       current: colors.current,
@@ -1024,6 +1027,7 @@ export default {
       sm: "640px",
       md: "768px",
       lg: "1024px",
+      "screen-1050": "1050px",
       "screen-1200": "1200px",
       xl: "1280px",
       "2xl": "1536px",

@@ -19,11 +19,11 @@ const StyleRate = styled.div`
 `;
 const ProductCard = ({
   item,
-  onChangeImg,
   className,
   isProductDetail = false,
   imageloading,
   onLoadingImage,
+  addToCart,
 }) => {
   const { _id, name, price, rating, image, discount, countInStock } =
     item || {};
@@ -31,37 +31,40 @@ const ProductCard = ({
   if (isProductDetail) {
     return (
       <div className={`card  ${className ?? ""} transition-all duration-400  `}>
-        <Link
-          to={`${PATHS.SHOP.INDEX}/${item?._id}`}
-          className="block relative h-0 pb-[100%] group/img overflow-hidden"
-        >
-          <img
-            onLoad={onLoadingImage}
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = "/assets/img/error.png";
-            }}
-            className={twMerge(`center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105
-              h-full w-full ${!imageloading ? "opacity-100" : "opacity-0"}`)}
-            src={image?.length ? image?.[0] : "/assets/img/error.png"}
-            alt={name}
-          />
-          <span
-            className="absolute xs:top-4 md:top-7 left-5 xs:w-[30px] md:w-[40px] xs:h-[30px] md:h-[40px] border-dashed
-                    border border-[#46d47f] rounded-[50%] xs:text-xs md:text-sm flex justify-center 
-                    bg-white items-center text-[#46d47f]"
+        <div className="relative overflow-hidden group/img  group/addtocart">
+          <Link
+            to={`${PATHS.SHOP.INDEX}/${item?._id}`}
+            className="block relative  h-0 pb-[100%]"
           >
-            Sale
-          </span>
+            <img
+              onLoad={onLoadingImage}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/assets/img/error.png";
+              }}
+              className={twMerge(`center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105
+                h-full w-full ${!imageloading ? "opacity-100" : "opacity-0"}`)}
+              src={image?.length ? image?.[0] : "/assets/img/error.png"}
+              alt={name}
+            />
+            <span
+              className="absolute xs:top-4 md:top-7 left-5 xs:w-[30px] md:w-[40px] xs:h-[30px] md:h-[40px] border-dashed
+                      border border-[#46d47f] rounded-[50%] xs:text-xs md:text-sm flex justify-center 
+                      bg-white items-center text-[#46d47f]"
+            >
+              Sale
+            </span>
+          </Link>
           <div
+            onClick={() => addToCart(item)}
             className="h-[50px] w-[100%] bg-[rgba(0,0,0,0.03)] absolute bottom-0 translate-y-[100%]
-          flex gap-[16px] items-center justify-center  group-hover/img:translate-y-0 overflow-hidden 
-          transition-all duration-400"
+            flex gap-[16px] items-center justify-center  group-hover/addtocart:translate-y-0 overflow-hidden 
+            transition-all duration-400 z-[100]"
           >
-            <Tooltip placement="bottom" title="Add to cart " color={`#999`}>
+            <Tooltip placement="top" title="Thêm vào giỏ" color={`#999`}>
               <div
                 className="cart  md:p-[8px] bg-white border-[1px] rounded-[50%] border-[#ececec]  max-w-[38px]
-                 cursor-pointer group/hover max-h-[38px]"
+                   cursor-pointer group/hover max-h-[38px]"
               >
                 <svg className=" w-[16px] h-[16px]" viewBox="0 0 24 24">
                   <path
@@ -71,10 +74,10 @@ const ProductCard = ({
                 </svg>
               </div>
             </Tooltip>
-            <Tooltip placement="bottom" color="#999" title="Add to whitelist">
+            <Tooltip placement="top" color="#999" title="Yêu thích">
               <div
                 className="whitelist  md:p-[8px] bg-white border-[1px] rounded-[50%] border-[#ececec]  max-w-[38px]
-                              cursor-pointer group/hover max-h-[38px]"
+                                cursor-pointer group/hover max-h-[38px]"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -87,36 +90,36 @@ const ProductCard = ({
                 </svg>
               </div>
             </Tooltip>
-            <Tooltip placement="bottom" color="#999" title="Share">
+            <Tooltip placement="top" color="#999" title="Chia sẻ">
               <div
                 className="share md:p-[8px] bg-white border-[1px] rounded-[50%] border-[#ececec]  max-w-[38px]
-                               cursor-pointer group/hover max-h-[38px]"
+                                 cursor-pointer group/hover max-h-[38px]"
               >
                 <svg
                   className="group-hover/hover:fill-primary duration-400 transition-colors h-[16px]
-                               w-[16px]"
+                                 w-[16px]"
                   fill="#999"
                   viewBox="0 0 310 310"
                 >
                   <g>
                     <path
                       d="M165.9,125.903c0,2.761,2.238,5,5,5h51.15c2.762,0,5-2.239,5-5v-19.404
-                                      c0-39.761-32.321-72.107-72.049-72.107c-39.732,0-72.055,32.347-72.055,72.107v95.274c0,6.009-4.887,10.898-10.893,10.898
-                                      c-6.01,0-10.898-4.89-10.898-10.898v-42.338c0-2.761-2.238-5-5-5H5c-2.762,0-5,2.239-5,5v44.066
-                                      c0,39.761,32.323,72.107,72.055,72.107c39.728,0,72.049-32.347,72.049-72.107v-97.002c0-6.005,4.889-10.891,10.898-10.891
-                                      c6.01,0,10.898,4.886,10.898,10.891V125.903z"
+                                        c0-39.761-32.321-72.107-72.049-72.107c-39.732,0-72.055,32.347-72.055,72.107v95.274c0,6.009-4.887,10.898-10.893,10.898
+                                        c-6.01,0-10.898-4.89-10.898-10.898v-42.338c0-2.761-2.238-5-5-5H5c-2.762,0-5,2.239-5,5v44.066
+                                        c0,39.761,32.323,72.107,72.055,72.107c39.728,0,72.049-32.347,72.049-72.107v-97.002c0-6.005,4.889-10.891,10.898-10.891
+                                        c6.01,0,10.898,4.886,10.898,10.891V125.903z"
                     />
                     <path
                       d="M305,155.3h-51.152c-2.762,0-5,2.239-5,5v43.201c0,6.009-4.889,10.898-10.898,10.898
-                                      c-6.01,0-10.898-4.89-10.898-10.898V160.3c0-2.761-2.238-5-5-5H170.9c-2.762,0-5,2.239-5,5v43.201
-                                      c0,39.761,32.321,72.107,72.049,72.107c39.729,0,72.051-32.347,72.051-72.107V160.3C310,157.539,307.762,155.3,305,155.3z"
+                                        c-6.01,0-10.898-4.89-10.898-10.898V160.3c0-2.761-2.238-5-5-5H170.9c-2.762,0-5,2.239-5,5v43.201
+                                        c0,39.761,32.321,72.107,72.049,72.107c39.729,0,72.051-32.347,72.051-72.107V160.3C310,157.539,307.762,155.3,305,155.3z"
                     />
                   </g>
                 </svg>
               </div>
             </Tooltip>
           </div>
-        </Link>
+        </div>
         <div className="pt-[20px]">
           <Link
             to={`${PATHS.SHOP.INDEX}/${item?._id}`}
@@ -217,11 +220,12 @@ const ProductCard = ({
           {formatPriceVND(price)}
         </p>
         <Button
+          onClick={() => addToCart(item)}
           outStock={countInStock === 0 && true}
           className={`md:px-[30.35px] md:py-[10px] xs:px-[17px] xs:py-[5px] md:text-sm
           xs:text-xs`}
         >
-          Add to cart
+          Thêm vào giỏ
         </Button>
       </div>
     </div>

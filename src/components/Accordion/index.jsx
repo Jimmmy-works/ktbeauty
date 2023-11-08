@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 
-const AccordionM = ({ heading, data, renderProps }) => {
+const Accordion = ({ heading, data, renderProps, onChangeCategoryTab }) => {
   const [activeSubcase, setActiveSubcase] = useState(null);
   const [toggleContent, setToggleContent] = useState(false);
   const handleActiveContentSubcase = (index) => {
@@ -38,6 +38,7 @@ const AccordionM = ({ heading, data, renderProps }) => {
             const { _id, name } = item || {};
             return (
               <div
+                onClick={() => onChangeCategoryTab(name)}
                 className={`accordion__content-wrapper ${
                   item?._id === activeSubcase ? "active" : ""
                 }`}
@@ -110,4 +111,4 @@ const AccordionM = ({ heading, data, renderProps }) => {
   );
 };
 
-export default AccordionM;
+export default Accordion;

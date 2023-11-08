@@ -26,6 +26,7 @@ export const PATHS = {
     IMAGE: `${CMS_PATH}/image`,
     USER: `${CMS_PATH}/user`,
     FILE: `${CMS_PATH}/file`,
+    SHIPPING: `${CMS_PATH}/shipping`,
   },
 
   CHECKOUT: "/checkout",

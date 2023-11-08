@@ -3,6 +3,7 @@ import { PATHS } from "@/contants/path";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import authService from "@/service/authService";
 import { authActions, register, signin } from "@/store/reducer/authReducer";
+import { cartActions, getCart } from "@/store/reducer/cartReducer";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { message } from "antd";
 import React, { createContext, useContext, useState } from "react";
@@ -11,9 +12,13 @@ import { useNavigate } from "react-router-dom";
 const MainContext = createContext({});
 export const MainProvider = ({ children }) => {
   const dispatch = useDispatch();
-  const { updateStatusRegister, updateStatusLogin, loginError } = useSelector(
+  const { updateStatusRegister, updateStatusLogin } = useSelector(
     (state) => state.auth
   );
+  const [darkMode, setDarkMode] = useState(true);
+  function toggleDarkMode() {
+    setDarkMode((prevDarkMode) => !prevDarkMode);
+  }
   ///// Nav + Filter Nav
   const [isNavbar, setIsNavbar] = useState(false);
   const [isFilter, setIsFilter] = useState(false);
@@ -62,6 +67,7 @@ export const MainProvider = ({ children }) => {
   const onLogout = async () => {
     try {
       await dispatch(authActions.logout());
+      await dispatch(cartActions.setCartInfo(null));
       navigate("/");
     } catch (error) {
       console.log("error", error);
@@ -70,6 +76,7 @@ export const MainProvider = ({ children }) => {
   const onRegister = async (payload) => {
     try {
       const res = await dispatch(register(payload));
+      console.log("res", res);
       if (
         updateStatusRegister !== THUNK_STATUS.pending &&
         updateStatusRegister === res.meta.requestStatus &&
@@ -119,6 +126,8 @@ export const MainProvider = ({ children }) => {
         setIsAuthenModal,
         controlAuthen,
         onRegister,
+        updateStatusRegister,
+        updateStatusLogin,
         //Profile Active Tab
         activeLinkTab,
         setActiveLinkTab,

@@ -5,10 +5,15 @@ import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { useDispatch, useSelector } from "react-redux";
 import { message } from "antd";
 import { register } from "@/store/reducer/authReducer";
-import { createProduct, getAllUsers } from "@/store/reducer/dashboardReducer";
+import {
+  createProduct,
+  dashboardActions,
+  getAllUsers,
+} from "@/store/reducer/dashboardReducer";
 import {
   getAllProduct,
   getProductDetail,
+  productActions,
 } from "@/store/reducer/productReducer";
 import { deleteObject, ref } from "firebase/storage";
 import { firebaseStorage } from "@/config/firebase";
@@ -18,7 +23,10 @@ const useDashboard = () => {
   //// redux
   const dispatch = useDispatch();
   const { profile } = useSelector((state) => state.auth);
-  const { categories, products } = useSelector((state) => state.product);
+  const { users, searchUsers } = useSelector((state) => state.dashboard);
+  const { categories, products, searchProducts } = useSelector(
+    (state) => state.product
+  );
   ///// Modal
   const [openModalAndt, setOpenModalAndt] = useState(false);
   const [productList, setProductList] = useState([]);
@@ -37,8 +45,17 @@ const useDashboard = () => {
   };
   ///// API
 
-  const adminToken = localStorage.getItem(LOCAL_STORAGE.token);
   //// API USER
+  const onSearchUser = (userName) => {
+    const result = users?.filter((user) => {
+      return user?.name.includes(userName);
+    });
+    if (result === null || undefined || "") {
+      dispatch(dashboardActions.setSearchUsers(users));
+    } else {
+      dispatch(dashboardActions.setSearchUsers(result));
+    }
+  };
   const onCreateUser = async (payload) => {
     try {
       const response = await dispatch(register(payload));
@@ -68,10 +85,20 @@ const useDashboard = () => {
     }
   };
   //// API PRODUCT
+  const onSearchProduct = (productName) => {
+    const result = products?.filter((product) => {
+      return product?.name.includes(productName);
+    });
+    if (result === null || undefined || "") {
+      dispatch(productActions.setSearchProducts(products));
+    } else {
+      dispatch(productActions.setSearchProducts(result));
+    }
+    console.log("result", result);
+  };
   const onGetProductDetail = (id) => {
     try {
       const response = dispatch(getProductDetail(id));
-      console.log("response", response);
     } catch (error) {
       console.log("error", error);
     }
@@ -79,7 +106,6 @@ const useDashboard = () => {
   const onUpdateProduct = async (id, payload) => {
     try {
       const response = await dashboardService.updateProduct(id, payload);
-      console.log("response", response);
       return response;
     } catch (error) {
       console.log("error", error);
@@ -123,10 +149,10 @@ const useDashboard = () => {
       console.log("error", error);
     }
   };
-  // console.log("categories", categories);
   const userProps = {
     onDeleteUser,
     onCreateUser,
+    searchUsers,
   };
   const productProps = {
     categories,
@@ -134,6 +160,7 @@ const useDashboard = () => {
     onDeleteProduct,
     onDeleteImage,
     onGetProductDetail,
+    searchProducts,
   };
   const modalProps = {
     onShowModal,
@@ -152,6 +179,8 @@ const useDashboard = () => {
     width,
     toggleInputSeacrhMobile,
     setToggleInputSeacrhMobile,
+    onSearchUser,
+    onSearchProduct,
   };
   return { modalProps, userProps, productProps };
 };

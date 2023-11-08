@@ -4,6 +4,23 @@ import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
 import Hamburger from "@/components/Hamburger";
 import useHeader from "./useHeader";
+import { Empty } from "antd";
+import { formatPriceVND } from "@/utils/formatPrice";
+import styled from "styled-components";
+const EmptyWrapper = styled.div`
+  margin-bottom: 12px;
+  min-width: 200px;
+  .ant-empty-description {
+    font-family: "OpenSans-SemiBold";
+    font-size: 14px;
+  }
+  .ant-empty-image {
+    svg {
+      width: 100px !important;
+      height: 100px !important;
+    }
+  }
+`;
 const Header = () => {
   const { headerProps } = useHeader();
   const {
@@ -12,9 +29,9 @@ const Header = () => {
     onToggleNav,
     onAuthenModal,
     onActiveLinkTab,
-    images,
     onLogout,
     categories,
+    cartInfo,
   } = headerProps || {};
   const refHeader = useRef(null);
   return (
@@ -139,7 +156,7 @@ const Header = () => {
               className="text-[13px] text-white font-om rounded-[50%] bg-primary h-[20px] w-[20px]
             flex items-center justify-center absolute right-[3px] top-[42%] -translate-y-1/2"
             >
-              3
+              {cartInfo?.products?.length || 0}
             </span>
             <svg className="w-[18px] h-[18px] " viewBox="0 0 24 24">
               <path
@@ -153,50 +170,60 @@ const Header = () => {
                invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100
               group-hover/hover:top-[calc(100%+2px)] transition-all duration-400 shadow-[0_5px_5px_0_rgba(0,0,0,0.15)] bg-white"
             >
-              <h3 className="font-osb text-md text-black-555 p-[16px_14px_16px]">
-                (5) Sản phẩm yêu thích
+              <h3 className="text-center font-osb text-md text-black-555 p-[16px_14px_16px]">
+                {cartInfo?.products?.length &&
+                  `( ${cartInfo?.products?.length} )`}{" "}
+                Sản phẩm yêu thích
               </h3>
-              <ul className="flex flex-col min-w-max max-h-[390px] overflow-y-scroll scrollbar-cart  p-[0px_14px_0px]  ">
-                {images.map((item, index) => (
-                  <li
-                    key={`${item}${index}`}
-                    className="flex items-center w-full gap-3 max-w-[280px] not-firstChild:pt-[10px] pb-[10px]"
-                  >
-                    <Link
-                      to={PATHS.SHOP.DETAIL}
-                      className="relative block min-h-[100px] min-w-[100px] "
-                    >
-                      <img
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = "/assets/img/error.png";
-                        }}
-                        className="center-absolute hover:scale-105 transition-transform duration-300"
-                        src={item}
-                        alt=""
-                      />
-                    </Link>
-                    <div>
-                      <Link
-                        to={PATHS.SHOP.DETAIL}
-                        className="text-[16px] text-black-555 font-ossb  truncate line-clamp-2 
+              <ul className="min-w-max flex flex-col  max-h-[390px] overflow-y-scroll scrollbar-cart  p-[0px_14px_0px]  ">
+                {cartInfo?.products ? (
+                  cartInfo?.products?.map((item, index) => {
+                    const { image, name, _id, price } = item || {};
+                    return (
+                      <li
+                        key={_id}
+                        className="flex items-center w-full gap-3 max-w-[280px] not-firstChild:pt-[10px] pb-[10px]"
+                      >
+                        <Link
+                          to={PATHS.SHOP.DETAIL}
+                          className="relative block min-h-[80px] min-w-[80px] "
+                        >
+                          <img
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = "/assets/img/error.png";
+                            }}
+                            className="w-full h-full object-cover center-absolute hover:scale-105 transition-transform duration-300"
+                            src={image?.[1]}
+                            alt=""
+                          />
+                        </Link>
+                        <div>
+                          <Link
+                            to={PATHS.SHOP.DETAIL}
+                            className="text-[16px] text-black-555 font-ossb  truncate line-clamp-2 
                       whitespace-normal hover:text-primary transition-colors duration-400"
-                      >
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Ipsa, nihil.
-                      </Link>
-                      <p className="font-osb text-[15px] text-primary mt-[6px]">
-                        $300
-                      </p>
-                      <button
-                        className=" block font-om text-sm mt-[6px]  hover:text-red-500
+                          >
+                            {name}
+                          </Link>
+                          <p className="font-osb text-[15px] text-primary mt-[6px]">
+                            {formatPriceVND(price)}
+                          </p>
+                          <button
+                            className=" block font-om text-sm mt-[6px]  hover:text-red-500
                       text-black-555 transition-all duration-400 "
-                      >
-                        Xóa
-                      </button>
-                    </div>
-                  </li>
-                ))}
+                          >
+                            Xóa
+                          </button>
+                        </div>
+                      </li>
+                    );
+                  })
+                ) : (
+                  <EmptyWrapper>
+                    <Empty description={`Không có sản phẩm`} />
+                  </EmptyWrapper>
+                )}
               </ul>
               <div className="text-sm flex items-center justify-center">
                 <Button
@@ -212,9 +239,9 @@ const Header = () => {
           <div className="header__info-cart group/hover mb-[2px] relative">
             <span
               className="text-[13px] text-white font-om rounded-[50%] bg-primary h-[20px] w-[20px]
-            flex items-center justify-center absolute right-[3px] top-[42%] -translate-y-1/2"
+                 flex items-center justify-center absolute right-[3px] top-[42%] -translate-y-1/2"
             >
-              3
+              {cartInfo?.products?.length || 0}
             </span>
             <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24">
               <path
@@ -228,58 +255,68 @@ const Header = () => {
                invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100
               group-hover/hover:top-[calc(100%+2px)] transition-all duration-400 shadow-[0_5px_5px_0_rgba(0,0,0,0.15)] bg-white"
             >
-              <h3 className="font-osb text-md text-black-555 p-[16px_14px_16px]">
-                (5) Sản phẩm vừa thêm
+              <h3 className="text-center font-osb text-md text-black-555 p-[16px_14px_16px]">
+                {cartInfo?.products?.length &&
+                  `( ${cartInfo?.products?.length} )`}{" "}
+                Sản phẩm vừa thêm
               </h3>
-              <ul className="flex flex-col min-w-max max-h-[390px] overflow-y-scroll scrollbar-cart  p-[0px_14px_0px]  ">
-                {images.map((item, index) => (
-                  <li
-                    key={`${item}${index}`}
-                    className="flex items-center w-full gap-3 max-w-[280px] not-firstChild:pt-[10px] pb-[10px]"
-                  >
-                    <Link
-                      to={PATHS.SHOP.DETAIL}
-                      className="relative block min-h-[100px] min-w-[100px] "
-                    >
-                      <img
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = "/assets/img/error.png";
-                        }}
-                        className="center-absolute hover:scale-105 transition-transform duration-300"
-                        src={item}
-                        alt=""
-                      />
-                    </Link>
-                    <div>
-                      <Link
-                        to={PATHS.SHOP.DETAIL}
-                        className="text-[16px] text-black-555 font-ossb  truncate line-clamp-2 
-                      whitespace-normal hover:text-primary transition-colors duration-400"
+              <ul className="min-w-max flex flex-col  max-h-[390px] overflow-y-scroll scrollbar-cart p-[0px_14px_0px]  ">
+                {cartInfo?.products?.length ? (
+                  cartInfo?.products.map((item, index) => {
+                    const { image, name, _id, quantity, price } = item || {};
+                    return (
+                      <li
+                        key={`${_id}`}
+                        className="flex items-center w-full gap-3 max-w-[280px] not-firstChild:pt-[10px] pb-[10px]"
                       >
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Ipsa, nihil.
-                      </Link>
-                      <p className="font-osb  text-[15px] text-primary mt-[6px]">
-                        $300
-                      </p>
-                      <div
-                        className="font-om text-[15px] text-black-555 mt-[6px] flex items-start gap-[6px]
-                        flex-col"
-                      >
-                        <p> Quantity: 100</p>
-                        <button
-                          className=" block font-om text-sm   hover:text-red-500
-                      text-red-black-555nsition-all duration-400 "
+                        <Link
+                          to={PATHS.SHOP.DETAIL}
+                          className="relative block min-h-[80px] min-w-[80px] "
                         >
-                          Xóa
-                        </button>
-                      </div>
-                    </div>
-                  </li>
-                ))}
+                          <img
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = "/assets/img/error.png";
+                            }}
+                            className="w-full h-full object-cover center-absolute hover:scale-105 transition-transform duration-300"
+                            src={image?.[0]}
+                            alt=""
+                          />
+                        </Link>
+                        <div>
+                          <Link
+                            to={PATHS.SHOP.DETAIL}
+                            className="text-[16px] text-black-555 font-ossb  truncate line-clamp-2 
+                           whitespace-normal hover:text-primary transition-colors duration-400"
+                          >
+                            {name}
+                          </Link>
+                          <p className="font-osb  text-[15px] text-primary mt-[6px]">
+                            {formatPriceVND(price)}
+                          </p>
+                          <div
+                            className="font-om text-[15px] text-black-555 mt-[6px] flex items-start gap-[6px]
+                        flex-col"
+                          >
+                            <p> Quantity: {quantity}</p>
+                            <button
+                              className=" block font-om text-sm   hover:text-red-500
+                           text-red-black-555nsition-all duration-400 "
+                            >
+                              Xóa
+                            </button>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })
+                ) : (
+                  <EmptyWrapper>
+                    <Empty description={`Không có sản phẩm`} />
+                  </EmptyWrapper>
+                )}
               </ul>
-              <div className=" flex items-center justify-center">
+              <div className={`flex items-center justify-center `}>
                 <Button
                   link={PATHS.CART}
                   variant="filled"

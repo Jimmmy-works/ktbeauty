@@ -7,8 +7,15 @@ import { authActions } from "@/store/reducer/authReducer";
 import authService from "@/service/authService";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
 
-const Login = ({ controlAuthen, onOpenRegister, onAuthenModal, onLogin }) => {
+const Login = ({
+  controlAuthen,
+  onOpenRegister,
+  onAuthenModal,
+  onLogin,
+  updateStatusLogin,
+}) => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [hiddenPassword, setHiddenPassword] = useState(true);
@@ -20,11 +27,9 @@ const Login = ({ controlAuthen, onOpenRegister, onAuthenModal, onLogin }) => {
     watch,
     formState: { errors },
   } = useForm();
-  const navigate = useNavigate();
   const handleSignin = async (data) => {
     try {
-      console.log("data", data);
-      const res = onLogin(data);
+      if (updateStatusLogin !== THUNK_STATUS.pending) onLogin(data);
     } catch (error) {
       console.log("error", error);
     }

@@ -5,6 +5,7 @@ export const FEATURED_OPTIONS = {
 };
 export const CATEGORIES_OPTIONS = {
   OTHER: "other",
+  ALL: "all",
   SUPPLEMENT: "supplement",
   BODY: "body",
   SKIN: "skin",

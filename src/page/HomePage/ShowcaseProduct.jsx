@@ -7,16 +7,58 @@ import { CATEGORIES_OPTIONS } from "@/contants/general";
 import React, { useRef, useState } from "react";
 import { Navigation, Keyboard } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Empty } from "antd";
 
+import styled from "styled-components";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
+import useWindowSize from "@/utils/windowResize";
+const EmptyWrapper = styled.div`
+  margin-bottom: 12px;
+  min-width: 200px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  height: ${({ refhegiht }) => {
+    if (refhegiht !== 0) {
+      return `${refhegiht - 22}px`;
+    } else {
+      return `300px`;
+    }
+  }};
+  .ant-empty-image {
+    width: ${({ windowx }) => {
+      if (windowx > 1024) {
+        return `200px`;
+      } else if (windowx >= 768) {
+        return `150px`;
+      } else {
+        return `120px`;
+      }
+    }} !important;
+    height: ${({ windowx }) => {
+      if (windowx > 1024) {
+        return `200px`;
+      } else if (windowx >= 768) {
+        return `150px`;
+      } else {
+        return `120px`;
+      }
+    }} !important;
+  }
+`;
 const ShowcaseProduct = ({
   onChangeCategoryTab,
   categoryTab,
-  products,
   categories,
   statusGetProduct,
   imageloading,
   onImageLoading,
+  addToCart,
+  filterProductShowcase,
+  products,
 }) => {
+  const refLoading = useRef();
+  const { width } = useWindowSize();
   return (
     <section className="scshowcaseproduct pt-section">
       <div className="container">
@@ -58,11 +100,15 @@ const ShowcaseProduct = ({
           </div>
         </Textbox>
         <div className="scshowcaseproduct__bottom">
-          <div className="scshowcaseproduct__bottom-list">
-            <div className="prev ">
+          <div className="scshowcaseproduct__bottom-list" ref={refLoading}>
+            <div
+              className={`prev ${
+                filterProductShowcase?.length > 4 ? "block" : "hidden"
+              }`}
+            >
               <div
                 className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors rotate-180
-            group-hover/hover:bg-white"
+              group-hover/hover:bg-white"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -76,10 +122,14 @@ const ShowcaseProduct = ({
                 </svg>
               </div>
             </div>
-            <div className="next">
+            <div
+              className={`next ${
+                filterProductShowcase?.length > 4 ? "block" : "hidden"
+              }`}
+            >
               <div
                 className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors 
-            group-hover/hover:bg-white"
+              group-hover/hover:bg-white"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -93,7 +143,7 @@ const ShowcaseProduct = ({
                 </svg>
               </div>
             </div>
-            {products?.length > 0 ? (
+            {filterProductShowcase?.length > 0 ? (
               <Swiper
                 modules={[Navigation, Keyboard]}
                 keyboard={{
@@ -122,11 +172,12 @@ const ShowcaseProduct = ({
                 pagination={false}
                 loop={true}
               >
-                {products.map((item, index) => {
+                {filterProductShowcase.map((item, index) => {
                   return (
                     <SwiperSlide key={`${item?._id}`}>
-                      {statusGetProduct ? (
+                      {statusGetProduct === THUNK_STATUS.fulfilled ? (
                         <ProductCard
+                          addToCart={addToCart}
                           className={`item`}
                           item={item}
                           onLoadingImage={onImageLoading}
@@ -136,7 +187,7 @@ const ShowcaseProduct = ({
                         <LoadingSkeleton
                           isArray={1}
                           isLoading={statusGetProduct}
-                          isParagraph={3}
+                          isParagraph={width >= 768 ? 3 : 0}
                         />
                       )}
                     </SwiperSlide>
@@ -144,47 +195,12 @@ const ShowcaseProduct = ({
                 })}
               </Swiper>
             ) : (
-              <Swiper
-                modules={[Navigation, Keyboard]}
-                keyboard={{
-                  enabled: true,
-                }}
-                breakpoints={{
-                  360: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,
-                  },
-                  576: {
-                    slidesPerView: 3,
-                    spaceBetween: 30,
-                  },
-                  1024: {
-                    slidesPerView: 4,
-                    spaceBetween: 30,
-                  },
-                }}
-                navigation={{
-                  prevEl: ".scshowcaseproduct .prev",
-                  nextEl: ".scshowcaseproduct .next",
-                }}
-                freeMode
-                grabCursor={true}
-                pagination={false}
-                loop={true}
+              <EmptyWrapper
+                windowx={width}
+                refhegiht={refLoading?.current?.clientHeight}
               >
-                {Array(9)
-                  ?.fill("")
-                  ?.map((item, index) => (
-                    <SwiperSlide key={`${item}${index}`}>
-                      <LoadingSkeleton
-                        isClassName={` duration-700 transition-all`}
-                        isArray={1}
-                        isLoading={statusGetProduct}
-                        isParagraph={4}
-                      />
-                    </SwiperSlide>
-                  ))}
-              </Swiper>
+                <Empty description={false} />
+              </EmptyWrapper>
             )}
           </div>
         </div>

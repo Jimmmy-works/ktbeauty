@@ -7,12 +7,14 @@ import { collection, getDocs } from "firebase/firestore";
 import { ref } from "firebase/storage";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
 
 const Register = ({
   onOpenLogin,
   controlAuthen,
   onAuthenModal,
   onRegister,
+  updateStatusRegister,
 }) => {
   const {
     register,
@@ -26,11 +28,9 @@ const Register = ({
   const [phone, setPhone] = useState("");
   const [agree, setAgree] = useState(false);
   const [hiddenPassword, setHiddenPassword] = useState(true);
-  const [productList, setProductList] = useState([]);
-  const productCollectionRef = collection(firebaseStore, "product-card");
   const handleRegister = async (data) => {
     try {
-      onRegister(data);
+      if (updateStatusRegister !== THUNK_STATUS.pending) onRegister(data);
     } catch (error) {
       console.log("error", error);
     }

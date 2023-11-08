@@ -8,7 +8,7 @@ import { getAllProduct } from "./productReducer";
 
 const initialState = {
   users: [],
-  products: [],
+  searchUsers: [],
   errorGetUserAll: null,
   getStatusCreateProduct: null,
 };
@@ -19,6 +19,9 @@ export const { reducer: dashboardReducer, actions: dashboardActions } =
     reducers: {
       setUsers: (state, action) => {
         state.users = action.payload;
+      },
+      setSearchUsers: (state, action) => {
+        state.searchUsers = action.payload;
       },
     },
     extraReducers: (builder) => {
@@ -52,6 +55,7 @@ export const getAllUsers = createAsyncThunk(
       const _token = localStorage.getItem(LOCAL_STORAGE.token);
       const userData = await dashboardService.getAllProfile(_token);
       thunkAPI.dispatch(dashboardActions.setUsers(userData?.data?.data));
+      thunkAPI.dispatch(dashboardActions.setSearchUsers(userData?.data?.data));
       return userData?.data?.data;
     } catch (error) {
       if (error) {

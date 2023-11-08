@@ -10,6 +10,7 @@ import { Controller, useForm } from "react-hook-form";
 import useProfile from "../Profile/useProfile";
 import styled from "styled-components";
 import { removeAccents } from "@/utils/removeAccents";
+import { formatPriceVND } from "@/utils/formatPrice";
 const SelectWrapper = styled.div`
   .select-antd-wrapper {
     background-color: #f9f9f9;
@@ -61,14 +62,6 @@ const FormWrapper = styled.div`
   }
 `;
 const Checkout = () => {
-  const images = [
-    "/assets/img/product-1.jpg",
-    "/assets/img/product-2.jpg",
-    "/assets/img/product-3.jpg",
-    "/assets/img/product-4.jpg",
-    "/assets/img/product-10.jpg",
-    "/assets/img/product-5.jpg",
-  ];
   const [nameProvince, setNameProvince] = useState("");
   const [nameDistrist, setNameDistrist] = useState("");
   const [nameWard, setNameWard] = useState("");
@@ -86,6 +79,11 @@ const Checkout = () => {
     onChangeProvince,
     onChangeDistrict,
     onChangeWard,
+    cartInfo,
+    shipping,
+    discountCode,
+    total,
+    subTotal,
   } = useCheckout();
   const {
     register,
@@ -102,10 +100,26 @@ const Checkout = () => {
   const handleChangeSwitch = () => {
     onToggleSwitch();
   };
+  // const [lableDiscount, setLabelDiscount] = useState("");
+  const handleLabelDiscount = useMemo(() => {
+    const million = 1000000;
+    switch (total) {
+      case total >= 5 * million:
+        return `Giảm 20%`;
+      case total > 1 * million <= 3 * million:
+        return `Giảm 10%`;
+      case total >= 1 * million:
+        return `Miễn phí vận chuyển`;
+      default:
+        break;
+    }
+  }, [total]);
+  console.log("total", total);
   const handleOrder = (data) => {
     console.log("data", data);
   };
-  console.log("controlSwitch", controlSwitch);
+  console.log("shipping", shipping);
+  console.log("discountCode", discountCode);
   useEffect(() => {
     if (profile) {
       if (!controlSwitch) {
@@ -449,47 +463,52 @@ const Checkout = () => {
                 </h3>
               )}
               <div className="pb-[20px] border-b border-solid border-[#e2e0e0]">
-                {images?.map((item, index) => {
-                  return (
-                    <div
-                      key={`${item}${index}`}
-                      className="flex items-center justify-between gap-[15px] not-firstChild:mt-[14px]"
-                    >
-                      <div className="flex items-center gap-[12px]">
-                        <Link
-                          className="relative min-w-[64px] min-h-[64px] rounded-[6px] border border-solid
+                {cartInfo?.products?.length &&
+                  cartInfo?.products?.map((item, index) => {
+                    const { image, name, _id, quantity, price, discount } =
+                      item || {};
+                    return (
+                      <div
+                        key={_id}
+                        className="flex items-center justify-between gap-[15px] not-firstChild:mt-[14px]"
+                      >
+                        <div className="flex items-center gap-[12px]">
+                          <Link
+                            className="relative min-w-[64px] min-h-[64px] rounded-[6px] border border-solid
                         border-[#e2e0e0] duration-400 transition-colors hover:border-primary group/hover"
-                        >
-                          <img
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.src = "/assets/img/error.png";
-                            }}
-                            className="h-full w-full object-cover center-absolute rounded-[6px]"
-                            src={item}
-                            alt=""
-                          />
-                          <span
-                            to={PATHS.SHOP.DETAIL}
-                            className="text-[13px] text-white font-mam rounded-[50%] bg-[#7d7c7c] h-[20px] w-[20px]
+                          >
+                            <img
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = "/assets/img/error.png";
+                              }}
+                              className="h-full w-full object-cover center-absolute rounded-[6px]"
+                              src={image?.[0]}
+                              alt=""
+                            />
+                            <span
+                              to={PATHS.SHOP.DETAIL}
+                              className="text-[13px] text-white font-mam rounded-[50%] bg-[#908f8f]  h-[24px] w-[24px]
                                      flex items-center justify-center absolute right-[-8px] top-[3px] -translate-y-1/2
                                   group-hover/hover:bg-primary duration-400 transition-colors "
-                          >
-                            {index}
-                          </span>
-                        </Link>
-                        <Link
-                          to={PATHS.SHOP.DETAIL}
-                          className="text-sm text-black-333 font-mam truncate whitespace-normal line-clamp-4
+                            >
+                              {quantity || 0}
+                            </span>
+                          </Link>
+                          <Link
+                            to={PATHS.SHOP.DETAIL}
+                            className="text-sm text-black-333 font-mam truncate whitespace-normal line-clamp-4
                          duration-400 transition-colors hover:text-primary"
-                        >
-                          Lorem ipsum dolor sit amet {index}.
-                        </Link>
+                          >
+                            {name}
+                          </Link>
+                        </div>
+                        <p className="text-sm text-primary font-osb">
+                          {formatPriceVND(price)}
+                        </p>
                       </div>
-                      <p className="text-sm text-primary font-osb">400.000đ</p>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
               </div>
               <div
                 className="flex items-center gap-2 py-[20px] border-b border-solid
@@ -513,7 +532,15 @@ const Checkout = () => {
                   <h4 className="font-osb text-sm text-black-333">
                     Tổng chưa giảm giá
                   </h4>
-                  <p className="font-osb text-sm text-primary">$390.00</p>
+                  <p className="font-osb text-sm text-primary">
+                    {formatPriceVND(
+                      Number(
+                        subTotal?.reduce((acc, cur) => {
+                          return acc + cur;
+                        })
+                      )
+                    )}
+                  </p>
                 </div>
                 {/* <div className="flex items-center justify-between mt-[20px]">
                   <h4 className="font-osb text-sm text-black-333">Vận chuyển</h4>
@@ -523,42 +550,50 @@ const Checkout = () => {
                   <h4 className="font-osb text-sm text-black-333">
                     Vận chuyển
                   </h4>
-                  <p
-                    className="font-osb text-sm text-black-333 relative before:w-full before:h-[1px]
+                  {shipping !== null || shipping !== undefined ? (
+                    <p className="font-osb text-sm text-primary">
+                      {formatPriceVND(Number(shipping || 0))}
+                    </p>
+                  ) : (
+                    <Link
+                      to={PATHS.CART}
+                      className="font-osb text-sm text-black-333 relative before:w-full before:h-[1px]
                   before:absolute before:bg-black-333 before:bottom-[-4px] duration-400 transition-colors
                   before:duration-400 before:transition-colors hover:before:bg-primary hover:text-primary
                   cursor-pointer"
-                  >
-                    Chọn phương thức
-                  </p>
+                    >
+                      Chọn phương thức
+                    </Link>
+                  )}
                 </div>
               </div>
               <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
-                <div className="flex items-start justify-between">
-                  <h4 className="font-osb text-sm text-black-333">Giảm giá</h4>
-                  <p className="font-osb text-sm text-primary">-43.000đ</p>
-                </div>
+                <h4 className="flex items-start justify-between font-osb text-sm text-black-333">
+                  Giảm giá
+                </h4>
                 <div className="flex items-start justify-between mt-[14px] ">
                   <h4 className="pl-[6px] font-mam text-[12px] text-black-333">
-                    COUPON20
+                    {discountCode?.name}
                   </h4>
-                  <p className="font-osb text-[12px] text-primary">-20.000đ</p>
-                </div>
-                <div className="flex items-start justify-between mt-[14px] ">
-                  <h4 className="pl-[6px] font-mam text-[12px] text-black-333">
-                    SALEOFF
-                  </h4>
-                  <p className="font-osb text-[12px] text-primary">-20%</p>
+                  <p className="font-osb text-[12px] text-primary">
+                    {formatPriceVND(discountCode?.price)}
+                  </p>
                 </div>
               </div>
               <div className=" py-[20px] flex items-center justify-between">
                 <h4 className="font-osb text-md text-black-333">Tổng cộng</h4>
-                <p className="font-osb text-md text-primary ">1.200.000đ</p>
+                <p className="font-osb text-md text-primary ">
+                  {formatPriceVND(
+                    total +
+                      (shipping ? shipping : 0) -
+                      (discountCode ? discountCode?.price : 0)
+                  )}
+                </p>
               </div>
               <div className="mt-[10px]">
                 <Button
                   // disabled={!isDirty || !isValid}
-                  // link={PATHS.COMPLETE}
+                  link={PATHS.COMPLETE}
                   onClick={handleSubmit(handleOrder)}
                   className={`block text-center rounded-none w-full md:p-[14px]`}
                 >

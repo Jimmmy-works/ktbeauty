@@ -46,6 +46,7 @@ import DashboardUser from "./page/CMS/User";
 import DashBoardProduct from "./page/CMS/Product";
 import store from "./store";
 import LoadingPage from "./components/Loading/LoadingPage";
+import StatusShipping from "./page/CMS/StatusShipping";
 function App() {
   return (
     <Provider store={store}>
@@ -78,6 +79,7 @@ function App() {
               <Route path={PATHS.CMS.IMAGE} element={<DashboardImage />} />
               <Route path={PATHS.CMS.USER} element={<DashboardUser />} />
               <Route path={PATHS.CMS.FILE} element={<DashboardFile />} />
+              <Route path={PATHS.CMS.SHIPPING} element={<StatusShipping />} />
             </Route>
           </Routes>
         </BrowserRouter>

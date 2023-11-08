@@ -7,6 +7,7 @@ import Footer from "@/page/Footer";
 import Header from "@/page/Header";
 import Nav from "@/page/Nav";
 import { getProfileSlug } from "@/store/reducer/authReducer";
+import { getCart } from "@/store/reducer/cartReducer";
 import {
   getAllCategories,
   getAllProduct,
@@ -14,28 +15,33 @@ import {
 import backtotop from "@/utils/backtotop";
 import React, { useEffect, useState } from "react";
 import { decodeToken } from "react-jwt";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation } from "react-router-dom";
 const MainLayout = () => {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
-  useEffect(() => {
-    document.querySelector("html").setAttribute("style", "overflow-y : scroll");
-    () => setIsNavbar(false);
-    backtotop();
-  }, [pathname]);
+  const { checkLogin } = useSelector((state) => state.auth);
+  // useEffect(() => {
+  //   document.querySelector("html").setAttribute("style", "overflow-y : scroll");
+  //   () => setIsNavbar(false);
+  //   backtotop();
+  // }, [pathname]);
 
+  const _token = localStorage.getItem(LOCAL_STORAGE.token);
   useEffect(() => {
-    const _token = localStorage.getItem(LOCAL_STORAGE.token);
     const resultDecode = decodeToken(_token);
     const _id = resultDecode?.id;
     if (_token) {
       dispatch(getProfileSlug(_id));
-      // dispatch(getCart(_token));
     }
     dispatch(getAllProduct());
     dispatch(getAllCategories());
   }, []);
+  useEffect(() => {
+    if (_token) {
+      dispatch(getCart(_token));
+    }
+  }, [checkLogin]);
   return (
     <MainProvider>
       <Header />

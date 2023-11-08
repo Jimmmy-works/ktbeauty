@@ -2,32 +2,96 @@ import BreadCrumb from "@/components/BreadCrumb";
 import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
 import useWindowSize from "@/utils/windowResize";
-import { Radio, Select } from "antd";
-import React, { useState } from "react";
+import { Radio, Select, Steps, Timeline } from "antd";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import useCartPage from "./useCartPage";
+import { Empty } from "antd";
+import styled from "styled-components";
+import { formatPriceVND } from "@/utils/formatPrice";
+import { useDispatch } from "react-redux";
+import { cartActions } from "@/store/reducer/cartReducer";
+
+const StepsWrapper = styled.div`
+  .ant-steps-item-icon {
+    background-color: #555 !important;
+    border-color: #555 !important;
+  }
+  .ant-steps-item-title {
+    &::after {
+      background-color: #ff887b !important;
+    }
+  }
+  .ant-steps-item-finish {
+    svg {
+      fill: #fff !important;
+    }
+    .ant-steps-item-icon {
+      background-color: #ff887b !important;
+      border-color: #ff887b !important;
+    }
+    .ant-steps-item-container {
+      .ant-steps-item-title,
+      .ant-steps-item-description {
+        transition: background-color 0.3s, border-color 0.3s;
+      }
+      &:hover {
+        .ant-steps-item-title,
+        .ant-steps-item-description {
+          color: #ff887b !important;
+        }
+      }
+    }
+  }
+`;
+const EmptyWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+  .ant-empty-description {
+    font-family: "OpenSans-SemiBold";
+    font-size: 14px;
+  }
+  .ant-empty-image {
+    width: 150px !important;
+    height: 150px !important;
+    svg {
+    }
+  }
+`;
 const CartPage = () => {
-  const images = [
-    "/assets/img/product-1.jpg",
-    "/assets/img/product-2.jpg",
-    "/assets/img/product-3.jpg",
-    "/assets/img/product-4.jpg",
-    "/assets/img/product-5.jpg",
-  ];
+  const { cartInfo, onChangeQuantity } = useCartPage();
   const { width } = useWindowSize();
-  const [renderValue, setRenderValue] = useState(1);
+  const dispatch = useDispatch();
+  const [discountCode, setDiscountCode] = useState();
+  const [shipping, setShipping] = useState();
+  const [stepDiscount, setStepDiscount] = useState();
   const min = 1;
-  const max = 100;
-  const onInputOnchange = (e) => {
-    setRenderValue(e.target.value);
+  const max = 20;
+  const { products, subTotal, total } = cartInfo || {};
+  const onInputOnchange = (e, updateIndex) => {
+    onChangeQuantity(modifyValue(Number(e.target.value)), updateIndex);
   };
-  const onIncrease = () => {
-    const value = modifyValue(Number(renderValue) + Number(1));
-    setRenderValue(value);
+  const onInputBlur = (e, updateIndex) => {
+    onChangeQuantity(modifyValue(Number(e.target.value)), updateIndex);
   };
-  const onDecrease = () => {
-    const value = modifyValue(Number(renderValue) - Number(1));
-    setRenderValue(value);
+  const onIncrease = (updateIndex) => {
+    onChangeQuantity(
+      modifyValue(
+        Number(cartInfo?.products?.[updateIndex]?.quantity) + Number(1)
+      ),
+      updateIndex
+    );
   };
+  const onDecrease = (updateIndex) => {
+    onChangeQuantity(
+      modifyValue(
+        Number(cartInfo?.products?.[updateIndex]?.quantity) - Number(1)
+      ),
+      updateIndex
+    );
+  };
+
   const modifyValue = (value) => {
     if (value > max) {
       return (value = max);
@@ -37,6 +101,43 @@ const CartPage = () => {
       return value;
     }
   };
+  const onChangeShippingType = (value) => {
+    setShipping(value * 1000);
+  };
+  const million = 1000000;
+  const updateDiscountCode = () => {
+    if (total >= 5 * million) {
+      const discount = Number((total * 20) / 100);
+      setDiscountCode({ name: "Giảm giá 20%", price: discount });
+      setShipping(0);
+    } else if (total >= 3 * million && total < 5 * million) {
+      const discount = Number((total * 10) / 100);
+      setDiscountCode({ name: "Giảm giá 10%", price: discount });
+      setShipping(0);
+    } else if (total >= 1 * million && total < 3 * million) {
+      setDiscountCode({ name: "Miễn phí vận chuyển", price: 0 });
+      setShipping(0);
+    } else {
+    }
+  };
+  const onChangeStep = () => {
+    if (total >= 5 * million) {
+      setStepDiscount(3);
+      return;
+    } else if (total >= 3 * million && total < 5 * million) {
+      setStepDiscount(2);
+    } else if (total >= 1 * million && total < 3 * million) {
+      setStepDiscount(1);
+    } else {
+      setStepDiscount(0);
+    }
+  };
+  useEffect(() => {
+    onChangeStep();
+    updateDiscountCode();
+    dispatch(cartActions.setDiscountCode(discountCode));
+    dispatch(cartActions.setShipping(shipping));
+  }, [total]);
   return (
     <main className="main-wrapper cartpage">
       <div className="container">
@@ -53,6 +154,7 @@ const CartPage = () => {
             Giỏ hàng
           </h3>
         </div>
+
         <table className="table ">
           <thead>
             <tr>
@@ -64,9 +166,11 @@ const CartPage = () => {
             </tr>
           </thead>
           <tbody className="table__body">
-            {images?.map((item, index) => {
+            {cartInfo?.products?.map((item, index) => {
+              const { image, name, _id, quantity, price, discount } =
+                item || {};
               return (
-                <tr key={`${item}${index}`}>
+                <tr key={_id}>
                   <td className="table__body-row">
                     <a
                       href=""
@@ -78,30 +182,36 @@ const CartPage = () => {
                           e.target.onerror = null;
                           e.target.src = "/assets/img/error.png";
                         }}
-                        className="center-absolute  group-hover/hover:scale-105 md:left-0 md:translate-x-0 "
-                        src={item}
+                        className="max-w-[90px] center-absolute  group-hover/hover:scale-105 md:left-0 md:translate-x-0 "
+                        src={image?.[0]}
                         alt=""
                       />
                     </a>
                   </td>
                   <td className="">
                     <a className="text  hover:text-primary " href="">
-                      Lorem ipsum dolor sit amet Lorem ipsum dolor .
+                      {name}
                     </a>
                   </td>
 
                   {width >= 768 ? (
-                    <td className="">$100</td>
+                    <td className="">
+                      {formatPriceVND(price - (discount || 0))}
+                    </td>
                   ) : (
-                    <td className="">Giá: $100</td>
+                    <td className="">
+                      Giá: {formatPriceVND(Number(price - (discount || 0)))}
+                    </td>
                   )}
                   <td className="">
                     <div
                       className="flex items-center border border-solid border-[#ececec] rounded-md
                         h-[50px] justify-center w-fit mx-auto "
-                      onClick={onDecrease}
                     >
-                      <div className="px-[14px] cursor-pointer h-full flex items-center justify-center group/hover">
+                      <div
+                        className="px-[10px] cursor-pointer h-full flex items-center justify-center group/hover"
+                        onClick={() => onDecrease(index)}
+                      >
                         <svg className="h-[10px] w-[10px]" viewBox="0 0 24 24">
                           <path
                             className="fill-black-555 duration-300 transition-colors group-hover/hover:fill-primary"
@@ -114,12 +224,14 @@ const CartPage = () => {
                         type="number"
                         min={min}
                         max={max}
-                        value={renderValue}
-                        onChange={onInputOnchange}
+                        value={quantity}
+                        // value={renderValue}
+                        onChange={(e) => onInputOnchange(e, index)}
+                        onBlur={(e) => onInputBlur(e, index)}
                       />
                       <div
-                        className="px-[14px] cursor-pointer h-full flex items-center justify-center group/hover"
-                        onClick={onIncrease}
+                        className="px-[10px] cursor-pointer h-full flex items-center justify-center group/hover"
+                        onClick={() => onIncrease(index)}
                       >
                         <svg
                           className="h-[10px] w-[10px] rotate-[180deg]"
@@ -134,9 +246,13 @@ const CartPage = () => {
                     </div>
                   </td>
                   {width >= 768 ? (
-                    <td className="text-black font-om">$2000</td>
+                    <td className="text-black font-om">
+                      {formatPriceVND(subTotal[index])}
+                    </td>
                   ) : (
-                    <td className="text-black font-om">Tổng: $2000</td>
+                    <td className="text-black font-om">
+                      Tổng: {formatPriceVND(subTotal[index])}
+                    </td>
                   )}
                   {width >= 768 ? (
                     <td className="">
@@ -163,9 +279,43 @@ const CartPage = () => {
             })}
           </tbody>
         </table>
+        {!cartInfo?.products?.length && (
+          <div className="w-full flex items-center justify-center ">
+            <EmptyWrapper>
+              <Empty description={`Không có sản phẩm`} />
+            </EmptyWrapper>
+          </div>
+        )}
+        <StepsWrapper className="p-[35px_0] m-[35px_0] border-t border-b border-solid border-black-be">
+          <Steps
+            current={stepDiscount}
+            onChange={onChangeStep}
+            items={[
+              {
+                title: "Miễn phí vận chuyển",
+                description: `Cho đơn hàng trên ${formatPriceVND(
+                  1 * million
+                )} `,
+              },
+              {
+                title: "Giảm 10%",
+                description: `Cho đơn hàng trên ${formatPriceVND(
+                  3 * million
+                )} `,
+              },
+              {
+                title: "Giảm 20%",
+                description: `Cho đơn hàng trên ${formatPriceVND(
+                  5 * million
+                )} `,
+              },
+            ]}
+          />
+        </StepsWrapper>
         <div
-          className="cartpage__total flex md:flex-row xs:flex-col items-start justify-start gap-[30px] pt-[30px] mt-[30px]
-                  border-t border-solid border-black-be "
+          className="cartpage__total flex md:flex-row xs:flex-col items-start justify-start
+           gap-[30px] mt-[30px]
+                   "
         >
           <div className="coupon  xs:w-full md:w-[50%] border border-solid  border-grey-999">
             <h3 className="text-white bg-black-555 font-osb text-[16px] py-[10px] px-[20px]">
@@ -186,6 +336,7 @@ const CartPage = () => {
               </button>
             </div>
           </div>
+
           <div className="  xs:w-full md:w-[50%] border border-solid border-grey-999">
             <h3 className="text-white bg-black-555 font-osb text-[16px] py-[10px] px-[20px]">
               Tổng kết
@@ -194,52 +345,69 @@ const CartPage = () => {
               <h4 className="text-[16px] font-om text-black">
                 Tổng chưa giảm giá:
               </h4>
-              <p className="text-[16px] font-om text-black">$340.00</p>
+              <p className="text-[16px] font-om text-black">
+                {formatPriceVND(subTotal?.reduce((acc, cur) => acc + cur))}
+              </p>
             </div>
 
             <div className="flex justify-between items-center p-[16px_20px] ">
               <h4 className="text-[16px] font-om text-black">Giảm giá:</h4>
-              <p className="text-[16px] font-om text-black">- $340.00</p>
+              <p className="text-[16px] font-om text-black">
+                - {formatPriceVND(discountCode?.price)}
+              </p>
             </div>
-            <div className="flex justify-between items-center p-[8px_20px] ">
+            {/* p-[8px_20px] */}
+            <div
+              className="flex justify-between items-center 
+            p-[16px_20px]
+             "
+            >
               <h4 className="text-[16px] font-om text-black">Vận chuyển</h4>
               <div>
                 <Select
                   defaultValue="default"
-                  // onChange={handleChange}
+                  onChange={onChangeShippingType}
                   options={[
                     {
                       value: "default",
                       label: "Chọn phương thức",
                     },
                     {
-                      value: "free",
+                      value: 0,
                       label: "Miễn phí",
                     },
                     {
-                      value: "fast",
+                      value: 20,
                       label: "Nhanh : 20.000đ",
                     },
                     {
-                      value: "express",
+                      value: 35,
                       label: "Hỏa tốc : 35.000đ",
                     },
                   ]}
                 />
               </div>
             </div>
-            <div className="flex justify-between items-center p-[16px_20px] ">
+            {/* <div className="flex justify-between items-center p-[16px_20px] ">
               <h4 className="text-[16px] font-om text-black">
                 &#8658; Shipping:
               </h4>
-              <p className="text-[16px] font-om text-black">Miễn phí</p>
-            </div>
+              <p className="text-[16px] font-om text-black">
+                {shipping === 0 && shipping ? "Free" : formatPriceVND(shipping)}
+              </p>
+            </div> */}
             <div
               className="flex justify-between items-center p-[16px_20px] border-t border-solid
               border-grey-999"
             >
               <h4 className="text-[16px] font-om text-black">Tổng cộng:</h4>
-              <p className="text-[16px] font-om text-black">$340.00</p>
+              <p className="text-[16px] font-om text-black">
+                {formatPriceVND(
+                  total +
+                    (shipping ? shipping : 0) -
+                    (discountCode ? discountCode?.price : 0)
+                )}
+              </p>
             </div>
             <div className=" p-[14px_20px] ">
               <Button
