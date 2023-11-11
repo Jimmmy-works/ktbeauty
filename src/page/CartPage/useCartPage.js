@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 const useCartPage = () => {
   const dispatch = useDispatch();
-  const { cartInfo } = useSelector((state) => state.cart);
+  const { cartInfo, shipping, discountCode } = useSelector(
+    (state) => state.cart
+  );
   const onChangeQuantity = async (updateValue, updateIndex) => {
     try {
       const map = cartInfo?.products?.find((_, index) => {
@@ -14,7 +16,7 @@ const useCartPage = () => {
         id: map?._id,
         updateQuantity: updateValue,
       };
-      const res = await dispatch(cartActions.addToCart(customItem));
+      await dispatch(cartActions.addToCart(customItem));
     } catch (error) {
       console.log("error", error);
     }
@@ -22,6 +24,8 @@ const useCartPage = () => {
   return {
     cartInfo,
     onChangeQuantity,
+    shipping,
+    discountCode,
   };
 };
 

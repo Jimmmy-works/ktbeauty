@@ -82,22 +82,31 @@ const Account = () => {
       email: profile?.email,
       phone: profile?.phone,
       address: profile?.address,
+      province: profile?.province?._id,
+      district: profile?.district?._id,
+      ward: profile?.ward?._id,
     },
     values: {
       name: profile?.name,
       email: profile?.email,
       phone: profile?.phone,
       address: profile?.address,
+      province: profile?.province?._id,
+      district: profile?.district?._id,
+      ward: profile?.ward?._id,
     },
   });
-
+  console.log("profile", profile);
   const handleUpdateProfile = (data) => {
     const payload = {
       value: {
         name: data?.name,
         email: data?.email,
         phone: data?.phone,
-        address: `${data?.address}, ${nameWard}, ${nameDistrist}, ${nameProvince}`,
+        address: data?.address,
+        province: { name: nameProvince, _id: provinceId },
+        district: { name: nameDistrist, _id: districtId },
+        ward: { name: nameWard, _id: wardId },
       },
       id: profile?._id,
     };
@@ -129,9 +138,11 @@ const Account = () => {
       email: profile?.email,
       phone: profile?.phone,
       address: profile?.address,
+      province: profile?.province?._id,
+      district: profile?.district?._id,
+      ward: profile?.ward?._id,
     });
   }, [profile]);
-  console.log("watch()", errors);
   return (
     <main className="profile-account">
       <div className="form p-0" action="">
@@ -237,7 +248,7 @@ const Account = () => {
                       style={{ width: "100%" }}
                       placeholder="Tỉnh/Thành"
                       options={provinces}
-                      value={provinceId || null}
+                      value={provinceId || profile?.province?._id}
                       showSearch
                       labelInValue={provinces?.label}
                       onChange={(value, e) => {
@@ -289,7 +300,7 @@ const Account = () => {
                       style={{ width: "100%" }}
                       placeholder="Quận/Huyện"
                       options={districts}
-                      value={districtId || null}
+                      value={districtId || profile?.district?._id}
                       showSearch
                       onChange={(value, e) => {
                         field.onChange(value);
@@ -339,7 +350,7 @@ const Account = () => {
                       style={{ width: "100%" }}
                       placeholder="Phường/Xã"
                       options={wards}
-                      value={wardId || null}
+                      value={wardId || profile?.ward?._id}
                       showSearch
                       onChange={(value, e) => {
                         field.onChange(value);

@@ -7,9 +7,9 @@ import { decodeToken } from "react-jwt";
 
 const initialState = {
   cartInfo: {},
-  subTotal: [],
+  subTotal: 0,
   total: 0,
-  shipping: null,
+  shipping: {},
   discountCode: {},
   updateStatusCreateCart: THUNK_STATUS.fulfilled,
 };
@@ -17,20 +17,33 @@ const initialState = {
 export const { reducer: cartReducer, actions: cartActions } = createSlice({
   initialState,
   name: "cart",
+
   reducers: {
     setCartInfo: (state, action) => {
       state.cartInfo = {
         ...action.payload,
       };
     },
+    getDiscountCode: () => {},
     setShipping: (state, action) => {
       state.shipping = action.payload;
+      localStorage.setItem("shipping", JSON.stringify(state.shipping));
     },
     setDiscountCode: (state, action) => {
       state.discountCode = action.payload;
+      localStorage.setItem("discount", JSON.stringify(state.discountCode));
+    },
+    setSubTotal: (state, action) => {
+      state.subTotal = action.payload;
+      localStorage.setItem("subTotal", state.subTotal);
+    },
+    setTotal: (state, action) => {
+      state.total = action.payload;
+      localStorage.setItem("total", state.total);
     },
     addToCart: (state, action) => {
-      state.cartInfo = {
+      const million = 1000000;
+      const saveLocal = {
         ...state?.cartInfo,
         products: state?.cartInfo?.products.map((item, index) => {
           if (item?._id === action?.payload?.id) {
@@ -38,14 +51,10 @@ export const { reducer: cartReducer, actions: cartActions } = createSlice({
           }
           return item;
         }),
-        subTotal: state?.cartInfo?.products?.map((item, index) => {
-          return (item?.price - item?.discount) * item?.quantity;
-        }),
-        total: state?.cartInfo?.products?.reduce((acc, cur) => {
-          return acc + cur.quantity * (cur.price - cur.discount);
-        }, 0),
       };
-      // state.subTotal = state.cartInfo.subTotal;
+      localStorage.setItem("cart", JSON.stringify(saveLocal));
+      const parseCart = localStorage.getItem("cart");
+      state.cartInfo = JSON.parse(parseCart);
     },
   },
   extraReducers: (builder) => {
@@ -66,19 +75,12 @@ export const getCart = createAsyncThunk("cart/get", async (token, thunkAPI) => {
   try {
     const decode = decodeToken(token);
     const response = await cartService.getCart(decode?.id, token);
-
     if (response.status === 200) {
       const resCart = response?.data?.data;
+      const million = 1000000;
+      const parseCart = JSON.parse(localStorage.getItem("cart"));
       thunkAPI.dispatch(
-        cartActions.setCartInfo({
-          ...resCart,
-          subTotal: response?.data?.data?.products?.map(
-            (item) => (item?.price - item?.discount) * item?.quantity
-          ),
-          total: response?.data?.data?.products?.reduce((acc, cur) => {
-            return acc + cur.quantity * (cur.price - cur.discount);
-          }, 0),
-        })
+        cartActions.setCartInfo(parseCart ? parseCart : resCart)
       );
     }
     return response?.data?.data;

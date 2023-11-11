@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useProfile from "../Profile/useProfile";
 import { provinceService } from "@/service/provinceService";
+import { cartActions, getCart } from "@/store/reducer/cartReducer";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
 
 const useCheckout = () => {
   const dispatch = useDispatch();
@@ -19,7 +21,6 @@ const useCheckout = () => {
   const getProvinces = async () => {
     try {
       const dataProvince = await provinceService.getCity();
-
       const _provinces = dataProvince?.data?.results?.map((province) => {
         return {
           value: province?.province_id,
@@ -82,14 +83,35 @@ const useCheckout = () => {
     setControlSwitch(!controlSwitch);
   };
   useEffect(() => {
+    if (profile?.province?._id) {
+      setProvinceId(profile?.province?._id);
+      setDistrictId(profile?.district?._id);
+      setWardId(profile?.ward?._id);
+      getProvinces();
+      if (provinceId) getDistricts(provinceId);
+      if (districtId) getWards(districtId);
+    }
+  }, [profile?.province?._id]);
+  useEffect(() => {
     getProvinces();
-    if (provinceId) {
-      getDistricts();
+    if (provinceId) getDistricts(provinceId);
+    if (districtId) getWards(districtId);
+  }, [provinceId, controlSwitch]);
+  useEffect(() => {
+    if (controlSwitch) {
+      setProvinceId(profile?.province?._id);
+      setDistrictId(profile?.district?._id);
+      setWardId(profile?.ward?._id);
+      getProvinces();
+      if (provinceId) getDistricts(provinceId);
+      if (districtId) getWards(districtId);
+    } else {
+      setProvinceId(null);
+      setDistrictId(null);
+      setWardId(null);
     }
-    if (districtId) {
-      getWards();
-    }
-  }, []);
+  }, [controlSwitch]);
+
   return {
     onToggleSwitch,
     controlSwitch,
@@ -106,8 +128,8 @@ const useCheckout = () => {
     cartInfo,
     shipping,
     discountCode,
-    total: cartInfo?.total,
-    subTotal: cartInfo?.subTotal,
+    total,
+    subTotal,
   };
 };
 

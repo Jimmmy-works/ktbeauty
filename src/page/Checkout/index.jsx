@@ -65,6 +65,7 @@ const Checkout = () => {
   const [nameProvince, setNameProvince] = useState("");
   const [nameDistrist, setNameDistrist] = useState("");
   const [nameWard, setNameWard] = useState("");
+
   const { width } = useWindowSize();
   const {
     onToggleSwitch,
@@ -80,10 +81,6 @@ const Checkout = () => {
     onChangeDistrict,
     onChangeWard,
     cartInfo,
-    shipping,
-    discountCode,
-    total,
-    subTotal,
   } = useCheckout();
   const {
     register,
@@ -96,48 +93,71 @@ const Checkout = () => {
     reset,
     trigger,
     formState: { isSubmitting, isDirty, isValid, errors }, // here
-  } = useForm({ mode: "all" });
+  } = useForm({
+    mode: "all",
+  });
+  const discountCode = localStorage.getItem("discount");
+  const shipping = localStorage.getItem("shipping");
+  const total = localStorage.getItem("total");
+  const subTotal = localStorage.getItem("subTotal");
+
   const handleChangeSwitch = () => {
     onToggleSwitch();
   };
-  // const [lableDiscount, setLabelDiscount] = useState("");
-  const handleLabelDiscount = useMemo(() => {
-    const million = 1000000;
-    switch (total) {
-      case total >= 5 * million:
-        return `Giảm 20%`;
-      case total > 1 * million <= 3 * million:
-        return `Giảm 10%`;
-      case total >= 1 * million:
-        return `Miễn phí vận chuyển`;
-      default:
-        break;
-    }
-  }, [total]);
-  console.log("total", total);
+  const million = 1000000;
   const handleOrder = (data) => {
-    console.log("data", data);
+    const payload = {
+      user: {
+        user_id: profile?._id,
+        email: profile?.email,
+      },
+      products: [...cartInfo?.products],
+      name: data?.name,
+      phone: data?.phone,
+      email: data?.email,
+      address: `${getValues(
+        "address"
+      )} ${nameWard}, ${nameDistrist}, ${nameProvince}`,
+      note: data?.note,
+      shipping: { type: shipping?.value, price: shipping?.price },
+      subTotal: subTotal,
+      total: total,
+      discount:
+        subTotal < 3 * million
+          ? discountCode
+          : [
+              { name: discountCode?.name, price: discountCode?.price },
+              { name: "Miễn phí vận chuyển", price: shipping?.price },
+            ],
+    };
+    console.log("payload", payload);
   };
-  console.log("shipping", shipping);
-  console.log("discountCode", discountCode);
-  useEffect(() => {
+
+  const handleControlSwitch = useCallback(() => {
     if (profile) {
       if (!controlSwitch) {
         setValue("name");
         setValue("email");
         setValue("phone");
         setValue("address");
+        setValue("province", null);
+        setValue("district", null);
+        setValue("ward", null);
         setValue("note");
       } else {
         setValue("name", profile?.name);
         setValue("email", profile?.email);
         setValue("phone", profile?.phone);
         setValue("address", profile?.address);
+        setValue("province", profile?.province?._id);
+        setValue("district", profile?.district?._id);
+        setValue("ward", profile?.ward?._id);
         setValue("note", profile?.note);
       }
     }
   }, [profile, controlSwitch]);
   useEffect(() => {
+    handleControlSwitch();
     const timeout = setTimeout(() => {
       trigger([
         "phone",
@@ -152,13 +172,20 @@ const Checkout = () => {
     return () => clearTimeout(timeout);
   }, [controlSwitch]);
   useEffect(() => {
-    setValue(
-      "address",
-      ` ${nameWard && nameWard + ","} ${nameDistrist && nameDistrist + ","} ${
-        nameProvince && nameProvince
-      }` || profile?.address
-    );
-  }, [nameWard, nameDistrist, nameProvince]);
+    reset({
+      name: profile?.name,
+      email: profile?.email,
+      phone: profile?.phone,
+      address: profile?.address,
+      province: profile?.province?._id,
+      district: profile?.district?._id,
+      ward: profile?.ward?._id,
+      // province: controlSwitch ? provinceId : profile?.province?._id,
+      // district: controlSwitch ? districtId : profile?.district?._id,
+      // ward: controlSwitch ? wardId : profile?.ward?._id,
+    });
+  }, [profile]);
+
   return (
     <main className="checkout main-wrapper relative">
       <div className="container ">
@@ -172,7 +199,7 @@ const Checkout = () => {
             </BreadCrumb.Item>
           </BreadCrumb>
           <div className="bg-advertising-banner-2 bg-no-repeat bg-cover xs:h-[100px] md:h-[140px] w-full relative ">
-            <h3 className="font-mam xs:text-[26px] w-full text-center md:text-[40px] text-white center-absolute z-20">
+            <h3 className="font-om xs:text-[26px] w-full text-center md:text-[40px] text-white center-absolute z-20">
               Thanh Toán
             </h3>
           </div>
@@ -322,7 +349,7 @@ const Checkout = () => {
                               style={{ width: "100%" }}
                               placeholder="Tỉnh/Thành"
                               options={provinces}
-                              value={provinceId || null}
+                              value={provinceId}
                               showSearch
                               labelInValue={provinces?.label}
                               onChange={(value, e) => {
@@ -374,7 +401,12 @@ const Checkout = () => {
                               style={{ width: "100%" }}
                               placeholder="Quận/Huyện"
                               options={districts}
-                              value={districtId || null}
+                              // value={
+                              //   controlSwitch
+                              //     ? profile?.district?._id
+                              //     : districtId
+                              // }
+                              value={districtId}
                               showSearch
                               onChange={(value, e) => {
                                 field.onChange(value);
@@ -424,7 +456,10 @@ const Checkout = () => {
                               style={{ width: "100%" }}
                               placeholder="Phường/Xã"
                               options={wards}
-                              value={wardId || null}
+                              // value={
+                              //   controlSwitch ? profile?.ward?._id : wardId
+                              // }
+                              value={wardId}
                               showSearch
                               onChange={(value, e) => {
                                 field.onChange(value);
@@ -443,6 +478,7 @@ const Checkout = () => {
                 <div className="form__container-wrapper ">
                   <label htmlFor="note">Ghi chú</label>
                   <textarea
+                    {...register("note")}
                     className="textarea"
                     placeholder="Ghi chú cho đơn hàng"
                     id="note"
@@ -488,8 +524,8 @@ const Checkout = () => {
                             />
                             <span
                               to={PATHS.SHOP.DETAIL}
-                              className="text-[13px] text-white font-mam rounded-[50%] bg-[#908f8f]  h-[24px] w-[24px]
-                                     flex items-center justify-center absolute right-[-8px] top-[3px] -translate-y-1/2
+                              className="text-xs text-white font-om rounded-[50%] bg-[#908f8f]  h-[22px] w-[22px]
+                                     flex items-center justify-center absolute right-[-8px] top-[2px] -translate-y-1/2
                                   group-hover/hover:bg-primary duration-400 transition-colors "
                             >
                               {quantity || 0}
@@ -497,14 +533,21 @@ const Checkout = () => {
                           </Link>
                           <Link
                             to={PATHS.SHOP.DETAIL}
-                            className="text-sm text-black-333 font-mam truncate whitespace-normal line-clamp-4
+                            className="text-sm text-black-333 font-om truncate whitespace-normal line-clamp-4
                          duration-400 transition-colors hover:text-primary"
                           >
                             {name}
                           </Link>
                         </div>
-                        <p className="text-sm text-primary font-osb">
-                          {formatPriceVND(price)}
+                        <p className="text-xs text-primary font-osb">
+                          <div className=" text-xs text-primary font-osb flex gap-1 items-center justify-center">
+                            <span className="line-through text-black-555">
+                              {formatPriceVND(price)}
+                            </span>
+                            <span className="text-sm">
+                              {formatPriceVND(price - discount)}
+                            </span>
+                          </div>
                         </p>
                       </div>
                     );
@@ -517,11 +560,11 @@ const Checkout = () => {
                 <input
                   type="text"
                   placeholder="Discount code"
-                  className="border border-solid border-grey-999 p-[11px] font-mar text-sm text-black
-                  w-full"
+                  className={`border border-solid border-grey-999 p-[11px] font-osr text-sm text-black
+                  w-full `}
                 />
                 <button
-                  className="bg-black-555 font-mam font-semibold p-[11.5px] text-[14px] text-white
+                  className="bg-black-555 font-om font-semibold p-[11.5px] text-[14px] text-white
                   tracking-widest duration-400 transition-colors hover:bg-primary"
                 >
                   Apply
@@ -532,27 +575,18 @@ const Checkout = () => {
                   <h4 className="font-osb text-sm text-black-333">
                     Tổng chưa giảm giá
                   </h4>
-                  <p className="font-osb text-sm text-primary">
-                    {formatPriceVND(
-                      Number(
-                        subTotal?.reduce((acc, cur) => {
-                          return acc + cur;
-                        })
-                      )
-                    )}
+                  <p className="font-osb text-sm text-primary tracking-wider">
+                    {formatPriceVND(subTotal)}
                   </p>
                 </div>
-                {/* <div className="flex items-center justify-between mt-[20px]">
-                  <h4 className="font-osb text-sm text-black-333">Vận chuyển</h4>
-                  <p className="font-osb text-sm text-primary">Free</p>
-                </div> */}
+
                 <div className="flex items-center justify-between mt-[20px]">
                   <h4 className="font-osb text-sm text-black-333">
                     Vận chuyển
                   </h4>
-                  {shipping !== null || shipping !== undefined ? (
-                    <p className="font-osb text-sm text-primary">
-                      {formatPriceVND(Number(shipping || 0))}
+                  {JSON.parse(shipping)?.label ? (
+                    <p className="capitalize font-osb text-sm text-primary">
+                      {JSON.parse(shipping)?.label}
                     </p>
                   ) : (
                     <Link
@@ -567,33 +601,56 @@ const Checkout = () => {
                   )}
                 </div>
               </div>
-              <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
-                <h4 className="flex items-start justify-between font-osb text-sm text-black-333">
-                  Giảm giá
-                </h4>
-                <div className="flex items-start justify-between mt-[14px] ">
-                  <h4 className="pl-[6px] font-mam text-[12px] text-black-333">
-                    {discountCode?.name}
-                  </h4>
-                  <p className="font-osb text-[12px] text-primary">
-                    {formatPriceVND(discountCode?.price)}
-                  </p>
+              {JSON.parse(discountCode).hasOwnProperty("price") && (
+                <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
+                  <div className="flex items-start justify-between font-osb text-sm text-black-333">
+                    <p>Tổng giảm giá</p>
+                    <p className="text-primary tracking-wider">
+                      -
+                      {total >= 3 * million && shipping?.price > 0
+                        ? formatPriceVND(
+                            JSON.parse(discountCode)?.price + shipping?.price
+                          )
+                        : formatPriceVND(JSON.parse(discountCode)?.price)}
+                    </p>
+                  </div>
+                  <div className="flex items-start justify-between mt-[14px] ">
+                    <p className="pl-[6px] font-om text-[12px] text-black-333">
+                      {`1. ` + JSON.parse(discountCode)?.name}
+                    </p>
+                    <p className="font-osb text-[12px] text-black-333 tracking-wider">
+                      {formatPriceVND(JSON.parse(discountCode)?.price)}
+                    </p>
+                  </div>
+                  <div className="flex items-start justify-between mt-[14px] ">
+                    <p className="pl-[6px] font-om text-[12px] text-black-333 ">
+                      {` ${
+                        subTotal >= 3 * million &&
+                        JSON.parse(shipping)?.price > 0
+                          ? `2. Miễn phí vận chuyển`
+                          : ""
+                      } `}
+                    </p>
+                    <p className="font-osb text-[12px] text-black-333 tracking-wider">
+                      {` ${
+                        subTotal >= 3 * million &&
+                        JSON.parse(shipping)?.price > 0
+                          ? formatPriceVND(JSON.parse(shipping)?.price)
+                          : ""
+                      }`}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className=" py-[20px] flex items-center justify-between">
                 <h4 className="font-osb text-md text-black-333">Tổng cộng</h4>
                 <p className="font-osb text-md text-primary ">
-                  {formatPriceVND(
-                    total +
-                      (shipping ? shipping : 0) -
-                      (discountCode ? discountCode?.price : 0)
-                  )}
+                  {formatPriceVND(total)}
                 </p>
               </div>
               <div className="mt-[10px]">
                 <Button
-                  // disabled={!isDirty || !isValid}
-                  link={PATHS.COMPLETE}
+                  // link={PATHS.COMPLETE}
                   onClick={handleSubmit(handleOrder)}
                   className={`block text-center rounded-none w-full md:p-[14px]`}
                 >

@@ -170,7 +170,7 @@ const Header = () => {
                invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100
               group-hover/hover:top-[calc(100%+2px)] transition-all duration-400 shadow-[0_5px_5px_0_rgba(0,0,0,0.15)] bg-white"
             >
-              <h3 className="text-center font-osb text-md text-black-555 p-[16px_14px_16px]">
+              <h3 className="font-osb text-md text-black-555 p-[16px_14px_16px]">
                 {cartInfo?.products?.length &&
                   `( ${cartInfo?.products?.length} )`}{" "}
                 Sản phẩm yêu thích
@@ -178,7 +178,7 @@ const Header = () => {
               <ul className="min-w-max flex flex-col  max-h-[390px] overflow-y-scroll scrollbar-cart  p-[0px_14px_0px]  ">
                 {cartInfo?.products ? (
                   cartInfo?.products?.map((item, index) => {
-                    const { image, name, _id, price } = item || {};
+                    const { image, name, _id, price, discount } = item || {};
                     return (
                       <li
                         key={_id}
@@ -206,9 +206,17 @@ const Header = () => {
                           >
                             {name}
                           </Link>
-                          <p className="font-osb text-[15px] text-primary mt-[6px]">
-                            {formatPriceVND(price)}
-                          </p>
+                          <div
+                            className=" text-xs text-primary font-osb flex gap-1 
+                          items-center   mt-[6px]"
+                          >
+                            <span className="line-through text-black-555">
+                              {formatPriceVND(price)}
+                            </span>
+                            <span className="text-sm">
+                              {formatPriceVND(price - discount)}
+                            </span>
+                          </div>
                           <button
                             className=" block font-om text-sm mt-[6px]  hover:text-red-500
                       text-black-555 transition-all duration-400 "
@@ -255,7 +263,7 @@ const Header = () => {
                invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100
               group-hover/hover:top-[calc(100%+2px)] transition-all duration-400 shadow-[0_5px_5px_0_rgba(0,0,0,0.15)] bg-white"
             >
-              <h3 className="text-center font-osb text-md text-black-555 p-[16px_14px_16px]">
+              <h3 className=" font-osb text-md text-black-555 p-[16px_14px_16px]">
                 {cartInfo?.products?.length &&
                   `( ${cartInfo?.products?.length} )`}{" "}
                 Sản phẩm vừa thêm
@@ -263,7 +271,8 @@ const Header = () => {
               <ul className="min-w-max flex flex-col  max-h-[390px] overflow-y-scroll scrollbar-cart p-[0px_14px_0px]  ">
                 {cartInfo?.products?.length ? (
                   cartInfo?.products.map((item, index) => {
-                    const { image, name, _id, quantity, price } = item || {};
+                    const { image, name, _id, quantity, price, discount } =
+                      item || {};
                     return (
                       <li
                         key={`${_id}`}
@@ -291,9 +300,18 @@ const Header = () => {
                           >
                             {name}
                           </Link>
-                          <p className="font-osb  text-[15px] text-primary mt-[6px]">
-                            {formatPriceVND(price)}
-                          </p>
+                          <div
+                            className=" text-xs text-primary font-osb flex gap-1 
+                          items-center   mt-[6px]"
+                          >
+                            <span className="line-through text-black-555">
+                              {formatPriceVND(price)}
+                            </span>
+                            <span className="text-sm">
+                              {formatPriceVND(price - discount)}
+                            </span>
+                          </div>
+
                           <div
                             className="font-om text-[15px] text-black-555 mt-[6px] flex items-start gap-[6px]
                         flex-col"

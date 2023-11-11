@@ -346,9 +346,13 @@
     }
     td {
       @apply text-center align-middle xs:pt-[7px] md:pt-[14px] 
-      [&:nth-child(1)]:w-[100px] lg:[&:nth-child(2)]:w-[300px] xs:[&:nth-child(2)]:w-[320px]
-      [&:nth-child(3)]:w-[100px] [&:nth-child(4)]:w-[100px]
-      xs:[&:nth-child(5)]:w-[300px] md:[&:nth-child(5)]:w-[100px] [&:nth-child(6)]:w-[100px]  
+      [&:nth-child(1)]:w-[100px] 
+      lg:[&:nth-child(2)]:w-[300px] xs:[&:nth-child(2)]:w-[320px]
+       lg:[&:nth-child(3)]:w-[100px] xs:[&:nth-child(3)]:w-[300px]
+      
+       [&:nth-child(4)]:w-[100px]
+      xs:[&:nth-child(5)]:w-[300px] md:[&:nth-child(5)]:w-[100px] 
+      [&:nth-child(6)]:w-[100px]  
       xs:text-sm lg:text-[16px];
     }
   }
@@ -603,8 +607,9 @@ input[type="file"]::file-selector-button:hover {
     @apply mt-0 table-auto;
     td {
       @apply text-center align-middle xs:py-[7px] md:py-[14px] 
-        [&:nth-child(1)]:max-w-max [&:nth-child(1)]:w-[50px] lg:[&:nth-child(2)]:w-[250px] md:[&:nth-child(2)]:w-[150px]
-         [&:nth-child(3)]:px-[10px]  [&:nth-child(3)]:w-[200px]  
+        [&:nth-child(1)]:max-w-max [&:nth-child(1)]:w-[50px] 
+        lg:[&:nth-child(2)]:w-[250px] md:[&:nth-child(2)]:w-[150px]
+         [&:nth-child(3)]:px-[100px]  [&:nth-child(3)]:w-[200px]  
         [&:nth-child(4)]:w-[250px] 
         [&:nth-child(5)]:w-[100px]  [&:nth-child(6)]:w-[100px]
         xs:text-sm lg:text-[16px];

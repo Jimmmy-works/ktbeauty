@@ -76,7 +76,7 @@ const useHome = () => {
         slug: payload?.slug,
         image: payload?.image,
         countInStock: payload?.countInStock || 0,
-        discount: payload?.countInStock || 0,
+        discount: payload?.discount || 0,
         price: payload?.price || 0,
         quantity: 1,
       };

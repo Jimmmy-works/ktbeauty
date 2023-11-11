@@ -2,14 +2,14 @@ import BreadCrumb from "@/components/BreadCrumb";
 import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
 import useWindowSize from "@/utils/windowResize";
-import { Radio, Select, Steps, Timeline } from "antd";
-import React, { useEffect, useState } from "react";
+import { Radio, Select, Steps, Timeline, message } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import useCartPage from "./useCartPage";
 import { Empty } from "antd";
 import styled from "styled-components";
 import { formatPriceVND } from "@/utils/formatPrice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "@/store/reducer/cartReducer";
 
 const StepsWrapper = styled.div`
@@ -33,7 +33,7 @@ const StepsWrapper = styled.div`
     .ant-steps-item-container {
       .ant-steps-item-title,
       .ant-steps-item-description {
-        transition: background-color 0.3s, border-color 0.3s;
+        transition: all 0.3s;
       }
       &:hover {
         .ant-steps-item-title,
@@ -60,15 +60,37 @@ const EmptyWrapper = styled.div`
   }
 `;
 const CartPage = () => {
-  const { cartInfo, onChangeQuantity } = useCartPage();
-  const { width } = useWindowSize();
+  const optionShippingNoDiscount = [
+    {
+      value: "default",
+      label: "Chọn phương thức",
+      price: 0,
+    },
+    {
+      value: "fast",
+      label: "Nhanh : 20.000đ",
+      price: 20 * 1000,
+    },
+    {
+      value: "express",
+      label: "Hỏa tốc : 35.000đ",
+      price: 35 * 1000,
+    },
+  ];
   const dispatch = useDispatch();
-  const [discountCode, setDiscountCode] = useState();
-  const [shipping, setShipping] = useState();
+  const { width } = useWindowSize();
+  const { subTotal, total } = useSelector((state) => state.cart);
+  const { cartInfo, onChangeQuantity, shipping, discountCode } = useCartPage();
+  const { products } = cartInfo || {};
+  const [discountCodeCurrent, setDiscountCodeCurrent] = useState();
+  const [shippingCurrent, setShippingCurrent] = useState(
+    optionShippingNoDiscount?.[0]
+  );
+
   const [stepDiscount, setStepDiscount] = useState();
   const min = 1;
   const max = 20;
-  const { products, subTotal, total } = cartInfo || {};
+
   const onInputOnchange = (e, updateIndex) => {
     onChangeQuantity(modifyValue(Number(e.target.value)), updateIndex);
   };
@@ -77,17 +99,13 @@ const CartPage = () => {
   };
   const onIncrease = (updateIndex) => {
     onChangeQuantity(
-      modifyValue(
-        Number(cartInfo?.products?.[updateIndex]?.quantity) + Number(1)
-      ),
+      modifyValue(Number(products?.[updateIndex]?.quantity) + Number(1)),
       updateIndex
     );
   };
   const onDecrease = (updateIndex) => {
     onChangeQuantity(
-      modifyValue(
-        Number(cartInfo?.products?.[updateIndex]?.quantity) - Number(1)
-      ),
+      modifyValue(Number(products?.[updateIndex]?.quantity) - Number(1)),
       updateIndex
     );
   };
@@ -101,43 +119,74 @@ const CartPage = () => {
       return value;
     }
   };
-  const onChangeShippingType = (value) => {
-    setShipping(value * 1000);
-  };
+
   const million = 1000000;
-  const updateDiscountCode = () => {
-    if (total >= 5 * million) {
-      const discount = Number((total * 20) / 100);
-      setDiscountCode({ name: "Giảm giá 20%", price: discount });
-      setShipping(0);
-    } else if (total >= 3 * million && total < 5 * million) {
-      const discount = Number((total * 10) / 100);
-      setDiscountCode({ name: "Giảm giá 10%", price: discount });
-      setShipping(0);
-    } else if (total >= 1 * million && total < 3 * million) {
-      setDiscountCode({ name: "Miễn phí vận chuyển", price: 0 });
-      setShipping(0);
+  const onChangeShippingType = useCallback(
+    (value, current) => {
+      setShippingCurrent(current);
+    },
+    [subTotal, shippingCurrent]
+  );
+  const updateDiscountCode = useMemo(() => {
+    if (subTotal >= 5 * million) {
+      const discount = Number((subTotal * 20) / 100);
+      setDiscountCodeCurrent({
+        name: "Giảm giá 20%",
+        price: discount + (shippingCurrent ? shippingCurrent?.price : 0),
+      });
+    } else if (subTotal >= 3 * million && subTotal < 5 * million) {
+      const discount = Number((subTotal * 10) / 100);
+      setDiscountCodeCurrent({
+        name: "Giảm giá 10%",
+        price: discount + (shippingCurrent ? shippingCurrent?.price : 0),
+      });
+    } else if (subTotal >= 1 * million && subTotal < 3 * million) {
+      setDiscountCodeCurrent({
+        name: "Miễn phí vận chuyển",
+        price: shippingCurrent ? shippingCurrent?.price : 0,
+      });
     } else {
+      setDiscountCodeCurrent({ name: "Chưa đủ điều kiện", price: 0 });
     }
-  };
-  const onChangeStep = () => {
-    if (total >= 5 * million) {
+  }, [subTotal, shippingCurrent]);
+  const onChangeStep = useMemo(() => {
+    if (subTotal >= 5 * million) {
       setStepDiscount(3);
-      return;
-    } else if (total >= 3 * million && total < 5 * million) {
+    } else if (subTotal >= 3 * million && subTotal < 5 * million) {
       setStepDiscount(2);
-    } else if (total >= 1 * million && total < 3 * million) {
+    } else if (subTotal >= 1 * million && subTotal < 3 * million) {
       setStepDiscount(1);
     } else {
       setStepDiscount(0);
     }
-  };
+  }, [subTotal, shippingCurrent]);
   useEffect(() => {
-    onChangeStep();
-    updateDiscountCode();
-    dispatch(cartActions.setDiscountCode(discountCode));
-    dispatch(cartActions.setShipping(shipping));
-  }, [total]);
+    dispatch(cartActions.setDiscountCode(discountCodeCurrent));
+    dispatch(cartActions.setShipping(shippingCurrent));
+    if (products) {
+      dispatch(
+        cartActions.setSubTotal(
+          products?.reduce((acc, cur, curIndex, curArr) => {
+            return acc + (cur?.price - cur?.discount) * cur?.quantity;
+          }, 0)
+        )
+      );
+      if (subTotal > 0) {
+        dispatch(
+          cartActions.setTotal(
+            Number(
+              subTotal -
+                (discountCodeCurrent?.price || 0) +
+                (shippingCurrent?.price && subTotal < 1 * million
+                  ? shippingCurrent?.price
+                  : 0)
+            )
+          )
+        );
+      }
+    }
+  }, [products, subTotal, shippingCurrent]);
+
   return (
     <main className="main-wrapper cartpage">
       <div className="container">
@@ -167,13 +216,20 @@ const CartPage = () => {
           </thead>
           <tbody className="table__body">
             {cartInfo?.products?.map((item, index) => {
-              const { image, name, _id, quantity, price, discount } =
-                item || {};
+              const {
+                image,
+                name,
+                _id,
+                product_id,
+                quantity,
+                price,
+                discount,
+              } = item || {};
               return (
                 <tr key={_id}>
                   <td className="table__body-row">
-                    <a
-                      href=""
+                    <Link
+                      to={`${PATHS.SHOP.INDEX}/${product_id}`}
                       className="img group/hover
                       "
                     >
@@ -186,21 +242,39 @@ const CartPage = () => {
                         src={image?.[0]}
                         alt=""
                       />
-                    </a>
+                    </Link>
                   </td>
                   <td className="">
-                    <a className="text  hover:text-primary " href="">
+                    <Link
+                      to={`${PATHS.SHOP.INDEX}/${product_id}`}
+                      className="text  hover:text-primary "
+                      href=""
+                    >
                       {name}
-                    </a>
+                    </Link>
                   </td>
-
                   {width >= 768 ? (
-                    <td className="">
-                      {formatPriceVND(price - (discount || 0))}
+                    <td className="tracking-wider">
+                      <div className=" text-sm text-primary font-osb flex gap-3 items-center justify-center">
+                        <span className="line-through text-black-555">
+                          {formatPriceVND(price)}
+                        </span>
+                        <span className="text-16px">
+                          {formatPriceVND(price - discount)}
+                        </span>
+                      </div>
                     </td>
                   ) : (
-                    <td className="">
-                      Giá: {formatPriceVND(Number(price - (discount || 0)))}
+                    <td className="tracking-wider ">
+                      <div className=" text-sm text-primary font-osb flex gap-3 items-center justify-center">
+                        <span className="text-black-555">Giá:</span>
+                        <span className="line-through text-black-555">
+                          {formatPriceVND(price)}
+                        </span>
+                        <span className="text-16px">
+                          {formatPriceVND(price - discount)}
+                        </span>
+                      </div>
                     </td>
                   )}
                   <td className="">
@@ -246,12 +320,13 @@ const CartPage = () => {
                     </div>
                   </td>
                   {width >= 768 ? (
-                    <td className="text-black font-om">
-                      {formatPriceVND(subTotal[index])}
+                    <td className="text-black font-om tracking-wider">
+                      {formatPriceVND(quantity * (price - discount))}
                     </td>
                   ) : (
-                    <td className="text-black font-om">
-                      Tổng: {formatPriceVND(subTotal[index])}
+                    <td className="text-black font-om tracking-wider">
+                      {/* Tổng: {formatPriceVND(subTotal[index])} */}
+                      Tổng: {formatPriceVND(quantity * (price - discount))}
                     </td>
                   )}
                   {width >= 768 ? (
@@ -345,73 +420,56 @@ const CartPage = () => {
               <h4 className="text-[16px] font-om text-black">
                 Tổng chưa giảm giá:
               </h4>
-              <p className="text-[16px] font-om text-black">
-                {formatPriceVND(subTotal?.reduce((acc, cur) => acc + cur))}
+              <p className="text-[16px] font-om text-black tracking-wider">
+                {formatPriceVND(subTotal)}
               </p>
             </div>
 
             <div className="flex justify-between items-center p-[16px_20px] ">
               <h4 className="text-[16px] font-om text-black">Giảm giá:</h4>
-              <p className="text-[16px] font-om text-black">
-                - {formatPriceVND(discountCode?.price)}
+              <p className="text-[16px] font-om text-black tracking-wider">
+                {`${
+                  subTotal < 1 * million
+                    ? discountCodeCurrent?.name
+                    : "-" + formatPriceVND(discountCodeCurrent?.price)
+                }`}
               </p>
             </div>
-            {/* p-[8px_20px] */}
             <div
               className="flex justify-between items-center 
             p-[16px_20px]
              "
             >
               <h4 className="text-[16px] font-om text-black">Vận chuyển</h4>
-              <div>
-                <Select
-                  defaultValue="default"
-                  onChange={onChangeShippingType}
-                  options={[
-                    {
-                      value: "default",
-                      label: "Chọn phương thức",
-                    },
-                    {
-                      value: 0,
-                      label: "Miễn phí",
-                    },
-                    {
-                      value: 20,
-                      label: "Nhanh : 20.000đ",
-                    },
-                    {
-                      value: 35,
-                      label: "Hỏa tốc : 35.000đ",
-                    },
-                  ]}
-                />
-              </div>
+
+              <Select
+                defaultValue={optionShippingNoDiscount?.[0]?.value}
+                value={shippingCurrent}
+                onChange={onChangeShippingType}
+                options={optionShippingNoDiscount}
+              />
             </div>
-            {/* <div className="flex justify-between items-center p-[16px_20px] ">
-              <h4 className="text-[16px] font-om text-black">
-                &#8658; Shipping:
-              </h4>
-              <p className="text-[16px] font-om text-black">
-                {shipping === 0 && shipping ? "Free" : formatPriceVND(shipping)}
-              </p>
-            </div> */}
+
             <div
               className="flex justify-between items-center p-[16px_20px] border-t border-solid
               border-grey-999"
             >
               <h4 className="text-[16px] font-om text-black">Tổng cộng:</h4>
-              <p className="text-[16px] font-om text-black">
-                {formatPriceVND(
-                  total +
-                    (shipping ? shipping : 0) -
-                    (discountCode ? discountCode?.price : 0)
-                )}
+              <p className="text-[16px] font-om text-black tracking-wider">
+                {total && formatPriceVND(total)}
               </p>
             </div>
             <div className=" p-[14px_20px] ">
               <Button
-                link={PATHS.CHECKOUT}
+                onClick={() => {
+                  if (!shippingCurrent || shippingCurrent?.value === "default")
+                    message.error(`Hãy chọn phương thức vận chuyển`);
+                }}
+                link={
+                  shippingCurrent && shippingCurrent?.value !== "default"
+                    ? PATHS.CHECKOUT
+                    : false
+                }
                 className={`block text-center rounded-none w-full  md:p-[14px]`}
               >
                 Thanh Toán

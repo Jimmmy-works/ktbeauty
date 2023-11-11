@@ -92,11 +92,11 @@ const useProfile = () => {
   };
   useEffect(() => {
     getProvinces();
-    if (provinceId) {
-      getDistricts();
+    if (provinceId || profile?.province?._id) {
+      getDistricts(profile?.province?._id);
     }
-    if (districtId) {
-      getWards();
+    if (districtId || profile?.district?._id) {
+      getWards(profile?.district?._id);
     }
   }, [profile]);
   return {
