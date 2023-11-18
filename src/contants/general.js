@@ -29,3 +29,7 @@ export const SELECT_TOKEN = {
   token: "access_token",
   refreshToken: "refresh_token",
 };
+export const RANGER_VALUE = {
+  min: 0,
+  max: 10000,
+};

@@ -10,7 +10,7 @@ import { Empty } from "antd";
 import styled from "styled-components";
 import { formatPriceVND } from "@/utils/formatPrice";
 import { useDispatch, useSelector } from "react-redux";
-import { cartActions } from "@/store/reducer/cartReducer";
+import { cartActions, updateCart } from "@/store/reducer/cartReducer";
 
 const StepsWrapper = styled.div`
   .ant-steps-item-icon {
@@ -79,18 +79,17 @@ const CartPage = () => {
   ];
   const dispatch = useDispatch();
   const { width } = useWindowSize();
-  const { subTotal, total } = useSelector((state) => state.cart);
-  const { cartInfo, onChangeQuantity, shipping, discountCode } = useCartPage();
+  const { cartInfo, onChangeQuantity, onDeleteProductInCart, total, subTotal } =
+    useCartPage();
   const { products } = cartInfo || {};
   const [discountCodeCurrent, setDiscountCodeCurrent] = useState();
   const [shippingCurrent, setShippingCurrent] = useState(
-    optionShippingNoDiscount?.[0]
+    JSON.parse(localStorage.getItem("shipping")) ||
+      optionShippingNoDiscount?.[0]
   );
-
   const [stepDiscount, setStepDiscount] = useState();
   const min = 1;
   const max = 20;
-
   const onInputOnchange = (e, updateIndex) => {
     onChangeQuantity(modifyValue(Number(e.target.value)), updateIndex);
   };
@@ -183,10 +182,18 @@ const CartPage = () => {
             )
           )
         );
+      } else {
+        dispatch(cartActions.setTotal(0));
       }
     }
-  }, [products, subTotal, shippingCurrent]);
-
+  }, [products, subTotal, shippingCurrent, total]);
+  const handleSubmit = (data) => {
+    if (!shippingCurrent || shippingCurrent?.value === "default") {
+      message.error(`Hãy chọn phương thức vận chuyển`);
+    } else {
+      dispatch(updateCart(JSON.parse(localStorage.getItem("cart"))));
+    }
+  };
   return (
     <main className="main-wrapper cartpage">
       <div className="container">
@@ -325,13 +332,13 @@ const CartPage = () => {
                     </td>
                   ) : (
                     <td className="text-black font-om tracking-wider">
-                      {/* Tổng: {formatPriceVND(subTotal[index])} */}
                       Tổng: {formatPriceVND(quantity * (price - discount))}
                     </td>
                   )}
                   {width >= 768 ? (
                     <td className="">
                       <button
+                        onClick={() => onDeleteProductInCart(_id)}
                         className="px-[10px] block xs:text-[12px] lg:text-[14px] text-white rounded-md 
                         py-[6px] hover:bg-red-500
                       bg-black-333 transition-all duration-400 mx-auto"
@@ -461,10 +468,7 @@ const CartPage = () => {
             </div>
             <div className=" p-[14px_20px] ">
               <Button
-                onClick={() => {
-                  if (!shippingCurrent || shippingCurrent?.value === "default")
-                    message.error(`Hãy chọn phương thức vận chuyển`);
-                }}
+                onClick={handleSubmit}
                 link={
                   shippingCurrent && shippingCurrent?.value !== "default"
                     ? PATHS.CHECKOUT

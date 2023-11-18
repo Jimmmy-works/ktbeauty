@@ -52,7 +52,6 @@ function App() {
     <Provider store={store}>
       <Suspense fallback={<LoadingPage />}>
         <BrowserRouter>
-          <Routes></Routes>
           <Routes>
             <Route path={PATHS.HOME} element={<MainLayout />}>
               <Route index element={<HomePage />} />

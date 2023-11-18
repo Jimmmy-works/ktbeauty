@@ -15,9 +15,9 @@ const Button = ({
   const variantButton = useMemo(() => {
     switch (variant) {
       case "outline":
-        return ` hover:bg-primary hover:text-white border-solid border border-primary bg-white  
-        rounded-[50px] text-primary group/hover ${
-          isActive === true ? "bg-primary text-white" : ""
+        return ` hover:bg-primary hover:text-white border-solid border border-primary   
+        rounded-[50px]  group/hover ${
+          isActive === true ? "bg-primary text-white" : "text-primary bg-white"
         }`;
       case "filled":
         return `text-white bg-primary hover:opacity-90   group/hover ${

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
@@ -32,8 +32,32 @@ const Header = () => {
     onLogout,
     categories,
     cartInfo,
+    onDeleteProductInCart,
+    onSearchProduct,
+    pathname,
+    productListSearch,
   } = headerProps || {};
   const refHeader = useRef(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [toggleSearch, setToggleSearch] = useState(false);
+  const onChangeSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+  const onToggleSearch = (e) => {
+    setToggleSearch(!toggleSearch);
+  };
+  useEffect(() => {
+    const time = setTimeout(() => {
+      onSearchProduct(searchTerm);
+    }, 500);
+    if (!toggleSearch) {
+      setSearchTerm("");
+    }
+    return () => clearTimeout(time);
+  }, [searchTerm, toggleSearch]);
+  useEffect(() => {
+    setSearchTerm("");
+  }, [pathname]);
   return (
     <header className={`header `} ref={refHeader}>
       <div className="container h-full flex items-center justify-between">
@@ -70,7 +94,7 @@ const Header = () => {
                     key={`${item?._id}`}
                     className="sub__item capitalize min-w-[150px]"
                   >
-                    <Link to={`${PATHS.SHOP.DETAIL}`}>
+                    <Link to={`${PATHS.SHOP}/${item?._id}`}>
                       {item?.name || "Lorem ipsum dolor sit amet."}
                     </Link>
                   </li>
@@ -114,43 +138,133 @@ const Header = () => {
         </ul>
         <div className="header__info xs:hidden md:flex h-full items-center relative">
           <div
-            className="header__info-search  group/hover peer/hover 
-          before:md:min-w-[300px] before:2xl:min-w-[400px] before:absolute before:top-[100%] before:left-[-200%]
-          before:h-[20px] before:hover:block before:hidden "
+            className={`header__info-search group/hover 
+              first-letter: before:h-[20px] ${
+                toggleSearch ? "before:block " : "before:hidden"
+              }`}
           >
-            <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24">
-              <path
-                fill="#555"
-                className="group-hover/hover:fill-primary duration-300 transition-colors"
-                d="M23.111 20.058l-4.977-4.977c.965-1.52 1.523-3.322 1.523-5.251 0-5.42-4.409-9.83-9.829-9.83-5.42 0-9.828 4.41-9.828 9.83s4.408 9.83 9.829 9.83c1.834 0 3.552-.505 5.022-1.383l5.021 5.021c2.144 2.141 5.384-1.096 3.239-3.24zm-20.064-10.228c0-3.739 3.043-6.782 6.782-6.782s6.782 3.042 6.782 6.782-3.043 6.782-6.782 6.782-6.782-3.043-6.782-6.782zm2.01-1.764c1.984-4.599 8.664-4.066 9.922.749-2.534-2.974-6.993-3.294-9.922-.749z"
-              />
-            </svg>
             <div
-              className="absolute md:min-w-[300px] 2xl:min-w-[400px] lg:top-[102px] md:top-[86px]  left-[-200%] 
+              onClick={onToggleSearch}
+              className="h-full w-full flex items-center justify-center"
+            >
+              <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24">
+                <path
+                  fill="#555"
+                  className="group-hover/hover:fill-primary duration-300 transition-colors"
+                  d="M23.111 20.058l-4.977-4.977c.965-1.52 1.523-3.322 1.523-5.251 0-5.42-4.409-9.83-9.829-9.83-5.42 0-9.828 4.41-9.828 9.83s4.408 9.83 9.829 9.83c1.834 0 3.552-.505 5.022-1.383l5.021 5.021c2.144 2.141 5.384-1.096 3.239-3.24zm-20.064-10.228c0-3.739 3.043-6.782 6.782-6.782s6.782 3.042 6.782 6.782-3.043 6.782-6.782 6.782-6.782-3.043-6.782-6.782zm2.01-1.764c1.984-4.599 8.664-4.066 9.922.749-2.534-2.974-6.993-3.294-9.922-.749z"
+                />
+              </svg>
+            </div>
+            <div
+              className={`absolute z-0 md:min-w-[300px] 2xl:min-w-[400px] lg:top-[102px] md:top-[86px]  left-[-200%] 
               xs:hidden md:flex items-center rounded-[50px] shadow-header
-              bg-white max-w-[400px] p-[10px_14px] gap-2  opacity-0 invisible
-               group-hover/hover:opacity-100 group-hover/hover:visible 
-               transition-all duration-300"
+              bg-white max-w-[400px] p-[10px_14px] gap-2  
+               ${toggleSearch ? "opacity-100 visible" : "invisible opacity-0"}
+               transition-all duration-300`}
             >
               <div className="relative w-full">
-                <input
-                  className={` rounded-[50px] text-sm text-black-555 font-osr duration-400 transition-all
-                    bg-[#EDEEEF] pl-[20px] p-[11.5px_50px_11.5px_12px] w-full`}
-                  type="text"
-                  placeholder="Lorem ipsum dolor sit ..."
-                />
-                <div
-                  className={`absolute z-10 top-1/2 -translate-y-1/2   flex items-center justify-center
-                 rounded-tr-[50px] rounded-br-[50px]  right-0 p-[10px] h-[42px]
-                cursor-pointer   transition-all duration-400 bg-black-555 hover:bg-primary`}
-                >
-                  <button className="text-sm font-osr text-white">
-                    Search
-                  </button>
+                <div>
+                  <input
+                    value={searchTerm}
+                    onChange={onChangeSearch}
+                    className={` rounded-[50px] text-sm text-black-555 font-osr duration-400 transition-all
+                      bg-[#EDEEEF] pl-[20px] p-[11.5px_50px_11.5px_12px] w-full`}
+                    type="text"
+                    placeholder="Tìm kiếm sản phẩm"
+                  />
+                  <div
+                    className={`absolute z-10 top-1/2 -translate-y-1/2   flex items-center justify-center
+                   rounded-tr-[50px] rounded-br-[50px]  right-0 p-[10px] h-[42px]
+                  cursor-pointer   transition-all duration-400 bg-black-555 hover:bg-primary`}
+                  >
+                    <button className="text-sm font-osr text-white">
+                      Search
+                    </button>
+                  </div>
                 </div>
+                <ul
+                  className="absolute left-1/2 -translate-x-1/2  top-[62px] w-full
+                      transition-all duration-400 shadow-[0_5px_5px_0_rgba(0,0,0,0.15)] bg-white"
+                >
+                  {productListSearch?.length ? (
+                    <h3 className="font-osb text-md text-black-555 p-[16px_14px_16px]">
+                      {`( ${productListSearch?.length} )`}
+                      Sản phẩm tìm kiếm
+                    </h3>
+                  ) : (
+                    ""
+                  )}
+                  <ul className="min-w-max flex flex-col  max-h-[390px] overflow-y-scroll scrollbar-cart  p-[0px_14px_0px]  ">
+                    {productListSearch?.length ? (
+                      productListSearch?.map((item, index) => {
+                        const { image, name, _id, price, discount } =
+                          item || {};
+                        return (
+                          <li
+                            key={_id}
+                            className="flex items-center w-full gap-3 max-w-[280px] not-firstChild:pt-[10px] pb-[10px]"
+                          >
+                            <Link
+                              to={`${PATHS.SHOP.INDEX}/${_id}`}
+                              className="relative block min-h-[80px] min-w-[80px] "
+                            >
+                              <img
+                                onError={(e) => {
+                                  e.target.onerror = null;
+                                  e.target.src = "/assets/img/error.png";
+                                }}
+                                className="w-full h-full object-cover center-absolute hover:scale-105 transition-transform duration-300"
+                                src={image?.[1]}
+                                alt=""
+                              />
+                            </Link>
+                            <div>
+                              <Link
+                                to={`${PATHS.SHOP.INDEX}/${_id}`}
+                                className="text-[16px] text-black-555 font-ossb  truncate line-clamp-2 
+                      whitespace-normal hover:text-primary transition-colors duration-400"
+                              >
+                                {name}
+                              </Link>
+                              <div
+                                className=" text-xs text-primary font-osb flex gap-1 
+                          items-center   mt-[6px]"
+                              >
+                                <span className="line-through text-black-555">
+                                  {formatPriceVND(price)}
+                                </span>
+                                <span className="text-sm">
+                                  {formatPriceVND(price - discount)}
+                                </span>
+                              </div>
+                            </div>
+                          </li>
+                        );
+                      })
+                    ) : (
+                      <EmptyWrapper>
+                        <Empty description={`Không có sản phẩm`} />
+                      </EmptyWrapper>
+                    )}
+                  </ul>
+                  {productListSearch?.length ? (
+                    <div className="text-sm flex items-center justify-center">
+                      <Button
+                        link={PATHS.PROFILE.WHITELIST}
+                        variant="filled"
+                        className={`w-full text-center  md:py-[12px]`}
+                      >
+                        Xem tất cả
+                      </Button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </ul>
               </div>
             </div>
           </div>
+
           <div className="header__info-whitelist group/hover mb-[2px] relative">
             <span
               className="text-[13px] text-white font-om rounded-[50%] bg-primary h-[20px] w-[20px]
@@ -170,13 +284,16 @@ const Header = () => {
                invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100
               group-hover/hover:top-[calc(100%+2px)] transition-all duration-400 shadow-[0_5px_5px_0_rgba(0,0,0,0.15)] bg-white"
             >
-              <h3 className="font-osb text-md text-black-555 p-[16px_14px_16px]">
-                {cartInfo?.products?.length &&
-                  `( ${cartInfo?.products?.length} )`}{" "}
-                Sản phẩm yêu thích
-              </h3>
+              {cartInfo?.products?.length ? (
+                <h3 className="font-osb text-md text-black-555 p-[16px_14px_16px]">
+                  {` (${cartInfo?.products?.length}) `}
+                  Sản phẩm yêu thích
+                </h3>
+              ) : (
+                ""
+              )}
               <ul className="min-w-max flex flex-col  max-h-[390px] overflow-y-scroll scrollbar-cart  p-[0px_14px_0px]  ">
-                {cartInfo?.products ? (
+                {cartInfo?.products?.length ? (
                   cartInfo?.products?.map((item, index) => {
                     const { image, name, _id, price, discount } = item || {};
                     return (
@@ -185,7 +302,7 @@ const Header = () => {
                         className="flex items-center w-full gap-3 max-w-[280px] not-firstChild:pt-[10px] pb-[10px]"
                       >
                         <Link
-                          to={PATHS.SHOP.DETAIL}
+                          to={`${PATHS.SHOP.INDEX}/${_id}`}
                           className="relative block min-h-[80px] min-w-[80px] "
                         >
                           <img
@@ -200,7 +317,7 @@ const Header = () => {
                         </Link>
                         <div>
                           <Link
-                            to={PATHS.SHOP.DETAIL}
+                            to={`${PATHS.SHOP.INDEX}/${_id}`}
                             className="text-[16px] text-black-555 font-ossb  truncate line-clamp-2 
                       whitespace-normal hover:text-primary transition-colors duration-400"
                           >
@@ -218,8 +335,9 @@ const Header = () => {
                             </span>
                           </div>
                           <button
+                            onClick={() => onDeleteProductInCart(_id)}
                             className=" block font-om text-sm mt-[6px]  hover:text-red-500
-                      text-black-555 transition-all duration-400 "
+                              text-black-555 transition-all duration-400 "
                           >
                             Xóa
                           </button>
@@ -263,11 +381,15 @@ const Header = () => {
                invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100
               group-hover/hover:top-[calc(100%+2px)] transition-all duration-400 shadow-[0_5px_5px_0_rgba(0,0,0,0.15)] bg-white"
             >
-              <h3 className=" font-osb text-md text-black-555 p-[16px_14px_16px]">
-                {cartInfo?.products?.length &&
-                  `( ${cartInfo?.products?.length} )`}{" "}
-                Sản phẩm vừa thêm
-              </h3>
+              {cartInfo?.products?.length ? (
+                <h3 className="font-osb text-md text-black-555 p-[16px_14px_16px]">
+                  {` (${cartInfo?.products?.length}) `}
+                  Sản phẩm vừa thêm
+                </h3>
+              ) : (
+                ""
+              )}
+
               <ul className="min-w-max flex flex-col  max-h-[390px] overflow-y-scroll scrollbar-cart p-[0px_14px_0px]  ">
                 {cartInfo?.products?.length ? (
                   cartInfo?.products.map((item, index) => {
@@ -279,7 +401,7 @@ const Header = () => {
                         className="flex items-center w-full gap-3 max-w-[280px] not-firstChild:pt-[10px] pb-[10px]"
                       >
                         <Link
-                          to={PATHS.SHOP.DETAIL}
+                          to={`${PATHS.SHOP.INDEX}/${_id}`}
                           className="relative block min-h-[80px] min-w-[80px] "
                         >
                           <img
@@ -294,7 +416,7 @@ const Header = () => {
                         </Link>
                         <div>
                           <Link
-                            to={PATHS.SHOP.DETAIL}
+                            to={`${PATHS.SHOP.INDEX}/${_id}`}
                             className="text-[16px] text-black-555 font-ossb  truncate line-clamp-2 
                            whitespace-normal hover:text-primary transition-colors duration-400"
                           >
@@ -318,6 +440,7 @@ const Header = () => {
                           >
                             <p> Quantity: {quantity}</p>
                             <button
+                              onClick={() => onDeleteProductInCart(_id)}
                               className=" block font-om text-sm   hover:text-red-500
                            text-red-black-555nsition-all duration-400 "
                             >

@@ -3,7 +3,7 @@ import { PATHS } from "@/contants/path";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import authService from "@/service/authService";
 import { authActions, register, signin } from "@/store/reducer/authReducer";
-import { cartActions, getCart } from "@/store/reducer/cartReducer";
+import { cartActions, getCart, updateCart } from "@/store/reducer/cartReducer";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { message } from "antd";
 import React, { createContext, useContext, useState } from "react";
@@ -15,6 +15,7 @@ export const MainProvider = ({ children }) => {
   const { updateStatusRegister, updateStatusLogin } = useSelector(
     (state) => state.auth
   );
+  const { cartInfo } = useSelector((state) => state.cart);
   const [darkMode, setDarkMode] = useState(true);
   function toggleDarkMode() {
     setDarkMode((prevDarkMode) => !prevDarkMode);
@@ -64,10 +65,19 @@ export const MainProvider = ({ children }) => {
       console.log("error", error);
     }
   };
+
   const onLogout = async () => {
     try {
-      await dispatch(authActions.logout());
-      await dispatch(cartActions.setCartInfo(null));
+      if (Object.values(cartInfo).length !== 0) {
+        const resUpdateCart = await dispatch(updateCart({ ...cartInfo }));
+        if (resUpdateCart?.payload?.status === 200) {
+          dispatch(cartActions.setCartInfo(null));
+          dispatch(authActions.logout());
+        }
+      } else {
+        dispatch(cartActions.setCartInfo(null));
+        dispatch(authActions.logout());
+      }
       navigate("/");
     } catch (error) {
       console.log("error", error);
@@ -76,7 +86,6 @@ export const MainProvider = ({ children }) => {
   const onRegister = async (payload) => {
     try {
       const res = await dispatch(register(payload));
-      console.log("res", res);
       if (
         updateStatusRegister !== THUNK_STATUS.pending &&
         updateStatusRegister === res.meta.requestStatus &&

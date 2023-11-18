@@ -19,6 +19,11 @@ export const { reducer: authReducer, actions: authActions } = createSlice({
     logout: (state) => {
       localStorage.removeItem(LOCAL_STORAGE.token);
       localStorage.removeItem(LOCAL_STORAGE.refreshToken);
+      localStorage.removeItem("cart");
+      localStorage.removeItem("shipping");
+      localStorage.removeItem("subTotal");
+      localStorage.removeItem("total");
+      localStorage.removeItem("discount");
       state.profile = null;
       state.checkLogin = false;
       message.success(`Đăng xuất thành công`);
@@ -151,7 +156,6 @@ export const changePassword = createAsyncThunk(
   async (payload) => {
     try {
       const dataChangePassword = await authService.changePassword(payload);
-      console.log("dataChangePassword", dataChangePassword);
       message.success(dataChangePassword?.data?.message);
 
       return dataChangePassword?.data?.data;

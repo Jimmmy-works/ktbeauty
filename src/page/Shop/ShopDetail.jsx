@@ -54,8 +54,8 @@ const ShopDetail = () => {
     slug,
     category_id,
   } = productDetail || {};
-  const { addToCart } = useShop();
-  const max = countInStock;
+  const { onAddToCart } = useShop();
+  const max = 20;
   const min = 1;
   const [currentImg, setCurrentImg] = useState();
   const [numbInput, setNumbInput] = useState(min);
@@ -70,7 +70,6 @@ const ShopDetail = () => {
   const onChangeInput = (e) => {
     setNumbInput(modifyValue(Number(e.target.value)));
   };
-
   const modifyValue = (value) => {
     if (value > max) {
       return (value = max);
@@ -316,7 +315,13 @@ const ShopDetail = () => {
                   </div>
                   <button
                     onClick={() =>
-                      addToCart({ ...productDetail, quantity: numbInput })
+                      onAddToCart({
+                        ...productDetail,
+                        quantity:
+                          (productDetail?.quantity
+                            ? productDetail?.quantity
+                            : 0) + numbInput,
+                      })
                     }
                     className="font-osb text-white text-[15px] flex items-center border 
                   border-solid border-[#ececec] rounded-md bg-black-555 px-[27.5px]

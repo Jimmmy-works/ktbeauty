@@ -4,6 +4,7 @@ import useProfile from "../Profile/useProfile";
 import { provinceService } from "@/service/provinceService";
 import { cartActions, getCart } from "@/store/reducer/cartReducer";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
+import { useForm } from "react-hook-form";
 
 const useCheckout = () => {
   const dispatch = useDispatch();
@@ -82,36 +83,77 @@ const useCheckout = () => {
   const onToggleSwitch = () => {
     setControlSwitch(!controlSwitch);
   };
-  useEffect(() => {
-    if (profile?.province?._id) {
-      setProvinceId(profile?.province?._id);
-      setDistrictId(profile?.district?._id);
-      setWardId(profile?.ward?._id);
-      getProvinces();
-      if (provinceId) getDistricts(provinceId);
-      if (districtId) getWards(districtId);
+  const form = useForm({
+    mode: "all",
+  });
+  const handleControlSwitch = useCallback(() => {
+    if (profile && profile?.province?._id) {
+      if (!controlSwitch) {
+        form?.setValue("name");
+        form?.setValue("email");
+        form?.setValue("phone");
+        form?.setValue("address");
+        form?.setValue("province");
+        form?.setValue("district");
+        form?.setValue("ward");
+        setProvinceId(undefined);
+        setDistrictId(undefined);
+        setWardId(undefined);
+        form?.setValue("note");
+      } else {
+        form?.setValue("name", profile?.name);
+        form?.setValue("email", profile?.email);
+        form?.setValue("phone", profile?.phone);
+        form?.setValue("address", profile?.address);
+        form?.setValue("province", profile?.province?._id);
+        form?.setValue("district", profile?.district?._id);
+        form?.setValue("ward", profile?.ward?._id);
+        getProvinces();
+        onChangeProvince(profile?.province?._id);
+        if (profile?.province?._id) onChangeDistrict(profile?.district?._id);
+        if (profile?.district?._id) onChangeWard(profile?.ward?._id);
+
+        form?.setValue("note", profile?.note);
+      }
     }
-  }, [profile?.province?._id]);
+  }, [profile, controlSwitch]);
+  useEffect(() => {
+    handleControlSwitch();
+    const timeout = setTimeout(() => {
+      form?.trigger([
+        "phone",
+        "email",
+        "address",
+        "name",
+        "province",
+        "district",
+        "ward",
+      ]);
+    }, 400);
+    return () => clearTimeout(timeout);
+  }, [controlSwitch]);
+  useEffect(() => {
+    form?.reset({
+      name: profile?.name,
+      email: profile?.email,
+      phone: profile?.phone,
+      address: profile?.address,
+      province: profile?.province?._id,
+      district: profile?.district?._id,
+      ward: profile?.ward?._id,
+      province: profile?.province?._id,
+      district: profile?.district?._id,
+      ward: profile?.ward?._id,
+    });
+  }, [profile]);
   useEffect(() => {
     getProvinces();
-    if (provinceId) getDistricts(provinceId);
-    if (districtId) getWards(districtId);
-  }, [provinceId, controlSwitch]);
-  useEffect(() => {
-    if (controlSwitch) {
-      setProvinceId(profile?.province?._id);
-      setDistrictId(profile?.district?._id);
-      setWardId(profile?.ward?._id);
-      getProvinces();
-      if (provinceId) getDistricts(provinceId);
-      if (districtId) getWards(districtId);
-    } else {
-      setProvinceId(null);
-      setDistrictId(null);
-      setWardId(null);
+    if (profile?.province?._id) {
+      onChangeProvince(profile?.province?._id);
+      onChangeDistrict(profile?.district?._id);
+      onChangeWard(profile?.ward?._id);
     }
-  }, [controlSwitch]);
-
+  }, [profile?.province?._id]);
   return {
     onToggleSwitch,
     controlSwitch,
@@ -130,6 +172,7 @@ const useCheckout = () => {
     discountCode,
     total,
     subTotal,
+    form,
   };
 };
 

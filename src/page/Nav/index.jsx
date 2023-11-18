@@ -4,6 +4,7 @@ import { PATHS } from "@/contants/path";
 import useWindowSize from "@/utils/windowResize";
 
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
 const Nav = () => {
@@ -16,11 +17,28 @@ const Nav = () => {
     onShowSubNav,
     onCloseSubNav,
   } = useMainContext();
+  const { products } = useSelector((state) => state.product);
   const { width } = useWindowSize();
+  const [productListSearch, setProductListSearch] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
+  const onDropDown = (id) => {
+    onShowSubNav((prev) => (prev === id ? "" : id));
+  };
+  const onSearchProduct = (productName) => {
+    const result = products?.find((product) => {
+      return product?.name.includes(productName);
+    });
+    if (productName) {
+      setProductListSearch(result);
+    } else {
+      setProductListSearch([]);
+    }
+  };
   useEffect(() => {
     setIsNavbar(false);
     onCloseSubNav();
+    setSearchTerm("");
   }, [pathname]);
   useEffect(() => {
     if (width > 1024) {
@@ -28,9 +46,12 @@ const Nav = () => {
       onCloseSubNav();
     }
   }, [width]);
-  const onDropDown = (id) => {
-    onShowSubNav((prev) => (prev === id ? "" : id));
-  };
+  useEffect(() => {
+    const time = setTimeout(() => {
+      onSearchProduct(searchTerm);
+    }, 500);
+    return () => clearTimeout(time);
+  }, [searchTerm]);
   return (
     <nav
       className={`nav  ${
@@ -39,8 +60,13 @@ const Nav = () => {
     >
       <div className="nav__inner">
         <ul className="nav__inner-list">
-          <div className="group/hover search xs:flex md:hidden items-center xs:gap-2 xs:py-[10px] md:py-[16px]  pr-[10px]">
+          <div
+            className="group/hover search xs:flex md:hidden items-center xs:gap-2 xs:py-[10px]
+                md:py-[16px]  pr-[10px]"
+          >
             <input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               type="text"
               className="bg-white border-black-be border font-mam text-black-555 text-sm duration-500 transition-all 
                   w-full xs:h-[26px] md:h-[36px] pl-[10px]  rounded-lg "

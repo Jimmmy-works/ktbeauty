@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Button from "../Button";
 import { twMerge } from "tailwind-merge";
+import { useDispatch } from "react-redux";
+import { cartActions } from "@/store/reducer/cartReducer";
 
-const InputRange = () => {
+const InputRange = ({ ...props }) => {
+  const dispatch = useDispatch();
   const min = 0;
   const max = 10000;
-  const step = 20;
+  const step = 1000;
+  const refMin = useRef();
+  const refMax = useRef();
   const [minValue, setMinValue] = useState(min);
   const [maxValue, setMaxValue] = useState(max);
   const minPos = parseInt(((minValue - min) / (max - min)) * 100);
@@ -31,6 +36,7 @@ const InputRange = () => {
         </div>
         <div className={`range-input left-[${minPos}]`}>
           <input
+            ref={refMin}
             type="range"
             className="range-min"
             min={min}
@@ -40,6 +46,7 @@ const InputRange = () => {
             onChange={handleMinChange}
           />
           <input
+            ref={refMax}
             type="range"
             className="range-max"
             min={min}
@@ -50,7 +57,7 @@ const InputRange = () => {
           />
         </div>
         <div className="price-input  flex items-center mt-[26px] gap-2 flex-wrap xl:flex-nowrap">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center justify-center gap-1">
             <p className="font-osr text-md w-fit ">$</p>
             <p
               className="price-min border-solid border border-[#e5e5e5] rounded-[4px] 
@@ -68,8 +75,14 @@ const InputRange = () => {
               {maxValue}
             </p>
           </div>
-          <Button className={`rounded-[4px] xl:py-[4.5px] xl:px-[15.55px]  `}>
-            FILTER
+          <Button
+            onClick={() => {
+              dispatch(cartActions.setMinPrice(minValue));
+              dispatch(cartActions.setMaxPrice(maxValue));
+            }}
+            className={`rounded-[4px] md:text-[13px] max-h-[30px] md:p-[6px_10px]`}
+          >
+            Filter
           </Button>
         </div>
       </div>

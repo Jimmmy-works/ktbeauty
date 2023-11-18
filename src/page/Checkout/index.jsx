@@ -3,14 +3,18 @@ import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
 import useWindowSize from "@/utils/windowResize";
 import { Checkbox, Select, Switch, Tooltip } from "antd";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Await, Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import useCheckout from "./useCheckout";
-import { Controller, useForm } from "react-hook-form";
-import useProfile from "../Profile/useProfile";
-import styled from "styled-components";
+import { Controller } from "react-hook-form";
 import { removeAccents } from "@/utils/removeAccents";
 import { formatPriceVND } from "@/utils/formatPrice";
+import { Empty } from "antd";
+import styled from "styled-components";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
+import { useDispatch, useSelector } from "react-redux";
+import { createOrder } from "@/store/reducer/orderReducer";
+
 const SelectWrapper = styled.div`
   .select-antd-wrapper {
     background-color: #f9f9f9;
@@ -61,11 +65,24 @@ const FormWrapper = styled.div`
     box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1) !important;
   }
 `;
+const EmptyWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .ant-empty-image {
+    width: 100px !important;
+    height: 100px !important;
+  }
+`;
 const Checkout = () => {
+  //// redux
+  const dispatch = useDispatch();
+  // const { orderList } = useSelector((state) => state.order);
+
+  ////
   const [nameProvince, setNameProvince] = useState("");
   const [nameDistrist, setNameDistrist] = useState("");
   const [nameWard, setNameWard] = useState("");
-
   const { width } = useWindowSize();
   const {
     onToggleSwitch,
@@ -81,6 +98,7 @@ const Checkout = () => {
     onChangeDistrict,
     onChangeWard,
     cartInfo,
+    form,
   } = useCheckout();
   const {
     register,
@@ -88,104 +106,44 @@ const Checkout = () => {
     getValues,
     setValue,
     watch,
-    setError,
     control,
     reset,
     trigger,
-    formState: { isSubmitting, isDirty, isValid, errors }, // here
-  } = useForm({
-    mode: "all",
-  });
+    formState: { isSubmitting, isDirty, isValid, errors },
+  } = form || {};
   const discountCode = localStorage.getItem("discount");
   const shipping = localStorage.getItem("shipping");
   const total = localStorage.getItem("total");
   const subTotal = localStorage.getItem("subTotal");
-
   const handleChangeSwitch = () => {
     onToggleSwitch();
   };
   const million = 1000000;
   const handleOrder = (data) => {
     const payload = {
-      user: {
-        user_id: profile?._id,
-        email: profile?.email,
-      },
+      user_id: profile?._id,
+      email: profile?.email,
       products: [...cartInfo?.products],
       name: data?.name,
       phone: data?.phone,
       email: data?.email,
-      address: `${getValues(
-        "address"
-      )} ${nameWard}, ${nameDistrist}, ${nameProvince}`,
+      address: `${watch("address")} ${nameWard || profile?.ward?.name}, ${
+        nameDistrist || profile?.district?.name
+      }, ${nameProvince || profile?.province?.name}`,
       note: data?.note,
-      shipping: { type: shipping?.value, price: shipping?.price },
+      shipping: {
+        type: JSON.parse(shipping)?.value,
+        price: JSON.parse(shipping)?.price,
+      },
+      payment_method: "cod",
+      order_date: Date.now().toString(),
       subTotal: subTotal,
       total: total,
-      discount:
-        subTotal < 3 * million
-          ? discountCode
-          : [
-              { name: discountCode?.name, price: discountCode?.price },
-              { name: "Miễn phí vận chuyển", price: shipping?.price },
-            ],
+      discount: JSON.parse(discountCode),
     };
+    dispatch(createOrder(payload));
     console.log("payload", payload);
   };
-
-  const handleControlSwitch = useCallback(() => {
-    if (profile) {
-      if (!controlSwitch) {
-        setValue("name");
-        setValue("email");
-        setValue("phone");
-        setValue("address");
-        setValue("province", null);
-        setValue("district", null);
-        setValue("ward", null);
-        setValue("note");
-      } else {
-        setValue("name", profile?.name);
-        setValue("email", profile?.email);
-        setValue("phone", profile?.phone);
-        setValue("address", profile?.address);
-        setValue("province", profile?.province?._id);
-        setValue("district", profile?.district?._id);
-        setValue("ward", profile?.ward?._id);
-        setValue("note", profile?.note);
-      }
-    }
-  }, [profile, controlSwitch]);
-  useEffect(() => {
-    handleControlSwitch();
-    const timeout = setTimeout(() => {
-      trigger([
-        "phone",
-        "email",
-        "address",
-        "name",
-        "province",
-        "district",
-        "ward",
-      ]);
-    }, 400);
-    return () => clearTimeout(timeout);
-  }, [controlSwitch]);
-  useEffect(() => {
-    reset({
-      name: profile?.name,
-      email: profile?.email,
-      phone: profile?.phone,
-      address: profile?.address,
-      province: profile?.province?._id,
-      district: profile?.district?._id,
-      ward: profile?.ward?._id,
-      // province: controlSwitch ? provinceId : profile?.province?._id,
-      // district: controlSwitch ? districtId : profile?.district?._id,
-      // ward: controlSwitch ? wardId : profile?.ward?._id,
-    });
-  }, [profile]);
-
   return (
     <main className="checkout main-wrapper relative">
       <div className="container ">
@@ -401,11 +359,6 @@ const Checkout = () => {
                               style={{ width: "100%" }}
                               placeholder="Quận/Huyện"
                               options={districts}
-                              // value={
-                              //   controlSwitch
-                              //     ? profile?.district?._id
-                              //     : districtId
-                              // }
                               value={districtId}
                               showSearch
                               onChange={(value, e) => {
@@ -456,9 +409,6 @@ const Checkout = () => {
                               style={{ width: "100%" }}
                               placeholder="Phường/Xã"
                               options={wards}
-                              // value={
-                              //   controlSwitch ? profile?.ward?._id : wardId
-                              // }
                               value={wardId}
                               showSearch
                               onChange={(value, e) => {
@@ -499,7 +449,7 @@ const Checkout = () => {
                 </h3>
               )}
               <div className="pb-[20px] border-b border-solid border-[#e2e0e0]">
-                {cartInfo?.products?.length &&
+                {cartInfo?.products?.length ? (
                   cartInfo?.products?.map((item, index) => {
                     const { image, name, _id, quantity, price, discount } =
                       item || {};
@@ -551,7 +501,12 @@ const Checkout = () => {
                         </p>
                       </div>
                     );
-                  })}
+                  })
+                ) : (
+                  <EmptyWrapper>
+                    <Empty description={false} />
+                  </EmptyWrapper>
+                )}
               </div>
               <div
                 className="flex items-center gap-2 py-[20px] border-b border-solid

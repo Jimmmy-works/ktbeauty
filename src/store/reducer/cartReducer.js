@@ -12,6 +12,10 @@ const initialState = {
   shipping: {},
   discountCode: {},
   updateStatusCreateCart: THUNK_STATUS.fulfilled,
+  updateStatusUpdateCart: null,
+  ///
+  minPrice: 0,
+  maxPrice: 10000,
 };
 
 export const { reducer: cartReducer, actions: cartActions } = createSlice({
@@ -19,12 +23,18 @@ export const { reducer: cartReducer, actions: cartActions } = createSlice({
   name: "cart",
 
   reducers: {
+    setMinPrice: (state, action) => {
+      state.minPrice = action.payload;
+    },
+    setMaxPrice: (state, action) => {
+      state.maxPrice = action.payload;
+    },
     setCartInfo: (state, action) => {
       state.cartInfo = {
         ...action.payload,
       };
+      localStorage.setItem("cart", JSON.stringify(state.cartInfo));
     },
-    getDiscountCode: () => {},
     setShipping: (state, action) => {
       state.shipping = action.payload;
       localStorage.setItem("shipping", JSON.stringify(state.shipping));
@@ -42,7 +52,6 @@ export const { reducer: cartReducer, actions: cartActions } = createSlice({
       localStorage.setItem("total", state.total);
     },
     addToCart: (state, action) => {
-      const million = 1000000;
       const saveLocal = {
         ...state?.cartInfo,
         products: state?.cartInfo?.products.map((item, index) => {
@@ -68,6 +77,16 @@ export const { reducer: cartReducer, actions: cartActions } = createSlice({
     builder.addCase(createCart.rejected, (state) => {
       state.updateStatusCreateCart = THUNK_STATUS.rejected;
     });
+    /// updateStatusUpdateCart
+    builder.addCase(updateCart.pending, (state) => {
+      state.updateStatusUpdateCart = THUNK_STATUS.pending;
+    });
+    builder.addCase(updateCart.fulfilled, (state) => {
+      state.updateStatusUpdateCart = THUNK_STATUS.fulfilled;
+    });
+    builder.addCase(updateCart.rejected, (state) => {
+      state.updateStatusUpdateCart = THUNK_STATUS.rejected;
+    });
   },
 });
 
@@ -75,13 +94,29 @@ export const getCart = createAsyncThunk("cart/get", async (token, thunkAPI) => {
   try {
     const decode = decodeToken(token);
     const response = await cartService.getCart(decode?.id, token);
-    if (response.status === 200) {
-      const resCart = response?.data?.data;
-      const million = 1000000;
-      const parseCart = JSON.parse(localStorage.getItem("cart"));
+    const parseCart = JSON.parse(localStorage.getItem("cart"));
+    const resCart = response?.data?.data;
+
+    if (
+      !thunkAPI.getState()?.cart?.cartInfo?.user?.hasOwnProperty("user_id") &&
+      !parseCart?.user?.user_id
+    ) {
+      const decode = decodeToken(localStorage.getItem(LOCAL_STORAGE.token));
       thunkAPI.dispatch(
-        cartActions.setCartInfo(parseCart ? parseCart : resCart)
+        cartActions.setCartInfo({
+          user: {
+            user_id: decode?.id,
+          },
+          products: [],
+        })
       );
+    }
+    if (response.status === 200) {
+      if (parseCart) {
+        thunkAPI.dispatch(cartActions.setCartInfo(parseCart));
+      } else if (resCart) {
+        thunkAPI.dispatch(cartActions.setCartInfo(resCart));
+      }
     }
     return response?.data?.data;
   } catch (error) {
@@ -97,7 +132,8 @@ export const createCart = createAsyncThunk(
       const _token = localStorage.getItem(LOCAL_STORAGE.token);
       const response = await cartService.createCart(payload, _token);
       if (response.status === 200) {
-        thunkAPI.dispatch(getCart(_token));
+        const resCart = thunkAPI.dispatch(getCart(_token));
+        const parseCart = JSON.parse(localStorage.getItem("cart"));
       }
       message.success(
         `Đã thêm ${payload?.quantity} sản phẩm - ${payload?.name} `
@@ -111,12 +147,19 @@ export const createCart = createAsyncThunk(
   }
 );
 export const updateCart = createAsyncThunk(
-  "cart/put",
+  "cart/put/updateCart",
   async (payload, thunkAPI) => {
     try {
       const _token = localStorage.getItem(LOCAL_STORAGE.token);
-      const reponse = await cartService.updateCart(payload, _token);
-      message.success(reponse?.data?.message);
+      if (_token) {
+        const customPayload = {
+          ...payload,
+          user_id: payload?.user?.user_id,
+        };
+        const response = await cartService.updateCart(customPayload, _token);
+        message.success(response?.data?.message);
+        return response;
+      }
     } catch (error) {
       message.error(error?.response?.data?.message);
       console.log("error", error);

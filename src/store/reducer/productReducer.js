@@ -10,10 +10,12 @@ import { useParams } from "react-router-dom";
 const initialState = {
   categories: [],
   products: [],
+  productSearch: {},
   searchProducts: [],
   productDetail: null,
   statusGetProductDetail: THUNK_STATUS.fulfilled,
   statusGetProduct: null,
+  /// filter
 };
 export const { reducer: productReducer, actions: productActions } = createSlice(
   {
@@ -62,7 +64,6 @@ export const getAllCategories = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await productService.getAllCategories();
-
       thunkAPI.dispatch(productActions.setCategories(response?.data?.data));
       return response?.data?.data;
     } catch (error) {
@@ -75,7 +76,8 @@ export const getAllProduct = createAsyncThunk(
   "product/get",
   async (_, thunkAPI) => {
     try {
-      const response = await productService.getAllProduct();
+      const payloadPagination = { limit: 9, page: 0 };
+      const response = await productService.getAllProduct(payloadPagination);
       thunkAPI.dispatch(productActions.setProducts(response?.data?.data));
       thunkAPI.dispatch(productActions.setSearchProducts(response?.data?.data));
       return response?.data?.data;

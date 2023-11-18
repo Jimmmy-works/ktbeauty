@@ -8,8 +8,12 @@ import { formatPriceVND } from "@/utils/formatPrice";
 import LoadingSkeleton from "./Loading/LoadingSkeleton";
 import { twMerge } from "tailwind-merge";
 const StyleRate = styled.div`
+  line-height: 20px;
+  height: auto;
+  margin: 4px 0;
   .ant-rate {
-    margin-top: 4px;
+    line-height: 20px;
+
     .ant-rate-star,
     .ant-rate-star-zero {
       margin-inline-end: 3px;
@@ -23,15 +27,24 @@ const ProductCard = ({
   isProductDetail = false,
   imageloading,
   onLoadingImage,
-  addToCart,
+  onAddToCart,
 }) => {
   const { _id, name, price, rating, image, discount, countInStock } =
     item || {};
 
   if (isProductDetail) {
     return (
-      <div className={`card  ${className ?? ""} transition-all duration-400  `}>
-        <div className="relative overflow-hidden group/img  group/addtocart">
+      <div
+        className={`card  ${className ?? ""} transition-all duration-400   `}
+      >
+        {/* before:w-full before:h-full before:absolute before:top-1/2
+        before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2
+        before:bg-[rgba(0,0,0,0.1)] before:z-20 */}
+        <div
+          className="relative overflow-hidden group/img  group/addtocart
+       
+        "
+        >
           <Link
             to={`${PATHS.SHOP.INDEX}/${item?._id}`}
             className="block relative  h-0 pb-[100%]"
@@ -47,16 +60,17 @@ const ProductCard = ({
               src={image?.length ? image?.[0] : "/assets/img/error.png"}
               alt={name}
             />
-            <span
+            {/* <span
               className="absolute xs:top-4 md:top-7 left-5 xs:w-[30px] md:w-[40px] xs:h-[30px] md:h-[40px] border-dashed
                       border border-[#46d47f] rounded-[50%] xs:text-xs md:text-sm flex justify-center 
-                      bg-white items-center text-[#46d47f]"
+                      bg-white items-center text-[#46d47f]  gap-1"
             >
+             
               Sale
-            </span>
+            </span> */}
           </Link>
           <div
-            onClick={() => addToCart(item)}
+            onClick={() => onAddToCart(item)}
             className="h-[50px] w-[100%] bg-[rgba(0,0,0,0.03)] absolute bottom-0 translate-y-[100%]
             flex gap-[16px] items-center justify-center  group-hover/addtocart:translate-y-0 overflow-hidden 
             transition-all duration-400 z-[100]"
@@ -132,9 +146,17 @@ const ProductCard = ({
           <StyleRate>
             <Rate />
           </StyleRate>
-          <p className="font-osb text-[15px] text-primary mt-[8px] leading-[18px]">
-            {formatPriceVND(price)}
-          </p>
+          <div
+            className=" text-sm text-primary font-osb flex md:flex-row xs:flex-col xs:gap-[4px]
+           md:gap-2 mt-[8px] leading-[18px] "
+          >
+            <span className="line-through text-black-555">
+              {formatPriceVND(price)}
+            </span>
+            <span className=" text-[15px] text-primary ">
+              {formatPriceVND(price - discount)}
+            </span>
+          </div>
         </div>
       </div>
     );
@@ -187,10 +209,10 @@ const ProductCard = ({
         {discount > 0 && (
           <span
             className="absolute xs:top-4 md:top-7 left-5 xs:w-[30px] md:w-[40px] xs:h-[30px] md:h-[40px] border-dashed
-                    border border-[#46d47f] rounded-[50%] xs:text-xs md:text-sm flex justify-center 
-                    bg-white items-center z-50"
+                    border border-red-200 rounded-[50%] text-xs tracking-wider  flex justify-center
+                    bg-primary items-center z-50 text-white font-om"
           >
-            Sale
+            {`${Math.round((discount / price) * 100)}%`}
           </span>
         )}
         <button className="absolute z-50 xs:top-6 md:top-9 right-5 group/hover">
@@ -215,12 +237,21 @@ const ProductCard = ({
         >
           {name}
         </Link>
+        <div
+          className="font-osb text-sm items-center justify-center flex md:flex-row xs:flex-col xs:gap-[4px]
+           md:gap-2
+         text-primary mt-[6px] xs:mb-[4px] md:mb-[10px] leading-[18px] "
+        >
+          <span className="line-through text-black-555">
+            {formatPriceVND(price)}
+          </span>
+          <span className=" text-[15px] text-primary ">
+            {formatPriceVND(price - discount)}
+          </span>
+        </div>
 
-        <p className="font-osb text-sm text-primary mt-[6px] xs:mb-[4px] md:mb-[10px] leading-[18px]">
-          {formatPriceVND(price)}
-        </p>
         <Button
-          onClick={() => addToCart(item)}
+          onClick={() => onAddToCart(item)}
           outStock={countInStock === 0 && true}
           className={`md:px-[30.35px] md:py-[10px] xs:px-[17px] xs:py-[5px] md:text-sm
           xs:text-xs`}

@@ -1,7 +1,10 @@
 import useWindowSize from "@/utils/windowResize";
 import React, { useRef, useState } from "react";
+import useProfile from "./useProfile";
 
 const Order = () => {
+  const { orderInfo } = useProfile();
+  console.log("first", orderInfo);
   const images = [
     "/assets/img/product-1.jpg",
     "/assets/img/product-2.jpg",

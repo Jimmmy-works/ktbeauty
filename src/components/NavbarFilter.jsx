@@ -2,16 +2,15 @@ import React, { useEffect } from "react";
 import Accordion from "./Accordion";
 import useWindowSize from "@/utils/windowResize";
 import InputRange from "./Input/InputRange";
-import AccordionM from "@/components/Accordion/index.jsx";
 
 const NavbarFilter = ({
   onToggleFilter,
-  data,
+  categories,
   isFilter,
   setIsFilter,
   children,
   onChangeCategoryTab,
-  categoryTab,
+  setSelectedFilters,
 }) => {
   const { width } = useWindowSize();
   useEffect(() => {
@@ -44,18 +43,20 @@ const NavbarFilter = ({
             </svg>
           </div>
         </div>
-
         {children}
 
         <div className="w-full px-[20px] flex flex-col">
-          <AccordionM
+          <Accordion
+            onChangeFilter={setSelectedFilters}
             onChangeCategoryTab={onChangeCategoryTab}
             heading={`Danh mục sản phẩm`}
-            data={data}
+            data={categories}
           />
-          <AccordionM
+          <Accordion
             heading={`Lọc sản phảm theo giá`}
-            renderProps={() => <InputRange />}
+            renderProps={(props) => {
+              return <InputRange {...props} />;
+            }}
           />
         </div>
       </div>

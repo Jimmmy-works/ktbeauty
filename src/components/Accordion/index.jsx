@@ -1,6 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { forwardRef, useRef, useState } from "react";
 
-const Accordion = ({ heading, data, renderProps, onChangeCategoryTab }) => {
+const Accordion = ({
+  heading,
+  data,
+  renderProps,
+  onChangeFilter,
+  children,
+  ...props
+}) => {
   const [activeSubcase, setActiveSubcase] = useState(null);
   const [toggleContent, setToggleContent] = useState(false);
   const handleActiveContentSubcase = (index) => {
@@ -38,10 +45,16 @@ const Accordion = ({ heading, data, renderProps, onChangeCategoryTab }) => {
             const { _id, name } = item || {};
             return (
               <div
-                onClick={() => onChangeCategoryTab(name)}
-                className={`accordion__content-wrapper ${
-                  item?._id === activeSubcase ? "active" : ""
-                }`}
+                onClick={() => {
+                  if (name !== "all") {
+                    onChangeFilter([name]);
+                  } else {
+                    onChangeFilter([]);
+                  }
+                }}
+                className={`accordion__content-wrapper `}
+                // className={`accordion__content-wrapper
+                // ${item?._id === activeSubcase ? "active" : ""}`}
                 key={_id}
               >
                 <div
@@ -104,11 +117,12 @@ const Accordion = ({ heading, data, renderProps, onChangeCategoryTab }) => {
             }`,
           }}
         >
-          {renderProps?.()}
+          {renderProps?.({ ...props })}
         </div>
       )}
+      {children}
     </div>
   );
 };
-
+// const Accordion = forwardRef(AccordionM);
 export default Accordion;

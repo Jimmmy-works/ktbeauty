@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const useCartPage = () => {
   const dispatch = useDispatch();
-  const { cartInfo, shipping, discountCode } = useSelector(
-    (state) => state.cart
-  );
+  const { cartInfo, total, subTotal } = useSelector((state) => state.cart);
   const onChangeQuantity = async (updateValue, updateIndex) => {
     try {
       const map = cartInfo?.products?.find((_, index) => {
@@ -21,11 +19,19 @@ const useCartPage = () => {
       console.log("error", error);
     }
   };
+  const onDeleteProductInCart = (id) => {
+    const findItem = cartInfo?.products?.find((item) => item?._id === id);
+    const filterItem = cartInfo?.products?.filter(
+      (item) => item?._id !== findItem?._id
+    );
+    dispatch(cartActions?.setCartInfo({ ...cartInfo, products: filterItem }));
+  };
   return {
     cartInfo,
     onChangeQuantity,
-    shipping,
-    discountCode,
+    onDeleteProductInCart,
+    total,
+    subTotal,
   };
 };
 

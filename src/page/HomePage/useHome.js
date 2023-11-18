@@ -1,6 +1,13 @@
 import { CATEGORIES_OPTIONS, FEATURED_OPTIONS } from "@/contants/general";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
-import { createCart, getCart } from "@/store/reducer/cartReducer";
+import {
+  cartActions,
+  createCart,
+  getCart,
+  updateCart,
+} from "@/store/reducer/cartReducer";
+import { message } from "antd";
 import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,7 +18,9 @@ const useHome = () => {
   };
   //// redux
   const dispatch = useDispatch();
-  const { updateStatusCreateCart } = useSelector((state) => state.cart);
+  const { updateStatusCreateCart, cartInfo } = useSelector(
+    (state) => state.cart
+  );
   const { products, categories, statusGetProduct } = useSelector(
     (state) => state.product
   );
@@ -66,22 +75,64 @@ const useHome = () => {
     return newProducts;
   }, [categoryTab, products]);
   /// add to cart
-  const addToCart = async (payload, e) => {
+  const onAddToCart = async (payload) => {
     try {
-      const newPayload = {
-        user_id: profile?._id,
-        email: profile?.email,
-        product_id: payload?._id,
-        name: payload?.name,
-        slug: payload?.slug,
-        image: payload?.image,
-        countInStock: payload?.countInStock || 0,
-        discount: payload?.discount || 0,
-        price: payload?.price || 0,
-        quantity: 1,
-      };
-      if (updateStatusCreateCart !== THUNK_STATUS.pending) {
-        await dispatch(createCart(newPayload));
+      if (payload?._id && updateStatusCreateCart !== THUNK_STATUS.pending) {
+        let cartPayload = {};
+        const matchIndex = cartInfo?.products?.findIndex(
+          (productMatched) => productMatched?.product_id === payload?._id
+        );
+        let newProductPayload = cartInfo?.products?.map((product) => product);
+        if (cartInfo?._id) {
+          if (matchIndex > -1) {
+            if (newProductPayload[matchIndex]?.quantity >= 20) {
+              message.error(
+                `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+              );
+            } else {
+              newProductPayload[matchIndex] = {
+                ...newProductPayload[matchIndex],
+                quantity: newProductPayload[matchIndex]?.quantity + 1,
+              };
+              message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+            }
+          } else {
+            newProductPayload.push({
+              ...payload,
+              quantity: 1,
+              product_id: payload?._id,
+            });
+          }
+          cartPayload = {
+            ...cartInfo,
+            products: newProductPayload,
+          };
+        } else {
+          if (matchIndex > -1) {
+            if (newProductPayload[matchIndex]?.quantity >= 20) {
+              message.error(
+                `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+              );
+            } else {
+              newProductPayload[matchIndex] = {
+                ...newProductPayload[matchIndex],
+                quantity: newProductPayload[matchIndex]?.quantity + 1,
+              };
+              message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+            }
+          } else {
+            newProductPayload.push({
+              ...payload,
+              quantity: 1,
+              product_id: payload?._id,
+            });
+          }
+          cartPayload = {
+            ...cartInfo,
+            products: newProductPayload,
+          };
+        }
+        dispatch(cartActions.setCartInfo(cartPayload));
       }
     } catch (error) {
       console.log("error", error);
@@ -96,13 +147,9 @@ const useHome = () => {
     statusGetProduct,
     imageloading,
     onImageLoading,
-    addToCart,
+    onAddToCart,
     filterProductShowcase,
   };
-  // useEffect(() => {
-  //   dispatch(getAllProduct());
-  //   dispatch(getAllCategories());
-  // }, []);
   const featuredProps = {
     onChangeFeaturedTab,
     featuerdTab,
@@ -110,7 +157,7 @@ const useHome = () => {
     statusGetProduct,
     imageloading,
     onImageLoading,
-    addToCart,
+    onAddToCart,
   };
   const categoryProps = { onChangeCategoryTab, categoryTab };
   return { featuredProps, showcaseProductProps };

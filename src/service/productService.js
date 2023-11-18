@@ -6,8 +6,10 @@ export const productService = {
   getAllCategories: () => {
     return axios.get(`${BASE_URL}/api/category/get-all-category`);
   },
-  getAllProduct: () => {
-    return axios.get(`${BASE_URL}/api/product/get-all-product`);
+  getAllProduct: (payload) => {
+    return axios.get(
+      `${BASE_URL}/api/product/get-all-product?limit=${payload?.limit}&page=${payload?.page}`
+    );
   },
   getProductById: (id) => {
     return axios.get(`${BASE_URL}/api/product/get-detail-product/${id}`);

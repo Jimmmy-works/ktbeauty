@@ -1,8 +1,12 @@
 import { useMainContext } from "@/components/MainContext";
 import { CATEGORIES_OPTIONS } from "@/contants/general";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import { cartActions, createCart } from "@/store/reducer/cartReducer";
-import { getProductDetail } from "@/store/reducer/productReducer";
+import {
+  getProductDetail,
+  productActions,
+} from "@/store/reducer/productReducer";
 import { message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,46 +25,204 @@ const useShop = () => {
     categories,
     statusGetProductDetail,
     statusGetProduct,
+    productFilter,
+    productFilterAll,
   } = useSelector((state) => state.product);
-  const { updateStatusCreateCart, cartInfo } = useSelector(
+  const { updateStatusCreateCart, cartInfo, minPrice, maxPrice } = useSelector(
     (state) => state.cart
   );
   const { profile } = useSelector((state) => state.auth);
   const { slug } = useParams();
   const dispatch = useDispatch();
   const [categoryTab, setCategoryTab] = useState(CATEGORIES_OPTIONS.ALL);
+  const [selectedFilters, setSelectedFilters] = useState([]);
+  const [filteredItems, setFilteredItems] = useState(products);
+  const customCategories = ["face", "body", "supplement", "other"];
+  const newMin = minPrice * 1000;
+  const newMax = maxPrice * 1000;
+  const onFilterButtonClick = (selectedCategory) => {
+    if (selectedFilters?.includes(selectedCategory)) {
+      let filterCate = selectedFilters?.filter((el) => {
+        return el !== selectedCategory;
+      });
+      setSelectedFilters(filterCate);
+    } else {
+      setSelectedFilters([...selectedFilters, selectedCategory]);
+    }
+  };
+  const onFilterItems = () => {
+    let finalItems = [];
+    if (selectedFilters?.length > 0) {
+      let items = selectedFilters?.map((selectedCategory) => {
+        let _temp = products?.filter(
+          (item) => item?.category_id?.name === selectedCategory
+        );
+        return _temp;
+      });
+      finalItems = items?.flat()?.filter((item) => {
+        const afterDiscount =
+          item?.price - (item?.discount ? item?.discount : 0);
+
+        if (afterDiscount >= newMin && afterDiscount <= newMax) {
+          return item;
+        }
+      });
+      setFilteredItems(finalItems);
+      return finalItems;
+    } else {
+      finalItems = products?.filter((item) => {
+        const afterDiscount =
+          item?.price - (item?.discount ? item?.discount : 0);
+        if (afterDiscount >= newMin && afterDiscount <= newMax) {
+          return item;
+        }
+      });
+
+      setFilteredItems(finalItems);
+      return finalItems;
+    }
+  };
+
+  useEffect(() => {
+    onFilterItems();
+  }, [selectedFilters, products, newMax, newMin]);
 
   const onChangeCategoryTab = (tab) => {
     setCategoryTab(tab);
   };
-
-  const addToCart = async (payload, e) => {
+  const onAddToCart = async (payload) => {
     try {
-      const newPayload = {
-        user_id: profile?._id,
-        email: profile?.email,
-        product_id: payload?._id,
-        name: payload?.name,
-        slug: payload?.slug,
-        image: payload?.image,
-        countInStock: payload?.countInStock || 0,
-        discount: payload?.discount || 0,
-        price: payload?.price,
-        quantity: payload?.quantity || 1,
-      };
-      if (payload?.quantity > 20) {
-        message.error(
-          `Sản phẩm không được thêm quá 20! Mua thêm hãy liên hệ shop!`
+      if (payload?._id && updateStatusCreateCart !== THUNK_STATUS.pending) {
+        let cartPayload = {};
+        const matchIndex = cartInfo?.products?.findIndex(
+          (productMatched) => productMatched?.product_id === payload?._id
         );
-      } else {
-        if (updateStatusCreateCart !== THUNK_STATUS.pending) {
-          await dispatch(createCart(newPayload));
+        let newProductPayload = cartInfo?.products?.map((product) => product);
+        if (matchIndex > -1) {
+          if (
+            newProductPayload[matchIndex]?.quantity >= 20 ||
+            payload?.quantity > 20 - newProductPayload[matchIndex]?.quantity
+          ) {
+            message.error(
+              `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+            );
+          } else {
+            newProductPayload[matchIndex] = {
+              ...newProductPayload[matchIndex],
+              quantity:
+                newProductPayload[matchIndex]?.quantity +
+                (payload?.quantity ? payload?.quantity : 1),
+            };
+            message.success(
+              `+${payload?.quantity ? payload?.quantity : 1} ${
+                newProductPayload[matchIndex]?.name
+              }`
+            );
+          }
+        } else {
+          if (payload?.quantity < 20) {
+            newProductPayload.push({
+              ...payload,
+              quantity: payload?.quantity,
+              product_id: payload?._id,
+            });
+          } else if (!payload?.quantity) {
+            newProductPayload.push({
+              ...payload,
+              quantity: 1,
+              product_id: payload?._id,
+            });
+          } else {
+            message.error(
+              `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+            );
+          }
         }
+        cartPayload = {
+          ...cartInfo,
+          products: newProductPayload,
+        };
+        dispatch(cartActions.setCartInfo(cartPayload));
       }
     } catch (error) {
       console.log("error", error);
     }
   };
+  // const onAddToCart = async (payload) => {
+  //   try {
+  //     if (payload?._id && updateStatusCreateCart !== THUNK_STATUS.pending) {
+  //       let cartPayload = {};
+  //       const matchIndex = cartInfo?.products?.findIndex(
+  //         (productMatched) => productMatched?.product_id === payload?._id
+  //       );
+  //       let newProductPayload = cartInfo?.products?.map((product) => product);
+  //       if (cartInfo?._id) {
+  //         if (matchIndex > -1) {
+  //           if (newProductPayload[matchIndex]?.quantity >= 20) {
+  //             message.error(
+  //               `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+  //             );
+  //           } else {
+  //             newProductPayload[matchIndex] = {
+  //               ...newProductPayload[matchIndex],
+  //               quantity:
+  //                 newProductPayload[matchIndex]?.quantity +
+  //                 (payload?.quantity ? payload?.quantity : 1),
+  //             };
+  //             message.success(
+  //               `${payload?.quantity ? payload?.quantity : 1} ${
+  //                 newProductPayload[matchIndex]?.name
+  //               }`
+  //             );
+  //           }
+  //         } else {
+  //           newProductPayload.push({
+  //             ...payload,
+  //             quantity: 1,
+  //             product_id: payload?._id,
+  //           });
+  //         }
+  //         cartPayload = {
+  //           ...cartInfo,
+  //           products: newProductPayload,
+  //         };
+  //       } else {
+  //         if (matchIndex > -1) {
+  //           if (newProductPayload[matchIndex]?.quantity >= 20) {
+  //             message.error(
+  //               `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+  //             );
+  //           } else {
+  //             newProductPayload[matchIndex] = {
+  //               ...newProductPayload[matchIndex],
+  //               quantity:
+  //                 newProductPayload[matchIndex]?.quantity +
+  //                 (payload?.quantity ? payload?.quantity : 1),
+  //             };
+  //             message.success(
+  //               `${payload?.quantity ? payload?.quantity : 1} ${
+  //                 newProductPayload[matchIndex]?.name
+  //               }`
+  //             );
+  //           }
+  //         } else {
+  //           newProductPayload.push({
+  //             ...payload,
+  //             quantity: 1,
+  //             product_id: payload?._id,
+  //           });
+  //         }
+  //         cartPayload = {
+  //           ...cartInfo,
+  //           products: newProductPayload,
+  //         };
+  //       }
+  //       dispatch(cartActions.setCartInfo(cartPayload));
+  //     }
+  //   } catch (error) {
+  //     console.log("error", error);
+  //   }
+  // };
   useEffect(() => {
     if (slug) {
       dispatch(getProductDetail(slug));
@@ -81,9 +243,20 @@ const useShop = () => {
     statusGetProduct,
     imageloading,
     onImageLoading,
-    addToCart,
+    onAddToCart,
     onChangeCategoryTab,
     categoryTab,
+    customCategories,
+    onFilterButtonClick,
+    selectedFilters,
+    filteredItems,
+    setSelectedFilters,
+    selectedFilters,
+    setFilteredItems,
+
+    onFilterItems,
+    productFilter,
+    productFilterAll,
   };
 };
 

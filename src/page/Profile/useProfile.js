@@ -11,6 +11,7 @@ const useProfile = () => {
   const [wards, setWards] = useState([]);
   const [wardId, setWardId] = useState("");
   const { profile } = useSelector((state) => state.auth);
+  const { orderInfo } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   //// Handle Province
   const getProvinces = async () => {
@@ -115,6 +116,7 @@ const useProfile = () => {
     getProvinces,
     getDistricts,
     getWards,
+    orderInfo,
   };
 };
 
