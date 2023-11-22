@@ -122,27 +122,30 @@ const Checkout = () => {
   const handleOrder = (data) => {
     const payload = {
       user_id: profile?._id,
-      email: profile?.email,
       products: [...cartInfo?.products],
-      name: data?.name,
-      phone: data?.phone,
-      email: data?.email,
+      name: data?.name || profile?.name,
+      phone: data?.phone || profile?.phone,
+      email: data?.email || profile?.email,
       address: `${watch("address")} ${nameWard || profile?.ward?.name}, ${
         nameDistrist || profile?.district?.name
       }, ${nameProvince || profile?.province?.name}`,
       note: data?.note,
+      discount: {
+        type: JSON.parse(discountCode)?.name,
+        price: Number(JSON.parse(discountCode)?.price),
+      },
       shipping: {
         type: JSON.parse(shipping)?.value,
-        price: JSON.parse(shipping)?.price,
+        label: JSON.parse(shipping)?.label,
+        price: Number(JSON.parse(shipping)?.price),
       },
       payment_method: "cod",
       order_date: Date.now().toString(),
       subTotal: subTotal,
       total: total,
-      discount: JSON.parse(discountCode),
     };
-    dispatch(createOrder(payload));
     console.log("payload", payload);
+    dispatch(createOrder(payload));
   };
   return (
     <main className="checkout main-wrapper relative">

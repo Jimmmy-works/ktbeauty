@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Button from "../Button";
 import { Checkbox } from "antd";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { firebaseStore, firebaseStorage } from "@/config/firebase";
-import { collection, getDocs } from "firebase/firestore";
-import { ref } from "firebase/storage";
-import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
+import { LoadingOutlined } from "@ant-design/icons";
+import useDebounce from "@/hooks/useDebounce";
 
 const Register = ({
   onOpenLogin,
@@ -28,6 +25,7 @@ const Register = ({
   const [phone, setPhone] = useState("");
   const [agree, setAgree] = useState(false);
   const [hiddenPassword, setHiddenPassword] = useState(true);
+  const [loadingRegister, setLoadingRegister] = useState(false);
   const handleRegister = async (data) => {
     try {
       if (updateStatusRegister !== THUNK_STATUS.pending) onRegister(data);
@@ -239,7 +237,11 @@ const Register = ({
             className={` p-[16px_16px_16px_16px] text-md bg-[#dddddd] text-black-333 border-transparent  w-full
            `}
           >
-            Đăng ký
+            {updateStatusRegister === THUNK_STATUS.pending ? (
+              <LoadingOutlined />
+            ) : (
+              "  Đăng ký"
+            )}
           </Button>
         </div>
         <div className=" flex items-center justify-center gap-6 text-white relative mt-[30px]">
@@ -257,5 +259,4 @@ const Register = ({
     </div>
   );
 };
-
 export default Register;

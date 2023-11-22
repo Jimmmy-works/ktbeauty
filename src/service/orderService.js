@@ -8,4 +8,9 @@ export const orderService = {
       headers: { token: `Bearer ${token}` },
     });
   },
+  getOrderUser: (token) => {
+    return instanceAxios.get(`/api/order/get-order-user`, {
+      headers: { token: `Bearer ${token}` },
+    });
+  },
 };

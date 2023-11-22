@@ -21,6 +21,17 @@ const StyleRate = styled.div`
     }
   }
 `;
+const StyleDiscount = styled.div`
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    border-top: 4px solid #c95e52;
+    border-left: 4px solid transparent;
+  }
+`;
+
 const ProductCard = ({
   item,
   className,
@@ -35,19 +46,23 @@ const ProductCard = ({
   if (isProductDetail) {
     return (
       <div
-        className={`card  ${className ?? ""} transition-all duration-400   `}
+        className={`card relative ${
+          className ?? ""
+        } transition-all duration-400   `}
       >
-        {/* before:w-full before:h-full before:absolute before:top-1/2
-        before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2
-        before:bg-[rgba(0,0,0,0.1)] before:z-20 */}
-        <div
-          className="relative overflow-hidden group/img  group/addtocart
-       
-        "
-        >
+        {discount > 0 && (
+          <StyleDiscount
+            className="absolute top-3 left-[-3px] w-[50px] h-[16px] 
+                    border border-red-200 text-xs tracking-wider  flex justify-center
+                    bg-primary items-center z-50 text-white font-om "
+          >
+            {`-${Math.round((discount / price) * 100)}%`}
+          </StyleDiscount>
+        )}
+        <div className="relative group/img overflow-hidden  group/addtocart ">
           <Link
             to={`${PATHS.SHOP.INDEX}/${item?._id}`}
-            className="block relative  h-0 pb-[100%]"
+            className="block   relative  h-0 pb-[100%] "
           >
             <img
               onLoad={onLoadingImage}
@@ -55,20 +70,23 @@ const ProductCard = ({
                 e.target.onerror = null;
                 e.target.src = "/assets/img/error.png";
               }}
-              className={twMerge(`center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105
+              className={twMerge(`center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105  
                 h-full w-full ${!imageloading ? "opacity-100" : "opacity-0"}`)}
               src={image?.length ? image?.[0] : "/assets/img/error.png"}
               alt={name}
             />
-            {/* <span
-              className="absolute xs:top-4 md:top-7 left-5 xs:w-[30px] md:w-[40px] xs:h-[30px] md:h-[40px] border-dashed
-                      border border-[#46d47f] rounded-[50%] xs:text-xs md:text-sm flex justify-center 
-                      bg-white items-center text-[#46d47f]  gap-1"
-            >
-             
-              Sale
-            </span> */}
+
+            {/* {discount > 0 && (
+              <span
+                className="absolute xs:top-4 md:top-3 left-3 xs:w-[30px] md:w-[40px] xs:h-[30px] md:h-[40px] border-dashed
+                    border border-red-200 rounded-[50%] text-xs tracking-wider  flex justify-center
+                    bg-primary items-center z-50 text-white font-om"
+              >
+                {`-${Math.round((discount / price) * 100)}%`}
+              </span>
+            )} */}
           </Link>
+
           <div
             onClick={() => onAddToCart(item)}
             className="h-[50px] w-[100%] bg-[rgba(0,0,0,0.03)] absolute bottom-0 translate-y-[100%]
@@ -167,6 +185,15 @@ const ProductCard = ({
         className ?? ""
       } transition-all duration-400`}
     >
+      {discount > 0 && (
+        <StyleDiscount
+          className="absolute top-3 left-[-3px] w-[50px] h-[16px] 
+                    border border-red-200 text-xs tracking-wider  flex justify-center
+                    bg-primary items-center z-50 text-white font-om "
+        >
+          {`-${Math.round((discount / price) * 100)}%`}
+        </StyleDiscount>
+      )}
       <Link
         to={`${PATHS.SHOP.INDEX}/${item?._id}`}
         className={`block relative h-0 pb-[100%] 
@@ -206,15 +233,7 @@ const ProductCard = ({
             }}
           />
         )}
-        {discount > 0 && (
-          <span
-            className="absolute xs:top-4 md:top-7 left-5 xs:w-[30px] md:w-[40px] xs:h-[30px] md:h-[40px] border-dashed
-                    border border-red-200 rounded-[50%] text-xs tracking-wider  flex justify-center
-                    bg-primary items-center z-50 text-white font-om"
-          >
-            {`${Math.round((discount / price) * 100)}%`}
-          </span>
-        )}
+
         <button className="absolute z-50 xs:top-6 md:top-9 right-5 group/hover">
           <svg
             className="xs:w-[18px] md:w-[22px] xs:h-[18px] md:h-[22px] "

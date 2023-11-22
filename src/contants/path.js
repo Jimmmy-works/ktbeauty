@@ -28,8 +28,11 @@ export const PATHS = {
     FILE: `${CMS_PATH}/file`,
     SHIPPING: `${CMS_PATH}/shipping`,
   },
+  LOGIN: "/login",
+  SIGNUP: "/signup",
 
   CHECKOUT: "/checkout",
   CART: "/cart",
   COMPLETE: "/complete" + "/:slug",
+  NOT_FOUND: "/not-found",
 };

@@ -1,5 +1,6 @@
 import { provinceService } from "@/service/provinceService";
 import { changePassword, updateProfile } from "@/store/reducer/authReducer";
+import { getOrderUser, orderActions } from "@/store/reducer/orderReducer";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,19 +12,20 @@ const useProfile = () => {
   const [wards, setWards] = useState([]);
   const [wardId, setWardId] = useState("");
   const { profile } = useSelector((state) => state.auth);
-  const { orderInfo } = useSelector((state) => state.order);
+  const { orderList } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   //// Handle Province
   const getProvinces = async () => {
     try {
       const dataProvince = await provinceService.getCity();
-
-      const _provinces = dataProvince?.data?.results?.map((province) => {
-        return {
-          value: province?.province_id,
-          label: province?.province_name,
-        };
-      });
+      const _provinces = dataProvince?.data?.data?.provinces?.map(
+        (province) => {
+          return {
+            value: province?.id,
+            label: province?.name,
+          };
+        }
+      );
       setProvinces(_provinces);
       return dataProvince;
     } catch (error) {
@@ -34,12 +36,14 @@ const useProfile = () => {
     try {
       const dataDistrict = await provinceService.getDistrict(provinceId);
       if (dataDistrict?.data) {
-        const _distrists = dataDistrict?.data?.results?.map((district) => {
-          return {
-            value: district?.district_id,
-            label: district?.district_name,
-          };
-        });
+        const _distrists = dataDistrict?.data?.data?.districts?.map(
+          (district) => {
+            return {
+              value: district?.id,
+              label: district?.name,
+            };
+          }
+        );
         setDistricts(_distrists);
       }
     } catch (error) {
@@ -50,10 +54,10 @@ const useProfile = () => {
     try {
       const dataWards = await provinceService.getWard(distristId);
       if (dataWards?.data) {
-        const _wards = dataWards?.data?.results?.map((ward) => {
+        const _wards = dataWards?.data?.data?.wards?.map((ward) => {
           return {
-            value: ward?.ward_id,
-            label: ward?.ward_name,
+            value: ward?.id,
+            label: ward?.name,
           };
         });
         setWards(_wards);
@@ -99,7 +103,8 @@ const useProfile = () => {
     if (districtId || profile?.district?._id) {
       getWards(profile?.district?._id);
     }
-  }, [profile]);
+  }, [profile?.province?._id]);
+
   return {
     provinces,
     districts,
@@ -116,7 +121,7 @@ const useProfile = () => {
     getProvinces,
     getDistricts,
     getWards,
-    orderInfo,
+    orderList,
   };
 };
 

@@ -11,15 +11,21 @@ import {
   FileImageOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
-import { Collapse } from "antd";
-import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { Collapse, message } from "antd";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { PATHS } from "@/contants/path";
 import useDashboard from "@/page/CMS/useDashboard";
 import styled from "styled-components";
 import { MainProvider, useMainContext } from "@/components/MainContext";
 import DashboardHeader from "@/page/CMS/Header";
 import AuthenModal from "@/components/Authen";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { decodeToken } from "react-jwt";
 import { getProfileSlug } from "@/store/reducer/authReducer";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
@@ -108,8 +114,11 @@ const SidebarDashboard = styled.aside`
   }
 `;
 const DashboardLayout = () => {
+  const { onOpenLogin } = useMainContext();
   const dispatch = useDispatch();
   const { modalProps } = useDashboard();
+  const navigate = useNavigate();
+  const { profile } = useSelector((state) => state.auth);
   const { toggleSidebar, setToggleSidebar, width } = modalProps || {};
   const handleToggleOverplay = () => {
     setToggleSidebar(false);
@@ -118,10 +127,10 @@ const DashboardLayout = () => {
     const _token = localStorage.getItem(LOCAL_STORAGE.token);
     const resultDecode = decodeToken?.(_token || "");
     const _id = resultDecode?.id;
-    if (_token) {
+    if (_token && profile?.isAdmin === true) {
       dispatch(getAllUsers(_id));
       dispatch(getAllProduct(_id));
-      // dispatch(getCart(_token));
+    } else {
     }
   }, []);
   const items = [

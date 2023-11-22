@@ -1,20 +1,14 @@
 import BreadCrumb from "@/components/BreadCrumb";
-import { useMainContext } from "@/components/MainContext";
 import { PATHS } from "@/contants/path";
+import useProfile from "@/page/Profile/useProfile";
+import { getOrderUser } from "@/store/reducer/orderReducer";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
-import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
-const antIcon = (
-  <LoadingOutlined
-    style={{
-      fontSize: 35,
-    }}
-  />
-);
 const ProfileLayout = () => {
   const { pathname } = useLocation();
   const [loadingPage, setLoadingPage] = useState(false);
+  const dispatch = useDispatch();
   useEffect(() => {
     setLoadingPage(true);
     const timeout = setTimeout(() => {
@@ -22,6 +16,9 @@ const ProfileLayout = () => {
     }, 400);
     return () => clearTimeout(timeout);
   }, [pathname]);
+  useEffect(() => {
+    dispatch(getOrderUser());
+  }, []);
 
   return (
     <main className="main-wrapper ">

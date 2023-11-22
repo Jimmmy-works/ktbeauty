@@ -1,6 +1,12 @@
 import { useState } from "react";
 import "./tailwind.scss";
-import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Router,
+  Routes,
+  redirect,
+} from "react-router-dom";
 import { Suspense, lazy } from "react";
 import { PATHS } from "./contants/path";
 
@@ -14,13 +20,14 @@ const ShopDetail = lazy(() => import("./page/Shop/ShopDetail"));
 const CartPage = lazy(() => import("./page/CartPage"));
 const Checkout = lazy(() => import("./page/Checkout"));
 const OrderComplete = lazy(() => import("./page/OrderComplete"));
-const ProfileLayout = lazy(() => import("./layout/ProfileLayout"));
 const DashboardLayout = lazy(() => import("./layout/DashboardLayout"));
 
-const Account = lazy(() => import("./page/Profile/Account"));
-const Order = lazy(() => import("./page/Profile/Order"));
-const WhiteList = lazy(() => import("./page/Profile/WhiteList"));
-const Address = lazy(() => import("./page/Profile/Address"));
+// const ProfileLayout = lazy(() => import("./layout/ProfileLayout"));
+// const Account = lazy(() => import("./page/Profile/Account"));
+// const Order = lazy(() => import("./page/Profile/Order"));
+// const WhiteList = lazy(() => import("./page/Profile/WhiteList"));
+// const Address = lazy(() => import("./page/Profile/Address"));
+// const PrivateRoute = lazy(() => import("./components/PrivateRoute"));
 
 // import MainLayout from "./layout/MainLayout";
 // import HomePage from "./page/HomePage";
@@ -32,11 +39,13 @@ const Address = lazy(() => import("./page/Profile/Address"));
 // import CartPage from "./page/CartPage";
 // import Checkout from "./page/Checkout";
 // import OrderComplete from "./page/OrderComplete";
-// import ProfileLayout from "./layout/ProfileLayout";
-// import Account from "./page/Profile/Account";
-// import Order from "./page/Profile/Order";
-// import WhiteList from "./page/Profile/WhiteList";
-// import Address from "./page/Profile/Address";
+
+import ProfileLayout from "./layout/ProfileLayout";
+import Account from "./page/Profile/Account";
+import Order from "./page/Profile/Order";
+import WhiteList from "./page/Profile/WhiteList";
+import Address from "./page/Profile/Address";
+import PrivateRoute from "./components/PrivateRoute";
 
 // import DashboardLayout from "./layout/DashboardLayout";
 import DashboardFile from "./page/CMS/File";
@@ -47,6 +56,7 @@ import DashBoardProduct from "./page/CMS/Product";
 import store from "./store";
 import LoadingPage from "./components/Loading/LoadingPage";
 import StatusShipping from "./page/CMS/StatusShipping";
+import Page404 from "./page/Page404";
 function App() {
   return (
     <Provider store={store}>
@@ -63,22 +73,33 @@ function App() {
               <Route path={PATHS.CART} element={<CartPage />} />
               <Route path={PATHS.CHECKOUT} element={<Checkout />} />
               <Route path={PATHS.COMPLETE} element={<OrderComplete />} />
-              <Route path={PATHS.PROFILE.INDEX} element={<ProfileLayout />}>
-                <Route index element={<Account />} />
-                <Route path={PATHS.PROFILE.ORDER} element={<Order />} />
-                <Route path={PATHS.PROFILE.WHITELIST} element={<WhiteList />} />
-                <Route path={PATHS.PROFILE.ADDRESS} element={<Address />} />
+              <Route element={<PrivateRoute />}>
+                <Route path={PATHS.PROFILE.INDEX} element={<ProfileLayout />}>
+                  <Route index element={<Account />} />
+                  <Route path={PATHS.PROFILE.ORDER} element={<Order />} />
+                  <Route
+                    path={PATHS.PROFILE.WHITELIST}
+                    element={<WhiteList />}
+                  />
+                  <Route path={PATHS.PROFILE.ADDRESS} element={<Address />} />
+                </Route>
               </Route>
             </Route>
-          </Routes>
-          <Routes>
-            <Route path={PATHS.CMS.INDEX} element={<DashboardLayout />}>
-              <Route index element={<DashboardUser />} />
-              <Route path={PATHS.CMS.PRODUCT} element={<DashBoardProduct />} />
-              <Route path={PATHS.CMS.IMAGE} element={<DashboardImage />} />
-              <Route path={PATHS.CMS.USER} element={<DashboardUser />} />
-              <Route path={PATHS.CMS.FILE} element={<DashboardFile />} />
-              <Route path={PATHS.CMS.SHIPPING} element={<StatusShipping />} />
+            <Route>
+              <Route path={PATHS.CMS.INDEX} element={<DashboardLayout />}>
+                <Route index element={<DashboardUser />} />
+                <Route
+                  path={PATHS.CMS.PRODUCT}
+                  element={<DashBoardProduct />}
+                />
+                <Route path={PATHS.CMS.IMAGE} element={<DashboardImage />} />
+                <Route path={PATHS.CMS.USER} element={<DashboardUser />} />
+                <Route path={PATHS.CMS.FILE} element={<DashboardFile />} />
+                <Route path={PATHS.CMS.SHIPPING} element={<StatusShipping />} />
+              </Route>
+            </Route>
+            <Route path={PATHS.HOME} element={<MainLayout />}>
+              <Route path="*" element={<Page404 />} />
             </Route>
           </Routes>
         </BrowserRouter>

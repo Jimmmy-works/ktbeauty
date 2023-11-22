@@ -66,7 +66,7 @@ const LoadingSpin = styled.div`
 
 const LoadingPage = ({ loadingPage }) => {
   return (
-    <LoadingSpin className={`loading `}>
+    <LoadingSpin className={`loading`}>
       <div className="loader">
         <div className="bar1"></div>
         <div className="bar2"></div>
@@ -75,10 +75,6 @@ const LoadingPage = ({ loadingPage }) => {
         <div className="bar5"></div>
         <div className="bar6"></div>
       </div>
-      {/* <span className=" animated-transfer-page w-[20px] h-[20px] bg-green-300 block rounded-[50%]"></span>
-      <span className="animated-transfer-page-2 w-[20px] h-[20px] bg-blue-300 block rounded-[50%]"></span>
-      <span className="animated-transfer-page-3 w-[20px] h-[20px] bg-red-300 block rounded-[50%]"></span> */}
-      {/* <Spin size="large"></Spin> */}
     </LoadingSpin>
   );
 };
