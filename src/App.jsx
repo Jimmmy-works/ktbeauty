@@ -22,12 +22,12 @@ const Checkout = lazy(() => import("./page/Checkout"));
 const OrderComplete = lazy(() => import("./page/OrderComplete"));
 const DashboardLayout = lazy(() => import("./layout/DashboardLayout"));
 
-// const ProfileLayout = lazy(() => import("./layout/ProfileLayout"));
-// const Account = lazy(() => import("./page/Profile/Account"));
-// const Order = lazy(() => import("./page/Profile/Order"));
-// const WhiteList = lazy(() => import("./page/Profile/WhiteList"));
-// const Address = lazy(() => import("./page/Profile/Address"));
-// const PrivateRoute = lazy(() => import("./components/PrivateRoute"));
+const ProfileLayout = lazy(() => import("./layout/ProfileLayout"));
+const Account = lazy(() => import("./page/Profile/Account"));
+const Order = lazy(() => import("./page/Profile/Order"));
+const WhiteList = lazy(() => import("./page/Profile/WhiteList"));
+const Address = lazy(() => import("./page/Profile/Address"));
+const PrivateRoute = lazy(() => import("./components/PrivateRoute"));
 
 // import MainLayout from "./layout/MainLayout";
 // import HomePage from "./page/HomePage";
@@ -40,23 +40,23 @@ const DashboardLayout = lazy(() => import("./layout/DashboardLayout"));
 // import Checkout from "./page/Checkout";
 // import OrderComplete from "./page/OrderComplete";
 
-import ProfileLayout from "./layout/ProfileLayout";
-import Account from "./page/Profile/Account";
-import Order from "./page/Profile/Order";
-import WhiteList from "./page/Profile/WhiteList";
-import Address from "./page/Profile/Address";
-import PrivateRoute from "./components/PrivateRoute";
+// import ProfileLayout from "./layout/ProfileLayout";
+// import Account from "./page/Profile/Account";
+// import Order from "./page/Profile/Order";
+// import WhiteList from "./page/Profile/WhiteList";
+// import Address from "./page/Profile/Address";
+// import PrivateRoute from "./components/PrivateRoute";
 
 // import DashboardLayout from "./layout/DashboardLayout";
-import DashboardFile from "./page/CMS/File";
 import DashboardImage from "./page/CMS/ImageProduct";
 import { Provider } from "react-redux";
 import DashboardUser from "./page/CMS/User";
 import DashBoardProduct from "./page/CMS/Product";
 import store from "./store";
 import LoadingPage from "./components/Loading/LoadingPage";
-import StatusShipping from "./page/CMS/StatusShipping";
+import StatusShipping from "./page/CMS/Order";
 import Page404 from "./page/Page404";
+import DashboardOrder from "./page/CMS/Order";
 function App() {
   return (
     <Provider store={store}>
@@ -73,7 +73,7 @@ function App() {
               <Route path={PATHS.CART} element={<CartPage />} />
               <Route path={PATHS.CHECKOUT} element={<Checkout />} />
               <Route path={PATHS.COMPLETE} element={<OrderComplete />} />
-              <Route element={<PrivateRoute />}>
+              <Route path={PATHS.HOME} element={<PrivateRoute></PrivateRoute>}>
                 <Route path={PATHS.PROFILE.INDEX} element={<ProfileLayout />}>
                   <Route index element={<Account />} />
                   <Route path={PATHS.PROFILE.ORDER} element={<Order />} />
@@ -94,8 +94,7 @@ function App() {
                 />
                 <Route path={PATHS.CMS.IMAGE} element={<DashboardImage />} />
                 <Route path={PATHS.CMS.USER} element={<DashboardUser />} />
-                <Route path={PATHS.CMS.FILE} element={<DashboardFile />} />
-                <Route path={PATHS.CMS.SHIPPING} element={<StatusShipping />} />
+                <Route path={PATHS.CMS.ORDER} element={<DashboardOrder />} />
               </Route>
             </Route>
             <Route path={PATHS.HOME} element={<MainLayout />}>

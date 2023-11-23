@@ -1,21 +1,21 @@
 import BreadCrumb from "@/components/BreadCrumb";
+import { useMainContext } from "@/components/MainContext";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { PATHS } from "@/contants/path";
 import useProfile from "@/page/Profile/useProfile";
 import { getOrderUser } from "@/store/reducer/orderReducer";
+import { message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 const ProfileLayout = () => {
-  const { pathname } = useLocation();
-  const [loadingPage, setLoadingPage] = useState(false);
   const dispatch = useDispatch();
-  useEffect(() => {
-    setLoadingPage(true);
-    const timeout = setTimeout(() => {
-      setLoadingPage(false);
-    }, 400);
-    return () => clearTimeout(timeout);
-  }, [pathname]);
   useEffect(() => {
     dispatch(getOrderUser());
   }, []);

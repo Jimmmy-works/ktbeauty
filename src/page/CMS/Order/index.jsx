@@ -12,7 +12,7 @@ const TableCustom = styled.div`
     vertical-align: middle;
   }
 `;
-const StatusShipping = () => {
+const DashboardOrder = () => {
   const { modalProps, userProps } = useDashboard();
   const {
     findPath,
@@ -24,7 +24,8 @@ const StatusShipping = () => {
     width,
   } = modalProps || {};
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.dashboard);
+  const { orders } = useSelector((state) => state.dashboard);
+  console.log("orders", orders);
   const { onDeleteUser, onCreateUser } = userProps || {};
   const columns = [
     {
@@ -71,7 +72,7 @@ const StatusShipping = () => {
       align: "center",
     },
   ];
-  const data = users.map((user, index) => {
+  const data = orders.map((user, index) => {
     return {
       key: `${user?._id}${index}`,
       number:
@@ -251,4 +252,4 @@ const StatusShipping = () => {
   );
 };
 
-export default StatusShipping;
+export default DashboardOrder;

@@ -25,7 +25,7 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
   const [countInStock, setCountInStock] = useState("");
   const [discount, setDiscount] = useState("");
   const [name, setName] = useState("");
-  const [category, setCategory] = useState({});
+  const [category, setCategory] = useState();
   const [rating, setRating] = useState();
   const [desc, setDesc] = useState([]);
   const [descHeading, setDescHeading] = useState("");
@@ -41,6 +41,7 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
   const [URLs, setURLs] = useState([]);
   const [progress, setProgress] = useState("");
   //// firebase
+
   const uploadImages = (files) => {
     const promises = [];
     if (files?.length >= 1) {

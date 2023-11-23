@@ -9,6 +9,9 @@ import { getAllProduct } from "./productReducer";
 const initialState = {
   users: [],
   searchUsers: [],
+  ////
+  orders: [],
+  ////
   errorGetUserAll: null,
   getStatusCreateProduct: null,
 };
@@ -19,6 +22,9 @@ export const { reducer: dashboardReducer, actions: dashboardActions } =
     reducers: {
       setUsers: (state, action) => {
         state.users = action.payload;
+      },
+      setOrders: (state, action) => {
+        state.orders = action.payload;
       },
       setSearchUsers: (state, action) => {
         state.searchUsers = action.payload;
@@ -66,6 +72,21 @@ export const getAllUsers = createAsyncThunk(
       message.error(
         `Tài khoản của bạn không thể thực hiện chức năng ở trang này!`
       );
+      console.log("error", error);
+      throw error;
+    }
+  }
+);
+export const getAllOrder = createAsyncThunk(
+  "dashboard/user/get",
+  async (_, thunkAPI) => {
+    try {
+      const _token = localStorage.getItem(LOCAL_STORAGE.token);
+      const orderData = await dashboardService.getAllOrder(_token);
+      console.log("orderData", orderData);
+      thunkAPI.dispatch(dashboardActions.setOrders(orderData?.data?.data));
+      return orderData?.data?.data;
+    } catch (error) {
       console.log("error", error);
       throw error;
     }

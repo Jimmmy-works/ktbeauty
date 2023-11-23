@@ -47,6 +47,10 @@ export const createOrder = createAsyncThunk(
             products: [],
           })
         );
+        thunkAPI.dispatch(cartActions.setShipping({}));
+        thunkAPI.dispatch(cartActions.setDiscountCode({}));
+        thunkAPI.dispatch(cartActions.setTotal(0));
+        thunkAPI.dispatch(cartActions.setSubTotal(0));
       }
       return response?.data?.data;
     } catch (error) {
@@ -69,7 +73,6 @@ export const getOrderUser = createAsyncThunk(
       return response?.data?.data;
     } catch (error) {
       console.log("error", error);
-      message.error(error?.response?.data?.message);
       throw error;
     }
   }

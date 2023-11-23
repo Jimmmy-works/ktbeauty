@@ -1,8 +1,8 @@
-import { timeVN } from './timeVN';
+import { timeVN } from "./timeVN";
 
 const compareTime = (newestFilter) => {
   function timeToSecs(time) {
-    let [h, m, s] = time.split(':');
+    let [h, m, s] = time.split(":");
     return h * 3.6e3 + m * 60 + s * 1;
   }
   var OGArray = newestFilter;

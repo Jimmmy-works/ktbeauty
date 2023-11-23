@@ -9,6 +9,7 @@ const initialState = {
   listOrder: null,
   updateStatusRegister: THUNK_STATUS.fulfilled,
   updateStatusLogin: THUNK_STATUS.fulfilled,
+  updateStatusUser: null,
   loginError: null,
   checkLogin: false,
 };
@@ -58,6 +59,16 @@ export const { reducer: authReducer, actions: authActions } = createSlice({
     });
     builder.addCase(signin.rejected, (state) => {
       state.updateStatusLogin = THUNK_STATUS.rejected;
+    });
+    // updateStatusUser
+    builder.addCase(getProfileSlug.pending, (state) => {
+      state.updateStatusUser = THUNK_STATUS.pending;
+    });
+    builder.addCase(getProfileSlug.fulfilled, (state) => {
+      state.updateStatusUser = THUNK_STATUS.fulfilled;
+    });
+    builder.addCase(getProfileSlug.rejected, (state) => {
+      state.updateStatusUser = THUNK_STATUS.rejected;
     });
   },
 });
@@ -122,7 +133,6 @@ export const getProfileSlug = createAsyncThunk(
       message.success(dataProfile?.data?.message);
       return dataProfile?.data?.data;
     } catch (error) {
-      message.error(error?.response?.data?.message);
       console.log("error", error);
       throw error;
     }

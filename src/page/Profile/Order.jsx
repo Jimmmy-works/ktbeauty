@@ -9,6 +9,7 @@ import { Empty } from "antd";
 import styled from "styled-components";
 import Button from "@/components/Button";
 import { useSelector } from "react-redux";
+import compareTime from "@/utils/compareTime";
 const EmptyWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -24,18 +25,21 @@ const EmptyWrapper = styled.div`
 `;
 const Order = () => {
   const { orderList } = useSelector((state) => state.order);
-  // const { orderList } = useProfile();
   const { width } = useWindowSize();
   const refContent = useRef(null);
   const [isActive, setIsActive] = useState(null);
-  console.log("orderList", orderList);
+  const sortOrderList = [...orderList]
+    ?.sort((a, b) => {
+      return new Date(b?.createdAt) - new Date(a?.createdAt);
+    })
+    ?.map((item) => item);
   return (
     <div className="order">
       <h3 className="text-[24px] font-osb text-black-333 xs:my-[16px]">
         Giỏ hàng của bạn
       </h3>
-      {orderList?.length ? (
-        orderList.map((item, index) => {
+      {sortOrderList?.length ? (
+        sortOrderList.map((item, index) => {
           const {
             _id,
             products,
@@ -48,16 +52,11 @@ const Order = () => {
           } = item || {};
           return (
             <div className="not-productsChild:mt-[20px]">
-              <div
-                className="flex items-center justify-between p-[0_0_8px_0] cursor-pointer group/hover"
-                onClick={() => {
-                  setIsActive((prev) => (prev === index ? null : index));
-                }}
-              >
+              <div className="flex items-center justify-between p-[0_0_8px_0] cursor-pointer ">
                 <div className="flex xs:items-start md:items-center md:flex-row xs:flex-col xs:gap-3  md:gap-5">
                   <h3 className="text-sm text-black-333 font-osr">ID: {_id}</h3>
                   <p className="text-sm text-black-333 font-osr">
-                    {`${dateVN(createdAt)} ${timeVN(createdAt)}`}
+                    {`${localeVN(createdAt)}`}
                   </p>
                   <Button
                     className={`md:text-xs md:px-[15px] md:py-[5px]  `}
@@ -68,12 +67,15 @@ const Order = () => {
                 </div>
 
                 <div
+                  onClick={() => {
+                    setIsActive((prev) => (prev === index ? null : index));
+                  }}
                   className={`p-[10px] rounded-[50%] cursor-pointer group/hover
-                  group-hover/hover:bg-primary duration-400 transition-colors
+                  hover:bg-primary duration-400 transition-colors
                    ${isActive === index ? "bg-primary" : "bg-gray-300 "}`}
                 >
                   <svg
-                    className={`h-[12px] w-[12px] duration-400 transition-transform
+                    className={`h-[12px] w-[12px] duration-400 transition-transform 
                    ${isActive === index ? "rotate-[-180deg]" : "rotate-0"}`}
                     viewBox="0 0 24 24"
                   >
@@ -142,8 +144,6 @@ const Order = () => {
                               </Link>
                             </div>
                           </td>
-                          {/* <td className=""></td> */}
-
                           {width >= 768 ? (
                             <td className="">{formatPriceVND(price)}</td>
                           ) : (
@@ -171,26 +171,28 @@ const Order = () => {
                   md:flex-row xs:flex-col "
                 >
                   <div
-                    className="text-black-555 text-[16px] font-om xs:w-full md:w-1/3 flex 
-                 flex-col gap-1
-                "
-                  >
-                    Giảm giá:
-                    <span className="pl-[8px] text-primary ">
-                      {discount?.type}
-                    </span>
-                  </div>
-                  <div
                     className="text-black-555 text-[16px] font-om  xs:w-full md:w-1/3  flex 
-                 flex-col gap-1"
+                        flex-col gap-1"
                   >
                     Shipping:
                     <span className="pl-[8px] text-primary capitalize ">
                       {total >= 3000000
                         ? `${shipping?.type}: Miễn phí`
-                        : shipping?.label}
+                        : `${shipping?.type}: ${formatPriceVND(
+                            shipping?.price
+                          )}`}
                     </span>
                   </div>
+                  <div
+                    className="text-black-555 text-[16px] font-om xs:w-full md:w-1/3 flex 
+                 flex-col gap-1 "
+                  >
+                    Giảm giá:
+                    <span className="pl-[8px] text-primary ">
+                      {formatPriceVND(discount?.price)}
+                    </span>
+                  </div>
+
                   <div
                     className="text-black-555 text-[16px] font-om xs:w-full md:w-1/3 flex 
                  flex-col gap-1"

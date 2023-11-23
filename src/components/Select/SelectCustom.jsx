@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const SelectCustom = () => {
+const SelectCustom = ({ data, onChangeSort }) => {
   const [dropdown, setDropdown] = useState(false);
   const [valueOption, setValueOption] = useState("");
   const [titleSelect, setTitleSelect] = useState("");
@@ -8,8 +8,9 @@ const SelectCustom = () => {
     e.stopPropagation();
     setDropdown(!dropdown);
   };
-  const onSelectOption = (e) => {
-    setValueOption(e.target.value);
+  const onSelectOption = (name, e) => {
+    setValueOption(name);
+    onChangeSort(name);
     setTitleSelect(e.target.innerText);
     setDropdown(false);
   };
@@ -37,7 +38,21 @@ const SelectCustom = () => {
         className={` absolute top-[100%] duration-300 transition-all w-full z-[100]
       ${dropdown ? " opacity-100 visible" : "opacity-0 invisible "}`}
       >
-        <li
+        {data?.length &&
+          data?.map((item) => {
+            return (
+              <li
+                className="pt-[10px] font-osr text-sm leading-[20px] cursor-pointer text-black-333 
+                  bg-grey-f7f6 p-[10px] hover:bg-gray-200 duration-300 transition-all"
+                value={item?.value}
+                key={item?.name}
+                onClick={(e) => onSelectOption(item?.name, e)}
+              >
+                {item?.label}
+              </li>
+            );
+          })}
+        {/* <li
           className=" text-sm text-black-333 font-osr  leading-[20px] cursor-pointer
                   bg-grey-f7f6 p-[10px] hover:bg-gray-200 duration-300 transition-all"
           value={`1`}
@@ -76,7 +91,7 @@ const SelectCustom = () => {
           onClick={onSelectOption}
         >
           Sort By Lower Price
-        </li>
+        </li> */}
       </ul>
     </div>
   );

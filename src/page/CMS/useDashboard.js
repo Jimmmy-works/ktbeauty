@@ -106,22 +106,21 @@ const useDashboard = () => {
   const onUpdateProduct = async (id, payload) => {
     try {
       const response = await dashboardService.updateProduct(id, payload);
-      return response;
+      console.log("response", response);
+      message.success(response?.data?.message);
+      if (response?.status === 200) {
+        dispatch(getAllProduct());
+      }
+      return response?.data?.data;
     } catch (error) {
       console.log("error", error);
       throw error;
     }
   };
-  const onDeleteImage = async (urls) => {
-    console.log("urls", urls);
+  const onDeleteImageFirebase = async (urls) => {
     try {
-      // const responseUrls = await urls?.map((url) => {
-      //   deleteObject(ref(firebaseStorage, url)).then((res) => {
-      //     console.log("res");
-      //   });
-      // });
-      // onUpdateProduct(ids, payload);
-      // return responseUrls;
+      const responseUrls = await deleteObject(ref(firebaseStorage, urls));
+      return responseUrls;
     } catch (error) {
       console.log("error", error);
       throw error;
@@ -156,10 +155,12 @@ const useDashboard = () => {
   };
   const productProps = {
     categories,
+    products,
     onCreateProduct,
     onDeleteProduct,
-    onDeleteImage,
+    onDeleteImageFirebase,
     onGetProductDetail,
+    onUpdateProduct,
     searchProducts,
   };
   const modalProps = {

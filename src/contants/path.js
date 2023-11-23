@@ -26,7 +26,7 @@ export const PATHS = {
     IMAGE: `${CMS_PATH}/image`,
     USER: `${CMS_PATH}/user`,
     FILE: `${CMS_PATH}/file`,
-    SHIPPING: `${CMS_PATH}/shipping`,
+    ORDER: `${CMS_PATH}/order`,
   },
   LOGIN: "/login",
   SIGNUP: "/signup",

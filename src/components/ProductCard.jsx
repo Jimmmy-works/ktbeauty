@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { formatPriceVND } from "@/utils/formatPrice";
 import LoadingSkeleton from "./Loading/LoadingSkeleton";
 import { twMerge } from "tailwind-merge";
+import { dateVN, localeVN, timeVN } from "@/utils/timeVN";
 const StyleRate = styled.div`
   line-height: 20px;
   height: auto;
@@ -40,7 +41,7 @@ const ProductCard = ({
   onLoadingImage,
   onAddToCart,
 }) => {
-  const { _id, name, price, rating, image, discount, countInStock } =
+  const { _id, name, price, rating, image, discount, countInStock, createdAt } =
     item || {};
 
   if (isProductDetail) {
@@ -165,14 +166,14 @@ const ProductCard = ({
             <Rate />
           </StyleRate>
           <div
-            className=" text-sm text-primary font-osb flex md:flex-row xs:flex-col xs:gap-[4px]
+            className=" text-sm text-primary md:items-center font-osb flex md:flex-row xs:flex-col xs:gap-[4px]
            md:gap-2 mt-[8px] leading-[18px] "
           >
-            <span className="line-through text-black-555">
-              {formatPriceVND(price)}
-            </span>
             <span className=" text-[15px] text-primary ">
               {formatPriceVND(price - discount)}
+            </span>
+            <span className="line-through text-black-555">
+              {formatPriceVND(price)}
             </span>
           </div>
         </div>
@@ -261,11 +262,11 @@ const ProductCard = ({
            md:gap-2
          text-primary mt-[6px] xs:mb-[4px] md:mb-[10px] leading-[18px] "
         >
-          <span className="line-through text-black-555">
-            {formatPriceVND(price)}
-          </span>
           <span className=" text-[15px] text-primary ">
             {formatPriceVND(price - discount)}
+          </span>
+          <span className="line-through text-black-555">
+            {formatPriceVND(price)}
           </span>
         </div>
 

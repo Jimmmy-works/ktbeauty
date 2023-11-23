@@ -52,6 +52,8 @@ const Shop = () => {
     selectedFilters,
     filteredItems,
     setSelectedFilters,
+    optionSort,
+    onChangeFeaturedTab,
   } = useShop();
 
   const filterMobileProps = {
@@ -90,7 +92,7 @@ const Shop = () => {
               data={categories}
             />
             <Accordion
-              heading={`Lọc sản phảm theo giá`}
+              heading={`Lọc theo giá`}
               renderProps={(props) => {
                 return <InputRange {...props} />;
               }}
@@ -229,7 +231,10 @@ const Shop = () => {
             </NavbarFilter>
             <div className=" gap-2 items-center xs:hidden xl:flex">
               <label className="font-osl text-black-333 text-sm">Sort:</label>
-              <SelectCustom />
+              <SelectCustom
+                onChangeSort={onChangeFeaturedTab}
+                data={optionSort}
+              />
             </div>
           </div>
           <div

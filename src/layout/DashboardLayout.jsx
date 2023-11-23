@@ -34,6 +34,7 @@ import {
   getAllCategories,
   getAllProduct,
 } from "@/store/reducer/productReducer";
+import { getOrderUser } from "@/store/reducer/orderReducer";
 const SidebarDashboard = styled.aside`
   z-index: 20;
   .ant-collapse {
@@ -123,16 +124,23 @@ const DashboardLayout = () => {
   const handleToggleOverplay = () => {
     setToggleSidebar(false);
   };
+  const _token = localStorage.getItem(LOCAL_STORAGE.token);
   useEffect(() => {
-    const _token = localStorage.getItem(LOCAL_STORAGE.token);
     const resultDecode = decodeToken?.(_token || "");
     const _id = resultDecode?.id;
     if (_token && profile?.isAdmin === true) {
-      dispatch(getAllUsers(_id));
-      dispatch(getAllProduct(_id));
+      dispatch(getAllUsers());
+      dispatch(getAllProduct());
+      dispatch(getOrderUser());
     } else {
     }
   }, []);
+  useEffect(() => {
+    if (!!!profile?.isAdmin) {
+      navigate("/");
+    }
+  }, []);
+
   const items = [
     {
       key: "1",
@@ -211,7 +219,7 @@ const DashboardLayout = () => {
               <p className="text-sm font-osr  text-black-555">Product</p>
             )}
           </NavLink>
-          <NavLink className="box-item " to={PATHS.CMS.SHIPPING}>
+          <NavLink className="box-item " to={PATHS.CMS.ORDER}>
             <ShoppingCartOutlined
               style={{
                 fontSize: "14px",
