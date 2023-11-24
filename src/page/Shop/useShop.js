@@ -10,9 +10,11 @@ import {
 import compareTime from "@/utils/compareTime";
 import { localeVN } from "@/utils/timeVN";
 import { message } from "antd";
+import { limit } from "firebase/firestore";
+import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 const useShop = () => {
   const { isFilter, onToggleFilter, setIsFilter } = useMainContext();
   const [min, setMin] = useState(0);
@@ -21,6 +23,8 @@ const useShop = () => {
   const onImageLoading = () => {
     setImageLoading(false);
   };
+  /// redux
+  const dispatch = useDispatch();
   const {
     products,
     productDetail,
@@ -33,9 +37,20 @@ const useShop = () => {
   const { updateStatusCreateCart, cartInfo, minPrice, maxPrice } = useSelector(
     (state) => state.cart
   );
+  /// useParams
   const { slug } = useParams();
-  const dispatch = useDispatch();
+  /// handle Update Query String
+  const [searchParams, setSearchParams] = useSearchParams();
+  const updateQueryString = (queryObject) => {
+    const newQuerryString = queryString.stringify({
+      ...queryObject,
+      limit: 9,
+    });
+    setSearchParams(new URLSearchParams(newQuerryString));
+  };
+  /// category
   const [categoryTab, setCategoryTab] = useState(CATEGORIES_OPTIONS.ALL);
+  /// filter
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [filteredItems, setFilteredItems] = useState(products);
   const [optionSortSelected, setOptionSortSelected] = useState(
@@ -44,7 +59,14 @@ const useShop = () => {
   const onChangeFeaturedTab = (name) => {
     setOptionSortSelected(name);
   };
-  const customCategories = ["face", "body", "supplement", "other"];
+  const customCategories = categories
+    .filter((cate) => {
+      return cate?.name !== "all";
+    })
+    .map((cate) => {
+      let value = cate?.name;
+      return value;
+    });
   const newMin = minPrice * 1000;
   const newMax = maxPrice * 1000;
   const onFilterButtonClick = (selectedCategory) => {
@@ -53,8 +75,17 @@ const useShop = () => {
         return el !== selectedCategory;
       });
       setSelectedFilters(filterCate);
+      console.log("filterCate", filterCate);
+      updateQueryString({ categories: filterCate?.toString() });
     } else {
       setSelectedFilters([...selectedFilters, selectedCategory]);
+      console.log("[...selectedFilters, selectedCategory]", [
+        ...selectedFilters,
+        selectedCategory,
+      ]);
+      updateQueryString({
+        categories: [...selectedFilters, selectedCategory]?.toString(),
+      });
     }
   };
   const onFilterItems = () => {
@@ -117,7 +148,6 @@ const useShop = () => {
         }
       });
       if (optionSortSelected === OPTION_SORT.OLD) {
-        console.log("OLD");
         finalItems = [...finalItems]
           ?.sort((a, b) => {
             return new Date(a?.createdAt) - new Date(b?.createdAt);
@@ -125,7 +155,6 @@ const useShop = () => {
           ?.map((item) => item);
       }
       if (optionSortSelected === OPTION_SORT.NEWEST) {
-        console.log("NEWEST");
         finalItems = [...finalItems]
           ?.sort((a, b) => {
             return new Date(b?.createdAt) - new Date(a?.createdAt);
@@ -133,7 +162,6 @@ const useShop = () => {
           ?.map((item) => item);
       }
       if (optionSortSelected === OPTION_SORT.LOWER_PRICE) {
-        console.log("LOWER_PRICE");
         finalItems = [...finalItems]
           ?.sort((a, b) => {
             return a?.price - a?.discount - (b?.price - b?.discount);
@@ -141,7 +169,6 @@ const useShop = () => {
           ?.map((item) => item);
       }
       if (optionSortSelected === OPTION_SORT.HIGH_PRICE) {
-        console.log("HIGH_PRICE");
         finalItems = [...finalItems]
           ?.sort((a, b) => {
             return b?.price - b?.discount - (a?.price - a?.discount);
@@ -149,7 +176,6 @@ const useShop = () => {
           ?.map((item) => item);
       }
       if (optionSortSelected === OPTION_SORT.POPULAR) {
-        console.log("POPULAR");
         finalItems = [...finalItems];
       }
       setFilteredItems(finalItems);
@@ -164,13 +190,7 @@ const useShop = () => {
     { value: 4, name: "high-price", label: "Sort By High Price" },
     { value: 5, name: "lower-price", label: "Sort By Lower Price" },
   ];
-  useEffect(() => {
-    onFilterItems();
-  }, [selectedFilters, products, newMax, newMin, optionSortSelected]);
-
-  const onChangeCategoryTab = (tab) => {
-    setCategoryTab(tab);
-  };
+  /// Main
   const onAddToCart = async (payload) => {
     try {
       if (payload?._id && updateStatusCreateCart !== THUNK_STATUS.pending) {
@@ -228,6 +248,14 @@ const useShop = () => {
     } catch (error) {
       console.log("error", error);
     }
+  };
+
+  useEffect(() => {
+    onFilterItems();
+  }, [selectedFilters, products, newMax, newMin, optionSortSelected]);
+
+  const onChangeCategoryTab = (tab) => {
+    setCategoryTab(tab);
   };
   useEffect(() => {
     if (slug) {

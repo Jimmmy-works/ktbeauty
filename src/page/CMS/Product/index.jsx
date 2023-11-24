@@ -1,28 +1,25 @@
-import React, { useEffect, useState } from "react";
-import useDashboard from "../useDashboard";
-import { Checkbox, Collapse, Image, Table, message } from "antd";
-import ModalCreateProduct from "./ModalCreateProduct";
 import { MODAL_OPTION } from "@/contants/general";
 import { formatPriceVND } from "@/utils/formatPrice";
-import { getDownloadURL, listAll, ref } from "firebase/storage";
-import { firebaseStorage } from "@/config/firebase";
-import ModalUpdateProduct from "./ModalUpdateProduct";
-import { getAllProduct } from "@/store/reducer/productReducer";
-import { LOCAL_STORAGE } from "@/contants/localStorage";
-import { decodeToken } from "react-jwt";
+import { Image, Table, message } from "antd";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
+import useDashboard from "../useDashboard";
+import ModalCreateProduct from "./ModalCreateProduct";
+import ModalUpdateProduct from "./ModalUpdateProduct";
+import styled from "styled-components";
 
+const TableStyle = styled.div`
+  .ant-table {
+    min-height: 750px;
+  }
+`;
 const DashBoardProduct = () => {
-  const dispatch = useDispatch();
   const { modalProps, productProps } = useDashboard();
-  const { onDeleteProduct, onDeleteImage, searchProducts } = productProps || {};
-  const [selectedImage, setSelectedImage] = useState([]);
+  const { onDeleteProduct, searchProducts } = productProps || {};
   const {
-    findPath,
     onShowModal,
     onCloseModal,
     openModalAndt,
-    onAddProduct,
     toggleSidebar,
     width,
     products,
@@ -43,30 +40,13 @@ const DashBoardProduct = () => {
       dataIndex: "name",
       align: "center",
     },
-    // {
-    //   title: "Description",
-    //   dataIndex: "description",
-    //   align: "center",
-    // },
+
     {
       title: "Price",
       dataIndex: "price",
       align: "center",
     },
-
-    {
-      title: "Action",
-      dataIndex: "action",
-      align: "center",
-    },
   ];
-  const [imgList, setImgList] = useState([]);
-  // const onSelectImages = (e) => {
-  //   const target = e.target.value;
-  //   selectedImage.push(target);
-  //   setSelectedImage([...selectedImage]);
-  // };
-  const imageListRef = ref(firebaseStorage, `ktbeauty/products`);
   const data = searchProducts.map((product, index) => {
     return {
       key: product?._id,
@@ -88,62 +68,6 @@ const DashBoardProduct = () => {
             <span className="text-sm font-osr font-normal ml-[4px]">{`${product?.name}`}</span>
           </strong>
         ),
-      // description: (
-      //   <ul>
-      //     {width < 1024 && (
-      //       <li className="text-center mb-[10px] text-sm font-osr font-semibold">
-      //         Description:
-      //       </li>
-      //     )}
-      //     <li>
-      //       <Collapse>
-      //         <Collapse.Panel
-      //           style={{ textAlign: "left" }}
-      //           header="Heading"
-      //           key="1"
-      //         >
-      //           {product?.description?.descTitle}
-      //         </Collapse.Panel>
-      //       </Collapse>
-      //     </li>
-      //     <li className="mt-[5px] cursor-pointer group overflow-hidden">
-      //       <Collapse>
-      //         <Collapse.Panel
-      //           style={{ textAlign: "left" }}
-      //           header="Subcase"
-      //           key="1"
-      //         >
-      //           {product?.description?.descSub?.length &&
-      //             product?.description?.descSub.map((sub, index) => {
-      //               return (
-      //                 <div key={`${sub}${index}`}>
-      //                   <a>
-      //                     <strong className=" mr-[4px]">{index + 1}/</strong>
-      //                     {sub || ""}
-      //                   </a>
-      //                   <br></br>
-      //                 </div>
-      //               );
-      //             })}
-      //         </Collapse.Panel>
-      //       </Collapse>
-      //     </li>
-      //     <li className="mt-[5px]">
-      //       <Collapse>
-      //         <Collapse.Panel
-      //           style={{ textAlign: "left" }}
-      //           header="Intro"
-      //           key="1"
-      //         >
-      //           <>
-      //             <p> </p>
-      //             {product?.description?.descIntro}
-      //           </>
-      //         </Collapse.Panel>
-      //       </Collapse>
-      //     </li>
-      //   </ul>
-      // ),
       price:
         width > 1024 ? (
           `${formatPriceVND(product?.price)}`
@@ -181,31 +105,11 @@ const DashBoardProduct = () => {
           </Image.PreviewGroup>
         </div>
       ),
-      action: (
-        <>
-          {width < 1024 && (
-            <h4 className="text-center mb-[10px] text-sm font-osr font-semibold">
-              Action:
-            </h4>
-          )}
-          <div>
-            <button
-              className=" border-solid border-[#033C73] border p-[6px_12px] text-sm duration-400 transition-colors
-              hover:bg-[#033C73] hover:text-white"
-            >
-              Delete
-            </button>
-          </div>
-        </>
-      ),
     };
   });
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
-  };
-  const handleUpdateProduct = (e) => {
-    console.log("e", e);
   };
   const rowSelection = {
     selectedRowKeys,
@@ -225,12 +129,8 @@ const DashBoardProduct = () => {
         onDeleteProduct(filterProducts[index]?.productid);
       }
   };
-  const handleDeleteImageSelected = () => {
-    if (selectedImage) onDeleteImage(selectedImage);
-  };
   const handleDelectSelected = () => {
     handleDeleteProductSelected();
-    // handleDeleteImageSelected();
   };
   const findUpdateProduct = products?.find(
     (item) => item?._id === selectedRowKeys.toString()
@@ -240,7 +140,6 @@ const DashBoardProduct = () => {
       <ModalCreateProduct
         {...productProps}
         open={openModalAndt}
-        add={onAddProduct}
         setShowModal={onShowModal}
         cancel={onCloseModal}
       />
@@ -248,7 +147,6 @@ const DashBoardProduct = () => {
         productDetail={findUpdateProduct}
         {...productProps}
         open={openModalAndt}
-        add={onAddProduct}
         setShowModal={onShowModal}
         cancel={onCloseModal}
       />
@@ -305,16 +203,21 @@ const DashBoardProduct = () => {
           </button>
         </div>
       </div>
-      <Table
-        style={{ verticalAlign: "middle" }}
-        tableLayout={"auto"}
-        pagination={{
-          position: ["bottomCenter"],
-        }}
-        rowSelection={rowSelection}
-        columns={columns}
-        dataSource={data}
-      />
+      <TableStyle>
+        <Table
+          style={{ verticalAlign: "middle", minHeight: "800px" }}
+          rootClassName=""
+          tableLayout={"auto"}
+          pagination={{
+            pageSize: 7,
+            total: 100,
+            position: ["bottomCenter"],
+          }}
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={data}
+        />
+      </TableStyle>
     </div>
   );
 };

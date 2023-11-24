@@ -21,7 +21,6 @@ const initialState = {
 export const { reducer: cartReducer, actions: cartActions } = createSlice({
   initialState,
   name: "cart",
-
   reducers: {
     setMinPrice: (state, action) => {
       state.minPrice = action.payload;

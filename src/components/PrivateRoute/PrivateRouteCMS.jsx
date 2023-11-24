@@ -4,18 +4,18 @@ import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import LoadingPage from "../Loading/LoadingPage";
 
-const PrivateRoute = () => {
+const PrivateRouteCMS = () => {
   const { profile } = useSelector((state) => state.auth);
   const _token = localStorage.getItem(LOCAL_STORAGE.token);
   const navigate = useNavigate();
   useEffect(() => {
-    if (!_token) {
+    if (!profile || !_token || !profile?.isAdmin) {
       navigate("/");
     }
-  }, []);
-  if (!profile || profile === null) {
+  }, [profile]);
+  if (!profile || !profile?.isAdmin) {
     return <LoadingPage />;
   }
   return <Outlet></Outlet>;
 };
-export default PrivateRoute;
+export default PrivateRouteCMS;

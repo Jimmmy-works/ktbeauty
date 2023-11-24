@@ -57,6 +57,7 @@ import LoadingPage from "./components/Loading/LoadingPage";
 import StatusShipping from "./page/CMS/Order";
 import Page404 from "./page/Page404";
 import DashboardOrder from "./page/CMS/Order";
+import PrivateRouteCMS from "./components/PrivateRoute/PrivateRouteCMS";
 function App() {
   return (
     <Provider store={store}>
@@ -73,7 +74,7 @@ function App() {
               <Route path={PATHS.CART} element={<CartPage />} />
               <Route path={PATHS.CHECKOUT} element={<Checkout />} />
               <Route path={PATHS.COMPLETE} element={<OrderComplete />} />
-              <Route path={PATHS.HOME} element={<PrivateRoute></PrivateRoute>}>
+              <Route element={<PrivateRoute></PrivateRoute>}>
                 <Route path={PATHS.PROFILE.INDEX} element={<ProfileLayout />}>
                   <Route index element={<Account />} />
                   <Route path={PATHS.PROFILE.ORDER} element={<Order />} />
@@ -85,7 +86,7 @@ function App() {
                 </Route>
               </Route>
             </Route>
-            <Route>
+            <Route element={<PrivateRouteCMS />}>
               <Route path={PATHS.CMS.INDEX} element={<DashboardLayout />}>
                 <Route index element={<DashboardUser />} />
                 <Route

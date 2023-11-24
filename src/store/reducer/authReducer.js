@@ -12,6 +12,7 @@ const initialState = {
   updateStatusUser: null,
   loginError: null,
   checkLogin: false,
+  checkSavePassword: false,
 };
 export const { reducer: authReducer, actions: authActions } = createSlice({
   initialState,
@@ -37,6 +38,9 @@ export const { reducer: authReducer, actions: authActions } = createSlice({
     },
     checkLogin: (state, action) => {
       state.checkLogin = action.payload;
+    },
+    checkSavePassword: (state, action) => {
+      state.checkSavePassword = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -82,18 +86,18 @@ export const signin = createAsyncThunk(
       const signinRes = resUserSignin?.data?.data;
       // save localStorage => refreshToken interceptors
       localStorage.setItem(LOCAL_STORAGE.token, signinRes?.access_token);
-      localStorage.setItem(
-        LOCAL_STORAGE.refreshToken,
-        signinRes?.refresh_token
-      );
+      if (thunkAPI.getState()?.auth?.checkSavePassword) {
+        localStorage.setItem(
+          LOCAL_STORAGE.refreshToken,
+          signinRes?.refresh_token
+        );
+      }
       // decode token
-      const decodeTokenRes = decodeToken(
-        localStorage.getItem(LOCAL_STORAGE.token)
-      );
+      const decodeTokenRes = decodeToken(signinRes?.access_token);
       /// get profile after login
       const resUserDetail = await authService.getProfileSlug(
         decodeTokenRes?.id,
-        localStorage.getItem(LOCAL_STORAGE.token)
+        signinRes?.access_token
       );
       if (resUserDetail?.status === 200) {
         thunkAPI.dispatch(authActions.setProfile(resUserDetail?.data?.data));

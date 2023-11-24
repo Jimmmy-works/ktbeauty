@@ -100,7 +100,7 @@ export const createProduct = createAsyncThunk(
       const productData = await dashboardService.createProduct(payload, _token);
       thunkAPI.dispatch(getAllProduct(_token));
       message.success(productData?.data?.message);
-      return productData?.data?.data;
+      return productData?.data;
     } catch (error) {
       message.error(error?.response?.data?.message);
       console.log("error", error);

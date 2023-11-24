@@ -1,40 +1,24 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-  DashboardOutlined,
-  UserAddOutlined,
-  ShopOutlined,
-  FileImageOutlined,
-  ShoppingCartOutlined,
-} from "@ant-design/icons";
-import { Collapse, message } from "antd";
-import {
-  Link,
-  NavLink,
-  Outlet,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
-import { PATHS } from "@/contants/path";
-import useDashboard from "@/page/CMS/useDashboard";
-import styled from "styled-components";
-import { MainProvider, useMainContext } from "@/components/MainContext";
-import DashboardHeader from "@/page/CMS/Header";
 import AuthenModal from "@/components/Authen";
-import { useDispatch, useSelector } from "react-redux";
-import { decodeToken } from "react-jwt";
-import { getProfileSlug } from "@/store/reducer/authReducer";
-import { LOCAL_STORAGE } from "@/contants/localStorage";
+import { MainProvider } from "@/components/MainContext";
+import { PATHS } from "@/contants/path";
+import DashboardHeader from "@/page/CMS/Header";
+import useDashboard from "@/page/CMS/useDashboard";
 import { getAllUsers } from "@/store/reducer/dashboardReducer";
-import {
-  getAllCategories,
-  getAllProduct,
-} from "@/store/reducer/productReducer";
 import { getOrderUser } from "@/store/reducer/orderReducer";
+import { getAllProduct } from "@/store/reducer/productReducer";
+import {
+  DashboardOutlined,
+  FileImageOutlined,
+  FileOutlined,
+  ShopOutlined,
+  ShoppingCartOutlined,
+  UserAddOutlined,
+} from "@ant-design/icons";
+import { Collapse } from "antd";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, Outlet } from "react-router-dom";
+import styled from "styled-components";
 const SidebarDashboard = styled.aside`
   z-index: 20;
   .ant-collapse {
@@ -115,31 +99,20 @@ const SidebarDashboard = styled.aside`
   }
 `;
 const DashboardLayout = () => {
-  const { onOpenLogin } = useMainContext();
   const dispatch = useDispatch();
   const { modalProps } = useDashboard();
-  const navigate = useNavigate();
   const { profile } = useSelector((state) => state.auth);
   const { toggleSidebar, setToggleSidebar, width } = modalProps || {};
   const handleToggleOverplay = () => {
     setToggleSidebar(false);
   };
-  const _token = localStorage.getItem(LOCAL_STORAGE.token);
   useEffect(() => {
-    const resultDecode = decodeToken?.(_token || "");
-    const _id = resultDecode?.id;
-    if (_token && profile?.isAdmin === true) {
+    if (profile?.isAdmin) {
       dispatch(getAllUsers());
       dispatch(getAllProduct());
       dispatch(getOrderUser());
-    } else {
     }
-  }, []);
-  useEffect(() => {
-    if (!!!profile?.isAdmin) {
-      navigate("/");
-    }
-  }, []);
+  }, [profile]);
 
   const items = [
     {

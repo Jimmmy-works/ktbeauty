@@ -1,15 +1,13 @@
-import { firebaseStorage, firebaseStore } from "@/config/firebase";
-import { Modal, Rate, Select, Space, message } from "antd";
-import { addDoc, collection, doc, getDocs } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import React, { useEffect, useState } from "react";
-import useDashboard from "../useDashboard";
+import { firebaseStorage } from "@/config/firebase";
+import { Empty, Modal, Rate, Tooltip, message } from "antd";
 import { MODAL_OPTION } from "@/contants/general";
+import MDEditor from "@uiw/react-md-editor";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
-import MDEditor, { selectWord } from "@uiw/react-md-editor";
-import { THUNK_STATUS } from "@/contants/thunkstatus";
 import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
+import useDashboard from "../useDashboard";
 const MDEditorWrapper = styled.div`
   margin-top: 20px;
   p {
@@ -17,7 +15,14 @@ const MDEditorWrapper = styled.div`
     opacity: 1 !important;
   }
 `;
-const ModalCreateProduct = ({ open, cancel, add, categories }) => {
+const ModalCreateProduct = ({
+  open,
+  cancel,
+  add,
+  categories,
+  onUpdateProduct,
+  onDeleteImageFirebase,
+}) => {
   const { productProps } = useDashboard();
   const { onCreateProduct } = productProps || {};
   const [descIntro, setDescIntro] = useState("");
@@ -30,18 +35,41 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
   const [desc, setDesc] = useState([]);
   const [descHeading, setDescHeading] = useState("");
   const [renderDesc, setRenderDesc] = useState([]);
+  //// handle Description
   const addingDescription = (payload) => {
     setRenderDesc([...renderDesc, payload]);
     setDesc("");
   };
-  ////
+  const deleteDescription = (payload) => {
+    const filter = renderDesc.filter((item, index) => {
+      return index !== payload;
+    });
+    setRenderDesc(filter);
+  };
+  //// Category
+  const optionCategories = categories
+    .filter((cate) => {
+      return cate?.name !== "all";
+    })
+    .map((cate) => {
+      let value = {
+        _id: cate?._id,
+        name: cate?.name,
+      };
+      return value;
+    });
+  const handleChangeCategories = (e, cate) => {
+    e.preventDefault();
+    setCategory(cate);
+  };
+  /// Redux
   const { getStatusCreateProduct } = useSelector((state) => state.dashboard);
   ////
   const [images, setImages] = useState([]);
   const [URLs, setURLs] = useState([]);
   const [progress, setProgress] = useState("");
-  //// firebase
-
+  const [currentImages, setCurrentImages] = useState([]);
+  ////  handle Images
   const uploadImages = (files) => {
     const promises = [];
     if (files?.length >= 1) {
@@ -81,14 +109,10 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
       Promise.all(promises)
         .then(() => {
           message.success("All images uploaded");
+          setURLs([]);
         })
         .catch((err) => console.log(files));
     }
-  };
-  ////
-  const handleChangeCategories = (e, cate) => {
-    e.preventDefault();
-    setCategory(cate?.value);
   };
   const handleImageChange = (e) => {
     let allImages = [];
@@ -101,23 +125,42 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
     /// upload Image from onchange input files
     uploadImages(allImages);
   };
+  /// handle Main
+  const handleDeleteImage = (name) => {
+    const filter = currentImages?.filter((img) => img !== name);
+    const find = currentImages?.find((img) => img === name);
+    onDeleteImageFirebase(`${find}`);
+    setCurrentImages(filter);
+  };
+  const handleCancel = () => {
+    for (let index = 0; index < currentImages.length; index++) {
+      onDeleteImageFirebase(currentImages[index]);
+    }
+    setURLs([]);
+    setImages([]);
+    setProgress("");
+    setCurrentImages([]);
+    cancel();
+  };
   const handleCreateProduct = async () => {
     const payload = {
       name: name,
       price: price,
-      category_id: category,
       countInStock: countInStock,
       discount: discount,
       rating: rating,
+      category_id: {
+        name: category?.name,
+        _id: category?._id,
+      },
       descTitle: descHeading,
       descIntro: descIntro,
       descSub: renderDesc,
-      image: URLs,
+      image: currentImages,
     };
     try {
-      const res = await onCreateProduct(payload);
-      console.log("res", res);
-      if (res) {
+      const response = await onCreateProduct(payload);
+      if (response?.payload?.code === 200) {
         setPrice("");
         setName("");
         setDesc([]);
@@ -130,26 +173,32 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
         setRenderDesc([]);
         setProgress("");
         setImages([]);
+        setCurrentImages([]);
         /// Close Modal
-        // cancel();
+        cancel();
       }
     } catch (error) {
       console.log("error", error);
+      message.error(error?.response?.data?.message);
+      throw error;
     }
   };
-  const optionCategories = categories?.map((cate) => {
-    let value = {
-      value: cate?._id,
-      label: cate?.name,
-    };
-    return value;
-  });
-
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (URLs?.length && !currentImages?.length) {
+        setCurrentImages([...URLs]);
+      } else if (URLs?.length && currentImages?.length) {
+        setCurrentImages([...URLs, ...currentImages]);
+      }
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [URLs]);
   return (
     <Modal
+      key={MODAL_OPTION.PRODUCT.CREATE}
       className="dashboard-modal"
       onOk={handleCreateProduct}
-      onCancel={cancel}
+      onCancel={handleCancel}
       open={open === MODAL_OPTION.PRODUCT.CREATE}
       okButtonProps={{ className: "custom-button-ok" }}
       cancelButtonProps={{ className: "custom-button-cancel" }}
@@ -214,17 +263,17 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
                   return (
                     <button
                       onClick={(e) => handleChangeCategories(e, cate)}
-                      key={cate?.value}
+                      key={cate?._id}
                       className={` rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
                          flex items-center gap-1 hover:bg-[#555] hover:text-white xs:p-[8px] 
                          ${
-                           cate?.value === category
+                           cate?._id === category?._id
                              ? "bg-[#555] text-white"
                              : "bg-black-be text-black"
                          }`}
                     >
                       <span className="xs:text-xs md:text-sm font-osr  capitalize">
-                        {cate?.label}
+                        {cate?.name}
                       </span>
                     </button>
                   );
@@ -273,15 +322,39 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
                 &#43;
               </span>
             </div>
-            <ul>
-              {renderDesc?.map((i, index) => {
-                return (
-                  <li key={`${i}${index}`} className="flex items-center gap-3">
-                    -
-                    <span className="text-black-333 font-mar text-sm">{i}</span>
-                  </li>
-                );
-              })}
+            <ul className="">
+              {renderDesc?.length
+                ? renderDesc?.map((i, index) => {
+                    return (
+                      <div className="flex items-start gap-3 ">
+                        <li
+                          key={`${i}${index}`}
+                          className="flex  items-start gap-3"
+                        >
+                          -
+                          <span className="text-black-333 font-mar text-sm">
+                            {i}
+                          </span>
+                        </li>
+                        <div>
+                          <svg
+                            onClick={() => deleteDescription(index)}
+                            className="cursor-pointer group "
+                            width="22"
+                            height="22"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              className="group-hover:fill-primary"
+                              d="M6.2253 4.81108C5.83477 4.42056 5.20161 4.42056 4.81108 4.81108C4.42056 5.20161 4.42056 5.83477 4.81108 6.2253L10.5858 12L4.81114 17.7747C4.42062 18.1652 4.42062 18.7984 4.81114 19.1889C5.20167 19.5794 5.83483 19.5794 6.22535 19.1889L12 13.4142L17.7747 19.1889C18.1652 19.5794 18.7984 19.5794 19.1889 19.1889C19.5794 18.7984 19.5794 18.1652 19.1889 17.7747L13.4142 12L19.189 6.2253C19.5795 5.83477 19.5795 5.20161 19.189 4.81108C18.7985 4.42056 18.1653 4.42056 17.7748 4.81108L12 10.5858L6.2253 4.81108Z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    );
+                  })
+                : ""}
             </ul>
             <MDEditorWrapper>
               <h3 className="mb-[12px]">Description intro</h3>
@@ -300,9 +373,10 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
             <Rate value={rating} onChange={setRating} />
           </div>
         </div>
+
         <div className="form__container mt-0 ">
           <div className="form__container-wrapper w-full">
-            <label htmlFor="file">Image</label>
+            <label htmlFor="file">Upload Image</label>
             <div className="flex items-center ">
               <input
                 title={
@@ -351,6 +425,36 @@ const ModalCreateProduct = ({ open, cancel, add, categories }) => {
                   </span>
                 </div>
               </div>
+            </div>
+            <div className="flex items-center gap-3 flex-wrap">
+              {currentImages?.length ? (
+                currentImages?.map((img, index) => {
+                  return (
+                    <Tooltip
+                      title={
+                        <button
+                          className="text-white"
+                          onClick={() => handleDeleteImage(img)}
+                        >
+                          Xóa
+                        </button>
+                      }
+                    >
+                      <a className="block w-[80px] h-[80px]">
+                        <img
+                          src={img?.length ? img : "/assets/img/error.png"}
+                          alt=""
+                        />
+                      </a>
+                    </Tooltip>
+                  );
+                })
+              ) : (
+                <Empty
+                  style={{ width: "80px", height: "80px" }}
+                  description={false}
+                />
+              )}
             </div>
           </div>
         </div>

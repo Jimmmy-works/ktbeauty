@@ -1,9 +1,7 @@
-import axios from "axios";
-import { message } from "antd";
-import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { BASE_URL } from "@/contants/environment";
-import { decodeAccessToken, decodeTokenJWT } from "./jwt";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
 import authService from "@/service/authService";
+import axios from "axios";
 import { decodeToken } from "react-jwt";
 // Tạo một instanceAxios của Axios
 const instanceAxios = axios.create({
@@ -48,12 +46,12 @@ const instanceAxios = axios.create({
 // );
 instanceAxios.interceptors.request.use(
   async (config) => {
-    const access_token = localStorage.getItem(LOCAL_STORAGE.token);
+    const _accessToken = localStorage.getItem(LOCAL_STORAGE.token);
     const _refreshToken = localStorage.getItem(LOCAL_STORAGE.refreshToken);
-    const decodeAccessToken = decodeToken(access_token);
+    const decodeAccessToken = decodeToken(_accessToken);
     const currentTime = new Date().getTime();
     const now = Math.round(currentTime / 1000);
-    if (decodeAccessToken?.exp < now && access_token) {
+    if (decodeAccessToken?.exp < now && _accessToken && _refreshToken) {
       const res = await authService.refreshToken(_refreshToken);
       localStorage.setItem(LOCAL_STORAGE.token, res?.data?.data?.access_token);
       const newAccessToken = localStorage.getItem(LOCAL_STORAGE.token);

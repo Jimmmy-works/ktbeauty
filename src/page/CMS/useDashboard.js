@@ -17,6 +17,8 @@ import {
 } from "@/store/reducer/productReducer";
 import { deleteObject, ref } from "firebase/storage";
 import { firebaseStorage } from "@/config/firebase";
+import useQuery from "@/hooks/useQuery";
+import productService from "@/service/productService";
 const useDashboard = () => {
   /// window size
   const { width } = useWindowSize();
@@ -30,22 +32,19 @@ const useDashboard = () => {
   ///// Modal
   const [openModalAndt, setOpenModalAndt] = useState(false);
   const [productList, setProductList] = useState([]);
-  const [toggleSidebar, setToggleSidebar] = useState(false);
-  const [toggleInputSearch, setToggleInputSearch] = useState(false);
-  const [toggleInputSeacrhMobile, setToggleInputSeacrhMobile] = useState(false);
-  ////
   const onShowModal = (id) => {
     setOpenModalAndt(id);
   };
   const onCloseModal = (id) => {
     setOpenModalAndt(id);
   };
-  const onAddProduct = (payload) => {
-    setProductList([...productList, payload]);
-  };
+  //// Sidebar
+  const [toggleSidebar, setToggleSidebar] = useState(false);
+  /// Search
+  const [toggleInputSearch, setToggleInputSearch] = useState(false);
+  const [toggleInputSeacrhMobile, setToggleInputSeacrhMobile] = useState(false);
   ///// API
-
-  //// API USER
+  //// CRUD USER
   const onSearchUser = (userName) => {
     const result = users?.filter((user) => {
       return user?.name.includes(userName);
@@ -84,7 +83,12 @@ const useDashboard = () => {
       console.log("error", error);
     }
   };
-  //// API PRODUCT
+  //// CRUD PRODUCT
+  const _limit = 9;
+  const _page = 0;
+  const { data: dataProducts, loading: loadingProducts } = useQuery(
+    productService.getAllProduct({ limit: _limit, page: _page })
+  );
   const onSearchProduct = (productName) => {
     const result = products?.filter((product) => {
       return product?.name.includes(productName);
@@ -95,13 +99,6 @@ const useDashboard = () => {
       dispatch(productActions.setSearchProducts(result));
     }
     console.log("result", result);
-  };
-  const onGetProductDetail = (id) => {
-    try {
-      const response = dispatch(getProductDetail(id));
-    } catch (error) {
-      console.log("error", error);
-    }
   };
   const onUpdateProduct = async (id, payload) => {
     try {
@@ -159,7 +156,6 @@ const useDashboard = () => {
     onCreateProduct,
     onDeleteProduct,
     onDeleteImageFirebase,
-    onGetProductDetail,
     onUpdateProduct,
     searchProducts,
   };
@@ -167,12 +163,10 @@ const useDashboard = () => {
     onShowModal,
     onCloseModal,
     openModalAndt,
-    onAddProduct,
     productList,
     setProductList,
     profile,
     products,
-    // getFirebaseStore,
     toggleSidebar,
     setToggleSidebar,
     toggleInputSearch,

@@ -19,8 +19,6 @@ const ModalUpdateProduct = ({
   cancel,
   add,
   categories,
-  onGetProductDetail,
-  products,
   productDetail,
   onUpdateProduct,
   onDeleteImageFirebase,
@@ -60,10 +58,8 @@ const ModalUpdateProduct = ({
       return index !== payload;
     });
     setRenderDesc(filter);
-    // setDesc("");
   };
   const handleChangeCategories = (e, cate) => {
-    console.log("cate", cate);
     e.preventDefault();
     setCategory(cate);
   };
@@ -140,13 +136,13 @@ const ModalUpdateProduct = ({
     uploadImages(allImages);
   };
   const handleCancel = () => {
-    cancel();
     for (let index = 0; index < URLs.length; index++) {
       onDeleteImageFirebase(URLs[index]);
     }
     setURLs([]);
     setImages([]);
     setProgress("");
+    cancel();
 
     setName(productDetail?.name);
     setPrice(productDetail?.price);
@@ -189,9 +185,6 @@ const ModalUpdateProduct = ({
       throw error;
     }
   };
-  console.log("URLs", URLs);
-  console.log("images", images);
-  console.log("currentImages", currentImages);
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (URLs?.length) {
@@ -214,9 +207,9 @@ const ModalUpdateProduct = ({
     setCategory(productDetail?.category_id);
     setCurrentImages(productDetail?.image);
   }, [productDetail]);
-  console.log("productDetail", productDetail);
   return (
     <Modal
+      key={MODAL_OPTION.PRODUCT.UPDATE}
       className="dashboard-modal"
       onOk={handleUpdateProduct}
       onCancel={handleCancel}

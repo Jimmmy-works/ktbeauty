@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import Button from "../Button";
-import { Checkbox, message } from "antd";
-import { useMainContext } from "../MainContext";
-import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "@/store/reducer/authReducer";
-import authService from "@/service/authService";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
+import { Checkbox } from "antd";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import Button from "../Button";
+import { authActions } from "@/store/reducer/authReducer";
 
 const Login = ({
   controlAuthen,
@@ -19,6 +16,7 @@ const Login = ({
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [hiddenPassword, setHiddenPassword] = useState(true);
+  const [savePassword, setSavePassword] = useState(false);
   const dispatch = useDispatch();
   const { profile } = useSelector((state) => state.auth);
   const {
@@ -27,11 +25,17 @@ const Login = ({
     watch,
     formState: { errors },
   } = useForm();
-  const handleSignin = async (data) => {
-    try {
-      if (updateStatusLogin !== THUNK_STATUS.pending) onLogin(data);
-    } catch (error) {
-      console.log("error", error);
+  const handleChangeSavePassword = (e) => {
+    setSavePassword(e.target.checked);
+  };
+  const handleSignin = (data) => {
+    if (updateStatusLogin !== THUNK_STATUS.pending) {
+      onLogin(data);
+    }
+    if (savePassword) {
+      dispatch(authActions.checkSavePassword(true));
+    } else {
+      dispatch(authActions.checkSavePassword(false));
     }
   };
 
@@ -148,7 +152,13 @@ const Login = ({
         </div>
         <div className=" flex items-center justify-between gap-6 text-white relative mt-[20px]">
           <div className="pl-[20px]">
-            <Checkbox>Lưu mật khẩu</Checkbox>
+            <Checkbox
+              onChange={handleChangeSavePassword}
+              checked={savePassword}
+              value={savePassword}
+            >
+              Lưu mật khẩu
+            </Checkbox>
           </div>
           <div className="pr-[20px]">
             <a
