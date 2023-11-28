@@ -28,7 +28,7 @@ const ModalCreateProduct = ({
   const [descIntro, setDescIntro] = useState("");
   const [price, setPrice] = useState("");
   const [countInStock, setCountInStock] = useState("");
-  const [discount, setDiscount] = useState("");
+  const [discount, setDiscount] = useState(0);
   const [name, setName] = useState("");
   const [category, setCategory] = useState();
   const [rating, setRating] = useState();
@@ -147,7 +147,7 @@ const ModalCreateProduct = ({
       name: name,
       price: price,
       countInStock: countInStock,
-      discount: discount,
+      discount: discount || 0,
       rating: rating,
       category_id: {
         name: category?.name,
@@ -279,18 +279,6 @@ const ModalCreateProduct = ({
                   );
                 })}
             </div>
-            {/* <Select
-                onChange={handleChangeCategories}
-                value={optionCategories?.value}
-                defaultValue={optionCategories[1]}
-                style={{
-                  width: "100%",
-                  textTransform: "capitalize",
-                }}
-                optionLabelProp=""
-                allowClear
-                options={optionCategories}
-              /> */}
           </div>
         </div>
         <div className="form__container mt-0 ">

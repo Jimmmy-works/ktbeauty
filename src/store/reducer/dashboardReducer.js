@@ -11,6 +11,7 @@ const initialState = {
   searchUsers: [],
   ////
   orders: [],
+  detailOrder: null,
   ////
   errorGetUserAll: null,
   getStatusCreateProduct: null,
@@ -25,6 +26,9 @@ export const { reducer: dashboardReducer, actions: dashboardActions } =
       },
       setOrders: (state, action) => {
         state.orders = action.payload;
+      },
+      setDetailOrder: (state, action) => {
+        state.detailOrder = action.payload;
       },
       setSearchUsers: (state, action) => {
         state.searchUsers = action.payload;
@@ -83,9 +87,29 @@ export const getAllOrder = createAsyncThunk(
     try {
       const _token = localStorage.getItem(LOCAL_STORAGE.token);
       const orderData = await dashboardService.getAllOrder(_token);
-      console.log("orderData", orderData);
       thunkAPI.dispatch(dashboardActions.setOrders(orderData?.data?.data));
       return orderData?.data?.data;
+    } catch (error) {
+      console.log("error", error);
+      throw error;
+    }
+  }
+);
+export const getDetailOrder = createAsyncThunk(
+  "dashboard/user/get",
+  async (orderId, thunkAPI) => {
+    try {
+      const _token = localStorage.getItem(LOCAL_STORAGE.token);
+      const orderDetail = await dashboardService.getDetailOrder(
+        orderId,
+        _token
+      );
+      if (orderDetail?.status === 200) {
+        thunkAPI.dispatch(
+          dashboardActions.setDetailOrder(orderDetail?.data?.data)
+        );
+      }
+      return orderDetail?.data?.data;
     } catch (error) {
       console.log("error", error);
       throw error;

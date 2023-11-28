@@ -9,6 +9,7 @@ import { THUNK_STATUS } from "@/contants/thunkstatus";
 const initialState = {
   orderList: {},
   statusGetOrderUser: THUNK_STATUS.pending,
+  statusOrder: null,
 };
 export const { reducer: orderReducer, actions: orderActions } = createSlice({
   initialState,
@@ -27,6 +28,17 @@ export const { reducer: orderReducer, actions: orderActions } = createSlice({
     });
     builder.addCase(getOrderUser.rejected, (state) => {
       state.statusGetOrderUser = THUNK_STATUS.rejected;
+    });
+    // getStatusOrder status
+    builder.addCase(updataStatusOrder.pending, (state) => {
+      state.getStatusOrder = THUNK_STATUS.pending;
+    });
+    builder.addCase(updataStatusOrder.fulfilled, (state) => {
+      console.log("state", state);
+      state.getStatusOrder = THUNK_STATUS.fulfilled;
+    });
+    builder.addCase(updataStatusOrder.rejected, (state) => {
+      state.getStatusOrder = THUNK_STATUS.rejected;
     });
   },
 });
@@ -47,10 +59,17 @@ export const createOrder = createAsyncThunk(
             products: [],
           })
         );
-        thunkAPI.dispatch(cartActions.setShipping({}));
+        thunkAPI.dispatch(
+          cartActions.setShipping({
+            value: "default",
+            label: "Chọn phương thức",
+            price: 0,
+          })
+        );
         thunkAPI.dispatch(cartActions.setDiscountCode({}));
         thunkAPI.dispatch(cartActions.setTotal(0));
         thunkAPI.dispatch(cartActions.setSubTotal(0));
+        message.success(response?.data?.message);
       }
       return response?.data?.data;
     } catch (error) {
@@ -61,13 +80,38 @@ export const createOrder = createAsyncThunk(
   }
 );
 export const getOrderUser = createAsyncThunk(
-  "order/create",
+  "order/get/user",
   async (_, thunkAPI) => {
     try {
       const _token = localStorage.getItem(LOCAL_STORAGE.token);
       const response = await orderService.getOrderUser(_token);
       if (response?.status === 200) {
         thunkAPI.dispatch(orderActions.setOrderList(response?.data?.data));
+      }
+      message.success(response?.data?.message);
+      return response?.data?.data;
+    } catch (error) {
+      console.log("error", error);
+      throw error;
+    }
+  }
+);
+export const updataStatusOrder = createAsyncThunk(
+  "order/put/cancel",
+  async (payload, thunkAPI) => {
+    try {
+      const _token = localStorage.getItem(LOCAL_STORAGE.token);
+      const newPayload = {
+        status: payload?.status,
+        user_id: payload?.user_id,
+      };
+      const response = await orderService.updateOrder(
+        newPayload,
+        payload?._id,
+        _token
+      );
+      if (response?.status === 200) {
+        thunkAPI.dispatch(getOrderUser(_token));
       }
       message.success(response?.data?.message);
       return response?.data?.data;

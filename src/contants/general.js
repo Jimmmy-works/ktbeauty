@@ -18,6 +18,16 @@ export const OPTION_SORT = {
   HIGH_PRICE: "high-price",
   LOWER_PRICE: "lower-price",
 };
+
+export const OPTION_SORT_ORDER = {
+  ALL: "all",
+  VERIFY: "verify",
+  VERIFIED: "verified",
+  PREPARING: "preparing",
+  DELIVERY: "delivery",
+  COMPLETE: "complete",
+  CANCEL: "cancel",
+};
 export const NAV_OPTION = {
   SHOP: "shop",
   BLOG: "blog",

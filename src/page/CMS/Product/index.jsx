@@ -7,6 +7,8 @@ import useDashboard from "../useDashboard";
 import ModalCreateProduct from "./ModalCreateProduct";
 import ModalUpdateProduct from "./ModalUpdateProduct";
 import styled from "styled-components";
+import productService from "@/service/productService";
+import useQuery from "@/hooks/useQuery";
 
 const TableStyle = styled.div`
   .ant-table {
@@ -135,6 +137,11 @@ const DashBoardProduct = () => {
   const findUpdateProduct = products?.find(
     (item) => item?._id === selectedRowKeys.toString()
   );
+  // const _limit = 9;
+  // const _page = 0;
+  // const { data: dataProducts, loading: loadingProducts } = useQuery(() =>
+  //   productService.getAllProduct({ limit: _limit, page: _page })
+  // );
   return (
     <div className="table__dashboard-product ">
       <ModalCreateProduct
@@ -210,7 +217,7 @@ const DashBoardProduct = () => {
           tableLayout={"auto"}
           pagination={{
             pageSize: 7,
-            total: 100,
+            total: Number(products?.length),
             position: ["bottomCenter"],
           }}
           rowSelection={rowSelection}

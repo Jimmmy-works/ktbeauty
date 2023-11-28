@@ -29,10 +29,8 @@ const MainLayout = () => {
 
   const _token = localStorage.getItem(LOCAL_STORAGE.token);
   useEffect(() => {
-    const resultDecode = decodeToken(_token);
-    const _id = resultDecode?.id;
     if (_token) {
-      dispatch(getProfileSlug(_id));
+      dispatch(getProfileSlug());
     }
     dispatch(getAllProduct());
     dispatch(getAllCategories());

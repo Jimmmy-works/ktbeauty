@@ -172,9 +172,13 @@ const ProductCard = ({
             <span className=" text-[15px] text-primary ">
               {formatPriceVND(price - discount)}
             </span>
-            <span className="line-through text-black-555">
-              {formatPriceVND(price)}
-            </span>
+            {discount > 0 ? (
+              <span className="line-through text-black-555">
+                {formatPriceVND(price)}
+              </span>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>

@@ -1,19 +1,17 @@
 import BreadCrumb from "@/components/BreadCrumb";
 import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
-import useWindowSize from "@/utils/windowResize";
-import { Checkbox, Select, Switch, Tooltip } from "antd";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import useCheckout from "./useCheckout";
-import { Controller } from "react-hook-form";
-import { removeAccents } from "@/utils/removeAccents";
-import { formatPriceVND } from "@/utils/formatPrice";
-import { Empty } from "antd";
-import styled from "styled-components";
-import { LOCAL_STORAGE } from "@/contants/localStorage";
-import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "@/store/reducer/orderReducer";
+import { formatPriceVND } from "@/utils/formatPrice";
+import { removeAccents } from "@/utils/removeAccents";
+import useWindowSize from "@/utils/windowResize";
+import { Checkbox, Empty, Select, Switch, Tooltip } from "antd";
+import { useState } from "react";
+import { Controller } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import useCheckout from "./useCheckout";
 
 const SelectWrapper = styled.div`
   .select-antd-wrapper {
@@ -144,7 +142,6 @@ const Checkout = () => {
       subTotal: subTotal,
       total: total,
     };
-    console.log("payload", payload);
     dispatch(createOrder(payload));
   };
   return (

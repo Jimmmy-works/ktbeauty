@@ -16,7 +16,6 @@ const Login = ({
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [hiddenPassword, setHiddenPassword] = useState(true);
-  const [savePassword, setSavePassword] = useState(false);
   const dispatch = useDispatch();
   const { profile } = useSelector((state) => state.auth);
   const {
@@ -25,17 +24,10 @@ const Login = ({
     watch,
     formState: { errors },
   } = useForm();
-  const handleChangeSavePassword = (e) => {
-    setSavePassword(e.target.checked);
-  };
+
   const handleSignin = (data) => {
     if (updateStatusLogin !== THUNK_STATUS.pending) {
       onLogin(data);
-    }
-    if (savePassword) {
-      dispatch(authActions.checkSavePassword(true));
-    } else {
-      dispatch(authActions.checkSavePassword(false));
     }
   };
 
@@ -151,7 +143,7 @@ const Login = ({
           </div>
         </div>
         <div className=" flex items-center justify-between gap-6 text-white relative mt-[20px]">
-          <div className="pl-[20px]">
+          {/* <div className="pl-[20px]">
             <Checkbox
               onChange={handleChangeSavePassword}
               checked={savePassword}
@@ -159,7 +151,7 @@ const Login = ({
             >
               Lưu mật khẩu
             </Checkbox>
-          </div>
+          </div> */}
           <div className="pr-[20px]">
             <a
               className="text-white font-mar text-sm cursor-pointer duration-400 transition-colors

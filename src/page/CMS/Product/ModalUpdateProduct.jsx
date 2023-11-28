@@ -39,7 +39,7 @@ const ModalUpdateProduct = ({
   const [descIntro, setDescIntro] = useState("");
   const [price, setPrice] = useState(null);
   const [countInStock, setCountInStock] = useState();
-  const [discount, setDiscount] = useState("");
+  const [discount, setDiscount] = useState(0);
   const [name, setName] = useState(``);
   const [category, setCategory] = useState();
   const [rating, setRating] = useState();
@@ -162,7 +162,7 @@ const ModalUpdateProduct = ({
       name: name,
       price: price,
       countInStock: countInStock,
-      discount: discount,
+      discount: discount || 0,
       rating: rating,
       category_id: {
         name: category?.name,

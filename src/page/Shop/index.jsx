@@ -230,8 +230,8 @@ const Shop = () => {
               )}
             </NavbarFilter>
             <div className=" gap-2 items-center xs:hidden xl:flex">
-              <label className="font-osl text-black-333 text-sm">Sort:</label>
               <SelectCustom
+                defaultTitle={`Tất cả`}
                 onChangeSort={onChangeFeaturedTab}
                 data={optionSort}
               />

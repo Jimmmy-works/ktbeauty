@@ -1,10 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import useProfile from "../Profile/useProfile";
 import { provinceService } from "@/service/provinceService";
-import { cartActions, getCart } from "@/store/reducer/cartReducer";
-import { LOCAL_STORAGE } from "@/contants/localStorage";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 
 const useCheckout = () => {
   const dispatch = useDispatch();

@@ -96,7 +96,6 @@ const Account = () => {
       ward: profile?.ward?._id,
     },
   });
-  console.log("profile", profile);
   const handleUpdateProfile = (data) => {
     const payload = {
       value: {

@@ -3,7 +3,7 @@ import { MainProvider } from "@/components/MainContext";
 import { PATHS } from "@/contants/path";
 import DashboardHeader from "@/page/CMS/Header";
 import useDashboard from "@/page/CMS/useDashboard";
-import { getAllUsers } from "@/store/reducer/dashboardReducer";
+import { getAllOrder, getAllUsers } from "@/store/reducer/dashboardReducer";
 import { getOrderUser } from "@/store/reducer/orderReducer";
 import { getAllProduct } from "@/store/reducer/productReducer";
 import {
@@ -110,7 +110,7 @@ const DashboardLayout = () => {
     if (profile?.isAdmin) {
       dispatch(getAllUsers());
       dispatch(getAllProduct());
-      dispatch(getOrderUser());
+      dispatch(getAllOrder());
     }
   }, [profile]);
 

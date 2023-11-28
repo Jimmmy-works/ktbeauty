@@ -1,19 +1,15 @@
-import { Button, Modal, Popconfirm, Table, Upload, message } from "antd";
-import React, { useEffect, useState } from "react";
-import ModalCreateUser from "./ModalCreateUser";
-import useDashboard from "../useDashboard";
 import { MODAL_OPTION } from "@/contants/general";
+import { Popconfirm, Table } from "antd";
+import { useState } from "react";
+import useDashboard from "../useDashboard";
+import ModalCreateUser from "./ModalCreateUser";
 
-import ModalUpdateAvatar from "./ModalUpdateAvatar";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { clearAllListeners } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers } from "@/store/reducer/dashboardReducer";
-import { LOCAL_STORAGE } from "@/contants/localStorage";
-import { decodeToken } from "react-jwt";
-const TableCustom = styled.div`
-  .ant-table-cell {
-    vertical-align: middle;
+import ModalUpdateAvatar from "./ModalUpdateAvatar";
+const TableStyle = styled.div`
+  .ant-table {
+    min-height: 750px;
   }
 `;
 const DashboardUser = () => {
@@ -29,7 +25,8 @@ const DashboardUser = () => {
     onSearchUser,
   } = modalProps || {};
   const dispatch = useDispatch();
-  const { onDeleteUser, onCreateUser, searchUsers } = userProps || {};
+  const { onDeleteUser, onCreateUser, searchUsers, users, onDeleteOrder } =
+    userProps || {};
   const columns = [
     {
       title: "",
@@ -75,7 +72,6 @@ const DashboardUser = () => {
       align: "center",
     },
   ];
-  console.log("searchUsers", searchUsers);
   const data = searchUsers.map((user, index) => {
     return {
       key: `${user?._id}${index}`,
@@ -186,11 +182,11 @@ const DashboardUser = () => {
   });
   const handleDeleteUserSelected = () => {
     for (let index = 0; index < filterUsers.length; index++) {
-      onDeleteUser(filterUsers[index]?._id);
+      onDeleteOrder(filterUsers[index]?._id);
     }
   };
   return (
-    <TableCustom className="table__dashboard-shipping">
+    <TableStyle className="table__dashboard-shipping">
       <ModalUpdateAvatar
         messageAndt={findPath?.success}
         open={openModalAndt}
@@ -245,13 +241,15 @@ const DashboardUser = () => {
       <Table
         style={{ verticalAlign: "middle" }}
         pagination={{
+          pageSize: 12,
+          total: Number(users?.length),
           position: ["bottomCenter"],
         }}
         rowSelection={rowSelection}
         columns={columns}
         dataSource={data}
       />
-    </TableCustom>
+    </TableStyle>
   );
 };
 

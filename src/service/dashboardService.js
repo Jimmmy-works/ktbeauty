@@ -18,6 +18,14 @@ const dashboardService = {
       },
     });
   },
+  getDetailOrder: (id, token) => {
+    return instanceAxios.get(`${BASE_URL}/api/order/get-detail-order/${id}`, {
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
+  },
+
   deleteProfile: (id, token) => {
     return instanceAxios.delete(`${BASE_URL}/api/user/delete-user/${id}`, {
       headers: {
@@ -34,6 +42,11 @@ const dashboardService = {
         },
       }
     );
+  },
+  deleteOrder: (id, token) => {
+    return instanceAxios.delete(`/api/order/delete-order/${id}`, {
+      headers: { token: `Bearer ${token}` },
+    });
   },
   updateProduct: (id, payload) => {
     const token = localStorage.getItem(LOCAL_STORAGE.token);

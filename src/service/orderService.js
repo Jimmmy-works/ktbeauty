@@ -1,6 +1,4 @@
-import { BASE_URL } from "@/contants/environment";
 import instanceAxios from "@/utils/configAxios";
-import axios from "axios";
 
 export const orderService = {
   createOrder: (payload, token) => {
@@ -10,6 +8,11 @@ export const orderService = {
   },
   getOrderUser: (token) => {
     return instanceAxios.get(`/api/order/get-order-user`, {
+      headers: { token: `Bearer ${token}` },
+    });
+  },
+  updateOrder: (payload, order_id, token) => {
+    return instanceAxios.put(`/api/order/cancel-order/${order_id}`, payload, {
       headers: { token: `Bearer ${token}` },
     });
   },

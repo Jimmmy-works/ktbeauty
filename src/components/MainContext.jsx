@@ -69,7 +69,10 @@ export const MainProvider = ({ children }) => {
   const onLogout = async () => {
     try {
       if (Object.values(cartInfo).length !== 0) {
-        const resUpdateCart = await dispatch(updateCart({ ...cartInfo }));
+        const _token = localStorage.getItem(LOCAL_STORAGE.token);
+        const resUpdateCart = await dispatch(
+          updateCart({ ...cartInfo }, _token)
+        );
         if (resUpdateCart?.payload?.status === 200) {
           dispatch(cartActions.setCartInfo(null));
           dispatch(authActions.logout());

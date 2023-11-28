@@ -1,6 +1,13 @@
 import React, { useState } from "react";
+import { twMerge } from "tailwind-merge";
 
-const SelectCustom = ({ data, onChangeSort }) => {
+const SelectCustom = ({
+  data,
+  onChangeSort,
+  defaultTitle,
+  className,
+  padding,
+}) => {
   const [dropdown, setDropdown] = useState(false);
   const [valueOption, setValueOption] = useState("");
   const [titleSelect, setTitleSelect] = useState("");
@@ -18,7 +25,9 @@ const SelectCustom = ({ data, onChangeSort }) => {
     setDropdown(false);
   });
   return (
-    <div className="h-full relative z-50">
+    <div
+      className={twMerge(`h-full relative z-50 min-w-[160px]  ${className}`)}
+    >
       <div className="absolute right-2 top-1/2 -translate-y-1/2  ">
         <svg className="w-[8px] h-[8px]" viewBox="0 0 24 24">
           <path
@@ -28,15 +37,20 @@ const SelectCustom = ({ data, onChangeSort }) => {
         </svg>
       </div>
       <div
-        className="border border-solid border-[#e5e5e5]  
-                  cursor-pointer p-[10px] text-sm text-black-333 font-osr min-w-[160px] "
+        className={twMerge(`border border-solid border-[#e5e5e5]  
+                  cursor-pointer p-[10px] text-sm text-black-333 font-osr  capitalize ${
+                    padding ?? ""
+                  }`)}
         onClick={onDropdown}
       >
-        {titleSelect || `Sort By Popularity`}
+        {titleSelect || defaultTitle || data?.[0]?.label}
       </div>
       <ul
-        className={` absolute top-[100%] duration-300 transition-all w-full z-[100]
-      ${dropdown ? " opacity-100 visible" : "opacity-0 invisible "}`}
+        className={` absolute top-[100%] duration-300 transition-all w-full z-[100] 
+        max-h-[250px]
+      ${
+        dropdown ? " opacity-100 visible" : "opacity-0 invisible "
+      } overflow-y-scroll`}
       >
         {data?.length &&
           data?.map((item) => {
@@ -52,46 +66,6 @@ const SelectCustom = ({ data, onChangeSort }) => {
               </li>
             );
           })}
-        {/* <li
-          className=" text-sm text-black-333 font-osr  leading-[20px] cursor-pointer
-                  bg-grey-f7f6 p-[10px] hover:bg-gray-200 duration-300 transition-all"
-          value={`1`}
-          onClick={onSelectOption}
-        >
-          Sort By Popularity
-        </li>
-        <li
-          className="pt-[10px] font-osr text-sm leading-[20px] cursor-pointer text-black-333 
-                  bg-grey-f7f6 p-[10px] hover:bg-gray-200 duration-300 transition-all"
-          value={`2`}
-          onClick={onSelectOption}
-        >
-          Sort By Old
-        </li>
-        <li
-          className="pt-[10px] font-osr text-sm leading-[20px] cursor-pointer text-black-333 
-                  bg-grey-f7f6 p-[10px] hover:bg-gray-200 duration-300 transition-all"
-          value={`3`}
-          onClick={onSelectOption}
-        >
-          Sort By Newest
-        </li>
-        <li
-          className="pt-[10px] font-osr text-sm leading-[20px] cursor-pointer text-black-333 
-                  bg-grey-f7f6 p-[10px] hover:bg-gray-200 duration-300 transition-all"
-          value={`4`}
-          onClick={onSelectOption}
-        >
-          Sort By High Price
-        </li>
-        <li
-          className="pt-[10px] font-osr text-sm leading-[20px] cursor-pointer text-black-333 
-                  bg-grey-f7f6 p-[10px] hover:bg-gray-200 duration-300 transition-all"
-          value={`5`}
-          onClick={onSelectOption}
-        >
-          Sort By Lower Price
-        </li> */}
       </ul>
     </div>
   );

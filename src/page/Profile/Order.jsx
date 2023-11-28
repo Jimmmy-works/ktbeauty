@@ -1,15 +1,14 @@
-import useWindowSize from "@/utils/windowResize";
-import React, { useRef, useState } from "react";
-import useProfile from "./useProfile";
-import { formatPriceVND } from "@/utils/formatPrice";
-import { dateVN, localeVN, timeVN } from "@/utils/timeVN";
-import { Link } from "react-router-dom";
-import { PATHS } from "@/contants/path";
-import { Empty } from "antd";
-import styled from "styled-components";
 import Button from "@/components/Button";
+import { PATHS } from "@/contants/path";
+import { formatPriceVND } from "@/utils/formatPrice";
+import { localeVN } from "@/utils/timeVN";
+import useWindowSize from "@/utils/windowResize";
+import { Empty } from "antd";
+import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import compareTime from "@/utils/compareTime";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import useProfile from "./useProfile";
 const EmptyWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -24,11 +23,13 @@ const EmptyWrapper = styled.div`
   }
 `;
 const Order = () => {
-  const { orderList } = useSelector((state) => state.order);
+  const { onCancelOrder } = useProfile();
+  const { orderList, statusGetOrderUser } = useSelector((state) => state.order);
+  const { profile } = useSelector((state) => state.auth);
   const { width } = useWindowSize();
   const refContent = useRef(null);
   const [isActive, setIsActive] = useState(null);
-  const sortOrderList = [...orderList]
+  const sortOrderList = Array.from(orderList)
     ?.sort((a, b) => {
       return new Date(b?.createdAt) - new Date(a?.createdAt);
     })
@@ -39,7 +40,7 @@ const Order = () => {
         Giỏ hàng của bạn
       </h3>
       {sortOrderList?.length ? (
-        sortOrderList.map((item, index) => {
+        sortOrderList?.map((item, index) => {
           const {
             _id,
             products,
@@ -58,12 +59,22 @@ const Order = () => {
                   <p className="text-sm text-black-333 font-osr">
                     {`${localeVN(createdAt)}`}
                   </p>
-                  <Button
-                    className={`md:text-xs md:px-[15px] md:py-[5px]  `}
-                    variant="outline"
-                  >
-                    Hủy
-                  </Button>
+                  {console.log("status", status)}
+                  {status !== "Đã hủy đơn" && (
+                    <Button
+                      onClick={() =>
+                        onCancelOrder({
+                          status: "Đã hủy đơn",
+                          _id: _id,
+                          user_id: profile?._id,
+                        })
+                      }
+                      className={`md:text-xs md:px-[15px] md:py-[5px]  `}
+                      variant="outline"
+                    >
+                      Hủy
+                    </Button>
+                  )}
                 </div>
 
                 <div

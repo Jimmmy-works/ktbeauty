@@ -1,6 +1,10 @@
 import { provinceService } from "@/service/provinceService";
 import { changePassword, updateProfile } from "@/store/reducer/authReducer";
-import { getOrderUser, orderActions } from "@/store/reducer/orderReducer";
+import {
+  updataStatusOrder,
+  getOrderUser,
+  orderActions,
+} from "@/store/reducer/orderReducer";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -105,7 +109,10 @@ const useProfile = () => {
     }
   }, [profile?.province?._id]);
   //////// ORder
-
+  const onCancelOrder = (payload) => {
+    console.log("payload", payload);
+    dispatch(updataStatusOrder(payload));
+  };
   return {
     provinces,
     districts,
@@ -123,6 +130,7 @@ const useProfile = () => {
     getDistricts,
     getWards,
     orderList,
+    onCancelOrder,
   };
 };
 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-const useQuery = (promise, dependencies = []) => {
-  // const { preventDefaultCall = false } = configs || {};
+const useQuery = (promise, dependencies = [], configs) => {
+  const { preventDefaultCall = false } = configs || {};
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   useEffect(() => {
-    // if (preventDefaultCall) return;
+    if (preventDefaultCall) return;
     fetchData();
   }, dependencies);
   const fetchData = async (query) => {
