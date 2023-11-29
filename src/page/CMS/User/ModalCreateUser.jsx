@@ -1,12 +1,9 @@
-import { Modal, Rate, Select, message } from "antd";
-import React, { useEffect, useState } from "react";
-import useDashboard from "../useDashboard";
-import { MODAL_OPTION } from "@/contants/general";
-import { firebaseStorage, uploadImagesFirebase } from "@/config/firebase";
 import { useMainContext } from "@/components/MainContext";
-import Resizer from "react-image-file-resizer";
-import ImageResizer from "@/utils/ImageResizer";
+import { firebaseStorage } from "@/config/firebase";
+import { MODAL_OPTION } from "@/contants/general";
+import { Modal, message } from "antd";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useState } from "react";
 
 const ModalCreateUser = ({
   open,
@@ -61,14 +58,13 @@ const ModalCreateUser = ({
   const handleImageChange = (files) => {
     setImage(files);
   };
-
   const handleUploadAvatar = () => {};
   return (
     <Modal
       className="dashboard-modal"
       onOk={handleCreateUser}
       onCancel={cancel}
-      open={open === MODAL_OPTION.USER.INDEX}
+      open={open === MODAL_OPTION.USER.CREATE}
       okButtonProps={{ className: "custom-button-ok" }}
       cancelButtonProps={{ className: "custom-button-cancel" }}
     >

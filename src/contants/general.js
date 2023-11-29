@@ -34,12 +34,16 @@ export const NAV_OPTION = {
 };
 export const MODAL_OPTION = {
   USER: {
-    INDEX: "user",
-    AVATAR: "user-avatar",
+    CREATE: "user/create",
+    AVATAR: "user/avatar",
   },
   PRODUCT: {
     CREATE: "product/create",
     UPDATE: "product/update",
+  },
+  CATEGORY: {
+    CREATE: "category/create",
+    UPDATE: "category/update",
   },
 };
 export const SELECT_TOKEN = {

@@ -804,7 +804,8 @@ input[type="file"]::file-selector-button:hover {
       }
     }
   }
-  &-order {
+  &-order,
+  &-category {
     .ant-table-wrapper {
       .ant-table-container {
         .ant-table-content {

@@ -157,7 +157,7 @@ const ModalUpdateProduct = ({
     setCategory(productDetail?.category_id);
     setCurrentImages(productDetail?.image);
   };
-  const handleUpdateProduct = async (data) => {
+  const handleUpdateProduct = async () => {
     const payload = {
       name: name,
       price: price,

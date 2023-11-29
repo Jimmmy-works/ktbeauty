@@ -25,6 +25,7 @@ export const PATHS = {
     PRODUCT: `${CMS_PATH}/product`,
     IMAGE: `${CMS_PATH}/image`,
     USER: `${CMS_PATH}/user`,
+    CATEGORY: `${CMS_PATH}/category`,
     FILE: `${CMS_PATH}/file`,
     ORDER: `${CMS_PATH}/order`,
   },

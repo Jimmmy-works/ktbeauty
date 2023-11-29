@@ -16,6 +16,8 @@ const DashboardHeader = ({
   profile,
   onSearchUser,
   onSearchProduct,
+  onSearchCategory,
+  onSearchOrder,
 }) => {
   const { onAuthenModal, onLogout } = useMainContext();
   const dispath = useDispatch();
@@ -30,14 +32,22 @@ const DashboardHeader = ({
         onSearchUser(searchTerm);
       } else if (pathname === `/cms/product`) {
         onSearchProduct(searchTerm);
+      } else if (pathname === `/cms/order`) {
+        onSearchOrder(searchTerm);
+      } else if (pathname === `/cms/category`) {
+        onSearchCategory(searchTerm);
       }
     }, 500);
-
     return () => clearTimeout(time);
   }, [searchTerm]);
   useEffect(() => {
     setSearchTerm("");
   }, [pathname]);
+  useEffect(() => {
+    if (toggleInputSearch === false || toggleInputSeacrhMobile === false) {
+      setSearchTerm("");
+    }
+  }, [toggleInputSearch, toggleInputSeacrhMobile]);
 
   return (
     <div

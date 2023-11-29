@@ -12,9 +12,11 @@ const initialState = {
   ////
   orders: [],
   detailOrder: null,
+  searchOrders: [],
   ////
   errorGetUserAll: null,
   getStatusCreateProduct: null,
+  ///
 };
 export const { reducer: dashboardReducer, actions: dashboardActions } =
   createSlice({
@@ -32,6 +34,9 @@ export const { reducer: dashboardReducer, actions: dashboardActions } =
       },
       setSearchUsers: (state, action) => {
         state.searchUsers = action.payload;
+      },
+      setSearchOrders: (state, action) => {
+        state.searchOrders = action.payload;
       },
     },
     extraReducers: (builder) => {
@@ -87,7 +92,12 @@ export const getAllOrder = createAsyncThunk(
     try {
       const _token = localStorage.getItem(LOCAL_STORAGE.token);
       const orderData = await dashboardService.getAllOrder(_token);
-      thunkAPI.dispatch(dashboardActions.setOrders(orderData?.data?.data));
+      if (orderData?.status === 200) {
+        thunkAPI.dispatch(dashboardActions.setOrders(orderData?.data?.data));
+        // thunkAPI.dispatch(
+        //   dashboardActions.setSearchOrders(orderData?.data?.data)
+        // );
+      }
       return orderData?.data?.data;
     } catch (error) {
       console.log("error", error);

@@ -2,13 +2,10 @@ import { MODAL_OPTION } from "@/contants/general";
 import { formatPriceVND } from "@/utils/formatPrice";
 import { Image, Table, message } from "antd";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import styled from "styled-components";
 import useDashboard from "../useDashboard";
 import ModalCreateProduct from "./ModalCreateProduct";
 import ModalUpdateProduct from "./ModalUpdateProduct";
-import styled from "styled-components";
-import productService from "@/service/productService";
-import useQuery from "@/hooks/useQuery";
 
 const TableStyle = styled.div`
   .ant-table {
@@ -82,12 +79,31 @@ const DashBoardProduct = () => {
       image: (
         <div className="flex items-center xs:justify-center xs:gap-4 lg:gap-3 flex-wrap rounded-md ">
           <Image.PreviewGroup>
+            {product?.image?.slice(0, 4)?.map((item, index) => {
+              return (
+                <div key={item?._id} className=" flex items-center gap-2 ">
+                  <Image
+                    className="object-cover w-[60px] h-[60px]"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/assets/img/error.png";
+                    }}
+                    src={
+                      product?.image?.length ? item : "/assets/img/error.png"
+                    }
+                    alt=""
+                  />
+                </div>
+              );
+            })}
+          </Image.PreviewGroup>
+          {/* <Image.PreviewGroup>
             {Array(product?.image?.length)
               ?.fill(product?.image)
+              ?.splice(4)
               ?.map((item, index) => {
                 return (
                   <div key={item?._id} className=" flex items-center gap-2 ">
-                    {/* <Checkbox value={item[index]} onChange={onSelectImages} /> */}
                     <Image
                       className="object-cover w-[60px] h-[60px]"
                       onError={(e) => {
@@ -104,7 +120,7 @@ const DashBoardProduct = () => {
                   </div>
                 );
               })}
-          </Image.PreviewGroup>
+          </Image.PreviewGroup> */}
         </div>
       ),
     };

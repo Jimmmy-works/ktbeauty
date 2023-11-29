@@ -1,14 +1,7 @@
-import { useState } from "react";
-import "./tailwind.scss";
-import {
-  BrowserRouter,
-  Route,
-  Router,
-  Routes,
-  redirect,
-} from "react-router-dom";
 import { Suspense, lazy } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PATHS } from "./contants/path";
+import "./tailwind.scss";
 
 const MainLayout = lazy(() => import("./layout/MainLayout"));
 const HomePage = lazy(() => import("./page/HomePage"));
@@ -48,16 +41,16 @@ const PrivateRoute = lazy(() => import("./components/PrivateRoute"));
 // import PrivateRoute from "./components/PrivateRoute";
 
 // import DashboardLayout from "./layout/DashboardLayout";
-import DashboardImage from "./page/CMS/ImageProduct";
 import { Provider } from "react-redux";
-import DashboardUser from "./page/CMS/User";
-import DashBoardProduct from "./page/CMS/Product";
-import store from "./store";
 import LoadingPage from "./components/Loading/LoadingPage";
-import StatusShipping from "./page/CMS/Order";
-import Page404 from "./page/Page404";
-import DashboardOrder from "./page/CMS/Order";
 import PrivateRouteCMS from "./components/PrivateRoute/PrivateRouteCMS";
+import DashboardCategory from "./page/CMS/Category";
+import DashboardImage from "./page/CMS/ImageProduct";
+import DashboardOrder from "./page/CMS/Order";
+import DashBoardProduct from "./page/CMS/Product";
+import DashboardUser from "./page/CMS/User";
+import Page404 from "./page/Page404";
+import store from "./store";
 function App() {
   return (
     <Provider store={store}>
@@ -90,11 +83,17 @@ function App() {
               <Route path={PATHS.CMS.INDEX} element={<DashboardLayout />}>
                 <Route index element={<DashboardUser />} />
                 <Route
+                  path={PATHS.CMS.CATEGORY}
+                  element={<DashboardCategory />}
+                />
+
+                <Route
                   path={PATHS.CMS.PRODUCT}
                   element={<DashBoardProduct />}
                 />
                 <Route path={PATHS.CMS.IMAGE} element={<DashboardImage />} />
                 <Route path={PATHS.CMS.USER} element={<DashboardUser />} />
+
                 <Route path={PATHS.CMS.ORDER} element={<DashboardOrder />} />
               </Route>
             </Route>

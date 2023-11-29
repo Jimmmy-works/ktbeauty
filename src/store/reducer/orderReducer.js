@@ -114,7 +114,7 @@ export const updataStatusOrder = createAsyncThunk(
         thunkAPI.dispatch(getOrderUser(_token));
       }
       message.success(response?.data?.message);
-      return response?.data?.data;
+      return response;
     } catch (error) {
       console.log("error", error);
       throw error;

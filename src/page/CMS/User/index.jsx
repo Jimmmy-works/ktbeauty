@@ -7,9 +7,9 @@ import ModalCreateUser from "./ModalCreateUser";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import ModalUpdateAvatar from "./ModalUpdateAvatar";
-const TableStyle = styled.div`
-  .ant-table {
-    min-height: 750px;
+const TableCustom = styled.div`
+  .ant-table-cell {
+    vertical-align: middle;
   }
 `;
 const DashboardUser = () => {
@@ -24,9 +24,7 @@ const DashboardUser = () => {
     width,
     onSearchUser,
   } = modalProps || {};
-  const dispatch = useDispatch();
-  const { onDeleteUser, onCreateUser, searchUsers, users, onDeleteOrder } =
-    userProps || {};
+  const { onDeleteUser, onCreateUser, searchUsers, users } = userProps || {};
   const columns = [
     {
       title: "",
@@ -182,11 +180,11 @@ const DashboardUser = () => {
   });
   const handleDeleteUserSelected = () => {
     for (let index = 0; index < filterUsers.length; index++) {
-      onDeleteOrder(filterUsers[index]?._id);
+      onDeleteUser(filterUsers[index]?._id);
     }
   };
   return (
-    <TableStyle className="table__dashboard-shipping">
+    <TableCustom className="table__dashboard-shipping">
       <ModalUpdateAvatar
         messageAndt={findPath?.success}
         open={openModalAndt}
@@ -227,7 +225,7 @@ const DashboardUser = () => {
           <button
             className=" bg-[#6c973e] text-white rounded-[5px] md:p-[6px_12px]  duration-400 transition-colors
           flex items-center gap-1 hover:bg-[#80B04B] xs:p-[5.5px_11px]"
-            onClick={() => onShowModal(MODAL_OPTION.USER.INDEX)}
+            onClick={() => onShowModal(MODAL_OPTION.USER.CREATE)}
           >
             <span className="xs:text-[16px] md:text-[22px]  font-osr font-bold">
               &#43;
@@ -249,7 +247,7 @@ const DashboardUser = () => {
         columns={columns}
         dataSource={data}
       />
-    </TableStyle>
+    </TableCustom>
   );
 };
 

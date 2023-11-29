@@ -1,30 +1,18 @@
-import { MODAL_OPTION, OPTION_SORT_ORDER } from "@/contants/general";
-import { Drawer, Empty, Popconfirm, Table } from "antd";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import useDashboard from "../useDashboard";
-import { CheckOutlined } from "@ant-design/icons";
 import SelectCustom from "@/components/Select/SelectCustom";
 import { getDetailOrder } from "@/store/reducer/dashboardReducer";
 import { formatPriceVND } from "@/utils/formatPrice";
+import { CheckOutlined } from "@ant-design/icons";
+import { Drawer, Popconfirm, Table } from "antd";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-const TableCustom = styled.div`
+import useDashboard from "../useDashboard";
+const TableStyle = styled.div`
   .ant-table-cell {
     vertical-align: middle;
   }
   .ant-table {
     min-height: 750px;
-  }
-`;
-const EmptyWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 500px !important;
-  height: 500px !important;
-  .ant-empty-image {
-    width: 500px !important;
-    height: 500px !important;
   }
 `;
 const DashboardOrder = () => {
@@ -391,11 +379,10 @@ const DashboardOrder = () => {
   const handleDeleteOrderSelected = () => {
     for (let index = 0; index < filterOrder.length; index++) {
       onDeleteOrder(filterOrder[index]?.key);
-      // onDeleteOrder(filterOrder[index]?.orderid?.props?.children);
     }
   };
   return (
-    <TableCustom className="table__dashboard-order">
+    <TableStyle className="table__dashboard-order">
       <div
         className={`  h-fit  flex items-center xs:justify-center  md:justify-between
       gap-3 xs:fixed lg:static top-[60px] z-10 xs:bg-gray-100 lg:bg-white xs:px-[15px] lg:px-[30px] py-[14px]
@@ -437,7 +424,7 @@ const DashboardOrder = () => {
         columns={columns}
         dataSource={data}
       />
-    </TableCustom>
+    </TableStyle>
   );
 };
 

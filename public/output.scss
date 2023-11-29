@@ -2099,10 +2099,6 @@ input[type="number"] {
   margin: auto !important;
 }
 
-.m-\[3px\] {
-  margin: 3px !important;
-}
-
 .mx-\[2px\] {
   margin-left: 2px !important;
   margin-right: 2px !important;
@@ -3386,26 +3382,6 @@ input[type="number"] {
   padding: 8px 6px !important;
 }
 
-.p-\[3px\] {
-  padding: 3px !important;
-}
-
-.p-\[11\.5px_12px\] {
-  padding: 11.5px 12px !important;
-}
-
-.p-\[13\.5px_12px\] {
-  padding: 13.5px 12px !important;
-}
-
-.p-\[12px_12px\] {
-  padding: 12px 12px !important;
-}
-
-.p-\[13px_12px\] {
-  padding: 13px 12px !important;
-}
-
 .px-\[10px\] {
   padding-left: 10px !important;
   padding-right: 10px !important;
@@ -3441,6 +3417,11 @@ input[type="number"] {
   padding-bottom: 10px !important;
 }
 
+.py-\[13px\] {
+  padding-top: 13px !important;
+  padding-bottom: 13px !important;
+}
+
 .py-\[14px\] {
   padding-top: 14px !important;
   padding-bottom: 14px !important;
@@ -3469,11 +3450,6 @@ input[type="number"] {
 .py-\[6px\] {
   padding-top: 6px !important;
   padding-bottom: 6px !important;
-}
-
-.py-\[13px\] {
-  padding-top: 13px !important;
-  padding-bottom: 13px !important;
 }
 
 .pb-0 {
@@ -3818,26 +3794,6 @@ input[type="number"] {
 .text-white {
   --tw-text-opacity: 1 !important;
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
-}
-
-.text-blue-100 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(219 234 254 / var(--tw-text-opacity)) !important;
-}
-
-.text-yellow-300 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(253 224 71 / var(--tw-text-opacity)) !important;
-}
-
-.text-yellow-500 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(234 179 8 / var(--tw-text-opacity)) !important;
-}
-
-.text-yellow-600 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(202 138 4 / var(--tw-text-opacity)) !important;
 }
 
 .text-yellow-400 {
@@ -5174,7 +5130,8 @@ input[type="file"]::file-selector-button:hover {
       }
     }
   }
-  &-order {
+  &-order,
+  &-category {
     .ant-table-wrapper {
       .ant-table-container {
         .ant-table-content {
@@ -6507,10 +6464,6 @@ input[type="file"]::file-selector-button:hover {
     flex-direction: row !important;
   }
 
-  .md\:flex-nowrap {
-    flex-wrap: nowrap !important;
-  }
-
   .md\:items-start {
     align-items: flex-start !important;
   }
@@ -6619,14 +6572,6 @@ input[type="file"]::file-selector-button:hover {
 
   .md\:p-\[8px\] {
     padding: 8px !important;
-  }
-
-  .md\:p-\[8\.5px_12px\] {
-    padding: 8.5px 12px !important;
-  }
-
-  .md\:p-\[8\.5px_9px\] {
-    padding: 8.5px 9px !important;
   }
 
   .md\:px-\[10px\] {
