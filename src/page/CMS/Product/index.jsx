@@ -1,12 +1,13 @@
 import { MODAL_OPTION } from "@/contants/general";
 import { formatPriceVND } from "@/utils/formatPrice";
-import { Image, Table, message } from "antd";
-import { useState } from "react";
+import { Button, Image, Input, Slider, Table, message } from "antd";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import useDashboard from "../useDashboard";
 import ModalCreateProduct from "./ModalCreateProduct";
 import ModalUpdateProduct from "./ModalUpdateProduct";
-
+import { removeAccents } from "@/utils/removeAccents";
+import { SearchOutlined } from "@ant-design/icons";
 const TableStyle = styled.div`
   .ant-table {
     min-height: 750px;
@@ -15,6 +16,7 @@ const TableStyle = styled.div`
 const DashBoardProduct = () => {
   const { modalProps, productProps } = useDashboard();
   const { onDeleteProduct, searchProducts } = productProps || {};
+  const [searchNameProduct, setSearchNameProduct] = useState("");
   const {
     onShowModal,
     onCloseModal,
@@ -23,6 +25,12 @@ const DashBoardProduct = () => {
     width,
     products,
   } = modalProps || {};
+  const [valueSlider, setValueSiler] = useState();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const onChangeSlider = (value) => {
+    setValueSiler(value);
+  };
   const columns = [
     {
       title: "ProductID",
@@ -38,12 +46,136 @@ const DashBoardProduct = () => {
       title: "Name",
       dataIndex: "name",
       align: "center",
-    },
+      onFilter: (value, record) => {
+        const name = removeAccents(record?.name);
+        const newValue = removeAccents(value);
+        return name.includes(newValue) === true;
+      },
 
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+        close,
+      }) => {
+        return (
+          <div className="p-[10px] flex flex-col gap-2">
+            <label className="font-ossb">Search Name Product</label>
+            <Input
+              name="name"
+              value={selectedKeys[0]}
+              onChange={(e) =>
+                setSelectedKeys(e.target.value ? [e.target.value] : [])
+              }
+              onBlur={() => {
+                confirm();
+              }}
+              autoFocus={true}
+              placeholder="Search..."
+            />
+            <div className="flex gap-1 items-center">
+              <Button
+                onClick={() => {
+                  confirm();
+                }}
+                type="default"
+                title="Search"
+              >
+                Search
+              </Button>
+              <Button
+                type="dashed"
+                title="Search"
+                onClick={() => {
+                  clearFilters();
+                  close();
+                  confirm();
+                }}
+              >
+                Reset
+              </Button>
+            </div>
+          </div>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+    },
     {
       title: "Price",
       dataIndex: "price",
       align: "center",
+      onFilter: (value, record) => {
+        if (
+          record?.price >= searchTerm[0] * 1000 &&
+          record?.price <= searchTerm[1] * 1000
+        ) {
+          return record;
+        }
+      },
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+        close,
+      }) => {
+        return (
+          <div className="p-[10px] flex flex-col gap-2">
+            <label className="font-ossb">Search Price </label>
+            <Slider
+              range
+              value={valueSlider}
+              min={100}
+              max={20000}
+              step={100}
+              defaultValue={[0, 2000]}
+              onChange={(values, e) => {
+                onChangeSlider(values);
+                setSelectedKeys(searchTerm || []);
+              }}
+            />
+            <div className="flex gap-3 ">
+              <div className="flex items-center  gap-1 ">
+                <strong className="font-om">Min:</strong>
+                <p className="font-osr">{valueSlider?.[0]}</p>
+              </div>
+              <div className="flex items-center  gap-1 ">
+                <strong className="font-om">Max:</strong>
+                <p className="font-osr">{valueSlider?.[1]}</p>
+              </div>
+            </div>
+            <div className="flex gap-1 items-center">
+              <Button
+                onClick={(e) => {
+                  confirm();
+                }}
+                type="default"
+                title="Search"
+              >
+                Search
+              </Button>
+              <Button
+                type="dashed"
+                title="Search"
+                onClick={() => {
+                  setSelectedKeys([0, 20000]);
+                  onChangeSlider([0, 20000]);
+                  clearFilters();
+                  close();
+                }}
+              >
+                Reset
+              </Button>
+            </div>
+          </div>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
     },
   ];
   const data = searchProducts.map((product, index) => {
@@ -69,11 +201,13 @@ const DashBoardProduct = () => {
         ),
       price:
         width > 1024 ? (
-          `${formatPriceVND(product?.price)}`
+          `${product?.price}`
         ) : (
           <strong className="text-sm font-osr font-semibold ">
             Price:
-            <span className="text-sm font-osr font-normal ml-[4px]">{`120$`}</span>
+            <span className="text-sm font-osr font-normal ml-[4px]">
+              ${product?.price}
+            </span>
           </strong>
         ),
       image: (
@@ -153,11 +287,19 @@ const DashBoardProduct = () => {
   const findUpdateProduct = products?.find(
     (item) => item?._id === selectedRowKeys.toString()
   );
-  // const _limit = 9;
-  // const _page = 0;
-  // const { data: dataProducts, loading: loadingProducts } = useQuery(() =>
-  //   productService.getAllProduct({ limit: _limit, page: _page })
-  // );
+  const handleOnchangeTable = (pagination, filters, sorter, extra, e) => {
+    console.log(e);
+  };
+  useEffect(() => {
+    onChangeSlider([0, 2000]);
+  }, []);
+
+  useEffect(() => {
+    const myTimeout = setTimeout(() => {
+      setSearchTerm(valueSlider);
+    }, 500);
+    return () => clearTimeout(myTimeout);
+  }, [searchTerm, valueSlider]);
   return (
     <div className="table__dashboard-product ">
       <ModalCreateProduct
@@ -236,6 +378,7 @@ const DashBoardProduct = () => {
             total: Number(products?.length),
             position: ["bottomCenter"],
           }}
+          onChange={handleOnchangeTable}
           rowSelection={rowSelection}
           columns={columns}
           dataSource={data}

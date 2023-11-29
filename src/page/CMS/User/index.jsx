@@ -3,13 +3,15 @@ import { Popconfirm, Table } from "antd";
 import { useState } from "react";
 import useDashboard from "../useDashboard";
 import ModalCreateUser from "./ModalCreateUser";
-
-import { useDispatch } from "react-redux";
+import { localeVN } from "@/utils/timeVN";
 import styled from "styled-components";
 import ModalUpdateAvatar from "./ModalUpdateAvatar";
 const TableCustom = styled.div`
   .ant-table-cell {
     vertical-align: middle;
+  }
+  .ant-table {
+    min-height: 750px;
   }
 `;
 const DashboardUser = () => {
@@ -27,41 +29,58 @@ const DashboardUser = () => {
   const { onDeleteUser, onCreateUser, searchUsers, users } = userProps || {};
   const columns = [
     {
-      title: "",
+      title: "Serial",
       dataIndex: "number",
       align: "center",
     },
     {
-      title: "Avatar",
-      dataIndex: "avatar",
+      title: "Created ",
+      dataIndex: "createdAt",
       align: "center",
-      render: () => (
-        <a
-          className={`text-[24px] cursor-pointer duration-400 transition-colors
-                         hover:text-[#033C73] hover:border-[#033C73] rounded-[50%] 
-                         flex items-end justify-center `}
-        >
-          <img
-            className="rounded-[50%] h-[60px] w-[60px] border-solid border-[1px] border-black-ebe "
-            src={`/assets/img/avartar.png`}
-          />
-        </a>
-      ),
+      sorter: (a, b) =>
+        new Date(b?.createdAt).getTime() - new Date(a?.createdAt).getTime(),
+      sortDirections: ["descend"],
+      ellipsis: true,
     },
     {
       title: "UserID",
       dataIndex: "_id",
       align: "center",
+      filters: users?.map((item) => {
+        return {
+          text: item?._id,
+          value: item?._id,
+        };
+      }),
+      filterSearch: true,
+      onFilter: (value, record) => record?._id?.indexOf(value) === 0,
     },
     {
       title: "Email",
       dataIndex: "email",
       align: "center",
+      filters: users?.map((item) => {
+        return {
+          text: item?.email,
+          value: item?.email,
+        };
+      }),
+      filterSearch: true,
+      onFilter: (value, record) => record?.email?.indexOf(value) === 0,
     },
     {
       title: "Phone",
       dataIndex: "phone",
       align: "center",
+      filters: users?.map((item, index) => {
+        return {
+          text: item?.phone,
+          value: item?.phone,
+          key: item?._id,
+        };
+      }),
+      filterSearch: true,
+      onFilter: (value, record) => record?.phone?.indexOf(value) === 0,
     },
 
     {
@@ -70,6 +89,7 @@ const DashboardUser = () => {
       align: "center",
     },
   ];
+  const handleOnchangeTable = (pagination, filters, sorter, extra) => {};
   const data = searchUsers.map((user, index) => {
     return {
       key: `${user?._id}${index}`,
@@ -79,7 +99,9 @@ const DashboardUser = () => {
         ) : (
           <strong className="text-sm font-osr font-semibold ">
             Key:
-            <span className="text-sm font-osr font-normal ml-[4px]">{`${user?._id}`}</span>
+            <span className="text-sm font-osr font-normal ml-[4px]">{`${
+              index + 1
+            }`}</span>
           </strong>
         ),
       _id:
@@ -109,18 +131,18 @@ const DashboardUser = () => {
             <span className="text-sm font-osr font-normal ml-[4px]">{`${user?.phone}`}</span>
           </strong>
         ),
-      avatar: (
-        <a
-          className={`text-[24px] cursor-pointer duration-400 transition-colors
-                         hover:text-[#033C73] hover:border-[#033C73] rounded-[50%]
-                         flex items-end justify-center `}
-        >
-          <img
-            className="rounded-[50%] h-[60px] w-[60px] border-solid border-[1px] border-black-ebe "
-            src={`/assets/img/avartar.png`}
-          />
-        </a>
-      ),
+      createdAt:
+        width >= 768 ? (
+          `${localeVN(user?.createdAt)} `
+        ) : (
+          <strong className="text-sm font-osr font-semibold ">
+            Create At:
+            <span className="text-sm font-osr font-normal ml-[4px]">{`${localeVN(
+              user?.createdAt
+            )}`}</span>
+          </strong>
+        ),
+
       action: (
         <>
           {width < 768 && (
@@ -129,13 +151,6 @@ const DashboardUser = () => {
             </h4>
           )}
           <div className="flex items-center justify-center gap-2 flex-wrap ">
-            <button
-              onClick={() => onShowModal(MODAL_OPTION.USER.AVATAR)}
-              className="border-solid border-slate-400 border p-[6px_12px] text-sm duration-400 transition-colors
-                hover:bg-slate-400 hover:text-white"
-            >
-              Avatar
-            </button>
             <Popconfirm
               title="Bạn có muốn xóa?"
               onConfirm={() => onConfirmDelete(user?._id)}
@@ -240,12 +255,13 @@ const DashboardUser = () => {
         style={{ verticalAlign: "middle" }}
         pagination={{
           pageSize: 12,
-          total: Number(users?.length),
+          total: data,
           position: ["bottomCenter"],
         }}
         rowSelection={rowSelection}
         columns={columns}
         dataSource={data}
+        onChange={handleOnchangeTable}
       />
     </TableCustom>
   );

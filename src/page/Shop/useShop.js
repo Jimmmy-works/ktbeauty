@@ -1,18 +1,11 @@
 import { useMainContext } from "@/components/MainContext";
 import { CATEGORIES_OPTIONS, OPTION_SORT } from "@/contants/general";
-import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
-import { cartActions, createCart } from "@/store/reducer/cartReducer";
-import {
-  getProductDetail,
-  productActions,
-} from "@/store/reducer/productReducer";
-import compareTime from "@/utils/compareTime";
-import { localeVN } from "@/utils/timeVN";
+import { cartActions } from "@/store/reducer/cartReducer";
+import { getProductDetail } from "@/store/reducer/productReducer";
 import { message } from "antd";
-import { limit } from "firebase/firestore";
 import queryString from "query-string";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams } from "react-router-dom";
 const useShop = () => {
@@ -75,14 +68,10 @@ const useShop = () => {
         return el !== selectedCategory;
       });
       setSelectedFilters(filterCate);
-      console.log("filterCate", filterCate);
       updateQueryString({ categories: filterCate?.toString() });
     } else {
       setSelectedFilters([...selectedFilters, selectedCategory]);
-      console.log("[...selectedFilters, selectedCategory]", [
-        ...selectedFilters,
-        selectedCategory,
-      ]);
+
       updateQueryString({
         categories: [...selectedFilters, selectedCategory]?.toString(),
       });

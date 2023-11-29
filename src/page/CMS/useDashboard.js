@@ -1,9 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import useWindowSize from "@/utils/windowResize";
-import dashboardService from "@/service/dashboardService";
+import { firebaseStorage } from "@/config/firebase";
+import { OPTION_SORT_ORDER } from "@/contants/general";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
-import { useDispatch, useSelector } from "react-redux";
-import { message } from "antd";
+import dashboardService from "@/service/dashboardService";
 import { register } from "@/store/reducer/authReducer";
 import {
   createProduct,
@@ -11,20 +9,18 @@ import {
   getAllOrder,
   getAllUsers,
 } from "@/store/reducer/dashboardReducer";
+import { updataStatusOrder } from "@/store/reducer/orderReducer";
 import {
   getAllCategories,
   getAllProduct,
-  getProductDetail,
   productActions,
 } from "@/store/reducer/productReducer";
-import { deleteObject, ref } from "firebase/storage";
-import { firebaseStorage } from "@/config/firebase";
-import useQuery from "@/hooks/useQuery";
-import productService from "@/service/productService";
-import { updataStatusOrder } from "@/store/reducer/orderReducer";
-import { OPTION_SORT_ORDER } from "@/contants/general";
-import { THUNK_STATUS } from "@/contants/thunkstatus";
 import { removeAccents } from "@/utils/removeAccents";
+import useWindowSize from "@/utils/windowResize";
+import { message } from "antd";
+import { deleteObject, ref } from "firebase/storage";
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 const useDashboard = () => {
   /// token
   const _token = localStorage.getItem(LOCAL_STORAGE.token);
@@ -76,13 +72,6 @@ const useDashboard = () => {
       console.log("error", error);
     }
   };
-  const onEditAvatar = async () => {
-    try {
-      const response = await dashboardService.deleteProfile();
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
   const onDeleteUser = async (id) => {
     try {
       const response = await dashboardService.deleteProfile(id, _token);
@@ -94,22 +83,15 @@ const useDashboard = () => {
     }
   };
   //// CRUD PRODUCT
-  const _limit = 9;
-  const _page = 0;
-  // const { data: dataProducts, loading: loadingProducts } = useQuery(() =>
-  //   productService.getAllProduct({ limit: _limit, page: _page })
-  // );
   const onSearchProduct = (productName) => {
     let result;
     if (searchProducts?.length) {
-      console.log("1111", 1111);
       result = products?.filter((product) => {
         return removeAccents(product?.name)
           ?.toLowerCase()
           ?.includes(removeAccents(productName?.toLowerCase()));
       });
     } else {
-      console.log("2222", 2222);
       result = products;
     }
 

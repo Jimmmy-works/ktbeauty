@@ -850,3 +850,28 @@ input[type="file"]::file-selector-button:hover {
 :where(.css-dev-only-do-not-override-18iikkb).ant-select-dropdown {
   border-radius: 0 !important;
 }
+:where(.css-dev-only-do-not-override-18iikkb).ant-dropdown
+  .ant-table-filter-dropdown
+  .ant-dropdown-menu {
+  @apply max-h-[250px] overflow-y-scroll;
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px #e5e5e5;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px #b3adad;
+  }
+}
+:where(.css-dev-only-do-not-override-18iikkb).ant-btn-primary {
+  background-color: #555;
+  &:hover {
+    background-color: #ff887b !important;
+  }
+}
+.ant-slider {
+  min-width: 300px !important;
+}
