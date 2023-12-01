@@ -1,6 +1,6 @@
 import { MODAL_OPTION } from "@/contants/general";
 import { Modal } from "antd";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const ModalUpdateAvatar = ({
   open,

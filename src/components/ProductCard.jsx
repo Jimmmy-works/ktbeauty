@@ -51,7 +51,7 @@ const ProductCard = ({
           className ?? ""
         } transition-all duration-400   `}
       >
-        {discount > 0 && (
+        {discount > 0 ? (
           <StyleDiscount
             className="absolute top-3 left-[-3px] w-[50px] h-[16px] 
                     border border-red-200 text-xs tracking-wider  flex justify-center
@@ -59,6 +59,8 @@ const ProductCard = ({
           >
             {`-${Math.round((discount / price) * 100)}%`}
           </StyleDiscount>
+        ) : (
+          ""
         )}
         <div className="relative group/img overflow-hidden  group/addtocart ">
           <Link
@@ -76,16 +78,6 @@ const ProductCard = ({
               src={image?.length ? image?.[0] : "/assets/img/error.png"}
               alt={name}
             />
-
-            {/* {discount > 0 && (
-              <span
-                className="absolute xs:top-4 md:top-3 left-3 xs:w-[30px] md:w-[40px] xs:h-[30px] md:h-[40px] border-dashed
-                    border border-red-200 rounded-[50%] text-xs tracking-wider  flex justify-center
-                    bg-primary items-center z-50 text-white font-om"
-              >
-                {`-${Math.round((discount / price) * 100)}%`}
-              </span>
-            )} */}
           </Link>
 
           <div
@@ -167,7 +159,7 @@ const ProductCard = ({
           </StyleRate>
           <div
             className=" text-sm text-primary md:items-center font-osb flex md:flex-row xs:flex-col xs:gap-[4px]
-           md:gap-2 mt-[8px] leading-[18px] "
+           md:gap-2 mt-[8px] leading-[18px] min-h-[40px]"
           >
             <span className=" text-[15px] text-primary ">
               {formatPriceVND(price - discount)}
@@ -263,15 +255,18 @@ const ProductCard = ({
         </Link>
         <div
           className="font-osb text-sm items-center justify-center flex md:flex-row xs:flex-col xs:gap-[4px]
-           md:gap-2
-         text-primary mt-[6px] xs:mb-[4px] md:mb-[10px] leading-[18px] "
+           md:gap-2 text-primary mt-[6px] xs:mb-[4px] md:mb-[10px] leading-[18px] min-h-[40px]"
         >
           <span className=" text-[15px] text-primary ">
             {formatPriceVND(price - discount)}
           </span>
-          <span className="line-through text-black-555">
-            {formatPriceVND(price)}
-          </span>
+          {discount > 0 ? (
+            <span className="line-through text-black-555">
+              {formatPriceVND(price)}
+            </span>
+          ) : (
+            ""
+          )}
         </div>
 
         <Button

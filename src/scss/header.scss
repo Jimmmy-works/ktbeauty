@@ -127,14 +127,15 @@
           }
         }
         &__sub {
-          @apply absolute bg-[#282926] xs:left-[calc(100%+10px)]  md:left-[calc(100%+30px)] flex top-0
+          @apply absolute xs:left-[calc(100%+10px)]  md:left-[calc(100%+30px)] flex top-0
           items-center justify-center transition-all duration-400
            min-w-max invisible opacity-0;
           &-list {
             @apply flex flex-col xs:gap-4 md:gap-3 md:max-w-[250px] md:max-h-[400px]
-           xs:max-w-[180px] xs:max-h-[244px] overflow-y-auto p-[12px_0px_12px_20px];
+           xs:max-w-[180px] xs:max-h-[244px] overflow-y-auto border-l border-solid border-white;
             li {
-              @apply flex items-center  gap-2 md:text-16px xs:text-[14px] 
+              @apply flex items-center  gap-2 md:text-16px xs:text-[14px] pl-[12px]
+              first:pt-[12px] pb-[12px]  border-b border-solid first:border-t border-white
                  font-osr text-white;
               a {
                 @apply leading-[20px];

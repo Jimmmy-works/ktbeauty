@@ -1,26 +1,18 @@
 import { MODAL_OPTION } from "@/contants/general";
-import { Popconfirm, Table, message } from "antd";
+import { Table, message } from "antd";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import styled from "styled-components";
 import useDashboard from "../useDashboard";
 import ModalCreateCategory from "./ModalCreateCategory";
 import ModalUpdateCategory from "./ModalUpdateCategory";
-const TableStyle = styled.div`
-  .ant-table {
-    min-height: 750px;
-  }
-`;
 const DashboardCategory = () => {
   const { modalProps, categoryProps } = useDashboard();
   const { onShowModal, onCloseModal, openModalAndt, toggleSidebar, width } =
     modalProps || {};
-  const { categories, onDeleteCategory, searchCategory, onSearchCategory } =
-    categoryProps || {};
+  const { categories, onDeleteCategory } = categoryProps || {};
   const columns = [
     {
-      title: "Number",
-      dataIndex: "number",
+      title: "Serial",
+      dataIndex: "serial",
       align: "center",
     },
     {
@@ -32,17 +24,36 @@ const DashboardCategory = () => {
       title: "Name",
       dataIndex: "name",
       align: "center",
+      filters: categories?.map((item) => {
+        return {
+          text: item?.name,
+          value: item?.name,
+        };
+      }),
+      filterSearch: true,
+      onFilter: (value, record) => {
+        console.log("record", record);
+        if (width >= 768) {
+          return record?.name?.props?.children?.[1]?.indexOf(value) === 0;
+        } else {
+          return (
+            record?.name?.props?.children?.[1]?.props?.children?.indexOf(
+              value
+            ) === 0
+          );
+        }
+      },
     },
   ];
-  const data = searchCategory.map((category, index) => {
+  const data = categories?.map((category, index) => {
     return {
       key: `${category?._id}`,
-      number:
+      serial:
         width >= 768 ? (
           `${index + 1}`
         ) : (
           <strong className="text-sm font-osr font-semibold ">
-            Key:
+            Serial:
             <span className="text-sm font-osr font-normal ml-[4px]">{`${
               index + 1
             }`}</span>
@@ -91,7 +102,7 @@ const DashboardCategory = () => {
     }
   };
   return (
-    <TableStyle className="table__dashboard-category">
+    <div className="table__dashboard table__dashboard-category">
       <ModalCreateCategory
         {...categoryProps}
         open={openModalAndt}
@@ -160,16 +171,18 @@ const DashboardCategory = () => {
       </div>
       <Table
         style={{ verticalAlign: "middle" }}
+        tableLayout={"auto"}
         pagination={{
           pageSize: 12,
-          total: Number(categories?.length),
+          total: data,
           position: ["bottomCenter"],
         }}
         rowSelection={rowSelection}
         columns={columns}
+        key={`cms/category`}
         dataSource={data}
       />
-    </TableStyle>
+    </div>
   );
 };
 

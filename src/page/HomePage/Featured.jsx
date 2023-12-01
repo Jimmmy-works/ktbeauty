@@ -1,10 +1,8 @@
-import React, { useRef, useState } from "react";
-import { FEATURED_OPTIONS } from "@/contants/general";
-import ProductCard from "@/components/ProductCard";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Keyboard, Navigation } from "swiper/modules";
-import { THUNK_STATUS } from "@/contants/thunkstatus";
 import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
+import ProductCard from "@/components/ProductCard";
+import { FEATURED_OPTIONS } from "@/contants/general";
+import { Keyboard, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 const Featured = ({
   onChangeFeaturedTab,
   featuerdTab,

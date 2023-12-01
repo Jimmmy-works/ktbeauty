@@ -450,7 +450,7 @@ const Checkout = () => {
               )}
               <div className="pb-[20px] border-b border-solid border-[#e2e0e0]">
                 {cartInfo?.products?.length ? (
-                  cartInfo?.products?.map((item, index) => {
+                  cartInfo?.products?.map((item) => {
                     const { image, name, _id, quantity, price, discount } =
                       item || {};
                     return (

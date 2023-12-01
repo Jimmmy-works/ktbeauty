@@ -1,18 +1,16 @@
 import { LOCAL_STORAGE } from "@/contants/localStorage";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
 import dashboardService from "@/service/dashboardService";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { authActions, authReducer } from "./authReducer";
 import { message } from "antd";
-import { THUNK_STATUS } from "@/contants/thunkstatus";
+import { authActions } from "./authReducer";
 import { getAllProduct } from "./productReducer";
 
 const initialState = {
   users: [],
-  searchUsers: [],
   ////
   orders: [],
   detailOrder: null,
-  searchOrders: [],
   ////
   errorGetUserAll: null,
   getStatusCreateProduct: null,
@@ -31,12 +29,6 @@ export const { reducer: dashboardReducer, actions: dashboardActions } =
       },
       setDetailOrder: (state, action) => {
         state.detailOrder = action.payload;
-      },
-      setSearchUsers: (state, action) => {
-        state.searchUsers = action.payload;
-      },
-      setSearchOrders: (state, action) => {
-        state.searchOrders = action.payload;
       },
     },
     extraReducers: (builder) => {
@@ -70,7 +62,6 @@ export const getAllUsers = createAsyncThunk(
       const _token = localStorage.getItem(LOCAL_STORAGE.token);
       const userData = await dashboardService.getAllProfile(_token);
       thunkAPI.dispatch(dashboardActions.setUsers(userData?.data?.data));
-      thunkAPI.dispatch(dashboardActions.setSearchUsers(userData?.data?.data));
       return userData?.data?.data;
     } catch (error) {
       if (error) {
@@ -94,9 +85,6 @@ export const getAllOrder = createAsyncThunk(
       const orderData = await dashboardService.getAllOrder(_token);
       if (orderData?.status === 200) {
         thunkAPI.dispatch(dashboardActions.setOrders(orderData?.data?.data));
-        // thunkAPI.dispatch(
-        //   dashboardActions.setSearchOrders(orderData?.data?.data)
-        // );
       }
       return orderData?.data?.data;
     } catch (error) {

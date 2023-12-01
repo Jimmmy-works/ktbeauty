@@ -1,22 +1,16 @@
 import { MODAL_OPTION } from "@/contants/general";
 import { formatPriceVND } from "@/utils/formatPrice";
+import { removeAccents } from "@/utils/removeAccents";
+import { dateVN } from "@/utils/timeVN";
+import { SearchOutlined } from "@ant-design/icons";
 import { Button, Image, Input, Slider, Table, message } from "antd";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 import useDashboard from "../useDashboard";
 import ModalCreateProduct from "./ModalCreateProduct";
 import ModalUpdateProduct from "./ModalUpdateProduct";
-import { removeAccents } from "@/utils/removeAccents";
-import { SearchOutlined } from "@ant-design/icons";
-const TableStyle = styled.div`
-  .ant-table {
-    min-height: 750px;
-  }
-`;
 const DashBoardProduct = () => {
   const { modalProps, productProps } = useDashboard();
-  const { onDeleteProduct, searchProducts } = productProps || {};
-  const [searchNameProduct, setSearchNameProduct] = useState("");
+  const { onDeleteProduct } = productProps || {};
   const {
     onShowModal,
     onCloseModal,
@@ -27,31 +21,34 @@ const DashBoardProduct = () => {
   } = modalProps || {};
   const [valueSlider, setValueSiler] = useState();
   const [searchTerm, setSearchTerm] = useState("");
-
   const onChangeSlider = (value) => {
     setValueSiler(value);
   };
   const columns = [
     {
-      title: "ProductID",
-      dataIndex: "productid",
+      title: "Serial",
+      dataIndex: "serial",
       align: "center",
-    },
-    {
-      title: "Image",
-      dataIndex: "image",
-      align: "center",
+      key: 1,
     },
     {
       title: "Name",
+      key: 2,
       dataIndex: "name",
       align: "center",
       onFilter: (value, record) => {
-        const name = removeAccents(record?.name);
-        const newValue = removeAccents(value);
-        return name.includes(newValue) === true;
+        if (width >= 768) {
+          const name = removeAccents(record?.name);
+          const newValue = removeAccents(value);
+          return name.includes(newValue) === true;
+        } else {
+          const name = removeAccents(
+            record?.name?.props?.children?.[1]?.props?.children
+          );
+          const newValue = removeAccents(value);
+          return name.includes(newValue) === true;
+        }
       },
-
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -61,7 +58,7 @@ const DashBoardProduct = () => {
       }) => {
         return (
           <div className="p-[10px] flex flex-col gap-2">
-            <label className="font-ossb">Search Name Product</label>
+            <label className="font-ossb">Search Name </label>
             <Input
               name="name"
               value={selectedKeys[0]}
@@ -104,20 +101,27 @@ const DashBoardProduct = () => {
       },
     },
     {
+      title: "Image",
+      dataIndex: "image",
+      align: "center",
+      key: 3,
+    },
+    {
       title: "Price",
       dataIndex: "price",
       align: "center",
+      key: 4,
       onFilter: (value, record) => {
         if (
-          record?.price >= searchTerm[0] * 1000 &&
-          record?.price <= searchTerm[1] * 1000
+          record?.priceCurrent >= searchTerm[0] * 1000 &&
+          record?.priceCurrent <= searchTerm[1] * 1000
         ) {
           return record;
         }
       },
       filterDropdown: ({
         setSelectedKeys,
-        selectedKeys,
+        // selectedKeys,
         confirm,
         clearFilters,
         close,
@@ -132,7 +136,7 @@ const DashBoardProduct = () => {
               max={20000}
               step={100}
               defaultValue={[0, 2000]}
-              onChange={(values, e) => {
+              onChange={(values) => {
                 onChangeSlider(values);
                 setSelectedKeys(searchTerm || []);
               }}
@@ -149,7 +153,7 @@ const DashBoardProduct = () => {
             </div>
             <div className="flex gap-1 items-center">
               <Button
-                onClick={(e) => {
+                onClick={() => {
                   confirm();
                 }}
                 type="default"
@@ -177,21 +181,57 @@ const DashBoardProduct = () => {
         return <SearchOutlined />;
       },
     },
+    {
+      title: "CreateAt ",
+      dataIndex: "createdAt",
+      align: "center",
+      key: 5,
+      sorter: (a, b) =>
+        new Date(b?.createdProduct).getTime() -
+        new Date(a?.createdProduct).getTime(),
+      sortDirections: ["descend"],
+      ellipsis: true,
+    },
   ];
-  const data = searchProducts.map((product, index) => {
+  const data = products.map((product, index) => {
     return {
-      key: product?._id,
-      productid:
-        width > 1024 ? (
-          `${product?._id}`
+      priceCurrent: product?.price,
+      createdProduct: product?.createdAt,
+      serial:
+        width >= 768 ? (
+          `${index + 1}`
         ) : (
           <strong className="text-sm font-osr font-semibold ">
-            Id:{" "}
-            <span className="text-sm font-osr font-normal ml-[4px]">{`${product?._id}`}</span>
+            Serial:
+            <span className="text-sm font-osr font-normal ml-[4px]">{`${
+              index + 1
+            }`}</span>
+          </strong>
+        ),
+      price:
+        width >= 768 ? (
+          `${formatPriceVND(product?.price)}`
+        ) : (
+          <strong className="text-sm font-osr font-semibold ">
+            Price:
+            <span className="text-sm font-osr font-normal ml-[4px]">
+              ${formatPriceVND(product?.price)}
+            </span>
+          </strong>
+        ),
+      createdAt:
+        width >= 768 ? (
+          `${dateVN(product?.createdAt)} `
+        ) : (
+          <strong className="text-sm font-osr font-semibold ">
+            Create At:
+            <span className="text-sm font-osr font-normal ml-[4px]">{`${dateVN(
+              product?.createdAt
+            )}`}</span>
           </strong>
         ),
       name:
-        width > 1024 ? (
+        width >= 768 ? (
           `${product?.name}`
         ) : (
           <strong className="text-sm font-osr font-semibold ">
@@ -199,45 +239,15 @@ const DashBoardProduct = () => {
             <span className="text-sm font-osr font-normal ml-[4px]">{`${product?.name}`}</span>
           </strong>
         ),
-      price:
-        width > 1024 ? (
-          `${product?.price}`
-        ) : (
-          <strong className="text-sm font-osr font-semibold ">
-            Price:
-            <span className="text-sm font-osr font-normal ml-[4px]">
-              ${product?.price}
-            </span>
-          </strong>
-        ),
+
       image: (
         <div className="flex items-center xs:justify-center xs:gap-4 lg:gap-3 flex-wrap rounded-md ">
           <Image.PreviewGroup>
-            {product?.image?.slice(0, 4)?.map((item, index) => {
-              return (
-                <div key={item?._id} className=" flex items-center gap-2 ">
-                  <Image
-                    className="object-cover w-[60px] h-[60px]"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "/assets/img/error.png";
-                    }}
-                    src={
-                      product?.image?.length ? item : "/assets/img/error.png"
-                    }
-                    alt=""
-                  />
-                </div>
-              );
-            })}
-          </Image.PreviewGroup>
-          {/* <Image.PreviewGroup>
-            {Array(product?.image?.length)
+            {Array(product?.image?.length < 4 ? product?.image?.length : 2)
               ?.fill(product?.image)
-              ?.splice(4)
               ?.map((item, index) => {
                 return (
-                  <div key={item?._id} className=" flex items-center gap-2 ">
+                  <div key={`${index}`} className=" flex items-center gap-2 ">
                     <Image
                       className="object-cover w-[60px] h-[60px]"
                       onError={(e) => {
@@ -254,7 +264,7 @@ const DashBoardProduct = () => {
                   </div>
                 );
               })}
-          </Image.PreviewGroup> */}
+          </Image.PreviewGroup>
         </div>
       ),
     };
@@ -301,14 +311,16 @@ const DashBoardProduct = () => {
     return () => clearTimeout(myTimeout);
   }, [searchTerm, valueSlider]);
   return (
-    <div className="table__dashboard-product ">
+    <div className="table__dashboard table__dashboard-product ">
       <ModalCreateProduct
+        key={"product/create"}
         {...productProps}
         open={openModalAndt}
         setShowModal={onShowModal}
         cancel={onCloseModal}
       />
       <ModalUpdateProduct
+        key={"product/update"}
         productDetail={findUpdateProduct}
         {...productProps}
         open={openModalAndt}
@@ -368,22 +380,20 @@ const DashBoardProduct = () => {
           </button>
         </div>
       </div>
-      <TableStyle>
-        <Table
-          style={{ verticalAlign: "middle", minHeight: "800px" }}
-          rootClassName=""
-          tableLayout={"auto"}
-          pagination={{
-            pageSize: 7,
-            total: Number(products?.length),
-            position: ["bottomCenter"],
-          }}
-          onChange={handleOnchangeTable}
-          rowSelection={rowSelection}
-          columns={columns}
-          dataSource={data}
-        />
-      </TableStyle>
+      <Table
+        style={{ verticalAlign: "middle" }}
+        key={`cms/product`}
+        tableLayout={"auto"}
+        pagination={{
+          pageSize: 7,
+          total: data,
+          position: ["bottomCenter"],
+        }}
+        onChange={handleOnchangeTable}
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={data}
+      />
     </div>
   );
 };

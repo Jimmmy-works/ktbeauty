@@ -1,14 +1,6 @@
 import Accordion from "@/components/Accordion";
-import React from "react";
 
 const Address = () => {
-  const images = [
-    "/assets/img/product-1.jpg",
-    "/assets/img/product-2.jpg",
-    "/assets/img/product-3.jpg",
-    "/assets/img/product-4.jpg",
-    "/assets/img/product-5.jpg",
-  ];
   const OPTIONS = [
     {
       title: `order id: 03a23d39d99o12p`,

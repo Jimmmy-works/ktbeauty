@@ -1,12 +1,8 @@
 import { LOCAL_STORAGE } from "@/contants/localStorage";
-import { PATHS } from "@/contants/path";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
-import authService from "@/service/authService";
 import { authActions, register, signin } from "@/store/reducer/authReducer";
-import { cartActions, getCart, updateCart } from "@/store/reducer/cartReducer";
-import { unwrapResult } from "@reduxjs/toolkit";
-import { message } from "antd";
-import React, { createContext, useContext, useState } from "react";
+import { cartActions, updateCart } from "@/store/reducer/cartReducer";
+import { createContext, useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const MainContext = createContext({});
@@ -16,10 +12,6 @@ export const MainProvider = ({ children }) => {
     (state) => state.auth
   );
   const { cartInfo } = useSelector((state) => state.cart);
-  const [darkMode, setDarkMode] = useState(true);
-  function toggleDarkMode() {
-    setDarkMode((prevDarkMode) => !prevDarkMode);
-  }
   ///// Nav + Filter Nav
   const [isNavbar, setIsNavbar] = useState(false);
   const [isFilter, setIsFilter] = useState(false);
@@ -76,6 +68,7 @@ export const MainProvider = ({ children }) => {
         if (resUpdateCart?.payload?.status === 200) {
           dispatch(cartActions.setCartInfo(null));
           dispatch(authActions.logout());
+          setIsNavbar(false);
         }
       } else {
         dispatch(cartActions.setCartInfo(null));

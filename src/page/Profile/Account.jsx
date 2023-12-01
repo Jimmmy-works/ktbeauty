@@ -1,10 +1,10 @@
 import Button from "@/components/Button";
-import React, { useEffect, useState } from "react";
-import useProfile from "./useProfile";
-import { Controller, useForm } from "react-hook-form";
-import { Select } from "antd";
 import { removeAccents } from "@/utils/removeAccents";
+import { Select } from "antd";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import styled from "styled-components";
+import useProfile from "./useProfile";
 const SelectWrapper = styled.div`
   .select-antd-wrapper {
     background-color: #f9f9f9;

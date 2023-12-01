@@ -1,53 +1,130 @@
-import SelectCustom from "@/components/Select/SelectCustom";
+import { OPTION_SORT_ORDER_ANTD } from "@/contants/general";
 import { getDetailOrder } from "@/store/reducer/dashboardReducer";
 import { formatPriceVND } from "@/utils/formatPrice";
-import { CheckOutlined } from "@ant-design/icons";
-import { Drawer, Popconfirm, Table } from "antd";
+import { removeAccents } from "@/utils/removeAccents";
+import { localeVN } from "@/utils/timeVN";
+import { CheckOutlined, SearchOutlined } from "@ant-design/icons";
+import { Button, Drawer, Input, Popconfirm, Table } from "antd";
+import { Excel } from "antd-table-saveas-excel";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
 import useDashboard from "../useDashboard";
-const TableStyle = styled.div`
-  .ant-table-cell {
-    vertical-align: middle;
-  }
-  .ant-table {
-    min-height: 750px;
-  }
-`;
 const DashboardOrder = () => {
-  const { modalProps, userProps, orderProps } = useDashboard();
-  const { onShowModal, toggleSidebar, width } = modalProps || {};
+  const { modalProps, orderProps } = useDashboard();
+  const { toggleSidebar, width } = modalProps || {};
   const dispatch = useDispatch();
-  const {
-    orders,
-    detailOrder,
-    onDeleteOrder,
-    profile,
-    onConfirmOrder,
-    optionSortOrderCMS,
-    onChangeSelectOrder,
-    onSortOrder,
-    optionSortSelectedOrder,
-  } = orderProps || {};
+  const { orders, detailOrder, onDeleteOrder, profile, onConfirmOrder } =
+    orderProps || {};
   const columns = [
+    {
+      title: "Serial",
+      dataIndex: "serial",
+      align: "center",
+    },
     {
       title: "User",
       dataIndex: "user",
       align: "center",
-    },
-    {
-      title: "OrderID",
-      dataIndex: "orderid",
-      align: "center",
+      filters: orders?.map((item) => {
+        return {
+          text: item?.user?.email,
+          value: item?.user?.email,
+        };
+      }),
+      onFilter: (value, record) => {
+        return record?.user?.indexOf(value) === 0;
+      },
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+        close,
+      }) => {
+        return (
+          <div className="p-[10px] flex flex-col gap-2">
+            <label className="font-ossb">Search Name </label>
+            <Input
+              name="name"
+              value={selectedKeys[0]}
+              onChange={(e) =>
+                setSelectedKeys(e.target.value ? [e.target.value] : [])
+              }
+              onBlur={() => {
+                confirm();
+              }}
+              autoFocus={true}
+              placeholder="Search..."
+            />
+            <div className="flex gap-1 items-center">
+              <Button
+                onClick={() => {
+                  confirm();
+                }}
+                type="default"
+                title="Search"
+              >
+                Search
+              </Button>
+              <Button
+                type="dashed"
+                title="Search"
+                onClick={() => {
+                  clearFilters();
+                  close();
+                  confirm();
+                }}
+              >
+                Reset
+              </Button>
+            </div>
+          </div>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      // filterSearch: true,
+      // onFilter: (value, record) => {
+      //   if (width >= 768) {
+      //     return record?.user?.indexOf(value) === 0;
+      //   } else {
+      //     return (
+      //       record?.user?.props?.children?.[1]?.props?.children?.indexOf(
+      //         value
+      //       ) === 0
+      //     );
+      //   }
+      // },
     },
 
     {
       title: "Status",
       dataIndex: "status",
       align: "center",
+      filters: OPTION_SORT_ORDER_ANTD?.map((item) => {
+        return {
+          text: item?.value,
+          value: item?.value,
+        };
+      }),
+      filterSearch: true,
+      onFilter: (value, record) => {
+        const status = removeAccents(record?.status?.props?.children);
+        const newValue = removeAccents(value);
+        return status.includes(newValue) === true;
+      },
     },
-
+    {
+      title: "CreatedAt",
+      dataIndex: "createdAt",
+      align: "center",
+      sorter: (a, b) => {
+        return new Date(b?.orderAt).getTime() - new Date(a?.orderAt).getTime();
+      },
+      sortDirections: ["descend"],
+      ellipsis: true,
+    },
     { title: "Action", dataIndex: "action", align: "center" },
   ];
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -70,32 +147,65 @@ const DashboardOrder = () => {
   const handleCancelConfirmOrder = (e) => {
     console.log(e);
   };
-
-  const data = onSortOrder?.map((order, index) => {
+  //// handle Table Excel
+  const [currentTable, setCurrentTable] = useState();
+  const handleOnchangeTableOrder = (
+    pagination,
+    filter,
+    sorter,
+    currentTable
+  ) => {
+    const newCurrentTable = currentTable?.currentDataSource?.map((item) => {
+      const value = {
+        ...item,
+        status: item?.status?.props?.children,
+        action: null,
+      };
+      return value;
+    });
+    console.log("newCurrentTable", newCurrentTable);
+    setCurrentTable(newCurrentTable);
+    /// handle selected
+  };
+  const data = orders?.map((order, index) => {
     return {
       key: `${order?._id}`,
+      statusCurrent: order?.status,
+      serial:
+        width >= 1024 ? (
+          `${index + 1}`
+        ) : (
+          <strong className="text-sm font-osr font-semibold ">
+            Serial:
+            <span className="text-sm font-osr font-normal ml-[4px]">{`${
+              index + 1
+            }`}</span>
+          </strong>
+        ),
       user:
         width >= 768 ? (
           `${order?.user?.email}`
         ) : (
           <strong className="text-sm font-osr font-semibold ">
-            Key:
-            <span className="text-sm font-osr font-normal ml-[4px]">{`${order?._id}`}</span>
+            User:
+            <span className="text-sm font-osr font-normal ml-[4px]">{`${order?.user?.email}`}</span>
           </strong>
         ),
-      orderid:
-        width > 1024 ? (
-          `${order?.user?.user_id}`
+      createdAt:
+        width >= 768 ? (
+          `${localeVN(order?.createdAt)}`
         ) : (
           <strong className="text-sm font-osr font-semibold ">
-            Id:
-            <span className="text-sm font-osr font-normal ml-[4px]">{`${order?.user?.user_id}`}</span>
+            createdAt:
+            <span className="text-sm font-osr font-normal ml-[4px]">{`${localeVN(
+              order?.createdAt
+            )}`}</span>
           </strong>
         ),
-      status:
-        width > 1024 ? (
-          <p
-            className={`
+      orderAt: order?.createdAt,
+      status: (
+        <p
+          className={`
           ${order?.status === "Đã hủy đơn" ? "text-red-500" : ""} 
           ${order?.status === "Đang xác minh" ? "text-yellow-400" : ""} 
           ${order?.status === "Đã xác minh" ? "text-blue-500" : ""} 
@@ -103,27 +213,10 @@ const DashboardOrder = () => {
           ${order?.status === "Đang giao hàng" ? "text-amber-600" : ""} 
           ${order?.status === "Hoàn thành đơn hàng" ? "text-green-600" : ""} 
           `}
-          >
-            {order?.status}
-          </p>
-        ) : (
-          <div className="flex items-center justify-center gap-1">
-            <strong className="text-sm font-osr font-semibold ">Status:</strong>
-            <p
-              className={`
-            ${order?.status === "Đã hủy đơn" ? "text-red-500" : ""} 
-            ${order?.status === "Đang xác minh" ? "text-yellow-400" : ""} 
-            ${order?.status === "Đã xác minh" ? "text-blue-500" : ""} 
-            ${order?.status === "Đang chuẩn bị hàng" ? "text-violet-500" : ""} 
-            ${order?.status === "Đang giao hàng" ? "text-amber-600" : ""} 
-            ${order?.status === "Hoàn thành đơn hàng" ? "text-green-600" : ""} 
-            `}
-            >
-              {order?.status}
-            </p>
-          </div>
-        ),
-
+        >
+          {order?.status}
+        </p>
+      ),
       action: (
         <>
           {width < 768 && (
@@ -136,8 +229,9 @@ const DashboardOrder = () => {
               onClick={() => {
                 handleShowDrawer(order?._id);
               }}
-              className="border-solid border-slate-400 border p-[6px_12px] text-sm duration-400 transition-colors
-                hover:bg-slate-400 hover:text-white"
+              className="border-solid border-slate-400 border xs:p-[6px_12px] xs:text-sm 
+             md:p-[4px_8px] md:text-xs lg:p-[6px_12px] lg:text-sm 
+                hover:bg-slate-400 hover:text-white duration-400 transition-colors"
             >
               Chi tiết
             </button>
@@ -165,8 +259,9 @@ const DashboardOrder = () => {
               {order?.status === "Đang xác minh" ? (
                 <button
                   onClick={() => handleButtonMessage("Đã xác minh", `đơn hàng`)}
-                  className="border-solid border-blue-500 text-blue-500  border p-[6px_12px] text-sm duration-400 transition-colors
-                hover:bg-blue-500 hover:text-white"
+                  className="border-solid border-blue-500 text-blue-500  border 
+                  xs:p-[6px_12px] xs:text-sm md:p-[4px_8px] md:text-xs lg:p-[6px_12px] lg:text-sm 
+                  duration-400 transition-colors hover:bg-blue-500 hover:text-white"
                 >
                   Xác nhận
                 </button>
@@ -179,8 +274,9 @@ const DashboardOrder = () => {
                   onClick={() =>
                     handleButtonMessage("Đang chuẩn bị hàng", `chuẩn bị hàng`)
                   }
-                  className="border-solid border-violet-500 text-violet-500 border p-[6px_12px] text-sm duration-400 transition-colors
-                hover:bg-violet-500 hover:text-white"
+                  className="border-solid border-violet-500 text-violet-500 border 
+                hover:bg-violet-500 hover:text-white  duration-400 transition-colors
+                 xs:p-[6px_12px] xs:text-sm md:p-[4px_8px] md:text-xs lg:p-[6px_12px] lg:text-sm "
                 >
                   Chuẩn bị
                 </button>
@@ -192,22 +288,23 @@ const DashboardOrder = () => {
                   onClick={() =>
                     handleButtonMessage("Đang giao hàng", `giao hàng`)
                   }
-                  className="border-solid border-amber-600 text-amber-600 border p-[6px_12px] text-sm duration-400 transition-colors
-                hover:bg-amber-600 hover:text-white"
+                  className="border-solid border-amber-600 text-amber-600 border 
+                hover:bg-amber-600 hover:text-white duration-400 transition-colors
+                 xs:p-[6px_12px] xs:text-sm md:p-[4px_8px] md:text-xs lg:p-[6px_12px] lg:text-sm"
                 >
                   Giao
                 </button>
               ) : (
                 ""
               )}
-
               {order?.status === "Đang giao hàng" ? (
                 <button
                   onClick={() =>
                     handleButtonMessage("Hoàn thành đơn hàng", `hoàn thành`)
                   }
-                  className="border-solid border-green-600 text-green-600 border p-[6px_12px] text-sm duration-400 transition-colors
-                hover:bg-green-600 hover:text-white"
+                  className="border-solid border-green-600 text-green-600 border
+                  xs:p-[6px_12px] xs:text-sm md:p-[4px_8px] md:text-xs lg:p-[6px_12px] lg:text-sm
+                hover:bg-green-600 hover:text-white duration-400 transition-colors"
                 >
                   Hoàn thành
                 </button>
@@ -230,7 +327,7 @@ const DashboardOrder = () => {
                 )}
                 <div className="pb-[20px] border-b border-solid border-[#e2e0e0]">
                   {detailOrder?.products?.length &&
-                    detailOrder?.products?.map((item, index) => {
+                    detailOrder?.products?.map((item) => {
                       const { image, name, _id, quantity, price, discount } =
                         item || {};
                       return (
@@ -358,9 +455,32 @@ const DashboardOrder = () => {
       ),
     };
   });
+  const newData = data?.map((item) => {
+    const value = {
+      ...item,
+      status: item?.status?.props?.children,
+      action: null,
+    };
+    return value;
+  });
+  const newColumn = columns?.filter((col) => {
+    return col?.title !== "Action";
+  });
+  const handleClick = () => {
+    const excel = new Excel();
+    console.log("excel-->1", excel);
+    excel
+      .addSheet("test")
+      .addColumns(newColumn)
+      .addDataSource(currentTable || newData, {
+        str2Percent: true,
+      })
+      .saveAs("Excel.xlsx");
+    console.log("excel-->2", excel);
+  };
 
-  /// handle selected
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
@@ -382,7 +502,7 @@ const DashboardOrder = () => {
     }
   };
   return (
-    <TableStyle className="table__dashboard-order">
+    <div className="table__dashboard table__dashboard-order">
       <div
         className={`  h-fit  flex items-center xs:justify-center  md:justify-between
       gap-3 xs:fixed lg:static top-[60px] z-10 xs:bg-gray-100 lg:bg-white xs:px-[15px] lg:px-[30px] py-[14px]
@@ -396,12 +516,6 @@ const DashboardOrder = () => {
           Dashboard Order
         </h2>
         <div className="flex items-center gap-2  md:justify-normal xs:justify-center">
-          <SelectCustom
-            padding={`py-[13px]`}
-            className={`min-w-[180px]`}
-            onChangeSort={onChangeSelectOrder}
-            data={optionSortOrderCMS}
-          />
           <button
             className=" bg-[#b05a4b] text-white rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
           flex items-center gap-1 hover:bg-[#f84e4e] xs:p-[8px]"
@@ -411,20 +525,30 @@ const DashboardOrder = () => {
               Delete Seleted
             </span>
           </button>
+          <button
+            className=" bg-[#b05a4b] text-white rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
+          flex items-center gap-1 hover:bg-[#f84e4e] xs:p-[8px]"
+            onClick={handleClick}
+          >
+            <span className="xs:text-xs md:text-sm font-osr  ">Excel</span>
+          </button>
         </div>
       </div>
       <Table
         style={{ verticalAlign: "middle" }}
+        tableLayout={"auto"}
         pagination={{
-          pageSize: 12,
-          total: Number(orders?.length),
+          pageSize: width >= 768 ? 12 : 8,
+          total: data,
           position: ["bottomCenter"],
         }}
+        key={`cms/order`}
         rowSelection={rowSelection}
         columns={columns}
         dataSource={data}
+        onChange={handleOnchangeTableOrder}
       />
-    </TableStyle>
+    </div>
   );
 };
 

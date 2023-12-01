@@ -1,12 +1,10 @@
-import React from "react";
-import Hero from "./Hero";
-import Featured from "./Featured";
-import useHome from "./useHome";
-import Brand from "./Brand";
-import ShowcaseProduct from "./ShowcaseProduct";
-import Countdown from "./Countdown";
 import Advertising from "./Advertising";
-import Testermonial from "./Testermonial";
+import Brand from "./Brand";
+import Countdown from "./Countdown";
+import Featured from "./Featured";
+import Hero from "./Hero";
+import ShowcaseProduct from "./ShowcaseProduct";
+import useHome from "./useHome";
 
 const HomePage = () => {
   const { featuredProps, showcaseProductProps } = useHome();

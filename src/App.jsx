@@ -42,14 +42,25 @@ const PrivateRoute = lazy(() => import("./components/PrivateRoute"));
 
 // import DashboardLayout from "./layout/DashboardLayout";
 import { Provider } from "react-redux";
-import LoadingPage from "./components/Loading/LoadingPage";
-import PrivateRouteCMS from "./components/PrivateRoute/PrivateRouteCMS";
-import DashboardCategory from "./page/CMS/Category";
-import DashboardImage from "./page/CMS/ImageProduct";
-import DashboardOrder from "./page/CMS/Order";
-import DashBoardProduct from "./page/CMS/Product";
-import DashboardUser from "./page/CMS/User";
-import Page404 from "./page/Page404";
+const LoadingPage = lazy(() => import("./components/Loading/LoadingPage"));
+const PrivateRouteCMS = lazy(() =>
+  import("./components/PrivateRoute/PrivateRouteCMS")
+);
+const DashboardCategory = lazy(() => import("./page/CMS/Category"));
+const DashboardImage = lazy(() => import("./page/CMS/ImageProduct"));
+const DashboardOrder = lazy(() => import("./page/CMS/Order"));
+const DashBoardProduct = lazy(() => import("./page/CMS/Product"));
+const DashboardUser = lazy(() => import("./page/CMS/User"));
+const Page404 = lazy(() => import("./page/Page404"));
+// import { Provider } from "react-redux";
+// import LoadingPage from "./components/Loading/LoadingPage";
+// import PrivateRouteCMS from "./components/PrivateRoute/PrivateRouteCMS";
+// import DashboardCategory from "./page/CMS/Category";
+// import DashboardImage from "./page/CMS/ImageProduct";
+// import DashboardOrder from "./page/CMS/Order";
+// import DashBoardProduct from "./page/CMS/Product";
+// import DashboardUser from "./page/CMS/User";
+// import Page404 from "./page/Page404";
 import store from "./store";
 function App() {
   return (

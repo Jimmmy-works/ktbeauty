@@ -1,16 +1,15 @@
 import BreadCrumb from "@/components/BreadCrumb";
 import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
-import useWindowSize from "@/utils/windowResize";
-import { Radio, Select, Steps, Timeline, message } from "antd";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import useCartPage from "./useCartPage";
-import { Empty } from "antd";
-import styled from "styled-components";
-import { formatPriceVND } from "@/utils/formatPrice";
-import { useDispatch, useSelector } from "react-redux";
 import { cartActions, updateCart } from "@/store/reducer/cartReducer";
+import { formatPriceVND } from "@/utils/formatPrice";
+import useWindowSize from "@/utils/windowResize";
+import { Empty, Select, Steps, message } from "antd";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import useCartPage from "./useCartPage";
 
 const StepsWrapper = styled.div`
   .ant-steps-item-icon {
@@ -165,7 +164,7 @@ const CartPage = () => {
     if (products) {
       dispatch(
         cartActions.setSubTotal(
-          products?.reduce((acc, cur, curIndex, curArr) => {
+          products?.reduce((acc, cur) => {
             return acc + (cur?.price - cur?.discount) * cur?.quantity;
           }, 0)
         )
@@ -187,7 +186,7 @@ const CartPage = () => {
       }
     }
   }, [products, subTotal, shippingCurrent, total]);
-  const handleSubmit = (data) => {
+  const handleSubmit = () => {
     if (!shippingCurrent || shippingCurrent?.value === "default") {
       message.error(`Hãy chọn phương thức vận chuyển`);
     } else {

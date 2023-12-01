@@ -1,6 +1,4 @@
 import backtotop from "@/utils/backtotop";
-import React from "react";
-
 const BackToTop = () => {
   return (
     <div

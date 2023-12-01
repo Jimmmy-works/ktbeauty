@@ -1,10 +1,9 @@
 import { provinceService } from "@/service/provinceService";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const useCheckout = () => {
-  const dispatch = useDispatch();
   const { cartInfo, shipping, discountCode, total, subTotal } = useSelector(
     (state) => state.cart
   );

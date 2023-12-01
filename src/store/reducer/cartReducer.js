@@ -53,7 +53,7 @@ export const { reducer: cartReducer, actions: cartActions } = createSlice({
     addToCart: (state, action) => {
       const saveLocal = {
         ...state?.cartInfo,
-        products: state?.cartInfo?.products.map((item, index) => {
+        products: state?.cartInfo?.products.map((item) => {
           if (item?._id === action?.payload?.id) {
             item.quantity = action?.payload?.updateQuantity;
           }
@@ -124,30 +124,9 @@ export const getCart = createAsyncThunk("cart/get", async (token, thunkAPI) => {
     throw error;
   }
 });
-export const createCart = createAsyncThunk(
-  "cart/post",
-  async (payload, thunkAPI) => {
-    try {
-      const _token = localStorage.getItem(LOCAL_STORAGE.token);
-      const response = await cartService.createCart(payload, _token);
-      if (response.status === 200) {
-        const resCart = thunkAPI.dispatch(getCart(_token));
-        const parseCart = JSON.parse(localStorage.getItem("cart"));
-      }
-      message.success(
-        `Đã thêm ${payload?.quantity} sản phẩm - ${payload?.name} `
-      );
-      return response?.data;
-    } catch (error) {
-      message.error(error?.response?.data?.message);
-      console.log("error", error);
-      throw error;
-    }
-  }
-);
 export const updateCart = createAsyncThunk(
   "cart/put/updateCart",
-  async (payload, thunkAPI) => {
+  async (payload) => {
     try {
       const _token = localStorage.getItem(LOCAL_STORAGE.token);
       if (_token) {

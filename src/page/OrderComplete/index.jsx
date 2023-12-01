@@ -1,6 +1,4 @@
-import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
-import React from "react";
 import { Link } from "react-router-dom";
 
 const OrderComplete = () => {

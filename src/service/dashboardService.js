@@ -1,8 +1,6 @@
 import { BASE_URL } from "@/contants/environment";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
 import instanceAxios from "@/utils/configAxios";
-import React from "react";
-
 const dashboardService = {
   ///// USER
   getAllProfile: (token) => {

@@ -1,5 +1,4 @@
 import useWindowSize from "@/utils/windowResize";
-import React from "react";
 
 const HamburgerDashboard = ({ isNavbar, onToggleNav }) => {
   const { width } = useWindowSize();

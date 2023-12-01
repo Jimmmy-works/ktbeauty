@@ -105,22 +105,19 @@ export const signin = createAsyncThunk(
     }
   }
 );
-export const register = createAsyncThunk(
-  "auth/register",
-  async (payload, thunkAPI) => {
-    try {
-      const response = await authService.register(payload);
-      if (response?.status === 200) {
-        message.success(response?.data?.message);
-      }
-    } catch (error) {
-      message.error(error?.response?.data?.message);
-
-      console.log("error", error);
-      throw error;
+export const register = createAsyncThunk("auth/register", async (payload) => {
+  try {
+    const response = await authService.register(payload);
+    if (response?.status === 200) {
+      message.success(response?.data?.message);
     }
+  } catch (error) {
+    message.error(error?.response?.data?.message);
+
+    console.log("error", error);
+    throw error;
   }
-);
+});
 export const getProfileSlug = createAsyncThunk(
   "auth/profile/get",
   async (id, thunkAPI) => {

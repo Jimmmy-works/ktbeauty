@@ -1,6 +1,5 @@
 import Button from "@/components/Button";
 import Textbox from "@/components/Textbox";
-import React from "react";
 
 const Advertising = () => {
   return (

@@ -1,14 +1,8 @@
 import { CATEGORIES_OPTIONS, FEATURED_OPTIONS } from "@/contants/general";
-import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
-import {
-  cartActions,
-  createCart,
-  getCart,
-  updateCart,
-} from "@/store/reducer/cartReducer";
+import { cartActions } from "@/store/reducer/cartReducer";
 import { message } from "antd";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const useHome = () => {
@@ -24,7 +18,6 @@ const useHome = () => {
   const { products, categories, statusGetProduct } = useSelector(
     (state) => state.product
   );
-  const { profile } = useSelector((state) => state.auth);
   /// categoryProps
   const [categoryTab, setCategoryTab] = useState(CATEGORIES_OPTIONS.ALL);
   const onChangeCategoryTab = (tab) => {
@@ -159,7 +152,6 @@ const useHome = () => {
     onImageLoading,
     onAddToCart,
   };
-  const categoryProps = { onChangeCategoryTab, categoryTab };
   return { featuredProps, showcaseProductProps };
 };
 

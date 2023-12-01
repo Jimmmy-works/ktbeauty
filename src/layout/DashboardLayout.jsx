@@ -17,7 +17,7 @@ import {
 import { Collapse } from "antd";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import styled from "styled-components";
 const SidebarDashboard = styled.aside`
   z-index: 20;
@@ -51,17 +51,17 @@ const SidebarDashboard = styled.aside`
         transition: 0.4s;
         display: flex;
         align-items: center;
-        justify-content: ${({ pdCollapse, windowScrollX }) => {
-          if (windowScrollX >= 1024) {
-            if (pdCollapse) {
+        justify-content: ${({ paddingstyle, windowscrollx }) => {
+          if (windowscrollx >= 1024) {
+            if (paddingstyle === "true") {
               return `start  !important`;
-            } else {
+            } else if (paddingstyle === "false") {
               return `center !important`;
             }
           }
         }};
-        padding: ${({ pdCollapse }) =>
-          pdCollapse ? `8px 20px !important ` : ` 8px 16px !important `};
+        padding: ${({ paddingstyle }) =>
+          paddingstyle ? `8px 20px !important ` : ` 8px 16px !important `};
         &:hover {
           background-color: #d7d7d7;
         }
@@ -70,11 +70,11 @@ const SidebarDashboard = styled.aside`
         }
       }
       .box-header {
-        justify-content: ${({ pdCollapse, windowScrollX }) => {
-          if (windowScrollX >= 1024) {
-            if (pdCollapse) {
-              return `space-between  !important`;
-            } else {
+        justify-content: ${({ paddingstyle, windowscrollx }) => {
+          if (windowscrollx >= 1024) {
+            if (paddingstyle === "true") {
+              return `space-between !important`;
+            } else if (paddingstyle === "false") {
               return `center !important`;
             }
           }
@@ -99,6 +99,7 @@ const SidebarDashboard = styled.aside`
   }
 `;
 const DashboardLayout = () => {
+  const { pathname } = useLocation();
   const dispatch = useDispatch();
   const { modalProps } = useDashboard();
   const { profile } = useSelector((state) => state.auth);
@@ -107,13 +108,16 @@ const DashboardLayout = () => {
     setToggleSidebar(false);
   };
   useEffect(() => {
+    document.querySelector("html").setAttribute("style", "overflow-y : scroll");
+    // backtotop();
+  }, [pathname]);
+  useEffect(() => {
     if (profile?.isAdmin) {
       dispatch(getAllUsers());
       dispatch(getAllProduct());
       dispatch(getAllOrder());
     }
   }, [profile]);
-
   const items = [
     {
       key: "1",
@@ -304,8 +308,8 @@ const DashboardLayout = () => {
       />
       <div className="relative">
         <SidebarDashboard
-          windowScrollX={width}
-          pdCollapse={toggleSidebar}
+          windowscrollx={width}
+          paddingstyle={toggleSidebar.toString()}
           className={`fixed xs:top-[60px] lg:top-0 left-0 overflow-hidden xs:w-[200px]
           ${
             toggleSidebar
@@ -329,17 +333,7 @@ const DashboardLayout = () => {
               </svg>
             </div>
             <div>
-              <Collapse size="middle" items={items}>
-                <h3
-                  className={`text-[#033C73] font-osr font-semibold text-sm  ${
-                    toggleSidebar
-                      ? "h-[34px] p-[12px_12px_0_12px]"
-                      : "xs:h-[34px] xs:p-[12px_12px_0_12px] lg:h-0 lg:p-0"
-                  }  transition-all duration-400 overflow-hidden`}
-                >
-                  MAIN NAVIGATION
-                </h3>
-              </Collapse>
+              <Collapse size="middle" items={items}></Collapse>
               <div className="flex items-center gap-3"></div>
             </div>
           </div>

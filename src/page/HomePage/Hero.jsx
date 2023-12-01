@@ -1,11 +1,8 @@
 import Button from "@/components/Button";
 import Textbox from "@/components/Textbox";
-import React, { useRef, useState } from "react";
+import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper/modules";
-import { twMerge } from "tailwind-merge";
 const Hero = () => {
-  const pagi = Pagination;
   return (
     <section className="schero relative  w-full h-full ">
       <div className="schero__slider relative">

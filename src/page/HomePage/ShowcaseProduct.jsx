@@ -1,17 +1,14 @@
 import Button from "@/components/Button";
 import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
-import LoadingSpin from "@/components/Loading/LoadingSpin";
 import ProductCard from "@/components/ProductCard";
 import Textbox from "@/components/Textbox";
-import { CATEGORIES_OPTIONS } from "@/contants/general";
-import React, { useRef, useState } from "react";
-import { Navigation, Keyboard } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Empty } from "antd";
-
-import styled from "styled-components";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import useWindowSize from "@/utils/windowResize";
+import { Empty } from "antd";
+import { useRef } from "react";
+import styled from "styled-components";
+import { Keyboard, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 const EmptyWrapper = styled.div`
   margin-bottom: 12px;
   min-width: 200px;
@@ -66,7 +63,7 @@ const ShowcaseProduct = ({
             className="scshowcaseproduct__top-category flex items-center justify-center gap-3
           lg:flex-nowrap xs:flex-wrap"
           >
-            {categories?.length
+            {categories?.length > 0
               ? categories?.map((cate) => {
                   const { _id, name } = cate || {};
                   return (

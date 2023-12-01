@@ -1,7 +1,6 @@
 import { useMainContext } from "@/components/MainContext";
 import { cartActions } from "@/store/reducer/cartReducer";
-import { dashboardActions } from "@/store/reducer/dashboardReducer";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 

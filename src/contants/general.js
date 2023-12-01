@@ -18,7 +18,14 @@ export const OPTION_SORT = {
   HIGH_PRICE: "high-price",
   LOWER_PRICE: "lower-price",
 };
-
+export const OPTION_SORT_ORDER_ANTD = [
+  { value: "Đang xác minh" },
+  { value: "Đã xác minh" },
+  { value: "Đang chuẩn bị hàng" },
+  { value: "Đang giao hàng" },
+  { value: "Hoàn thành đơn hàng" },
+  { value: "Đã hủy đơn" },
+];
 export const OPTION_SORT_ORDER = {
   ALL: "all",
   VERIFY: "verify",

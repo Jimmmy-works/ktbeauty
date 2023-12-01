@@ -1,11 +1,6 @@
-import React, { useState } from "react";
-import { SearchOutlined } from "@ant-design/icons";
 import { useMainContext } from "@/components/MainContext";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "@/store/reducer/authReducer";
-import { THUNK_STATUS } from "@/contants/thunkstatus";
-import { useLocation } from "react-router-dom";
+import { PATHS } from "@/contants/path";
+import { Link } from "react-router-dom";
 const DashboardHeader = ({
   toggleSidebar,
   toggleInputSeacrhMobile,
@@ -14,41 +9,8 @@ const DashboardHeader = ({
   setToggleSidebar,
   setToggleInputSeacrhMobile,
   profile,
-  onSearchUser,
-  onSearchProduct,
-  onSearchCategory,
-  onSearchOrder,
 }) => {
   const { onAuthenModal, onLogout } = useMainContext();
-  const dispath = useDispatch();
-  const { pathname } = useLocation();
-  const [searchTerm, setSearchTerm] = useState();
-  const onChangeSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
-  useEffect(() => {
-    const time = setTimeout(() => {
-      if (pathname === `/cms/user`) {
-        onSearchUser(searchTerm);
-      } else if (pathname === `/cms/product`) {
-        onSearchProduct(searchTerm);
-      } else if (pathname === `/cms/order`) {
-        onSearchOrder(searchTerm);
-      } else if (pathname === `/cms/category`) {
-        onSearchCategory(searchTerm);
-      }
-    }, 500);
-    return () => clearTimeout(time);
-  }, [searchTerm]);
-  useEffect(() => {
-    setSearchTerm("");
-  }, [pathname]);
-  useEffect(() => {
-    if (toggleInputSearch === false || toggleInputSeacrhMobile === false) {
-      setSearchTerm("");
-    }
-  }, [toggleInputSearch, toggleInputSeacrhMobile]);
-
   return (
     <div
       className={` flex items-center justify-between shadow-header h-[60px] bg-white fixed top-0 left-0
@@ -112,36 +74,6 @@ const DashboardHeader = ({
             }`}
       >
         <div className="relative w-fit">
-          <input
-            value={searchTerm}
-            onChange={onChangeSearch}
-            className={` rounded-[50px] text-sm text-black-555 font-osr duration-400 transition-all
-                
-                 ${
-                   toggleInputSearch
-                     ? "xs:w-[200px] md:w-[300px]  bg-[#EDEEEF] pl-[20px] p-[11.5px_50px_11.5px_12px] visible opacity-100"
-                     : "w-0 bg-transparent invisible opacity-0"
-                 } `}
-            type="text"
-            placeholder="Type of Search..."
-            name=""
-            id=""
-          />
-          <div
-            className={`absolute z-10 top-1/2 -translate-y-1/2   flex items-center justify-center
-                 w-[42px] h-[42px] rounded-[50%]  hover:opacity-70 
-                
-                  ${
-                    !toggleInputSearch
-                      ? "bg-[#EBECED] left-0"
-                      : "bg-[#DFE0E1] left-[calc(100%-42px)]"
-                  }  cursor-pointer   transition-all duration-400 `}
-            onClick={() => setToggleInputSearch(true)}
-          >
-            <button>
-              <SearchOutlined style={{ color: "#033c73", fontSize: "20px" }} />
-            </button>
-          </div>
           <svg
             className={`w-[22px] h-[22px] absolute top-1/2 -translate-y-1/2 right-[-26px] fdsfsdsdfsd cursor-pointer group
                   duration-400 transition-all
@@ -193,17 +125,21 @@ const DashboardHeader = ({
                 </li>
               </>
             ) : (
-              <li
-                onClick={onLogout}
-                className="min-w-max font-om text-sm leading-[20px]  border-[#e3e3e3] border-solid border-b flex items-center gap-2 p-[10px]  duration-300 transition-colors hover:bg-black-ebe"
-              >
-                <svg className="w-[18px]" viewBox="0 0 256 256">
-                  <path d="M14.7,12.7c-1.6,0.8-2.8,1.9-3.5,3.3L10,18.1v89.8c0,86.9,0.1,89.9,1,92c0.7,1.5,1.7,2.6,3.3,3.4c59.2,33.5,72,40.6,73.4,40.9c2.5,0.5,6.1-1,7.8-3.3l1.4-1.8l0.2-17.1l0.2-17.1l34.8-0.2c34-0.2,34.9-0.2,36.7-1.3c1-0.6,2.4-1.8,3-2.8l1.2-1.7v-28.4v-28.4h-8.1h-8.1v23v23H127H97.2l-0.1-65.7L97,56.7L95.6,55c-0.9-1.2-7.6-5.3-22.5-13.7c-11.6-6.6-21.5-12.2-21.9-12.5c-0.5-0.3,20.2-0.5,52.4-0.5h53.1v29.5v29.5h8.1h8.1V52.4V17.5l-1.1-1.7c-0.7-0.9-1.9-2.2-2.7-2.8l-1.5-1.1l-75.3-0.2L17,11.6L14.7,12.7z"></path>
-                  <path d="M191.9,78.1l-1.5,1.3l-0.2,11.8l-0.2,11.8h-22c-13.1,0-23,0.3-24.4,0.6c-5.5,1.3-9.1,5.7-9.1,11.2c0.1,4.7,2.1,8.1,6.3,10.3c2,1.1,2.7,1.1,25.7,1.3l23.6,0.2l0.2,11.7l0.2,11.8l1.8,1.6c1.5,1.3,2.1,1.5,3.5,1.3c2.1-0.4,48.7-33.9,49.8-36c0.5-1,0.6-1.8,0.3-3.3c-0.5-1.8-2-3-24.5-19.4c-21.4-15.5-24.2-17.4-26-17.4C194,76.9,192.9,77.3,191.9,78.1z"></path>
-                </svg>
-
-                <a className="text-[#222] p-0">Đăng xuất</a>
-              </li>
+              <>
+                <li
+                  onClick={onLogout}
+                  className="min-w-max font-om text-sm leading-[20px]  border-[#e3e3e3] border-solid border-b flex items-center gap-2 p-[10px]  duration-300 transition-colors hover:bg-black-ebe"
+                >
+                  <Link to={PATHS.HOME} className="text-[#222] p-0">
+                    Đăng xuất
+                  </Link>
+                </li>
+                <li className="min-w-max font-om text-sm leading-[20px]  border-[#e3e3e3] border-solid border-b flex items-center gap-2 p-[10px]  duration-300 transition-colors hover:bg-black-ebe">
+                  <Link to={PATHS.HOME} className="text-[#222] p-0">
+                    Trang chủ
+                  </Link>
+                </li>
+              </>
             )}
           </ul>
         </div>

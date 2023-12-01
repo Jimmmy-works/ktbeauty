@@ -1,11 +1,7 @@
 import { provinceService } from "@/service/provinceService";
 import { changePassword, updateProfile } from "@/store/reducer/authReducer";
-import {
-  updataStatusOrder,
-  getOrderUser,
-  orderActions,
-} from "@/store/reducer/orderReducer";
-import React, { useEffect, useState } from "react";
+import { updataStatusOrder } from "@/store/reducer/orderReducer";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const useProfile = () => {

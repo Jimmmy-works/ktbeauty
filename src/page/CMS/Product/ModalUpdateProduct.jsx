@@ -1,10 +1,10 @@
-import { Empty, Modal, Rate, Tooltip, message } from "antd";
-import React, { useEffect, useState } from "react";
+import { firebaseStorage } from "@/config/firebase";
 import { MODAL_OPTION } from "@/contants/general";
 import MDEditor from "@uiw/react-md-editor";
-import styled from "styled-components";
+import { Empty, Modal, Rate, Tooltip, message } from "antd";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { firebaseStorage } from "@/config/firebase";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 
 const MDEditorWrapper = styled.div`

@@ -1,12 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { authReducer } from "./reducer/authReducer";
-import { ENV } from "@/contants/environment";
-import thunkMiddleware from "redux-thunk";
-import { dashboardReducer } from "./reducer/dashboardReducer";
-import { productReducer } from "./reducer/productReducer";
-import { cartReducer } from "./reducer/cartReducer";
 import thunk from "redux-thunk";
+import { authReducer } from "./reducer/authReducer";
+import { cartReducer } from "./reducer/cartReducer";
+import { dashboardReducer } from "./reducer/dashboardReducer";
 import { orderReducer } from "./reducer/orderReducer";
+import { productReducer } from "./reducer/productReducer";
 
 const store = configureStore({
   reducer: {

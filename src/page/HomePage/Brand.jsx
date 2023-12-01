@@ -1,6 +1,5 @@
-import React from "react";
 import { Keyboard } from "swiper/modules";
-import { SwiperSlide, Swiper } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 const Brand = () => {
   const images = [

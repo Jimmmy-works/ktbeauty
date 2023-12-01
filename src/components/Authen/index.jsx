@@ -31,7 +31,7 @@ const AuthenModal = () => {
   };
   return (
     <div
-      className={` login w-screen h-screen bg-slider-2 z-[1000] bg-cover bg-center 
+      className={`authen  w-screen h-screen bg-slider-2 z-[1000] bg-cover bg-center 
      fixed top-0 left-0 after:w-screen after:h-screen after:z-[1001] after:bg-[rgba(0,0,0,0.3)] 
      after:top-0 after:left-0 after:absolute  duration-400 transition-all   ${
        isAuthenModal ? "visible opacity-100" : "invisible opacity-0 "

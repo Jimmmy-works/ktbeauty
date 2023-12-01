@@ -1,20 +1,12 @@
-import { LOCAL_STORAGE } from "@/contants/localStorage";
-import dashboardService from "@/service/dashboardService";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { authActions, authReducer } from "./authReducer";
-import { message } from "antd";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import productService from "@/service/productService";
-import { useParams } from "react-router-dom";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   ///Category
-  searchCategory: [],
   categories: [],
   ////Product
   products: [],
-  productSearch: {},
-  searchProducts: [],
   productDetail: null,
   statusGetProductDetail: THUNK_STATUS.fulfilled,
   statusGetProduct: null,
@@ -33,12 +25,6 @@ export const { reducer: productReducer, actions: productActions } = createSlice(
       },
       setProductDetail: (state, action) => {
         state.productDetail = action.payload;
-      },
-      setSearchProducts: (state, action) => {
-        state.searchProducts = action.payload;
-      },
-      setSearchCategories: (state, action) => {
-        state.searchCategory = action.payload;
       },
     },
     extraReducers: (builder) => {
@@ -70,14 +56,8 @@ export const getAllCategories = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await productService.getAllCategories();
-      console.log("first", response?.data?.data);
-      console.log("response", response);
       if (response?.status === 200) {
-        console.log("111", 111);
         thunkAPI.dispatch(productActions.setCategories(response?.data?.data));
-        thunkAPI.dispatch(
-          productActions.setSearchCategories(response?.data?.data)
-        );
       }
       return response?.data?.data;
     } catch (error) {
@@ -93,7 +73,6 @@ export const getAllProduct = createAsyncThunk(
       const payloadPagination = { limit: 9, page: 0 };
       const response = await productService.getAllProduct(payloadPagination);
       thunkAPI.dispatch(productActions.setProducts(response?.data?.data));
-      // thunkAPI.dispatch(productActions.setSearchProducts(response?.data?.data));
       return response?.data?.data;
     } catch (error) {
       console.log("error", error);
