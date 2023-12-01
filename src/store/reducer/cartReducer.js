@@ -11,7 +11,6 @@ const initialState = {
   total: 0,
   shipping: {},
   discountCode: {},
-  updateStatusCreateCart: THUNK_STATUS.fulfilled,
   updateStatusUpdateCart: null,
   ///
   minPrice: 0,
@@ -66,16 +65,6 @@ export const { reducer: cartReducer, actions: cartActions } = createSlice({
     },
   },
   extraReducers: (builder) => {
-    /// updateStatusCreateCart
-    builder.addCase(createCart.pending, (state) => {
-      state.updateStatusCreateCart = THUNK_STATUS.pending;
-    });
-    builder.addCase(createCart.fulfilled, (state) => {
-      state.updateStatusCreateCart = THUNK_STATUS.fulfilled;
-    });
-    builder.addCase(createCart.rejected, (state) => {
-      state.updateStatusCreateCart = THUNK_STATUS.rejected;
-    });
     /// updateStatusUpdateCart
     builder.addCase(updateCart.pending, (state) => {
       state.updateStatusUpdateCart = THUNK_STATUS.pending;
