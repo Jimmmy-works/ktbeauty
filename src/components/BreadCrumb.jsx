@@ -10,11 +10,18 @@ const BreadCrumb = ({ children, className }) => {
     </div>
   );
 };
-const BreadCrumbItem = ({ children, isActive = false, label }) => {
+const BreadCrumbItem = ({ children, isActive = false, label, className }) => {
   return (
-    <li className={`breadcrumb__list-item  ${isActive ? "active" : ""}`}>
-      {children}
-    </li>
+    <div className="breadcrumb__list-wrapper">
+      <li
+        className={`breadcrumb__list-item  ${isActive ? "active" : ""} ${
+          className ?? ""
+        }`}
+      >
+        {children}
+      </li>
+      <span className="line"></span>
+    </div>
   );
 };
 BreadCrumb.Item = BreadCrumbItem;

@@ -4,7 +4,7 @@ import { MODAL_OPTION } from "@/contants/general";
 import { Modal, message } from "antd";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useState } from "react";
-
+import { v4 as uuidv4 } from "uuid";
 const ModalCreateUser = ({
   open,
   cancel,
@@ -21,18 +21,22 @@ const ModalCreateUser = ({
   const [phone, setPhone] = useState("");
   const [URL, setURL] = useState([]);
   /////
+  console.log("image", image);
   const handleCreateUser = async () => {
     try {
-      const storageRef = ref(firebaseStorage, `ktbeauty/user/${image[0].name}`);
-      uploadBytes(storageRef, image).then(() => {
-        getDownloadURL(storageRef)
-          .then((url) => {
-            console.log("url", url);
-            setURL(url);
-          })
-          .catch((error) => console.log("error", error));
-      });
+      // const storageRef = ref(
+      //   firebaseStorage,
+      //   `ktbeauty/user/${image?.name}-${uuidv4()}`
+      // );
+      // uploadBytes(storageRef, image).then(() => {
+      //   getDownloadURL(storageRef)
+      //     .then((url) => {
+      //       setURL(url);
+      //     })
+      //     .catch((error) => console.log("error", error));
+      // });
       if (!image) {
+        console.log("111", 111);
         onCreateUser({
           email: email,
           password: password,
@@ -41,6 +45,7 @@ const ModalCreateUser = ({
         });
       } else if (image) {
         if (URL) {
+          console.log("222", 222);
           onCreateUser({
             email: email,
             password: password,
@@ -55,15 +60,24 @@ const ModalCreateUser = ({
       console.log("error", error);
     }
   };
-  const handleImageChange = (files) => {
-    setImage(files);
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
   };
-  const handleUploadAvatar = () => {};
+  const handleCancel = () => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setImage();
+    setPhone("");
+    setURL();
+    cancel();
+  };
+  console.log("email", password);
   return (
     <Modal
       className="dashboard-modal"
       onOk={handleCreateUser}
-      onCancel={cancel}
+      onCancel={handleCancel}
       open={open === MODAL_OPTION.USER.CREATE}
       okButtonProps={{ className: "custom-button-ok" }}
       cancelButtonProps={{ className: "custom-button-cancel" }}
@@ -71,12 +85,12 @@ const ModalCreateUser = ({
       <form className="form p-0" action="">
         <div className="form__container mt-0 ">
           <div className="form__container-wrapper w-full mb-[20px] ">
-            <label htmlFor="password">Name</label>
+            <label htmlFor="name">Name</label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               className=" "
-              id="password"
+              id="name"
               type="text"
             />
           </div>
@@ -108,7 +122,7 @@ const ModalCreateUser = ({
         </div>
         <div className="form__container mt-0 ">
           <div className="form__container-wrapper w-full mb-[20px] ">
-            <label htmlFor="password">Phone</label>
+            <label htmlFor="phone">Phone</label>
             <input
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -123,7 +137,7 @@ const ModalCreateUser = ({
             <label htmlFor="file">Image</label>
             <div className="flex items-center mt-[12px]">
               <input
-                onChange={(e) => handleImageChange(e.target.files)}
+                onChange={handleImageChange}
                 className="invisible opacity-0 p-0 w-0 h-0  border-0 cursor-pointer bg-transparent"
                 id="file"
                 type="file"

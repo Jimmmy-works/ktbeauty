@@ -5,10 +5,12 @@ import Review from "@/components/Review";
 import { Tab, Tabs } from "@/components/Tab/Tab";
 import { PATHS } from "@/contants/path";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
+import { getProductDetail } from "@/store/reducer/productReducer";
 import { formatPriceVND } from "@/utils/formatPrice";
 import MDEditor from "@uiw/react-md-editor";
 import { Rate } from "antd";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Keyboard, Navigation } from "swiper/modules";
@@ -37,6 +39,7 @@ const ShopDetail = () => {
     statusGetProductDetail,
     imageloading,
     onImageLoading,
+    slugParams,
   } = useShop();
   const {
     _id,
@@ -50,11 +53,13 @@ const ShopDetail = () => {
     slug,
     category_id,
   } = productDetail || {};
+  console.log("image", image);
   const { onAddToCart } = useShop();
   const max = 20;
   const min = 1;
   const [currentImg, setCurrentImg] = useState();
   const [numbInput, setNumbInput] = useState(min);
+  const dispatch = useDispatch();
   const onIncrease = () => {
     const value = modifyValue(Number(numbInput) + 1);
     setNumbInput(value);
@@ -75,6 +80,14 @@ const ShopDetail = () => {
       return value;
     }
   };
+  /// navigate
+  const navigationPrevRef = useRef(null);
+  const navigationNextRef = useRef(null);
+  useEffect(() => {
+    if (slugParams) {
+      dispatch(getProductDetail(slugParams));
+    }
+  }, [slugParams]);
   return (
     <main className="main-wrapper shoppage">
       <BreadCrumb>
@@ -86,17 +99,18 @@ const ShopDetail = () => {
         </BreadCrumb.Item>
         <BreadCrumb.Item isActive>{name}</BreadCrumb.Item>
       </BreadCrumb>
-
       <div className="container ">
         {statusGetProductDetail === THUNK_STATUS.fulfilled ? (
           <>
-            <div className="flex md:flex-row xs:flex-col xs:gap-[60px] md:gap-[14px] my-[30px]">
-              <div className="shopapge__left xs:w-full md:w-1/2 ">
+            <div className="flex lg:flex-row xs:flex-col xs:gap-[60px] lg:gap-[14px] xs:my-[20px] lg:my-[30px]">
+              <div className="shopapge__left md:w-full lg:w-1/2 ">
                 <div className="shoppage__left-wrapper flex gap-[10px] ">
                   <div className=" h-fit w-fit relative ">
                     <div
-                      className="up cursor-pointer absolute z-10 top-[calc(100%+20px)] left-[8px]  p-[5.5px] group/hover
+                      className="shoppage-swiper-up cursor-pointer absolute z-10 top-[calc(100%+20px)] left-[8px]  p-[5.5px] group/hover
                    bg-white rounded-[50%] hover:shadow-[0_0px_10px_0_rgba(0,0,0,0.2)] duration-300 transition-shadow"
+                      ref={navigationNextRef}
+                      id="shoppage-swiper-up"
                     >
                       <div className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors  rotate-[-90deg]">
                         <svg viewBox="0 0 24 24" className="h-[10px] w-[10px]">
@@ -108,8 +122,10 @@ const ShopDetail = () => {
                       </div>
                     </div>
                     <div
-                      className="down cursor-pointer absolute z-10 top-[calc(100%+20px)] right-[8px]  p-[5.5px] group/hover
+                      className="shoppage-swiper-down cursor-pointer absolute z-10 top-[calc(100%+20px)] right-[8px]  p-[5.5px] group/hover
                    bg-white rounded-[50%] hover:shadow-[0_0px_10px_0_rgba(0,0,0,0.2)] duration-300 transition-shadow"
+                      ref={navigationPrevRef}
+                      id="shoppage-swiper-down"
                     >
                       <div className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors rotate-[90deg]">
                         <svg viewBox="0 0 24 24" className="h-[10px] w-[10px]">
@@ -129,8 +145,8 @@ const ShopDetail = () => {
                       direction={"vertical"}
                       slidesPerView={"auto"}
                       navigation={{
-                        prevEl: ".shoppage .up",
-                        nextEl: ".shoppage .down",
+                        prevEl: `#shoppage-swiper-up`,
+                        nextEl: `#shoppage-swiper-down`,
                       }}
                     >
                       {image?.length &&
@@ -228,7 +244,7 @@ const ShopDetail = () => {
                   </div>
                 </div>
               </div>
-              <div className="shoppage__right xs:w-full md:w-1/2 md:pl-[36px]">
+              <div className="shoppage__right md:w-full lg:w-1/2 lg:pl-[36px]">
                 <h2 className="shoppage__right-title font-osr text-lg text-black-555">
                   <span>{name}</span>
                 </h2>
@@ -326,7 +342,10 @@ const ShopDetail = () => {
                     Add to cart
                   </button>
                 </div>
-                <div className="shoppage__right-social flex gap-[10px] items-center mt-[32px]">
+                <div
+                  className="shoppage__right-social flex gap-[10px] items-center
+                xs:mt-[15px] md:mt-[20px] lg:mt-[26px]"
+                >
                   <div
                     className="whitelist  p-[14px] bg-white border-[1px] rounded-[50%] border-[#ececec]  max-w-[38px]
                         flex items-center justify-center    cursor-pointer group/hover max-h-[38px] 
@@ -374,7 +393,10 @@ const ShopDetail = () => {
                     </div>
                   </div>
                 </div>
-                <div className="shoppage__right-category border-t-[1px] border-solid border-[#ececec] py-[32px] mt-[32px]">
+                <div
+                  className="shoppage__right-category border-t-[1px] border-solid border-[#ececec] py-[32px]
+                xs:mt-[15px] md:mt-[20px] lg:mt-[26px]"
+                >
                   <div className="category flex items-center gap-2 flex-wrap">
                     {category_id?._id && (
                       <>

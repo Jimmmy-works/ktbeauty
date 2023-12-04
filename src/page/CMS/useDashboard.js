@@ -1,5 +1,6 @@
 import { firebaseStorage } from "@/config/firebase";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
+import useMutation from "@/hooks/useMutation";
 import dashboardService from "@/service/dashboardService";
 import { register } from "@/store/reducer/authReducer";
 import {
@@ -11,9 +12,7 @@ import { updataStatusOrder } from "@/store/reducer/orderReducer";
 import {
   getAllCategories,
   getAllProduct,
-  productActions,
 } from "@/store/reducer/productReducer";
-import { removeAccents } from "@/utils/removeAccents";
 import useWindowSize from "@/utils/windowResize";
 import { message } from "antd";
 import { deleteObject, ref } from "firebase/storage";
@@ -32,13 +31,13 @@ const useDashboard = () => {
   );
   const { categories, products } = useSelector((state) => state.product);
   ///// Modal
-  const [openModalAndt, setOpenModalAndt] = useState(false);
+  const [openModalAndt, setOpenModalAndt] = useState("");
   const [productList, setProductList] = useState([]);
   const onShowModal = (id) => {
     setOpenModalAndt(id);
   };
-  const onCloseModal = (id) => {
-    setOpenModalAndt(id);
+  const onCloseModal = () => {
+    setOpenModalAndt("");
   };
   //// Sidebar
   const [toggleSidebar, setToggleSidebar] = useState(false);
@@ -50,7 +49,10 @@ const useDashboard = () => {
   const onCreateUser = async (payload) => {
     try {
       const response = await dispatch(register(payload));
-      dispatch(getAllUsers());
+      console.log("response", response);
+      if (response?.payload?.status === 200) {
+        dispatch(getAllUsers());
+      }
     } catch (error) {
       message.error(error?.response?.data?.message);
       console.log("error", error);
@@ -59,6 +61,7 @@ const useDashboard = () => {
   const onDeleteUser = async (id) => {
     try {
       const response = await dashboardService.deleteProfile(id, _token);
+      console.log("response", response);
       dispatch(getAllUsers());
       message.success(response?.data?.message);
     } catch (error) {
@@ -68,20 +71,45 @@ const useDashboard = () => {
   };
   //// CRUD PRODUCT
 
-  const onUpdateProduct = async (payload) => {
+  const onUpdateProduct = async (id, payload) => {
     try {
-      const response = await dashboardService.updateProduct(payload);
-      console.log("response", response);
+      const response = await dashboardService.updateProduct(id, payload);
       message.success(response?.data?.message);
       if (response?.status === 200) {
         dispatch(getAllProduct());
       }
       return response?.data?.data;
     } catch (error) {
+      message.error(error?.response?.data?.message);
       console.log("error", error);
       throw error;
     }
   };
+  const {
+    data: dataUpdateProduct,
+    loading: loadingUpdateProduct,
+    execute: executeUpdateProduct,
+  } = useMutation(dashboardService.updateProduct, {
+    onSuccess: () => {
+      onCloseModal();
+      dispatch(getAllProduct());
+    },
+    onFail: (error) => {
+      console.log("error", error);
+    },
+  });
+  const {
+    data: dataDeleteProduct,
+    loading: loadingDeleteProduct,
+    execute: executeDeleteProduct,
+  } = useMutation(dashboardService.updateProduct, {
+    onSuccess: (e) => {
+      dispatch(getAllProduct());
+    },
+    onFail: (error) => {
+      console.log("error", error);
+    },
+  });
   const onDeleteImageFirebase = async (urls) => {
     try {
       const responseUrls = await deleteObject(ref(firebaseStorage, urls));
@@ -91,6 +119,18 @@ const useDashboard = () => {
       throw error;
     }
   };
+  const {
+    data: dataCreateProduct,
+    loading: loadingCreateProduct,
+    execute: executeCreateProduct,
+  } = useMutation(dashboardService.createProduct, {
+    onSuccess: () => {
+      dispatch(getAllProduct());
+    },
+    onFail: (error) => {
+      console.log("error", error);
+    },
+  });
   const onCreateProduct = async (payload) => {
     try {
       const response = await dispatch(createProduct(payload));
@@ -212,6 +252,18 @@ const useDashboard = () => {
     onDeleteProduct,
     onDeleteImageFirebase,
     onUpdateProduct,
+    ///
+    loadingUpdateProduct,
+    executeUpdateProduct,
+    dataUpdateProduct,
+    ///
+    dataDeleteProduct,
+    loadingDeleteProduct,
+    executeDeleteProduct,
+    ///
+    dataCreateProduct,
+    loadingCreateProduct,
+    executeCreateProduct,
   };
 
   const modalProps = {

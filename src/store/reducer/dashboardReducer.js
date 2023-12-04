@@ -47,7 +47,6 @@ export const { reducer: dashboardReducer, actions: dashboardActions } =
         state.getStatusCreateProduct = THUNK_STATUS.pending;
       });
       builder.addCase(createProduct.fulfilled, (state) => {
-        console.log("state", state);
         state.getStatusCreateProduct = THUNK_STATUS.fulfilled;
       });
       builder.addCase(createProduct.rejected, (state) => {

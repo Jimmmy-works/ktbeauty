@@ -111,9 +111,9 @@ export const register = createAsyncThunk("auth/register", async (payload) => {
     if (response?.status === 200) {
       message.success(response?.data?.message);
     }
+    return response;
   } catch (error) {
     message.error(error?.response?.data?.message);
-
     console.log("error", error);
     throw error;
   }

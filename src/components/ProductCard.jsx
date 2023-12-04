@@ -43,7 +43,6 @@ const ProductCard = ({
 }) => {
   const { _id, name, price, rating, image, discount, countInStock, createdAt } =
     item || {};
-
   if (isProductDetail) {
     return (
       <div
@@ -194,7 +193,9 @@ const ProductCard = ({
       <Link
         to={`${PATHS.SHOP.INDEX}/${item?._id}`}
         className={`block relative h-0 pb-[100%] 
-        group overflow-hidden shine  transition-all duration-400`}
+        group overflow-hidden shine  transition-all duration-400 ${
+          !imageloading ? "opacity-100" : "opacity-0"
+        }`}
       >
         <img
           onLoad={onLoadingImage}
@@ -205,7 +206,7 @@ const ProductCard = ({
              }
           `
           )}
-          src={image?.length ? image?.[0] : "/assets/img/error.png"}
+          src={image?.length ? image?.[1] : "/assets/img/error.png"}
           alt=""
           onError={(e) => {
             e.target.onerror = null;
@@ -222,7 +223,7 @@ const ProductCard = ({
                }
             `
             )}
-            src={image?.length ? image?.[1] : "/assets/img/error.png"}
+            src={image?.length ? image?.[0] : "/assets/img/error.png"}
             alt=""
             onError={(e) => {
               e.target.onerror = null;

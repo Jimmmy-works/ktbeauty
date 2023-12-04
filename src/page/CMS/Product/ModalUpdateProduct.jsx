@@ -1,9 +1,9 @@
 import { firebaseStorage } from "@/config/firebase";
 import { MODAL_OPTION } from "@/contants/general";
 import MDEditor from "@uiw/react-md-editor";
-import { Empty, Modal, Rate, Tooltip, message } from "antd";
+import { Button, Empty, Modal, Rate, Tooltip, message } from "antd";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 
@@ -22,6 +22,14 @@ const ModalUpdateProduct = ({
   productDetail,
   onUpdateProduct,
   onDeleteImageFirebase,
+
+  ///
+  loadingUpdateProduct,
+  executeUpdateProduct,
+  ///
+  loadingDeleteProduct,
+  executeDeleteProduct,
+  //
 }) => {
   const optionCategories = categories
     .filter((cate) => {
@@ -34,8 +42,6 @@ const ModalUpdateProduct = ({
       };
       return value;
     });
-
-  const [currentProduct, setCurrentProduct] = useState({});
   const [descIntro, setDescIntro] = useState("");
   const [price, setPrice] = useState(null);
   const [countInStock, setCountInStock] = useState();
@@ -65,75 +71,94 @@ const ModalUpdateProduct = ({
   };
 
   ////
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState();
   const [URLs, setURLs] = useState([]);
   const [progress, setProgress] = useState("");
-  const uploadImages = (files) => {
+  ///
+  const [fileURLs, setFileURLs] = useState([]);
+  const [currentFileURLs, setCurrnetFileURLs] = useState([]);
+  const [loadingUploadImage, setLoadingUploadImage] = useState();
+  const uploadImages = async (files) => {
     const promises = [];
-    if (files?.length >= 1) {
-      files.map((file) => {
-        const storageRef = ref(
-          firebaseStorage,
-          `ktbeauty/products/${file.name}-${uuidv4()}`
-        );
-        const uploadTask = uploadBytesResumable(storageRef, file);
-        promises.push(uploadTask);
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress = Math.round(
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100 * 3.6
-            );
-            setProgress(progress);
-            return progress;
-          },
-          (error) => {
-            console.log(error);
-          },
-          async () => {
-            try {
-              await getDownloadURL(uploadTask?.snapshot?.ref).then(
-                (downloadURL) => {
-                  setURLs((prevState) => [...prevState, downloadURL]);
-                  return downloadURL;
-                }
+    try {
+      if (files?.length >= 1) {
+        files.map((file) => {
+          const storageRef = ref(
+            firebaseStorage,
+            `ktbeauty/products/${file.name}-${uuidv4()}`
+          );
+          const uploadTask = uploadBytesResumable(storageRef, file);
+          promises.push(uploadTask);
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+              const progress = Math.round(
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100 * 3.6
               );
-            } catch (error) {
-              console.log("error", error);
+              setProgress(progress);
+              return progress;
+            },
+            (error) => {
+              console.log(error);
+            },
+            async () => {
+              try {
+                await getDownloadURL(uploadTask?.snapshot?.ref).then(
+                  (downloadURL) => {
+                    setURLs((prevState) => [...prevState, downloadURL]);
+                    return downloadURL;
+                  }
+                );
+              } catch (error) {
+                console.log("error", error);
+              }
             }
-          }
-        );
-      });
-      Promise.all(promises)
-        .then(() => {
-          message.success("All images uploaded");
-          setURLs([]);
-        })
-        .catch((err) => console.log(files));
+          );
+        });
+        Promise.all(promises)
+          .then((res) => {
+            message.success("All images uploaded");
+            setURLs([]);
+            timeout();
+          })
+          .catch((err) => console.log(files))
+          .finally(() => {});
+      }
+      return promises;
+    } catch (error) {
+      console.log("error", error);
+    } finally {
     }
   };
   const handleDeleteImage = (name) => {
     const filter = currentImages?.filter((img) => img !== name);
     const find = currentImages?.find((img) => img === name);
     onDeleteImageFirebase(`${find}`);
+    executeDeleteProduct(productDetail?._id, {
+      ...productDetail,
+      image: filter,
+    });
     setCurrentImages(filter);
-    onUpdateProduct(productDetail?._id, { ...productDetail, image: filter });
   };
-  const [fileURLs, setFileURLs] = useState([]);
+  const handleDeleteFileUrls = (id) => {
+    const filter = currentFileURLs?.filter((file) => file?.id !== id);
+    setCurrnetFileURLs(filter);
+  };
   const handleImageChange = (e) => {
     let allImages = [];
     let allUrls = [];
     for (let i = 0; i < e.target.files.length; i++) {
       const newImage = e.target.files[i];
       newImage["id"] = Math.random();
+      ////
       const urls = URL.createObjectURL(newImage);
       allImages.push(newImage);
-      allUrls.push(urls);
+      ///
+      if (e.target.files?.length > 0) allUrls.push(urls);
+      ///
     }
     setImages(allImages);
-    setFileURLs(allUrls);
-    /// upload Image from onchange input files
-    uploadImages(allImages);
+    setFileURLs(allImages);
   };
   const handleCancel = () => {
     for (let index = 0; index < URLs.length; index++) {
@@ -142,9 +167,9 @@ const ModalUpdateProduct = ({
     setURLs([]);
     setImages([]);
     setProgress("");
-    cancel();
 
     setName(productDetail?.name);
+    setRating(productDetail?.rating);
     setPrice(productDetail?.price);
     setCountInStock(productDetail?.countInStock);
     setDiscount(productDetail?.discount);
@@ -156,46 +181,99 @@ const ModalUpdateProduct = ({
 
     setCategory(productDetail?.category_id);
     setCurrentImages(productDetail?.image);
+    ///
+    setImages([]);
+    ///
+    setFileURLs([]);
+    ////
+    setCurrnetFileURLs([]);
+
+    cancel();
+    ///
   };
   const handleUpdateProduct = async () => {
-    const payload = {
-      name: name,
-      price: price,
-      countInStock: countInStock,
-      discount: discount || 0,
-      rating: rating,
-      category_id: {
-        name: category?.name,
-        _id: category?._id,
-      },
-      descTitle: descHeading,
-      descIntro: descIntro,
-      descSub: renderDesc,
-      image: currentImages,
-    };
     try {
-      await onUpdateProduct(productDetail?._id, payload);
-      cancel();
-      setURLs([]);
-      setImages([]);
-      setProgress("");
+      var promise = new Promise(function (resolve, reject) {
+        if (currentFileURLs.length > 0) {
+          resolve();
+        } else {
+          reject();
+        }
+      });
+      promise.then(
+        () => {
+          uploadImages(currentFileURLs);
+          setLoadingUploadImage(true);
+          console.log("111", 111);
+        },
+        (error) => {
+          console.log("error", error);
+        }
+      );
     } catch (error) {
       console.log("error", error);
-      message.error(error?.response?.data?.message);
-      throw error;
     }
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (loadingUploadImage && fileURLs?.length) {
+        const payload = {
+          name: name,
+          price: price,
+          countInStock: countInStock,
+          discount: discount || 0,
+          rating: rating,
+          category_id: {
+            name: category?.name,
+            _id: category?._id,
+          },
+          descTitle: descHeading,
+          descIntro: descIntro,
+          descSub: renderDesc,
+          image: currentImages,
+        };
+        executeUpdateProduct(productDetail?._id, payload);
+        if (loadingUpdateProduct) {
+          setURLs([]);
+          setImages([]);
+          setCurrentImages([]);
+          setCurrnetFileURLs([]);
+          setProgress("");
+        }
+        setLoadingUploadImage(false);
+      }
+    }, 1000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [loadingUploadImage, currentImages]);
+  useEffect(() => {
+    setCurrnetFileURLs([...fileURLs, ...currentFileURLs]);
+  }, [fileURLs]);
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (URLs?.length) {
         setCurrentImages([...URLs, ...currentImages]);
       }
-    }, 500);
+    }, 300);
     return () => clearTimeout(timeout);
   }, [URLs]);
+  const convertToBlobUrl = useMemo(() => {
+    let blobUrls = [];
+    if (currentFileURLs) {
+      for (let index = 0; index < currentFileURLs?.length; index++) {
+        let newImage = currentFileURLs[index];
+        let url = URL.createObjectURL(newImage);
+        blobUrls.push(url);
+      }
+    }
+    return blobUrls;
+  }, [currentFileURLs]);
   useEffect(() => {
     setName(productDetail?.name);
     setPrice(productDetail?.price);
+    setRating(productDetail?.rating);
     setCountInStock(productDetail?.countInStock);
     setDiscount(productDetail?.discount);
 
@@ -206,10 +284,16 @@ const ModalUpdateProduct = ({
 
     setCategory(productDetail?.category_id);
     setCurrentImages(productDetail?.image);
+    setCurrnetFileURLs([]);
   }, [productDetail]);
   return (
     <Modal
-      key={MODAL_OPTION.PRODUCT.UPDATE}
+      id={"product-handle-2"}
+      centered
+      okText="Update"
+      title="Update Product"
+      confirmLoading={loadingUpdateProduct}
+      key={`${MODAL_OPTION.PRODUCT.UPDATE}`}
       className="dashboard-modal"
       onOk={handleUpdateProduct}
       onCancel={handleCancel}
@@ -222,7 +306,7 @@ const ModalUpdateProduct = ({
           <div className="form__container-wrapper w-full mb-[20px] ">
             <label htmlFor="name">Name</label>
             <input
-              value={name || currentProduct?.name}
+              value={name}
               onChange={(e) => setName(e.target.value)}
               className=" "
               id="name"
@@ -279,7 +363,7 @@ const ModalUpdateProduct = ({
                       onClick={(e) => handleChangeCategories(e, cate)}
                       key={cate?._id}
                       className={` rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
-                         flex items-center gap-1 hover:bg-[#555] hover:text-white xs:p-[8px] 
+                         flex items-center gap-1 hover:bg-[#555] hover:text-white xs:p-[8px]
                          ${
                            cate?._id === category?._id
                              ? "bg-[#555] text-white"
@@ -317,7 +401,7 @@ const ModalUpdateProduct = ({
               />
               <span
                 onClick={() => addingDescription(desc)}
-                className="border cursor-pointer hover:border-primary rounded-[50%] 
+                className="border cursor-pointer hover:border-primary rounded-[50%]
                   border-solid border-black-555 text-16px font-mam
                 px-[8px] hover:text-primary duration-300 transition-colors"
               >
@@ -328,11 +412,11 @@ const ModalUpdateProduct = ({
               {renderDesc?.length
                 ? renderDesc?.map((i, index) => {
                     return (
-                      <div className="flex items-start gap-3 ">
-                        <li
-                          key={`${i}${index}`}
-                          className="flex  items-start gap-3"
-                        >
+                      <div
+                        key={`${i}${index}`}
+                        className="flex items-start gap-3 "
+                      >
+                        <li className="flex  items-start gap-3">
                           -
                           <span className="text-black-333 font-mar text-sm">
                             {i}
@@ -368,7 +452,6 @@ const ModalUpdateProduct = ({
             </MDEditorWrapper>
           </div>
         </div>
-
         <div className="form__container mt-0 ">
           <div className="form__container-wrapper w-full mb-[20px]  ">
             <label htmlFor="first-name">Rating</label>
@@ -387,17 +470,24 @@ const ModalUpdateProduct = ({
                 currentImages?.map((img, index) => {
                   return (
                     <Tooltip
+                      key={`${img}${index}`}
                       title={
-                        <button
-                          className="text-white"
+                        <Button
+                          disabled={loadingDeleteProduct}
+                          style={{
+                            color: "#fff",
+                            border: "none",
+                            padding: "5px",
+                          }}
                           onClick={() => handleDeleteImage(img)}
                         >
                           Xóa
-                        </button>
+                        </Button>
                       }
                     >
-                      <a className="block w-[80px] h-[80px]">
+                      <a>
                         <img
+                          className=" md:w-[80px] md:h-[80px] xs:w-[60px] xs:h-[60px] object-cover"
                           src={img?.length ? img : "/assets/img/error.png"}
                           alt=""
                         />
@@ -414,7 +504,7 @@ const ModalUpdateProduct = ({
             </div>
           </div>
         </div>
-        <div className="form__container mt-0 ">
+        <div className="form__container mt-0  mb-[20px]">
           <div className="form__container-wrapper w-full">
             <label htmlFor="file">Upload Image</label>
             <div className="flex items-center mt-[12px]">
@@ -431,7 +521,7 @@ const ModalUpdateProduct = ({
               />
               <label
                 htmlFor="file"
-                className={`border-solid border-[1px] border-black-555 p-[8px_6px] 
+                className={`border-solid border-[1px] border-black-555 p-[8px_6px]
                  mr-[12px] text-[13px] w-fit cursor-pointer hover:bg-primary duration-400 transition-colors
                  hover:text-white hover:border-primary`}
               >
@@ -457,9 +547,9 @@ const ModalUpdateProduct = ({
                     style={{
                       background: `conic-gradient(#ff887b ${progress}deg, #ededed 0deg)`,
                     }}
-                    className={` h-[50px] w-[50px] rounded-[50%] relative before:absolute 
-                    before:rounded-[50%] before:w-[44px] before:h-[44px]
-                  before:bg-white flex items-center justify-center`}
+                    className={` h-[50px] w-[50px] rounded-[50%] relative before:absolute
+                      before:rounded-[50%] before:w-[44px] before:h-[44px]
+                    before:bg-white flex items-center justify-center`}
                   >
                     <span className="font-osr text-[12px] relative text-primary">
                       {Math.round(progress / 3.6)}%
@@ -468,6 +558,49 @@ const ModalUpdateProduct = ({
                 </div>
               ) : (
                 ""
+              )}
+            </div>
+
+            <div className="mt-[12px] flex items-center gap-3 flex-wrap">
+              {currentFileURLs?.length && fileURLs?.length ? (
+                currentFileURLs?.map((img, index) => {
+                  let newImage = currentFileURLs[index];
+                  return (
+                    <Tooltip
+                      key={`${img}${index}`}
+                      title={
+                        <Button
+                          disabled={loadingDeleteProduct}
+                          style={{
+                            color: "#fff",
+                            border: "none",
+                            padding: "5px",
+                          }}
+                          onClick={() => handleDeleteFileUrls(newImage?.id)}
+                        >
+                          Xóa
+                        </Button>
+                      }
+                    >
+                      <a>
+                        <img
+                          className=" md:w-[80px] md:h-[80px] xs:w-[60px] xs:h-[60px] object-cover"
+                          src={
+                            convertToBlobUrl?.length
+                              ? convertToBlobUrl[index]
+                              : "/assets/img/error.png"
+                          }
+                          alt=""
+                        />
+                      </a>
+                    </Tooltip>
+                  );
+                })
+              ) : (
+                <Empty
+                  style={{ width: "80px", height: "80px" }}
+                  description={false}
+                />
               )}
             </div>
           </div>

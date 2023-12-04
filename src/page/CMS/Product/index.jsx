@@ -3,14 +3,14 @@ import { formatPriceVND } from "@/utils/formatPrice";
 import { removeAccents } from "@/utils/removeAccents";
 import { dateVN } from "@/utils/timeVN";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Image, Input, Slider, Table, message } from "antd";
+import { Button, Image, Input, Slider, Space, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import useDashboard from "../useDashboard";
 import ModalCreateProduct from "./ModalCreateProduct";
 import ModalUpdateProduct from "./ModalUpdateProduct";
 const DashBoardProduct = () => {
   const { modalProps, productProps } = useDashboard();
-  const { onDeleteProduct } = productProps || {};
+  const { onDeleteProduct, loadingUpdateProduct } = productProps || {};
   const {
     onShowModal,
     onCloseModal,
@@ -195,6 +195,7 @@ const DashBoardProduct = () => {
   ];
   const data = products.map((product, index) => {
     return {
+      key: `${product?._id}`,
       priceCurrent: product?.price,
       createdProduct: product?.createdAt,
       serial:
@@ -239,7 +240,6 @@ const DashBoardProduct = () => {
             <span className="text-sm font-osr font-normal ml-[4px]">{`${product?.name}`}</span>
           </strong>
         ),
-
       image: (
         <div className="flex items-center xs:justify-center xs:gap-4 lg:gap-3 flex-wrap rounded-md ">
           <Image.PreviewGroup>
@@ -288,7 +288,8 @@ const DashBoardProduct = () => {
   const handleDeleteProductSelected = () => {
     if (selectedRowKeys)
       for (let index = 0; index < filterProducts.length; index++) {
-        onDeleteProduct(filterProducts[index]?.productid);
+        console.log("first", filterProducts[index]);
+        onDeleteProduct(filterProducts[index]?.key);
       }
   };
   const handleDelectSelected = () => {
@@ -313,18 +314,18 @@ const DashBoardProduct = () => {
   return (
     <div className="table__dashboard table__dashboard-product ">
       <ModalCreateProduct
-        key={"product/create"}
+        key={`modal-product-1`}
         {...productProps}
         open={openModalAndt}
-        setShowModal={onShowModal}
+        onShowModal={onShowModal}
         cancel={onCloseModal}
       />
       <ModalUpdateProduct
-        key={"product/update"}
+        key={`modal-product-2`}
         productDetail={findUpdateProduct}
         {...productProps}
         open={openModalAndt}
-        setShowModal={onShowModal}
+        onShowModal={onShowModal}
         cancel={onCloseModal}
       />
       <div
@@ -341,7 +342,14 @@ const DashBoardProduct = () => {
         </h2>
         <div className="flex items-center gap-2">
           <button
-            onClick={handleDelectSelected}
+            // onClick={handleDelectSelected}
+            onClick={() => {
+              if (selectedRowKeys?.length < 1) {
+                message.error(`Chọn sản phẩm cần xóa`);
+              } else {
+                handleDelectSelected();
+              }
+            }}
             className=" bg-[#b05a4b] text-white rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
           flex items-center gap-1 hover:bg-[#f84e4e] xs:p-[8px]"
           >

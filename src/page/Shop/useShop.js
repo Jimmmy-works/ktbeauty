@@ -31,7 +31,7 @@ const useShop = () => {
     (state) => state.cart
   );
   /// useParams
-  const { slug } = useParams();
+  const { slug: slugParams } = useParams();
   /// handle Update Query String
   const [searchParams, setSearchParams] = useSearchParams();
   const updateQueryString = (queryObject) => {
@@ -246,11 +246,6 @@ const useShop = () => {
   const onChangeCategoryTab = (tab) => {
     setCategoryTab(tab);
   };
-  useEffect(() => {
-    if (slug) {
-      dispatch(getProductDetail(slug));
-    }
-  }, [slug]);
 
   return {
     // min,
@@ -277,13 +272,15 @@ const useShop = () => {
     setSelectedFilters,
     selectedFilters,
     setFilteredItems,
-
+    ////
     onFilterItems,
     productFilter,
     productFilterAll,
-
+    /////
     optionSort,
     onChangeFeaturedTab,
+    ////
+    slugParams,
   };
 };
 

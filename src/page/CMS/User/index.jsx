@@ -81,10 +81,11 @@ const DashboardUser = () => {
       ellipsis: true,
     },
   ];
+
   const handleOnchangeTable = (pagination, filters, sorter, extra) => {};
   const data = users.map((user, index) => {
     return {
-      key: `${user?._id}${index}`,
+      key: `${user?._id}`,
       createdUser: user?.createdAt,
       serial:
         width >= 768 ? (
@@ -137,6 +138,7 @@ const DashboardUser = () => {
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
+
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
@@ -151,7 +153,7 @@ const DashboardUser = () => {
   });
   const handleDeleteUserSelected = () => {
     for (let index = 0; index < filterUsers.length; index++) {
-      onDeleteUser(filterUsers[index]?._id);
+      onDeleteUser(filterUsers[index]?.key);
     }
   };
   return (

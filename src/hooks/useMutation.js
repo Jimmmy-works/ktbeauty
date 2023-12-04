@@ -1,20 +1,26 @@
-import React, { useState } from "react";
+import { message } from "antd";
+import { useEffect, useState } from "react";
 
-const useMutation = (promise) => {
+const useMutation = (promise, config) => {
+  const { onSuccess, onFail } = config || {};
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
+
   const execute = async (...payload) => {
+    setLoading(true);
     try {
       const response = await promise(...payload);
-      if (response) {
-        setData(response);
-        setLoading(true);
+      if (response?.status === 200) {
+        setData(response || []);
+        onSuccess && onSuccess(response || []);
+        message.success(response?.data?.message);
       }
-      setLoading(true);
     } catch (error) {
       console.log("error", error);
       setError(!error);
+      setLoading(false);
+      onFail && onFail(error);
     } finally {
       setLoading(false);
     }
@@ -24,6 +30,7 @@ const useMutation = (promise) => {
     loading,
     error,
     execute,
+    config,
   };
 };
 

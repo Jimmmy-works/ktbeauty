@@ -55,11 +55,24 @@
   .breadcrumb {
     @apply border-t-[1px] border-b-[1px] border-solid border-[#e5e5e5] py-[20px];
     &__list {
-      @apply flex items-center gap-[20px];
+      @apply flex flex-wrap gap-y-[6px];
+      &-wrapper {
+        @apply flex;
+        &:last-child {
+          .line {
+            @apply w-0;
+          }
+        }
+        .line {
+          @apply font-osb h-full  w-[1px] bg-black block text-sm mx-[10px] rotate-[20deg];
+        }
+      }
       &-item {
-        @apply relative after:absolute after:h-[12px] after:w-[1px] font-om tracking-wide
-                after:bg-black-555 after:top-1/2 after:-translate-y-1/2 after:rotate-[20deg]
-                after:-right-[10px] last:after:hidden  text-black-333 text-sm 
+        a {
+          @apply w-full flex;
+        }
+        @apply relative flex 
+                text-black-333 text-sm font-om tracking-wide
                 hover:text-primary duration-300 transition-colors;
         &.active {
           @apply text-primary;
@@ -234,7 +247,7 @@
   .tab {
     &__header {
       @apply mb-[30px] border-b border-solid border-gray-200 
-      flex items-center justify-center;
+      flex items-center xs:justify-start lg:justify-center;
       &-item {
         @apply p-[10px_20px_15px] text-grey-999 text-[16px] font-osb duration-400 transition-colors
          relative before:absolute
