@@ -35,20 +35,29 @@ const DashboardAnalyst = () => {
     width,
     products,
   } = modalProps || {};
+  const million = 1000000;
   const dataBars = {
     labels: ["T1", "T2", "T3", "T4", "T5", "T6", "T7"],
     datasets: [
-      {
-        label: "Doanh thu",
-        data: [12, 19, 3, 5, 2, 3, 1],
-        borderWidth: 1,
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-        hoverBackgroundColor: "rgb(255, 99, 132)",
-      },
+      //   {
+      //     label: "Doanh thu",
+      //     data: [12, 19, 3, 5, 2, 3, 1],
+      //     borderWidth: 1,
+      //     borderColor: "rgb(255, 99, 132)",
+      //     backgroundColor: "rgba(255, 99, 132, 0.5)",
+      //     hoverBackgroundColor: "rgb(255, 99, 132)",
+      //   },
       {
         label: "Đã bán",
-        data: [12, 19, 3, 5, 2, 3, 1],
+        data: [
+          1.2 * million,
+          1.9 * million,
+          3 * million,
+          5 * million,
+          2 * million,
+          3 * million,
+          1 * million,
+        ],
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
         hoverBackgroundColor: "rgb(53, 162, 235)",
@@ -70,10 +79,10 @@ const DashboardAnalyst = () => {
       {
         label: "Tháng 12",
         data: ["-100", "50", "300", "150", "-100", "-150", "200", "500"],
-        borderColor: "rgb(53, 162, 235)",
+        borderColor: "##2ee8a0",
         borderWidth: 1,
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-        hoverBackgroundColor: "rgb(53, 162, 235)",
+        backgroundColor: "#62DAAB",
+        hoverBackgroundColor: "#46f3b1",
         yAxisID: "y1",
       },
     ],
@@ -179,8 +188,6 @@ const DashboardAnalyst = () => {
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
-                resizeDelay: 5,
-
                 plugins: {
                   legend: {
                     position: "top",
@@ -207,11 +214,11 @@ const DashboardAnalyst = () => {
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
-                resizeDelay: 5,
                 interaction: {
                   mode: "index",
                   intersect: false,
                 },
+
                 stacked: false,
                 plugins: {
                   title: {

@@ -90,22 +90,28 @@ function App() {
                 </Route>
               </Route>
             </Route>
-            {/* <Route element={<PrivateRouteCMS />}> */}
-            <Route path={PATHS.CMS.INDEX} element={<DashboardLayout />}>
-              <Route index element={<DashboardUser />} />
-              <Route
-                path={PATHS.CMS.CATEGORY}
-                element={<DashboardCategory />}
-              />
+            <Route element={<PrivateRouteCMS />}>
+              <Route path={PATHS.CMS.INDEX} element={<DashboardLayout />}>
+                <Route index element={<DashboardUser />} />
+                <Route
+                  path={PATHS.CMS.CATEGORY}
+                  element={<DashboardCategory />}
+                />
 
-              <Route path={PATHS.CMS.PRODUCT} element={<DashBoardProduct />} />
-              <Route path={PATHS.CMS.IMAGE} element={<DashboardImage />} />
-              <Route path={PATHS.CMS.USER} element={<DashboardUser />} />
-              <Route path={PATHS.CMS.ORDER} element={<DashboardOrder />} />
-              <Route path={PATHS.CMS.ANALYST} element={<DashboardAnalyst />} />
-              <Route path="" />
+                <Route
+                  path={PATHS.CMS.PRODUCT}
+                  element={<DashBoardProduct />}
+                />
+                <Route path={PATHS.CMS.IMAGE} element={<DashboardImage />} />
+                <Route path={PATHS.CMS.USER} element={<DashboardUser />} />
+                <Route path={PATHS.CMS.ORDER} element={<DashboardOrder />} />
+                <Route
+                  path={PATHS.CMS.ANALYST}
+                  element={<DashboardAnalyst />}
+                />
+                <Route path="" />
+              </Route>
             </Route>
-            {/* </Route> */}
             <Route path={PATHS.HOME} element={<MainLayout />}>
               <Route path="*" element={<Page404 />} />
             </Route>
