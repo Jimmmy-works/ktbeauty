@@ -126,7 +126,7 @@ const DashboardCategory = () => {
       }`}
       >
         <h2 className="text-16px font-mam xs:hidden md:block text-[#033C73]">
-          Dashboard User
+          Dashboard Category
         </h2>
         <div className="flex items-center gap-2">
           <button

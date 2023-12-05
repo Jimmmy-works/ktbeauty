@@ -5,6 +5,7 @@ import DashboardHeader from "@/page/CMS/Header";
 import useDashboard from "@/page/CMS/useDashboard";
 import { getAllOrder, getAllUsers } from "@/store/reducer/dashboardReducer";
 import { getAllProduct } from "@/store/reducer/productReducer";
+import { formatPriceVND } from "@/utils/formatPrice";
 import {
   DashboardOutlined,
   FileImageOutlined,
@@ -13,8 +14,11 @@ import {
   ShopOutlined,
   ShoppingCartOutlined,
   UserAddOutlined,
+  MoneyCollectOutlined,
+  PieChartOutlined,
 } from "@ant-design/icons";
-import { Collapse } from "antd";
+import { Card, Col, Collapse, Divider, Row, Space, Typography } from "antd";
+import { Content } from "antd/es/layout/layout";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
@@ -228,6 +232,22 @@ const DashboardLayout = () => {
               <p className="text-sm font-osr  text-black-555">Category</p>
             )}
           </NavLink>
+          <NavLink className="box-item " to={PATHS.CMS.ANALYST}>
+            <PieChartOutlined
+              style={{
+                fontSize: "14px",
+              }}
+            />
+            {width >= 1024 ? (
+              <>
+                {toggleSidebar && (
+                  <p className="text-sm font-osr  text-black-555">Analyst</p>
+                )}
+              </>
+            ) : (
+              <p className="text-sm font-osr  text-black-555">Analyst</p>
+            )}
+          </NavLink>
         </>
       ),
     },
@@ -339,12 +359,169 @@ const DashboardLayout = () => {
           </div>
         </SidebarDashboard>
         <DashboardHeader {...modalProps} />
+
         <div
           className={`transition-all duration-400 flex-col flex gap-[10px]  ${
             toggleSidebar ? "xs:ml-0 lg:ml-[280px]" : " xs:ml-0 lg:ml-[60px]"
           }   `}
         >
           <div className="mt-[60px]">
+            {/* <Content>
+              <Row
+                align={"middle"}
+                gutter={[20, 20]}
+                style={{ padding: "20px" }}
+                wrap={true}
+              >
+                <Col span={6}>
+                  <Card>
+                    <Divider orientation="center">Sản phẩm đã bán</Divider>
+                    <Space wrap={true} direction="horizontal" align="center">
+                      <MoneyCollectOutlined
+                        style={{ fontSize: "18px", display: "flex" }}
+                      />
+                      <Typography.Title
+                        level={5}
+                        className="mb-[0px] font-ossb text-md text-black-555 "
+                      >
+                        Sản phẩm đã bán
+                      </Typography.Title>
+                    </Space>
+                  </Card>
+                </Col>
+                <Col span={6}>
+                  <Card>
+                    <Space wrap={true} direction="horizontal" align="center">
+                      <MoneyCollectOutlined
+                        style={{ fontSize: "18px", display: "flex" }}
+                      />
+                      <Typography.Title
+                        level={5}
+                        className="mb-[0px] font-ossb text-md text-black-555 "
+                      >
+                        Sản phẩm đã bán
+                      </Typography.Title>
+                    </Space>
+                  </Card>
+                </Col>
+                <Col span={6}>
+                  <Card>
+                    <Space wrap={true} direction="horizontal" align="center">
+                      <MoneyCollectOutlined
+                        style={{ fontSize: "18px", display: "flex" }}
+                      />
+                      <Typography.Title
+                        level={5}
+                        className="mb-[0px] font-ossb text-md text-black-555 "
+                      >
+                        Sản phẩm đã bán
+                      </Typography.Title>
+                    </Space>
+                  </Card>
+                </Col>
+                <Col span={6}>
+                  <Card>
+                    <Space wrap={true} direction="horizontal" align="center">
+                      <MoneyCollectOutlined
+                        style={{ fontSize: "18px", display: "flex" }}
+                      />
+                      <Typography.Title
+                        level={5}
+                        className="mb-[0px] font-ossb text-md text-black-555 "
+                      >
+                        Sản phẩm đã bán
+                      </Typography.Title>
+                    </Space>
+                  </Card>
+                </Col>
+              </Row>
+            </Content> */}
+            {/* <div className="m-[20px]">
+              <div className="flex items-center gap-[16px]">
+                <div className="w-1/4">
+                  <Card bodyStyle={{ padding: 16 }}>
+                    <Space direction="vertical">
+                      <Space wrap={true} direction="horizontal" align="center">
+                        <MoneyCollectOutlined
+                          style={{
+                            fontSize: "18px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        />
+                        <Typography.Title
+                          level={4}
+                          className=" mb-[0px] font-ossb text-black-555 "
+                        >
+                          Doanh Thu
+                        </Typography.Title>
+                      </Space>
+                      <Space direction="vertical">
+                        <Typography.Title
+                          level={4}
+                          className="mb-[0px] font-osr  text-[#222] tracking-wider"
+                        >
+                          {formatPriceVND(3000000)}
+                        </Typography.Title>
+                        <Typography.Title
+                          level={5}
+                          orientationMargin={0}
+                          orientation="left"
+                          style={{ padding: 0 }}
+                          className="m-[0px] font-osr  text-[#222] tracking-wider"
+                        >
+                          Hôm nay: 30 sản phẩm
+                        </Typography.Title>
+                      </Space>
+                    </Space>
+                  </Card>
+                </div>
+                <div className="w-1/4">
+                  <Card>
+                    <Space wrap={true} direction="horizontal" align="center">
+                      <MoneyCollectOutlined
+                        style={{ fontSize: "18px", display: "flex" }}
+                      />
+                      <Typography.Title
+                        level={5}
+                        className="mb-[0px] font-ossb text-md text-black-555 "
+                      ></Typography.Title>
+                    </Space>
+                  </Card>
+                </div>
+                <div className="w-1/4">
+                  <Card>
+                    <Space wrap={true} direction="horizontal" align="center">
+                      <MoneyCollectOutlined
+                        style={{ fontSize: "18px", display: "flex" }}
+                      />
+                      <Typography.Title
+                        level={5}
+                        className="mb-[0px] font-ossb text-md text-black-555 "
+                      >
+                        Sản phẩm đã bán
+                      </Typography.Title>
+                    </Space>
+                  </Card>
+                </div>
+                <div className="w-1/4">
+                  <Card>
+                    <Space wrap={true} direction="horizontal" align="center">
+                      <MoneyCollectOutlined
+                        style={{ fontSize: "18px", display: "flex" }}
+                      />
+                      <Typography.Title
+                        level={5}
+                        className="mb-[0px] font-ossb text-md text-black-555 "
+                      >
+                        Sản phẩm đã bán
+                      </Typography.Title>
+                    </Space>
+                  </Card>
+                </div>
+              </div>
+            </div> */}
             <Outlet></Outlet>
           </div>
         </div>

@@ -42,26 +42,26 @@ const PrivateRoute = lazy(() => import("./components/PrivateRoute"));
 
 // import DashboardLayout from "./layout/DashboardLayout";
 import { Provider } from "react-redux";
-const LoadingPage = lazy(() => import("./components/Loading/LoadingPage"));
-const PrivateRouteCMS = lazy(() =>
-  import("./components/PrivateRoute/PrivateRouteCMS")
-);
-const DashboardCategory = lazy(() => import("./page/CMS/Category"));
-const DashboardImage = lazy(() => import("./page/CMS/ImageProduct"));
-const DashboardOrder = lazy(() => import("./page/CMS/Order"));
-const DashBoardProduct = lazy(() => import("./page/CMS/Product"));
-const DashboardUser = lazy(() => import("./page/CMS/User"));
-const Page404 = lazy(() => import("./page/Page404"));
-// import { Provider } from "react-redux";
-// import LoadingPage from "./components/Loading/LoadingPage";
-// import PrivateRouteCMS from "./components/PrivateRoute/PrivateRouteCMS";
-// import DashboardCategory from "./page/CMS/Category";
-// import DashboardImage from "./page/CMS/ImageProduct";
-// import DashboardOrder from "./page/CMS/Order";
-// import DashBoardProduct from "./page/CMS/Product";
-// import DashboardUser from "./page/CMS/User";
-// import Page404 from "./page/Page404";
+// const PrivateRouteCMS = lazy(() =>
+//   import("./components/PrivateRoute/PrivateRouteCMS")
+// );
+// const DashboardCategory = lazy(() => import("./page/CMS/Category"));
+// const DashboardImage = lazy(() => import("./page/CMS/ImageProduct"));
+// const DashboardOrder = lazy(() => import("./page/CMS/Order"));
+// const DashBoardProduct = lazy(() => import("./page/CMS/Product"));
+// const DashboardUser = lazy(() => import("./page/CMS/User"));
+// const Page404 = lazy(() => import("./page/Page404"));
+
+import LoadingPage from "./components/Loading/LoadingPage";
+import PrivateRouteCMS from "./components/PrivateRoute/PrivateRouteCMS";
+import DashboardCategory from "./page/CMS/Category";
+import DashboardImage from "./page/CMS/ImageProduct";
+import DashboardOrder from "./page/CMS/Order";
+import DashBoardProduct from "./page/CMS/Product";
+import DashboardUser from "./page/CMS/User";
+import Page404 from "./page/Page404";
 import store from "./store";
+import DashboardAnalyst from "./page/CMS/Analyst";
 function App() {
   return (
     <Provider store={store}>
@@ -90,24 +90,22 @@ function App() {
                 </Route>
               </Route>
             </Route>
-            <Route element={<PrivateRouteCMS />}>
-              <Route path={PATHS.CMS.INDEX} element={<DashboardLayout />}>
-                <Route index element={<DashboardUser />} />
-                <Route
-                  path={PATHS.CMS.CATEGORY}
-                  element={<DashboardCategory />}
-                />
+            {/* <Route element={<PrivateRouteCMS />}> */}
+            <Route path={PATHS.CMS.INDEX} element={<DashboardLayout />}>
+              <Route index element={<DashboardUser />} />
+              <Route
+                path={PATHS.CMS.CATEGORY}
+                element={<DashboardCategory />}
+              />
 
-                <Route
-                  path={PATHS.CMS.PRODUCT}
-                  element={<DashBoardProduct />}
-                />
-                <Route path={PATHS.CMS.IMAGE} element={<DashboardImage />} />
-                <Route path={PATHS.CMS.USER} element={<DashboardUser />} />
-
-                <Route path={PATHS.CMS.ORDER} element={<DashboardOrder />} />
-              </Route>
+              <Route path={PATHS.CMS.PRODUCT} element={<DashBoardProduct />} />
+              <Route path={PATHS.CMS.IMAGE} element={<DashboardImage />} />
+              <Route path={PATHS.CMS.USER} element={<DashboardUser />} />
+              <Route path={PATHS.CMS.ORDER} element={<DashboardOrder />} />
+              <Route path={PATHS.CMS.ANALYST} element={<DashboardAnalyst />} />
+              <Route path="" />
             </Route>
+            {/* </Route> */}
             <Route path={PATHS.HOME} element={<MainLayout />}>
               <Route path="*" element={<Page404 />} />
             </Route>

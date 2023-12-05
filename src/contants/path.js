@@ -28,6 +28,7 @@ export const PATHS = {
     CATEGORY: `${CMS_PATH}/category`,
     FILE: `${CMS_PATH}/file`,
     ORDER: `${CMS_PATH}/order`,
+    ANALYST: `${CMS_PATH}/analyst`,
   },
   LOGIN: "/login",
   SIGNUP: "/signup",
