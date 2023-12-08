@@ -37,7 +37,7 @@ const Order = () => {
   return (
     <div className="order">
       <h3 className="text-[24px] font-osb text-black-333 xs:my-[16px]">
-        Giỏ hàng của bạn
+        Đơn hàng của bạn
       </h3>
       {sortOrderList?.length ? (
         sortOrderList?.map((item, index) => {
@@ -121,8 +121,9 @@ const Order = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {products?.map((item) => {
-                        const { _id, price, quantity } = item || {};
+                      {products?.map((item, index) => {
+                        const { _id, price, quantity, image, name } =
+                          item || {};
                         return (
                           <tr key={`${_id}`} className="relative">
                             <td className="">
@@ -143,7 +144,9 @@ const Order = () => {
                                       e.target.onerror = null;
                                       e.target.src = "/assets/img/error.png";
                                     }}
-                                    src={item}
+                                    src={
+                                      image[index] || "/assets/img/error.png"
+                                    }
                                     alt=""
                                   />
                                 </Link>
@@ -153,7 +156,7 @@ const Order = () => {
                                              lg:max-w-full md:max-w-[150px]"
                                   href=""
                                 >
-                                  Lorem ipsum dolor sit amet Lorem ipsum dolor .
+                                  {name}
                                 </Link>
                               </div>
                             </td>

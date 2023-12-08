@@ -435,7 +435,7 @@ const Header = () => {
                           </div>
 
                           <div
-                            className="font-om text-[15px] text-black-555 mt-[6px] flex items-start gap-[6px]
+                            className="font-om text-15px text-black-555 mt-[6px] flex items-start gap-[6px]
                         flex-col"
                           >
                             <p> Quantity: {quantity}</p>

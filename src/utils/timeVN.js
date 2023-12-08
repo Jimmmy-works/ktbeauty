@@ -5,6 +5,5 @@ export const dateVN = (dataDate) =>
 export const localeVN = (dataDate) =>
   new Date(dataDate).toLocaleString("vi-VN");
 export const localeVN_Parse = (dataDate) => {
-  console.log("dataDate", dataDate);
   return new Date(dataDate).getTime();
 };

@@ -15,6 +15,9 @@ const initialState = {
   errorGetUserAll: null,
   getStatusCreateProduct: null,
   ///
+  soldProducts: null,
+  revenue: null,
+  inventory: null,
 };
 export const { reducer: dashboardReducer, actions: dashboardActions } =
   createSlice({
@@ -29,6 +32,15 @@ export const { reducer: dashboardReducer, actions: dashboardActions } =
       },
       setDetailOrder: (state, action) => {
         state.detailOrder = action.payload;
+      },
+      setSoldProducts: (state, action) => {
+        state.soldProducts = action.payload;
+      },
+      setRevenue: (state, action) => {
+        state.revenue = action.payload;
+      },
+      setInventory: (state, action) => {
+        state.inventory = action.payload;
       },
     },
     extraReducers: (builder) => {
@@ -122,6 +134,55 @@ export const createProduct = createAsyncThunk(
       thunkAPI.dispatch(getAllProduct(_token));
       message.success(productData?.data?.message);
       return productData?.data;
+    } catch (error) {
+      message.error(error?.response?.data?.message);
+      console.log("error", error);
+      throw error;
+    }
+  }
+);
+
+export const getSoldProducts = createAsyncThunk(
+  "dashboard/product/get/sold",
+  async (param, thunkAPI) => {
+    try {
+      const soldData = await dashboardService.getSoldProducts(param);
+      if (soldData?.status === 200) {
+        thunkAPI.dispatch(dashboardActions.setSoldProducts(soldData?.data));
+      }
+      return soldData?.data;
+    } catch (error) {
+      message.error(error?.response?.data?.message);
+      console.log("error", error);
+      throw error;
+    }
+  }
+);
+export const getRevenue = createAsyncThunk(
+  "dashboard/product/get/revenue",
+  async (param, thunkAPI) => {
+    try {
+      const revenueData = await dashboardService.getRevenue(param);
+      if (revenueData?.status === 200) {
+        thunkAPI.dispatch(dashboardActions.setRevenue(revenueData?.data));
+      }
+      return revenueData?.data;
+    } catch (error) {
+      message.error(error?.response?.data?.message);
+      console.log("error", error);
+      throw error;
+    }
+  }
+);
+export const getInventory = createAsyncThunk(
+  "dashboard/product/get/inventory",
+  async (payload, thunkAPI) => {
+    try {
+      const revenueData = await dashboardService.getInventory(payload);
+      if (revenueData?.status === 200) {
+        thunkAPI.dispatch(dashboardActions.setInventory(revenueData?.data));
+      }
+      return revenueData?.data;
     } catch (error) {
       message.error(error?.response?.data?.message);
       console.log("error", error);

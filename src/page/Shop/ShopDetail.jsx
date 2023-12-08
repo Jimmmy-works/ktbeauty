@@ -33,6 +33,16 @@ const StyleRate = styled.div`
     }
   }
 `;
+const StyleDiscount = styled.div`
+  &::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: -5px;
+    border-top: 5px solid #bd6960;
+    border-right: 5px solid transparent;
+  }
+`;
 const ShopDetail = () => {
   const {
     productDetail,
@@ -53,7 +63,6 @@ const ShopDetail = () => {
     slug,
     category_id,
   } = productDetail || {};
-  console.log("image", image);
   const { onAddToCart } = useShop();
   const max = 20;
   const min = 1;
@@ -193,6 +202,17 @@ const ShopDetail = () => {
                           magnifierWidth="250"
                           src={`${currentImg || image[0]}`}
                         />
+                        {/* {discount > 0 ? (
+                          <StyleDiscount
+                            className="absolute top-3 right-[-3px] w-[60px] h-[24px] 
+                            border border-red-200 text-[14px] tracking-wider  flex justify-center
+                            bg-primary items-center z-50 text-white font-om "
+                          >
+                            {`-${Math.round((discount / price) * 100)}%`}
+                          </StyleDiscount>
+                        ) : (
+                          ""
+                        )} */}
                       </a>
                     )}
                     <div className="social flex justify-center items-center gap-[10px] mt-[34px]">
@@ -253,19 +273,22 @@ const ShopDetail = () => {
                   {rating && <Rate disabled defaultValue={Number(rating)} />}
                   <p className="shoppage__right-rating text-sm text-black-555 font-osr "></p>
                 </StyleRate>
-                <p className="shoppage__right-price text-[15px] text-primary font-osb flex gap-3 items-center">
-                  <span className="text-md">
+                <div className="shoppage__right-price text-15px text-primary flex gap-2 items-center">
+                  <p className="text-md font-osb leading-[18px]">
                     {formatPriceVND(price - discount)}
-                  </span>
-                  <span className="line-through text-black-555">
+                  </p>
+                  <p className="line-through text-15px text-[#979797] font-osr leading-[18px]">
                     {formatPriceVND(price)}
-                  </span>
-                </p>
+                  </p>
+                  <p class="text-white text-15px p-[5px_8px] rounded-3xl font-osr  bg-primary">
+                    -29%
+                  </p>
+                </div>
                 <h3 className="shoppage__right-desc font-osb text-md text-black-555 m-[14px_0_10px_0]">
                   Tính năng sản phẩm
                 </h3>
                 <div className="shoppage__right-list">
-                  <h4 className="heading font-osr text-[15px] text-black-555 leading-[24px]">
+                  <h4 className="heading font-osr text-15px text-black-555 leading-[24px]">
                     {description?.descTitle}
                   </h4>
                   <ul>
@@ -274,7 +297,7 @@ const ShopDetail = () => {
                         return (
                           <li
                             key={sub}
-                            className="item font-osr text-[15px] text-black-555 leading-[24px] relative pl-[14px] mt-[5px]
+                            className="item font-osr text-15px text-black-555 leading-[24px] relative pl-[14px] mt-[5px]
                             before:h-[5px] before:w-[5px] before:block before:rounded-[50%] before:bg-black-333 
                             before:top-1/2 before:left-0 before:-translate-y-1/2 before:absolute"
                           >
@@ -284,11 +307,8 @@ const ShopDetail = () => {
                       })}
                   </ul>
                 </div>
-                <div className="shoppage__right-button  flex items-center  gap-2 mt-[30px]">
-                  <div
-                    className="input flex items-center border border-solid border-[#ececec] rounded-md
-                h-[60px]"
-                  >
+                <div className="shoppage__right-button  flex items-center  gap-2 xs:mt-[20px] md:mt-[30px]">
+                  <div className="input flex items-center border border-solid border-[#ececec] rounded-md  h-[60px]">
                     <div
                       onClick={onDecrease}
                       className="h-full flex items-center justify-center px-[16px] cursor-pointer
@@ -302,7 +322,7 @@ const ShopDetail = () => {
                       </svg>
                     </div>
                     <input
-                      className="w-[30px] text-[15px] tracking-wider text-center text-black-555 font-osb"
+                      className="w-[30px] text-15px tracking-wider text-center text-black-555 font-osb"
                       value={numbInput}
                       type="number"
                       min={min}
@@ -335,7 +355,7 @@ const ShopDetail = () => {
                             : 0) + numbInput,
                       })
                     }
-                    className="font-osb text-white text-[15px] flex items-center border 
+                    className="font-osb text-white text-15px flex items-center border 
                   border-solid border-[#ececec] rounded-md bg-black-555 px-[27.5px]
                 h-[60px] duration-400 transition-colors hover:bg-primary"
                   >
@@ -400,7 +420,7 @@ const ShopDetail = () => {
                   <div className="category flex items-center gap-2 flex-wrap">
                     {category_id?._id && (
                       <>
-                        <p className="font-osr text-black-555 text-[15px] capitalize">
+                        <p className="font-osr text-black-555 text-15px capitalize">
                           Categories:
                         </p>
                         <a
@@ -413,7 +433,7 @@ const ShopDetail = () => {
                     )}
                   </div>
                   <div className="tags flex items-center gap-2 mt-[14px] flex-wrap">
-                    <p className="font-osr text-black-555 text-[15px] capitalize">
+                    <p className="font-osr text-black-555 text-15px capitalize">
                       tags:
                     </p>
                     <a

@@ -1,7 +1,16 @@
 import { formatPriceVND } from "@/utils/formatPrice";
-import React, { useMemo, useRef } from "react";
+import { CalendarOutlined } from "@ant-design/icons";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import useDashboard from "../useDashboard";
-import { Bar, Line } from "react-chartjs-2";
+import {
+  Bar,
+  Line,
+  getDatasetAtEvent,
+  getElementAtEvent,
+  getElementsAtEvent,
+  Chart,
+  Pie,
+} from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,7 +22,44 @@ import {
   PointElement,
   LineElement,
   Filler,
+  ArcElement,
 } from "chart.js";
+import {
+  startToEndInYear,
+  currentDayInMonth,
+  now,
+  startMonth,
+  zeroDay,
+  zeroTimeToday,
+  year,
+  endDay,
+} from "@/utils/timeISOString";
+import { monthNameVN, monthNames } from "@/contants/general";
+import { DatePicker } from "antd";
+import { localeVN, timeVN } from "@/utils/timeVN";
+import styled from "styled-components";
+import { FALSE } from "sass";
+const CustomCalendar = styled.div`
+  display: flex !important;
+  width: auto;
+  cursor: pointer;
+  position: absolute;
+  z-index: 10000;
+  right: 10px;
+  top: 10px;
+  .ant-picker {
+    width: auto !important;
+    padding: 6px 10px !important;
+    border-radius: 4px;
+  }
+  .ant-picker-range-separator,
+  .ant-picker-input {
+    display: none;
+  }
+  .ant-picker-suffix {
+    margin-left: 0;
+  }
+`;
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,10 +69,12 @@ ChartJS.register(
   Legend,
   PointElement,
   LineElement,
-  Filler
+  Filler,
+  ArcElement,
+  Legend
 );
 const DashboardAnalyst = () => {
-  const { modalProps } = useDashboard();
+  const { modalProps, analystProps } = useDashboard();
   const {
     onShowModal,
     onCloseModal,
@@ -35,55 +83,242 @@ const DashboardAnalyst = () => {
     width,
     products,
   } = modalProps || {};
+  const {
+    soldProducts,
+    revenue,
+    inventory,
+    onGetSoldProducts,
+    onGetInventory,
+    onGetRevenue,
+  } = analystProps || {};
   const million = 1000000;
+  const [revenueObj, setRevenueObj] = useState({});
+  const [soldProductObj, setSoldProductObj] = useState({});
+  const [revenueFilter, setRevenueFilter] = useState({});
+  const [soldeProductFilter, setSoldProductFilter] = useState({});
+  const handleRevenue = async () => {
+    try {
+      let allMonths = [];
+      const today = await onGetRevenue({
+        startDate: zeroTimeToday,
+        endDate: endDay,
+      });
+      const startToCurrent = await onGetRevenue({
+        startDate: startMonth,
+        endDate: currentDayInMonth,
+      });
+      const zeroDayToCurrentDay = await onGetRevenue({
+        startDate: zeroDay,
+        endDate: currentDayInMonth,
+      });
+      const allDayInYear = await onGetRevenue({
+        startDate: zeroDay,
+        endDate: startToEndInYear,
+      });
+      for (let index = 0; index < monthNames.length; index++) {
+        const startMonth = new Date(year, index, 1).toISOString();
+        const endMonth = new Date(
+          year,
+          index,
+          31 || 30 || 29 || 28,
+          24,
+          0
+        ).toISOString();
+        const response = await onGetRevenue({
+          startDate: startMonth,
+          endDate: endMonth,
+        });
+        allMonths.push(response);
+      }
+      setRevenueObj({
+        today: today,
+        startToCurrent: startToCurrent,
+        zeroDayToCurrentDay: zeroDayToCurrentDay,
+        allDayInYear: allDayInYear,
+        allMonths: allMonths,
+      });
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  const handleSoldProducts = async () => {
+    try {
+      let allMonths = [];
+      const today = await onGetSoldProducts({
+        startDate: zeroTimeToday,
+        endDate: endDay,
+      });
+      const startToCurrent = await onGetSoldProducts({
+        startDate: startMonth,
+        endDate: currentDayInMonth,
+      });
+      const zeroDayToCurrentDay = await onGetSoldProducts({
+        startDate: zeroDay,
+        endDate: currentDayInMonth,
+      });
+      const allDayInYear = await onGetSoldProducts({
+        startDate: zeroDay,
+        endDate: startToEndInYear,
+      });
+      for (let index = 0; index < monthNames.length; index++) {
+        const startMonth = new Date(year, index, 1).toISOString();
+        const endMonth = new Date(
+          year,
+          index,
+          31 || 30 || 29 || 28,
+          24,
+          0
+        ).toISOString();
+        const response = await onGetSoldProducts({
+          startDate: startMonth,
+          endDate: endMonth,
+        });
+        allMonths.push(response);
+      }
+      setSoldProductObj({
+        today: today,
+        startToCurrent: startToCurrent,
+        zeroDayToCurrentDay: zeroDayToCurrentDay,
+        allDayInYear: allDayInYear,
+        allMonths: allMonths,
+      });
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  useEffect(() => {
+    if (Object.keys(revenueObj).length < 1) {
+      handleRevenue();
+      handleSoldProducts();
+    }
+  }, [revenueObj]);
+  const customDataRevenueBar = useMemo(() => {
+    if (Object?.keys(revenueFilter)?.length) {
+      return [revenueFilter?.data];
+    } else if (
+      !Object?.keys(revenueFilter)?.length &&
+      Object?.keys(revenueObj)?.length
+    ) {
+      return revenueObj?.allMonths?.map((month) => Math.round(month?.data));
+    } else if (
+      Object.keys(revenueObj).length < 1 &&
+      Object.keys(revenueFilter).length < 1
+    ) {
+      return [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200];
+    }
+  }, [revenueFilter, revenueObj]);
+  const customDataSoldProductLine = useMemo(() => {
+    if (Object?.keys(soldeProductFilter)?.length) {
+      return [soldeProductFilter?.data];
+    } else if (
+      !Object?.keys(soldeProductFilter)?.length &&
+      Object?.keys(soldProductObj)?.length
+    ) {
+      return soldProductObj?.allMonths?.map((month) => Math.round(month?.data));
+    } else if (
+      Object.keys(soldProductObj).length < 1 &&
+      Object.keys(soldeProductFilter).length < 1
+    ) {
+      return [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
+    }
+  }, [soldProductObj, soldeProductFilter]);
   const dataBars = {
-    labels: ["T1", "T2", "T3", "T4", "T5", "T6", "T7"],
+    labels: Object.keys(revenueFilter).length
+      ? [
+          `${localeVN(revenueFilter?.start?.localeDate)} - ${localeVN(
+            revenueFilter?.end?.localeDate
+          )}`,
+        ]
+      : monthNameVN?.map((month) => month),
     datasets: [
-      //   {
-      //     label: "Doanh thu",
-      //     data: [12, 19, 3, 5, 2, 3, 1],
-      //     borderWidth: 1,
-      //     borderColor: "rgb(255, 99, 132)",
-      //     backgroundColor: "rgba(255, 99, 132, 0.5)",
-      //     hoverBackgroundColor: "rgb(255, 99, 132)",
-      //   },
       {
-        label: "Đã bán",
-        data: [
-          1.2 * million,
-          1.9 * million,
-          3 * million,
-          5 * million,
-          2 * million,
-          3 * million,
-          1 * million,
-        ],
-        borderColor: "rgb(53, 162, 235)",
+        type: "bar",
+        label: "Doanh thu",
+        data: customDataRevenueBar,
+        borderColor: "rgba(53, 162, 235,1)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
-        hoverBackgroundColor: "rgb(53, 162, 235)",
+        hoverBackgroundColor: "rgba(53, 162, 235,1)",
       },
     ],
   };
   const dataLines = {
-    labels: ["T1", "T2", "T3", "T4", "T5", "T6", "T7"],
+    labels: Object.keys(soldeProductFilter).length
+      ? [
+          `${localeVN(soldeProductFilter?.start?.localeDate)} - ${localeVN(
+            soldeProductFilter?.end?.localeDate
+          )}`,
+        ]
+      : monthNameVN?.map((month) => month),
     datasets: [
       {
-        label: "Tháng 11",
-        data: ["200", "300", "400", "550", "600", "750", "900", "1200"],
-        borderColor: "rgb(255, 99, 132)",
-        borderWidth: 1,
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-        hoverBackgroundColor: "rgb(255, 99, 132)",
-        yAxisID: "y",
-      },
-      {
-        label: "Tháng 12",
-        data: ["-100", "50", "300", "150", "-100", "-150", "200", "500"],
+        fill: true,
+        type: "line",
+        label: "Đã bán",
+        data: customDataSoldProductLine,
         borderColor: "##2ee8a0",
         borderWidth: 1,
         backgroundColor: "#62DAAB",
         hoverBackgroundColor: "#46f3b1",
-        yAxisID: "y1",
+        yAxisID: "y",
+      },
+    ],
+  };
+  const dataPies = {
+    labels: Object.keys(soldeProductFilter).length
+      ? [
+          `${localeVN(soldeProductFilter?.start?.localeDate)} - ${localeVN(
+            soldeProductFilter?.end?.localeDate
+          )}`,
+        ]
+      : monthNameVN?.map((month) => month),
+    datasets: [
+      {
+        type: "pie",
+        label: "Đã bán",
+        data: customDataSoldProductLine,
+        backgroundColor: [
+          "rgba(255, 99, 132,.2)",
+          "rgba(255, 206, 86,.2)",
+          "rgba(54, 162, 235,.2)",
+          "rgba(152, 84, 99,.2)",
+          "rgba(229, 229, 229, 0.2)",
+          "rgba(75, 192, 192,.2)",
+          "rgba(44, 129, 189, 0.2)",
+          "rgba(153, 102, 255,.2)",
+          "rgba(255, 159, 64,.2)",
+          "rgba(173, 194, 65,.2)",
+          "rgba(241, 176, 218,.2)",
+          "rgba(60, 40, 75, .2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 0.4)",
+          "rgba(255, 206, 86, 0.4)",
+          "rgba(54, 162, 235, 0.4)",
+          "rgba(152, 84, 99, 0.6)",
+          "rgba(229, 229, 229, 0.7)",
+          "rgba(75, 192, 192, 0.4)",
+          "rgba(20, 57, 83, 0.2)",
+          "rgba(153, 102, 255, 0.7)",
+          "rgba(255, 159, 64, 0.7)",
+          "rgba(173, 194, 65, 0.7)",
+          "rgba(241, 176, 218, 0.7)",
+          "rgba(60, 40, 75, 0.4)",
+        ],
+        hoverBackgroundColor: [
+          "rgba(255, 99, 132, 0.7)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(152, 84, 99, 1)",
+          "#585757",
+          "rgba(75, 192, 192, 1)",
+          "rgba(20, 57, 83, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+          "rgba(173, 194, 65, 1)",
+          "rgba(241, 176, 218, 1)",
+          "rgba(60, 40, 75, 1)",
+        ],
+        borderWidth: Object.keys(soldeProductFilter).length ? 0 : 1,
       },
     ],
   };
@@ -96,6 +331,226 @@ const DashboardAnalyst = () => {
       return 400;
     }
   }, [width]);
+  const revenueRef = useRef();
+  const onChangeDatePickerRevenue = async (dates, dateStrings) => {
+    const startDates = dates?.[0];
+    const endDates = dates?.[1];
+    try {
+      if (dates) {
+        if (startDates?.$d.toString() === endDates?.$d.toString()) {
+          const response = await onGetRevenue({
+            startDate: new Date(
+              startDates?.$y,
+              startDates?.$M,
+              startDates?.$D,
+              0,
+              0
+            ).toISOString(),
+            endDate: new Date(
+              endDates?.$y,
+              endDates?.$M,
+              endDates?.$D,
+              23,
+              59,
+              59
+            ).toISOString(),
+          });
+          if (response?.code === 200)
+            setRevenueFilter({
+              data: response?.data,
+              start: {
+                day: startDates?.$D,
+                month: startDates?.$M,
+                hour: startDates?.$H,
+                localeDate: new Date(
+                  startDates?.$y,
+                  startDates?.$M,
+                  startDates?.$D,
+                  0,
+                  0
+                ).toISOString(),
+              },
+              end: {
+                day: endDates?.$D,
+                month: endDates?.$M,
+                hour: endDates?.$H,
+                localeDate: new Date(
+                  endDates?.$y,
+                  endDates?.$M,
+                  endDates?.$D,
+                  23,
+                  59,
+                  59
+                ).toISOString(),
+              },
+            });
+        } else {
+          const response = await onGetRevenue({
+            startDate: new Date(
+              startDates?.$y,
+              startDates?.$M,
+              startDates?.$D,
+              0,
+              0
+            ).toISOString(),
+            endDate: new Date(
+              endDates?.$y,
+              endDates?.$M,
+              endDates?.$D,
+              23,
+              59,
+              59
+            ).toISOString(),
+          });
+          if (response?.code === 200)
+            setRevenueFilter({
+              data: response?.data,
+              start: {
+                day: startDates?.$D,
+                month: startDates?.$M,
+                hour: startDates?.$H,
+                localeDate: new Date(
+                  startDates?.$y,
+                  startDates?.$M,
+                  startDates?.$D,
+                  0,
+                  0
+                ),
+              },
+              end: {
+                day: endDates?.$D,
+                month: endDates?.$M,
+                hour: endDates?.$H,
+                localeDate: new Date(
+                  endDates?.$y,
+                  endDates?.$M,
+                  endDates?.$D,
+                  23,
+                  59,
+                  59
+                ),
+              },
+            });
+        }
+      } else {
+        console.log("Clear");
+        setRevenueFilter({});
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  const onChangeDatePickerSoldProducts = async (dates, dateStrings) => {
+    const startDates = dates?.[0];
+    const endDates = dates?.[1];
+    try {
+      if (dates) {
+        if (startDates?.$d.toString() === endDates?.$d.toString()) {
+          const response = await onGetSoldProducts({
+            startDate: new Date(
+              startDates?.$y,
+              startDates?.$M,
+              startDates?.$D,
+              0,
+              0
+            ).toISOString(),
+            endDate: new Date(
+              endDates?.$y,
+              endDates?.$M,
+              endDates?.$D,
+              23,
+              59,
+              59
+            ).toISOString(),
+          });
+          if (response?.code === 200)
+            setSoldProductFilter({
+              data: response?.data,
+              start: {
+                day: startDates?.$D,
+                month: startDates?.$M,
+                hour: startDates?.$H,
+                localeDate: new Date(
+                  startDates?.$y,
+                  startDates?.$M,
+                  startDates?.$D,
+                  0,
+                  0
+                ).toISOString(),
+              },
+              end: {
+                day: endDates?.$D,
+                month: endDates?.$M,
+                hour: endDates?.$H,
+                localeDate: new Date(
+                  endDates?.$y,
+                  endDates?.$M,
+                  endDates?.$D,
+                  23,
+                  59,
+                  59
+                ).toISOString(),
+              },
+            });
+        } else {
+          const response = await onGetSoldProducts({
+            startDate: new Date(
+              startDates?.$y,
+              startDates?.$M,
+              startDates?.$D,
+              0,
+              0
+            ).toISOString(),
+            endDate: new Date(
+              endDates?.$y,
+              endDates?.$M,
+              endDates?.$D,
+              23,
+              59,
+              59
+            ).toISOString(),
+          });
+          if (response?.code === 200)
+            setSoldProductFilter({
+              data: response?.data,
+              start: {
+                day: startDates?.$D,
+                month: startDates?.$M,
+                hour: startDates?.$H,
+                localeDate: new Date(
+                  startDates?.$y,
+                  startDates?.$M,
+                  startDates?.$D,
+                  0,
+                  0
+                ),
+              },
+              end: {
+                day: endDates?.$D,
+                month: endDates?.$M,
+                hour: endDates?.$H,
+                localeDate: new Date(
+                  endDates?.$y,
+                  endDates?.$M,
+                  endDates?.$D,
+                  23,
+                  59,
+                  59
+                ),
+              },
+            });
+        }
+      } else {
+        console.log("Clear");
+        setSoldProductFilter({});
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  const onClick = (event) => {
+    console.log("event", event);
+  };
   return (
     <>
       <div
@@ -123,10 +578,10 @@ const DashboardAnalyst = () => {
               className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-lg
                           pb-[12px] border-solid border-b border-black-ebe flex items-center gap-[10px]"
             >
-              {formatPriceVND(15356000)}
+              {formatPriceVND(revenueObj?.zeroDayToCurrentDay?.data || 0)}
             </div>
             <div className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-sm ">
-              Doanh thu hôm nay: {formatPriceVND(3459000)}
+              Doanh thu hôm nay: {formatPriceVND(revenueObj?.today?.data || 0)}
             </div>
           </div>
           <div className="xs:w-full sm:w-[30%] md:w-[45%] xl:w-1/4 rounded-[5px] shadow-header p-[20px] m-[8px] ">
@@ -153,10 +608,10 @@ const DashboardAnalyst = () => {
               className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-lg
                       pb-[12px] border-solid border-b border-black-ebe flex items-center gap-[10px]"
             >
-              212
+              {soldProductObj?.zeroDayToCurrentDay?.data || 0}
             </div>
             <div className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-sm ">
-              Bán được : 40 sản phẩm
+              Bán được : {soldProductObj?.today?.data || 0} sản phẩm
             </div>
           </div>
           <div className="xs:w-full sm:w-[30%] md:w-[45%] xl:w-1/4 rounded-[5px] shadow-header p-[20px] m-[8px] ">
@@ -174,17 +629,26 @@ const DashboardAnalyst = () => {
             </div>
           </div>
         </div>
-        <div className="mt-[20px] flex lg:flex-row xs:flex-col gap-[20px] items-center  ">
+        <div className="mt-[20px] flex lg:flex-row xs:flex-col gap-[20px] items-center py-[20px]">
           <div
-            className=" lg:w-1/2  xs:w-full shadow-header  p-[10px]"
+            className="lg:w-1/2  xs:w-full "
             style={{
               position: "relative",
               height: `${resizeChart}px `,
               width: "100vw",
             }}
           >
+            <CustomCalendar className="">
+              <DatePicker.RangePicker
+                placement="bottomRight"
+                className="w-full"
+                onChange={onChangeDatePickerRevenue}
+              />
+            </CustomCalendar>
             <Bar
-              typeof="bar"
+              onClick={onClick}
+              ref={revenueRef}
+              className="shadow-header p-[10px] rounded-[5px]"
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
@@ -194,7 +658,17 @@ const DashboardAnalyst = () => {
                   },
                   title: {
                     display: true,
-                    text: "Doanh thu và sản phẩm đã bán trong tháng",
+                    text: "Tổng doanh thu",
+                  },
+                  scales: {
+                    y: {
+                      type: "linear",
+                      display: true,
+                      max: 10 * million,
+                    },
+                    x: {
+                      type: "linear",
+                    },
                   },
                 },
               }}
@@ -202,50 +676,91 @@ const DashboardAnalyst = () => {
             />
           </div>
           <div
-            className={` lg:w-1/2  xs:w-full shadow-header p-[10px]`}
+            className={` lg:w-1/2  xs:w-full `}
             style={{
               position: "relative",
               height: `${resizeChart}px `,
               width: "100vw",
             }}
           >
-            <Line
+            <CustomCalendar className="">
+              <DatePicker.RangePicker
+                placement="bottomRight"
+                className="w-full"
+                onChange={onChangeDatePickerSoldProducts}
+              />
+            </CustomCalendar>
+            <Pie
+              className="shadow-header p-[10px] rounded-[5px]"
               typeof="line"
+              data={dataPies}
               options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: {
-                  mode: "index",
-                  intersect: false,
-                },
-
-                stacked: false,
                 plugins: {
                   title: {
                     display: true,
                     text: "Tổng sản phẩm đã bán",
                   },
                 },
-                scales: {
-                  y: {
-                    type: "linear",
-                    display: true,
-                    position: "left",
-                  },
-                  y1: {
-                    type: "linear",
-                    display: true,
-                    position: "right",
-                    grid: {
-                      drawOnChartArea: false,
-                    },
-                  },
-                },
+                responsive: true,
+                maintainAspectRatio: false,
               }}
-              data={dataLines}
             />
           </div>
         </div>
+        <div className="mt-[20px] flex lg:flex-row xs:flex-col gap-[20px] items-center py-[20px]"></div>
+        {/* <div
+          className={`w-full `}
+          style={{
+            position: "relative",
+            height: `${resizeChart}px `,
+            width: "100vw",
+          }}
+        >
+          <CustomCalendar className="">
+            <DatePicker.RangePicker
+              placement="bottomRight"
+              className="w-full"
+              onChange={onChangeDatePickerSoldProducts}
+            />
+          </CustomCalendar>
+          <Line
+            className="shadow-header p-[10px] rounded-[5px]"
+            typeof="line"
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              interaction: {
+                mode: "index",
+                intersect: false,
+              },
+              stacked: false,
+              plugins: {
+                title: {
+                  display: true,
+                  text: "Tổng sản phẩm đã bán",
+                },
+              },
+
+              scales: {
+                y: {
+                  type: "linear",
+                  display: true,
+                  position: "left",
+                },
+                y1: {
+                  type: "linear",
+                  display: true,
+                  position: "right",
+
+                  grid: {
+                    drawOnChartArea: false,
+                  },
+                },
+              },
+            }}
+            data={dataLines}
+          />
+        </div> */}
       </div>
     </>
   );

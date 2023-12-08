@@ -1,59 +1,57 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
-const Pagination = () => {
+const Pagination = ({ onChange, pageCurrent = 0, totalPage }) => {
   /// Demo
   let limit = 9;
-  let total = 1000;
   const PAGE_STEP = 2;
-  const [pageNumber, setPageNumber] = useState(1);
   const onChangePage = (numbPage) => {
-    setPageNumber(numbPage);
+    console.log("numbPage", numbPage);
+    onChange(numbPage);
   };
   const onNext = () => {
-    setPageNumber(pageNumber + 1);
-    if (pageNumber >= totalPage) return;
+    onChange(pageCurrent + 1);
+    if (pageCurrent >= totalPage) return;
   };
   const onPrev = () => {
-    setPageNumber(pageNumber - 1);
-    if (pageNumber <= 0) return;
+    onChange(pageCurrent - 1);
+    if (pageCurrent <= 0) return;
   };
   //////
-  const totalPage = useMemo(() => {
-    if (!limit || !total) return 1;
-    return Math.ceil(Number(total) / Number(limit)) || 1;
-  }, [total, limit]);
-
+  // const totalPage = useMemo(() => {
+  //   if (!limit || !total) {
+  //     return 1;
+  //   } else {
+  //     return Math.ceil(Number(total) / Number(limit)) || 1;
+  //   }
+  // }, [total, limit]);
   const myPagination = useMemo(() => {
-    let startPage = pageNumber - PAGE_STEP;
-    let endPage = pageNumber + PAGE_STEP;
-    ///////  6-8-10 0-2-4 => 1-2-4
-    //// 1
+    let startPage = pageCurrent - PAGE_STEP;
+    let endPage = pageCurrent + PAGE_STEP;
     if (startPage <= 0) {
       startPage = 1;
       endPage = startPage + PAGE_STEP * 2;
-      // if (endPage > totalPage) {
-      //   endPage = totalPage;
-      // }
+      if (endPage > totalPage) {
+        endPage = totalPage;
+      }
     }
-
     if (endPage >= totalPage) {
       endPage = totalPage;
       startPage = endPage - PAGE_STEP * 2;
-      // if (startPage < 1) {
-      //   startPage = 1;
-      // }
+      if (startPage < 1) {
+        startPage = 1;
+      }
     }
     let list = [];
     for (let index = startPage; index < endPage + 1; index++) {
       list.push(index);
     }
     return list;
-  }, [totalPage, pageNumber]);
+  }, [totalPage, pageCurrent]);
   return (
     <div className="pagination ">
       <div
         className={`pagination__prev group/hover ${
-          pageNumber - 1 <= 0 ? "disable" : ""
+          pageCurrent - 1 <= 0 ? "disable" : ""
         }`}
         onClick={onPrev}
       >
@@ -70,7 +68,7 @@ const Pagination = () => {
       <ul className="pagination__list">
         <PaginationItem
           className={`hover:text-primary border-0`}
-          isDisable={pageNumber < 3 ? true : false}
+          isDisable={pageCurrent < 3 ? true : false}
           onClick={() => onChangePage(1)}
         >
           First
@@ -81,7 +79,7 @@ const Pagination = () => {
               isHover={true}
               key={index}
               onClick={() => onChangePage(item)}
-              isActive={pageNumber === item}
+              isActive={pageCurrent === item}
             >
               {item}
             </PaginationItem>
@@ -90,7 +88,7 @@ const Pagination = () => {
 
         <PaginationItem
           className={`hover:text-primary border-0`}
-          isDisable={pageNumber > totalPage - 2}
+          isDisable={pageCurrent > totalPage - 2}
           onClick={() => onChangePage(totalPage)}
         >
           Last
@@ -98,7 +96,7 @@ const Pagination = () => {
       </ul>
       <div
         className={`pagination__next group/hover  ${
-          pageNumber >= totalPage ? "disable" : ""
+          pageCurrent >= totalPage ? "disable" : ""
         }`}
         onClick={onNext}
       >
@@ -121,7 +119,6 @@ const PaginationItem = ({
   isHover = false,
   isDisable = false,
   onClick,
-  pageNumber,
   className,
 }) => {
   return (

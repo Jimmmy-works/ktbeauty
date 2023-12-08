@@ -97,7 +97,6 @@ function App() {
                   path={PATHS.CMS.CATEGORY}
                   element={<DashboardCategory />}
                 />
-
                 <Route
                   path={PATHS.CMS.PRODUCT}
                   element={<DashBoardProduct />}

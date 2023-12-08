@@ -1,12 +1,16 @@
 import { firebaseStorage } from "@/config/firebase";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
 import useMutation from "@/hooks/useMutation";
+import useQuery from "@/hooks/useQuery";
 import dashboardService from "@/service/dashboardService";
+import productService from "@/service/productService";
 import { register } from "@/store/reducer/authReducer";
 import {
   createProduct,
   getAllOrder,
   getAllUsers,
+  getRevenue,
+  getSoldProducts,
 } from "@/store/reducer/dashboardReducer";
 import { updataStatusOrder } from "@/store/reducer/orderReducer";
 import {
@@ -16,7 +20,7 @@ import {
 import useWindowSize from "@/utils/windowResize";
 import { message } from "antd";
 import { deleteObject, ref } from "firebase/storage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 const useDashboard = () => {
   /// token
@@ -26,10 +30,11 @@ const useDashboard = () => {
   //// redux
   const dispatch = useDispatch();
   const { profile } = useSelector((state) => state.auth);
-  const { users, orders, detailOrder } = useSelector(
-    (state) => state.dashboard
+  const { users, orders, detailOrder, soldProducts, revenue, inventory } =
+    useSelector((state) => state.dashboard);
+  const { categories, products, statusGetProduct, totalProducts } = useSelector(
+    (state) => state.product
   );
-  const { categories, products } = useSelector((state) => state.product);
   ///// Modal
   const [openModalAndt, setOpenModalAndt] = useState("");
   const [productList, setProductList] = useState([]);
@@ -225,7 +230,26 @@ const useDashboard = () => {
       console.log("error", error);
     }
   };
-
+  /////// Analyst
+  // const onGetSoldProducts = async (payload) => {
+  //   try {
+  //     const test = {
+  //       startDate: "2023-01-01T11:44:54.271Z",
+  //       endDate: "2023-06-01T11:44:54.271Z",
+  //     };
+  //     const response = await dispatch(getSoldProducts(test));
+  //     console.log("response", response);
+  //   } catch (error) {
+  //     console.log("error", error);
+  //   }
+  // };
+  const onGetSoldProducts = (payload) => {
+    return dispatch(getSoldProducts(payload)).unwrap();
+  };
+  const onGetRevenue = (payload) => {
+    return dispatch(getRevenue(payload)).unwrap();
+  };
+  const onGetInventory = () => {};
   const categoryProps = {
     categories,
     onCreateCategory,
@@ -252,6 +276,7 @@ const useDashboard = () => {
     onDeleteProduct,
     onDeleteImageFirebase,
     onUpdateProduct,
+    statusGetProduct,
     ///
     loadingUpdateProduct,
     executeUpdateProduct,
@@ -264,8 +289,18 @@ const useDashboard = () => {
     dataCreateProduct,
     loadingCreateProduct,
     executeCreateProduct,
+    ///
+    statusGetProduct,
+    totalProducts,
   };
-
+  const analystProps = {
+    soldProducts,
+    revenue,
+    inventory,
+    onGetSoldProducts,
+    onGetInventory,
+    onGetRevenue,
+  };
   const modalProps = {
     onShowModal,
     onCloseModal,
@@ -282,7 +317,14 @@ const useDashboard = () => {
     toggleInputSeacrhMobile,
     setToggleInputSeacrhMobile,
   };
-  return { modalProps, userProps, productProps, orderProps, categoryProps };
+  return {
+    modalProps,
+    userProps,
+    productProps,
+    orderProps,
+    categoryProps,
+    analystProps,
+  };
 };
 
 export default useDashboard;

@@ -1,13 +1,16 @@
 import React, { useRef, useState } from "react";
 import Button from "../Button";
 import { twMerge } from "tailwind-merge";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "@/store/reducer/cartReducer";
 
 const InputRange = ({ ...props }) => {
+  const { minPrice, maxPrice } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const milion = 1000000;
+
   const min = 0;
-  const max = 10000;
+  const max = 60000;
   const step = 1000;
   const refMin = useRef();
   const refMax = useRef();

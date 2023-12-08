@@ -9,13 +9,16 @@ const PrivateRouteCMS = () => {
   const _token = localStorage.getItem(LOCAL_STORAGE.token);
   const navigate = useNavigate();
   useEffect(() => {
-    if (!profile || !_token || !profile?.isAdmin) {
+    if (!_token) {
       navigate("/");
     }
+    // if (!profile || !_token || !profile?.isAdmin) {
+    //   navigate("/");
+    // }
   }, [profile]);
-  if (!profile || !profile?.isAdmin) {
-    return <LoadingPage />;
-  }
+  // if (!profile || !profile?.isAdmin) {
+  //   return <LoadingPage />;
+  // }
   return <Outlet></Outlet>;
 };
 export default PrivateRouteCMS;

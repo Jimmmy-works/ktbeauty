@@ -2,6 +2,7 @@ import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import React, { forwardRef } from "react";
 import styled from "styled-components";
+import { twMerge } from "tailwind-merge";
 const Wrapper = styled.div`
   /* background-color: #f6f6f6; */
   background-size: cover;
@@ -10,13 +11,14 @@ const Wrapper = styled.div`
   overflow: hidden;
   filter: blur(50px);
 `;
-const LoadingSpinM = ({ size = 20, isloading }, ref) => {
-  console.log("isloading", isloading);
+const LoadingSpinM = ({ size = 20, isloading, className }, ref) => {
   return (
     <div
-      className={`center-absolute h-full w-full flex items-center justify-center duration-700 transition-opacity ${
-        isloading ? "opacity-100 " : "opacity-0 "
-      }`}
+      className={twMerge(
+        `center-absolute h-screen w-scrh-screen flex items-center justify-center duration-700 transition-opacity ${
+          isloading ? "opacity-100 " : "opacity-0 "
+        } ${className ?? ""}`
+      )}
       ref={ref}
     >
       <Spin

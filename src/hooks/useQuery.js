@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useQuery = (promise, dependencies = [], configs) => {
+  console.log("dependencies", dependencies);
   const { preventDefaultCall = false } = configs || {};
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);

@@ -4,7 +4,6 @@ import { cartService } from "@/service/cartService";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
 import { decodeToken } from "react-jwt";
-
 const initialState = {
   cartInfo: {},
   subTotal: 0,
@@ -14,7 +13,7 @@ const initialState = {
   updateStatusUpdateCart: null,
   ///
   minPrice: 0,
-  maxPrice: 10000,
+  maxPrice: 60000,
 };
 
 export const { reducer: cartReducer, actions: cartActions } = createSlice({

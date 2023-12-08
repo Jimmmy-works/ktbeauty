@@ -1,24 +1,25 @@
 import AuthenModal from "@/components/Authen";
 import { MainProvider } from "@/components/MainContext";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { PATHS } from "@/contants/path";
 import DashboardHeader from "@/page/CMS/Header";
 import useDashboard from "@/page/CMS/useDashboard";
 import { getAllOrder, getAllUsers } from "@/store/reducer/dashboardReducer";
-import { getAllProduct } from "@/store/reducer/productReducer";
-import { formatPriceVND } from "@/utils/formatPrice";
+import {
+  getAllCategories,
+  getAllProduct,
+} from "@/store/reducer/productReducer";
 import {
   DashboardOutlined,
   FileImageOutlined,
   FileOutlined,
+  PieChartOutlined,
   ProfileOutlined,
   ShopOutlined,
   ShoppingCartOutlined,
   UserAddOutlined,
-  MoneyCollectOutlined,
-  PieChartOutlined,
 } from "@ant-design/icons";
-import { Card, Col, Collapse, Divider, Row, Space, Typography } from "antd";
-import { Content } from "antd/es/layout/layout";
+import { Collapse } from "antd";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
@@ -111,17 +112,17 @@ const DashboardLayout = () => {
   const handleToggleOverplay = () => {
     setToggleSidebar(false);
   };
+  const _token = localStorage.getItem(LOCAL_STORAGE.token);
   useEffect(() => {
     document.querySelector("html").setAttribute("style", "overflow-y : scroll");
     // backtotop();
   }, [pathname]);
   useEffect(() => {
-    if (profile?.isAdmin) {
-      dispatch(getAllUsers());
-      dispatch(getAllProduct());
-      dispatch(getAllOrder());
-    }
-  }, [profile]);
+    dispatch(getAllUsers());
+    dispatch(getAllProduct({ limit: 9, page: 0 }));
+    dispatch(getAllCategories());
+    dispatch(getAllOrder());
+  }, []);
   const items = [
     {
       key: "1",

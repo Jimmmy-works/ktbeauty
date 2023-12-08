@@ -1022,6 +1022,7 @@ export default {
       },
     },
     screens: {
+      xxs: "300px",
       xs: "360px",
       x: "500px",
       sm: "640px",
@@ -1041,7 +1042,12 @@ export default {
           fontSize: "12px",
         },
         ".text-sm": {
-          fontSize: "14px",
+          "@media (min-width: 360px)": {
+            fontSize: "13px",
+          },
+          "@media (min-width: 568px)": {
+            fontSize: "14px",
+          },
         },
         ".text-base": { fontSize: "18px" },
         ".text-md": {
@@ -1049,10 +1055,18 @@ export default {
         },
         ".text-16px": {
           "@media (min-width: 360px)": {
-            fontSize: "14px",
+            fontSize: "13px",
+          },
+          "@media (min-width: 568px)": {
+            fontSize: "16px",
+          },
+        },
+        ".text-15px": {
+          "@media (min-width: 360px)": {
+            fontSize: "13px",
           },
           "@media (min-width: 768px)": {
-            fontSize: "16px",
+            fontSize: "15px",
           },
         },
         ".text-lg": {

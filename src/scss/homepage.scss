@@ -92,7 +92,7 @@
       }
 
       .item {
-        @apply bg-white p-[20px] md:p-[40px_40px_30px];
+        @apply bg-white xs:p-[20px_14px_14px] md:p-[30px_30px_20px] lg:p-[40px_40px_26px] #{!important};
       }
     }
   }

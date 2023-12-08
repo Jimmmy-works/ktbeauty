@@ -2,7 +2,7 @@ import React from "react";
 const Review = () => {
   return (
     <div className="review">
-      <h3 className="title font-osb text-black-555 text-[15px] leading-[24px] ">
+      <h3 className="title font-osb text-black-555 text-15px leading-[24px] ">
         1 review for Luminizer Holiday Gift Set
       </h3>
       <div className="mt-[20px] flex flex-col gap-8">
@@ -21,11 +21,11 @@ const Review = () => {
           <div className="w-full md:p-[20px] md:border md:border-solid md:border-[#e5e5e5]">
             <div className="flex md:flex-row xs:flex-col  md:justify-between md:items-center xs:gap-1 md:gap-2">
               <div className="flex items-center xs:gap-1 md:gap-2">
-                <p className="font-osb text-black-555 xs:text-sm md:text-[15px]">
+                <p className="font-osb text-black-555 xs:text-sm md:text-15px">
                   Guest
                 </p>
                 <span className=" bg-grey-999 h-[1px] w-[6px]"></span>
-                <p className="font-osr text-grey-999 text-[15px]">
+                <p className="font-osr text-grey-999 text-15px">
                   November 16, 2017
                 </p>
               </div>
@@ -43,7 +43,7 @@ const Review = () => {
                 </div>
               </div>
             </div>
-            <p className="text-[15px] font-osr text-black-333 xs:mt-[8px] md:mt-[20px]">
+            <p className="text-15px font-osr text-black-333 xs:mt-[8px] md:mt-[20px]">
               The product is great to wish you good sales
             </p>
           </div>
@@ -63,16 +63,16 @@ const Review = () => {
           <div className="w-full md:p-[20px] md:border md:border-solid md:border-[#e5e5e5]">
             <div>
               <div className="flex items-center gap-2">
-                <p className="font-osb text-black-555 xs:text-sm md:text-[15px]">
+                <p className="font-osb text-black-555 xs:text-sm md:text-15px">
                   Guest
                 </p>
                 <span className=" bg-grey-999 h-[1px] w-[6px]"></span>
-                <p className="font-osr text-grey-999 text-[15px]">
+                <p className="font-osr text-grey-999 text-15px">
                   November 16, 2017
                 </p>
               </div>
               <textarea
-                className="textarea w-full font-osr text-black-333 xs:text-sm md:text-[15px] xs:mt-[10px] md:mt-[20px] scrollbar-nav
+                className="textarea w-full font-osr text-black-333 xs:text-sm md:text-15px xs:mt-[10px] md:mt-[20px] scrollbar-nav
                 md:border-none xs:border xs:border-solid xs:border-gray-200 p-[10px]"
                 placeholder="Viết đánh giá..."
                 name=""
@@ -87,7 +87,7 @@ const Review = () => {
           <h4 className="font-osr text-md text-black-333 mb-[10px]">
             Add a review
           </h4>
-          <p className="font-osr text-[15px] text-black-555">
+          <p className="font-osr text-15px text-black-555">
             You must be logged in to post a review.
           </p>
         </div> */}

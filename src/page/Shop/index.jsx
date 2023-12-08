@@ -51,8 +51,12 @@ const Shop = () => {
     setSelectedFilters,
     optionSort,
     onChangeFeaturedTab,
+    onChangePageCurrent,
+    pageCurrent,
+    findCategoryAll,
+    totalProducts,
+    totalPage,
   } = useShop();
-
   const filterMobileProps = {
     onChangeCategoryTab,
     categoryTab,
@@ -64,7 +68,7 @@ const Shop = () => {
   };
   const { width } = useWindowSize();
   const handleClearSelectedFilters = () => {
-    setSelectedFilters([]);
+    setSelectedFilters([findCategoryAll?._id]);
   };
   return (
     <main className="main-wrapper">
@@ -112,40 +116,40 @@ const Shop = () => {
                     {customCategories?.map((category, index) => {
                       return (
                         <Tooltip
-                          key={`${category}${index}`}
+                          key={`${category?._id}${index}`}
                           placement={`top`}
                           color="#999"
-                          title={`Bỏ filter ${category}`}
+                          title={`Bỏ filter ${category?.name}`}
                         >
                           <li
                             className="cursor-pointer font-om text-white text-sm 
                             uppercase"
-                            onClick={() => onFilterButtonClick(category)}
+                            onClick={() => onFilterButtonClick(category?._id)}
                           >
                             <Button
                               className={`capitalize md:py-[6px] md:px-[20px]  `}
-                              key={`filter-${category}`}
+                              key={`filter-${category?._id}`}
                               isActive={
-                                selectedFilters?.includes(category)
+                                selectedFilters?.includes(category?._id)
                                   ? true
                                   : false
                               }
                               variant="outline"
                             >
-                              {category}
+                              {category?.name}
                             </Button>
                           </li>
                         </Tooltip>
                       );
                     })}
-                    <Button
+                    {/* <Button
                       onClick={handleClearSelectedFilters}
                       className={`capitalize md:py-[6px] md:px-[20px]  `}
                       isActive={!selectedFilters?.length ? true : false}
                       variant="outline"
                     >
                       All
-                    </Button>
+                    </Button> */}
                     <Button
                       onClick={handleClearSelectedFilters}
                       variant="outline"
@@ -181,27 +185,27 @@ const Shop = () => {
                     {customCategories?.map((category, index) => {
                       return (
                         <Tooltip
-                          key={`${category}${index}`}
+                          key={`${category?._id}${index}`}
                           placement={`top`}
                           color="#999"
-                          title={`Bỏ filter ${category}`}
+                          title={`Bỏ filter ${category?.name}`}
                         >
                           <li
                             className="cursor-pointer font-om text-white text-sm 
                             uppercase"
-                            onClick={() => onFilterButtonClick(category)}
+                            onClick={() => onFilterButtonClick(category?._id)}
                           >
                             <Button
                               className={`capitalize md:py-[6px] md:px-[20px]  `}
-                              key={`filter-${category}`}
+                              key={`filter-${category?._id}`}
                               isActive={
-                                selectedFilters?.includes(category)
+                                selectedFilters?.includes(category?._id)
                                   ? true
                                   : false
                               }
                               variant="outline"
                             >
-                              {category}
+                              {category?.name}
                             </Button>
                           </li>
                         </Tooltip>
@@ -239,8 +243,8 @@ const Shop = () => {
           lg:gap-[30px] mb-[30px]"
           >
             {statusGetProduct === THUNK_STATUS.fulfilled ? (
-              filteredItems?.length ? (
-                filteredItems?.map((item) => {
+              products?.length ? (
+                products?.map((item) => {
                   return (
                     <ProductCard
                       onLoadingImage={onImageLoading}
@@ -269,7 +273,11 @@ const Shop = () => {
               </div>
             )}
           </div>
-          <Pagination />
+          <Pagination
+            totalPage={totalPage}
+            onChange={onChangePageCurrent}
+            pageCurrent={pageCurrent}
+          />
         </div>
       </div>
     </main>

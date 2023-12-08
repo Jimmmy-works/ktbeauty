@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 const useCartPage = () => {
   const dispatch = useDispatch();
-  const { cartInfo, total, subTotal } = useSelector((state) => state.cart);
+  const { cartInfo, total, subTotal, discountCode } = useSelector(
+    (state) => state.cart
+  );
   const onChangeQuantity = async (updateValue, updateIndex) => {
     try {
       const map = cartInfo?.products?.find((_, index) => {

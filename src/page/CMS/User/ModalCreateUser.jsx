@@ -21,7 +21,6 @@ const ModalCreateUser = ({
   const [phone, setPhone] = useState("");
   const [URL, setURL] = useState([]);
   /////
-  console.log("image", image);
   const handleCreateUser = async () => {
     try {
       // const storageRef = ref(
@@ -36,7 +35,6 @@ const ModalCreateUser = ({
       //     .catch((error) => console.log("error", error));
       // });
       if (!image) {
-        console.log("111", 111);
         onCreateUser({
           email: email,
           password: password,
@@ -45,7 +43,6 @@ const ModalCreateUser = ({
         });
       } else if (image) {
         if (URL) {
-          console.log("222", 222);
           onCreateUser({
             email: email,
             password: password,
@@ -72,7 +69,6 @@ const ModalCreateUser = ({
     setURL();
     cancel();
   };
-  console.log("email", password);
   return (
     <Modal
       className="dashboard-modal"

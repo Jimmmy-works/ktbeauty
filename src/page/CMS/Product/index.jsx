@@ -3,14 +3,25 @@ import { formatPriceVND } from "@/utils/formatPrice";
 import { removeAccents } from "@/utils/removeAccents";
 import { dateVN } from "@/utils/timeVN";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Image, Input, Slider, Space, Table, message } from "antd";
+import { Button, Image, Input, Slider, Spin, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import useDashboard from "../useDashboard";
 import ModalCreateProduct from "./ModalCreateProduct";
 import ModalUpdateProduct from "./ModalUpdateProduct";
+import { useDispatch } from "react-redux";
+import { getAllProduct } from "@/store/reducer/productReducer";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
+import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
+import LoadingSpin from "@/components/Loading/LoadingSpin";
+import { LoadingOutlined } from "@ant-design/icons";
+import useQuery from "@/hooks/useQuery";
+import productService from "@/service/productService";
+
 const DashBoardProduct = () => {
+  const dispatch = useDispatch();
   const { modalProps, productProps } = useDashboard();
-  const { onDeleteProduct, loadingUpdateProduct } = productProps || {};
+  const { onDeleteProduct, statusGetProduct, totalProducts } =
+    productProps || {};
   const {
     onShowModal,
     onCloseModal,
@@ -18,9 +29,11 @@ const DashBoardProduct = () => {
     toggleSidebar,
     width,
     products,
+    ///
   } = modalProps || {};
   const [valueSlider, setValueSiler] = useState();
   const [searchTerm, setSearchTerm] = useState("");
+  const [pageCurrent, setPageCurrent] = useState(1);
   const onChangeSlider = (value) => {
     setValueSiler(value);
   };
@@ -193,7 +206,14 @@ const DashBoardProduct = () => {
       ellipsis: true,
     },
   ];
-  const data = products.map((product, index) => {
+  const onLoadingImage = () => {
+    return (
+      <div className="w-screen h-screen top-0 left-0 fixed flex justify-center items-center">
+        <Spin size="default" />
+      </div>
+    );
+  };
+  const data = products?.map((product, index) => {
     return {
       key: `${product?._id}`,
       priceCurrent: product?.price,
@@ -249,6 +269,7 @@ const DashBoardProduct = () => {
                 return (
                   <div key={`${index}`} className=" flex items-center gap-2 ">
                     <Image
+                      onLoad={onLoadingImage}
                       className="object-cover w-[60px] h-[60px]"
                       onError={(e) => {
                         e.target.onerror = null;
@@ -288,7 +309,6 @@ const DashBoardProduct = () => {
   const handleDeleteProductSelected = () => {
     if (selectedRowKeys)
       for (let index = 0; index < filterProducts.length; index++) {
-        console.log("first", filterProducts[index]);
         onDeleteProduct(filterProducts[index]?.key);
       }
   };
@@ -311,6 +331,24 @@ const DashBoardProduct = () => {
     }, 500);
     return () => clearTimeout(myTimeout);
   }, [searchTerm, valueSlider]);
+  const onChangePagination = (pageNumber) => {
+    const payloadPagination = {
+      limit: 9,
+      page: pageNumber - 1,
+    };
+    setPageCurrent(pageNumber);
+    if (pageNumber) {
+      dispatch(getAllProduct(payloadPagination));
+    }
+  };
+  if (statusGetProduct !== THUNK_STATUS.fulfilled) {
+    return (
+      <div className="w-screen h-screen top-0 left-0 fixed flex justify-center items-center">
+        <Spin size="default" />
+      </div>
+    );
+  }
+
   return (
     <div className="table__dashboard table__dashboard-product ">
       <ModalCreateProduct
@@ -342,7 +380,6 @@ const DashBoardProduct = () => {
         </h2>
         <div className="flex items-center gap-2">
           <button
-            // onClick={handleDelectSelected}
             onClick={() => {
               if (selectedRowKeys?.length < 1) {
                 message.error(`Chọn sản phẩm cần xóa`);
@@ -388,20 +425,27 @@ const DashBoardProduct = () => {
           </button>
         </div>
       </div>
-      <Table
-        style={{ verticalAlign: "middle" }}
-        key={`cms/product`}
-        tableLayout={"auto"}
-        pagination={{
-          pageSize: 7,
-          total: data,
-          position: ["bottomCenter"],
-        }}
-        onChange={handleOnchangeTable}
-        rowSelection={rowSelection}
-        columns={columns}
-        dataSource={data}
-      />
+
+      {statusGetProduct === THUNK_STATUS.fulfilled ? (
+        <Table
+          style={{ verticalAlign: "middle" }}
+          key={`cms/product`}
+          tableLayout={"auto"}
+          pagination={{
+            pageSize: 9,
+            total: totalProducts,
+            position: ["bottomCenter"],
+            onChange: onChangePagination,
+            current: Number(pageCurrent || 1),
+          }}
+          onChange={handleOnchangeTable}
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={data}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 };

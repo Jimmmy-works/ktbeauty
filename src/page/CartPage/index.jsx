@@ -300,7 +300,7 @@ const CartPage = () => {
                         </svg>
                       </div>
                       <input
-                        className="w-[30px] text-[15px] tracking-wider text-center text-black-555 font-osb"
+                        className="w-[30px] text-15px tracking-wider text-center text-black-555 font-osb"
                         type="number"
                         min={min}
                         max={max}

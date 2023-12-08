@@ -10,6 +10,8 @@ const initialState = {
   productDetail: null,
   statusGetProductDetail: THUNK_STATUS.fulfilled,
   statusGetProduct: null,
+  totalProducts: null,
+  totalPage: null,
   /// filter
 };
 export const { reducer: productReducer, actions: productActions } = createSlice(
@@ -22,6 +24,12 @@ export const { reducer: productReducer, actions: productActions } = createSlice(
       },
       setProducts: (state, action) => {
         state.products = action.payload;
+      },
+      setTotalProducts: (state, action) => {
+        state.totalProducts = action.payload;
+      },
+      setTotalPage: (state, action) => {
+        state.totalPage = action.payload;
       },
       setProductDetail: (state, action) => {
         state.productDetail = action.payload;
@@ -68,11 +76,11 @@ export const getAllCategories = createAsyncThunk(
 );
 export const getAllProduct = createAsyncThunk(
   "product/get",
-  async (_, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      const payloadPagination = { limit: 9, page: 0 };
-      const response = await productService.getAllProduct(payloadPagination);
+      const response = await productService.getAllProduct(payload);
       thunkAPI.dispatch(productActions.setProducts(response?.data?.data));
+      thunkAPI.dispatch(productActions.setTotalProducts(response?.data?.total));
       return response?.data?.data;
     } catch (error) {
       console.log("error", error);
@@ -81,12 +89,35 @@ export const getAllProduct = createAsyncThunk(
   }
 );
 export const getProductDetail = createAsyncThunk(
-  "product-detail/get/",
+  "product-detail/get",
   async (slug, thunkAPI) => {
     try {
-      const reponse = await productService.getProductById(slug);
-      thunkAPI.dispatch(productActions.setProductDetail(reponse?.data?.data));
-      return reponse?.data?.data;
+      const response = await productService.getProductById(slug);
+      thunkAPI.dispatch(productActions.setProductDetail(response?.data?.data));
+      thunkAPI.dispatch(productActions.setTotalProducts(response?.data?.total));
+      thunkAPI.dispatch(productActions.setTotalPage(response?.data?.totalPage));
+      return response?.data?.data;
+    } catch (error) {
+      console.log("error", error);
+      throw error;
+    }
+  }
+);
+export const getProductSelected = createAsyncThunk(
+  "product-detail/get",
+  async (query, thunkAPI) => {
+    try {
+      if (query) {
+        const response = await productService.getProductSelected(query);
+        thunkAPI.dispatch(productActions.setProducts(response?.data?.data));
+        thunkAPI.dispatch(
+          productActions.setTotalProducts(response?.data?.total)
+        );
+        thunkAPI.dispatch(
+          productActions.setTotalPage(response?.data?.totalPage)
+        );
+        return response?.data?.data;
+      }
     } catch (error) {
       console.log("error", error);
       throw error;

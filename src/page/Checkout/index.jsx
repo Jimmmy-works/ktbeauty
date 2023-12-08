@@ -138,7 +138,6 @@ const Checkout = () => {
         price: Number(JSON.parse(shipping)?.price),
       },
       payment_method: "cod",
-      order_date: Date.now().toString(),
       subTotal: subTotal,
       total: total,
     };

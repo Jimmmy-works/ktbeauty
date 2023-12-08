@@ -12,11 +12,11 @@ export const CATEGORIES_OPTIONS = {
   FACE: "face",
 };
 export const OPTION_SORT = {
-  POPULAR: "popular",
+  POPULAR: "all",
   OLD: "old",
   NEWEST: "newest",
-  HIGH_PRICE: "high-price",
-  LOWER_PRICE: "lower-price",
+  HIGH_PRICE: "high",
+  LOWER_PRICE: "lower",
 };
 export const OPTION_SORT_ORDER_ANTD = [
   { value: "Đang xác minh" },
@@ -61,3 +61,31 @@ export const RANGER_VALUE = {
   min: 0,
   max: 10000,
 };
+export const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+export const monthNameVN = [
+  "Tháng 1",
+  "Tháng 2",
+  "Tháng 3",
+  "Tháng 4",
+  "Tháng 5",
+  "Tháng 6",
+  "Tháng 7",
+  "Tháng 8",
+  "Tháng 9",
+  "Tháng 10",
+  "Tháng 11",
+  "Tháng 12",
+];

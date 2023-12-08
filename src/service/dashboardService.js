@@ -87,5 +87,21 @@ const dashboardService = {
       }
     );
   },
+  ///// Analyst
+  getSoldProducts: (param) => {
+    return instanceAxios.get(
+      `${BASE_URL}/api/order/get-sold?startDate=${param.startDate}&endDate=${param.endDate}`
+    );
+  },
+  getRevenue: (param) => {
+    return instanceAxios.get(
+      `${BASE_URL}/api/order/get-revenue?startDate=${param.startDate}&endDate=${param.endDate}`
+    );
+  },
+  getInventory: (limit) => {
+    return instanceAxios.get(
+      `${BASE_URL}/api/order/get-revenue?limit=${limit}`
+    );
+  },
 };
 export default dashboardService;

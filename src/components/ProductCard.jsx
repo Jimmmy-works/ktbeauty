@@ -1,20 +1,17 @@
-import React, { useState } from "react";
-import Button from "./Button";
+import { PATHS } from "@/contants/path";
+import { formatPriceVND } from "@/utils/formatPrice";
 import { Rate, Tooltip } from "antd";
 import { Link } from "react-router-dom";
-import { PATHS } from "@/contants/path";
 import styled from "styled-components";
-import { formatPriceVND } from "@/utils/formatPrice";
-import LoadingSkeleton from "./Loading/LoadingSkeleton";
 import { twMerge } from "tailwind-merge";
-import { dateVN, localeVN, timeVN } from "@/utils/timeVN";
+import Button from "./Button";
+import useWindowSize from "@/utils/windowResize";
 const StyleRate = styled.div`
   line-height: 20px;
   height: auto;
   margin: 4px 0;
   .ant-rate {
     line-height: 20px;
-
     .ant-rate-star,
     .ant-rate-star-zero {
       margin-inline-end: 3px;
@@ -43,12 +40,13 @@ const ProductCard = ({
 }) => {
   const { _id, name, price, rating, image, discount, countInStock, createdAt } =
     item || {};
+  const { width } = useWindowSize();
   if (isProductDetail) {
     return (
       <div
-        className={`card relative ${
+        className={`card relative shadow-header md:p-[16px] xs:p-[12px] ${
           className ?? ""
-        } transition-all duration-400   `}
+        } transition-all duration-400 `}
       >
         {discount > 0 ? (
           <StyleDiscount
@@ -64,7 +62,7 @@ const ProductCard = ({
         <div className="relative group/img overflow-hidden  group/addtocart ">
           <Link
             to={`${PATHS.SHOP.INDEX}/${item?._id}`}
-            className="block   relative  h-0 pb-[100%] "
+            className="block relative  h-0 pb-[100%] "
           >
             <img
               onLoad={onLoadingImage}
@@ -144,27 +142,27 @@ const ProductCard = ({
             </Tooltip>
           </div>
         </div>
-        <div className="pt-[20px]">
+        <div
+          className="pt-[20px]"
+          // className="xs:p-[20px_14px_10px_14px] md:p-[20px_14px_0_14px]"
+        >
           <Link
             to={`${PATHS.SHOP.INDEX}/${item?._id}`}
-            className="font-osb text-[15px] uppercase text-black-555 
-                    leading-[18px] truncate whitespace-normal line-clamp-2 hover:text-primary
-                    duration-400 transition-colors min-h-[36px]"
+            className=" font-osb text-15px uppercase text-black-555 
+                    xs:leading-[16px] md:leading-[18px] truncate whitespace-normal line-clamp-2 hover:text-primary
+                    duration-400 transition-colors xs:min-h-[32px] md:min-h-[36px]"
           >
             {name || ""}
           </Link>
           <StyleRate>
             <Rate />
           </StyleRate>
-          <div
-            className=" text-sm text-primary md:items-center font-osb flex md:flex-row xs:flex-col xs:gap-[4px]
-           md:gap-2 mt-[8px] leading-[18px] min-h-[40px]"
-          >
-            <span className=" text-[15px] text-primary ">
+          <div className="flex md:items-center font-osb  xs:gap-[4px]  md:gap-2 mt-[8px]  ">
+            <span className="text-15px  text-primary leading-[18px]">
               {formatPriceVND(price - discount)}
             </span>
-            {discount > 0 ? (
-              <span className="line-through text-black-555">
+            {discount > 1000 && width >= 388 ? (
+              <span className="line-through md:text-[14px] xs:text-xs text-black-555  leading-[18px]">
                 {formatPriceVND(price)}
               </span>
             ) : (
@@ -181,7 +179,7 @@ const ProductCard = ({
         className ?? ""
       } transition-all duration-400`}
     >
-      {discount > 0 && (
+      {discount > 1000 && (
         <StyleDiscount
           className="absolute top-3 left-[-3px] w-[50px] h-[16px] 
                     border border-red-200 text-xs tracking-wider  flex justify-center
@@ -249,20 +247,21 @@ const ProductCard = ({
         <Link
           to={`${PATHS.SHOP.INDEX}/${item?._id}`}
           className="font-osb text-sm uppercase text-black-555 
-                    leading-[18px] truncate whitespace-normal line-clamp-2 hover:text-primary
-                    duration-400 transition-colors  min-h-[36px]"
+                    md:leading-[18px] xs:leading-[16px] truncate whitespace-normal line-clamp-2 hover:text-primary
+                    duration-400 transition-colors  xs:min-h-[32px] md:min-h-[36px]"
         >
           {name}
         </Link>
         <div
-          className="font-osb text-sm items-center justify-center flex md:flex-row xs:flex-col xs:gap-[4px]
-           md:gap-2 text-primary mt-[6px] xs:mb-[4px] md:mb-[10px] leading-[18px] min-h-[40px]"
+          className={`font-osb text-sm items-center justify-center flex xs:gap-[4px]
+           md:gap-2 text-primary mt-[6px] xs:mb-[4px] md:mb-[10px] 
+          leading-[18px] `}
         >
-          <span className=" text-[15px] text-primary ">
+          <span className={`text-15px text-primary`}>
             {formatPriceVND(price - discount)}
           </span>
-          {discount > 0 ? (
-            <span className="line-through text-black-555">
+          {discount > 1000 && width >= 388 ? (
+            <span className="line-through text-[14px] text-black-555">
               {formatPriceVND(price)}
             </span>
           ) : (
