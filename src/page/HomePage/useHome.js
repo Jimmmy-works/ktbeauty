@@ -1,14 +1,26 @@
 import { CATEGORIES_OPTIONS, FEATURED_OPTIONS } from "@/contants/general";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
+import useQuery from "@/hooks/useQuery";
+import productService from "@/service/productService";
 import { cartActions } from "@/store/reducer/cartReducer";
 import { message } from "antd";
-import { useMemo, useState } from "react";
+import queryString from "query-string";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
 const useHome = () => {
   const [imageloading, setImageLoading] = useState(true);
   const onImageLoading = () => {
     setImageLoading(false);
+  };
+  ////
+  const [searchParams, setSearchParams] = useSearchParams();
+  const updateQueryString = (queryObject) => {
+    const newQuerryString = queryString.stringify({
+      ...queryObject,
+    });
+    setSearchParams(new URLSearchParams(newQuerryString));
   };
   //// redux
   const dispatch = useDispatch();
@@ -19,7 +31,9 @@ const useHome = () => {
     (state) => state.product
   );
   /// categoryProps
-  const [categoryTab, setCategoryTab] = useState(CATEGORIES_OPTIONS.ALL);
+  const [categoryTab, setCategoryTab] = useState({
+    name: CATEGORIES_OPTIONS.ALL,
+  });
   const onChangeCategoryTab = (tab) => {
     setCategoryTab(tab);
   };
@@ -28,46 +42,6 @@ const useHome = () => {
   const onChangeFeaturedTab = (tab) => {
     setFeaturedTab(tab);
   };
-  const filterProductShowcase = useMemo(() => {
-    let newProducts = [];
-    switch (categoryTab) {
-      case CATEGORIES_OPTIONS.FACE:
-        newProducts = products?.filter(
-          (product) => product?.category_id?.name === CATEGORIES_OPTIONS.FACE
-        );
-        break;
-      case CATEGORIES_OPTIONS.BODY:
-        newProducts = products?.filter(
-          (product) => product?.category_id?.name === CATEGORIES_OPTIONS.BODY
-        );
-        break;
-      case CATEGORIES_OPTIONS.OTHER:
-        newProducts = products?.filter(
-          (product) => product?.category_id?.name === CATEGORIES_OPTIONS.OTHER
-        );
-        break;
-      case CATEGORIES_OPTIONS.SKIN:
-        newProducts = products?.filter(
-          (product) => product?.category_id?.name === CATEGORIES_OPTIONS.SKIN
-        );
-        break;
-      case CATEGORIES_OPTIONS.SUPPLEMENT:
-        newProducts = products?.filter(
-          (product) =>
-            product?.category_id?.name === CATEGORIES_OPTIONS.SUPPLEMENT
-        );
-        break;
-      case CATEGORIES_OPTIONS.ALL:
-        newProducts = products;
-        break;
-
-      default:
-        return (newProducts = []);
-    }
-
-    return newProducts;
-  }, [categoryTab, products]);
-  /// add to cart
   const onAddToCart = async (payload) => {
     try {
       if (payload?._id && updateStatusCreateCart !== THUNK_STATUS.pending) {
@@ -131,17 +105,32 @@ const useHome = () => {
       console.log("error", error);
     }
   };
+  const paramPayload = queryString.stringify({
+    categories: categoryTab?._id?.toString(),
+    limit: 9,
+  });
+  const { data: dataShowcaseProduct, loading: loadingShowcaseProduct } =
+    useQuery(
+      () => productService.getProductSelected(paramPayload),
+      [categoryTab]
+    );
+  useEffect(() => {
+    updateQueryString({
+      categories: categoryTab?._id?.toString(),
+      limit: 9,
+    });
+  }, [categoryTab]);
   /// ShowcaseProduct
   const showcaseProductProps = {
     onChangeCategoryTab,
     categoryTab,
     categories,
     products,
-    statusGetProduct,
     imageloading,
     onImageLoading,
     onAddToCart,
-    filterProductShowcase,
+    dataShowcaseProduct,
+    loadingShowcaseProduct,
   };
   const featuredProps = {
     onChangeFeaturedTab,

@@ -6,7 +6,9 @@ import useWindowSize from "@/utils/windowResize";
 
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { NavLink, Link, useLocation, useSearchParams } from "react-router-dom";
+import useHeader from "../Header/useHeader";
+import queryString from "query-string";
 
 const Nav = () => {
   const { pathname } = useLocation();
@@ -19,12 +21,35 @@ const Nav = () => {
     onCloseSubNav,
     onAuthenModal,
     onLogout,
+    onToggleNav,
   } = useMainContext();
+  const { onChangeCategory } = useHeader();
   const { products, categories } = useSelector((state) => state.product);
   const { profile } = useSelector((state) => state.auth);
   const { width } = useWindowSize();
   const [productListSearch, setProductListSearch] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  /// category
+  const [categoryTab, setCategoryTab] = useState();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const updateQueryString = (queryObject) => {
+    const newQuerryString = queryString.stringify({
+      ...queryObject,
+    });
+    setSearchParams(new URLSearchParams(newQuerryString));
+  };
+  const onChangeParamCategory = (category) => {
+    setCategoryTab(category);
+  };
+  useEffect(() => {
+    updateQueryString({
+      limit: 9,
+      page: 0,
+      categories: categoryTab,
+    });
+    setIsNavbar(false);
+    onToggleNav();
+  }, [categoryTab]);
   const _token = localStorage.getItem(LOCAL_STORAGE.token);
   const onDropDown = (id) => {
     onShowSubNav((prev) => (prev === id ? "" : id));
@@ -136,11 +161,11 @@ const Nav = () => {
                   ?.map((item, index) => {
                     return (
                       <li key={`${item}${index}`}>
-                        <Link to={PATHS.BLOG.INDEX}>
+                        <NavLink to={PATHS.BLOG.INDEX}>
                           Lorem ipsum dolor sit, amet consectetur adipisicing
                           elit. Lorem ipsum dolor sit, amet consectetur
                           adipisicing elit.
-                        </Link>
+                        </NavLink>
                       </li>
                     );
                   })}
@@ -193,23 +218,16 @@ const Nav = () => {
                 {categories?.length
                   ? categories?.map((cate) => (
                       <li key={`${cate?._id}`} className="capitalize">
-                        <Link to={PATHS.SHOP.DETAIL}>{cate?.name}</Link>
+                        <Link
+                          className="w-full"
+                          onClick={() => onChangeParamCategory(cate?._id)}
+                          to={PATHS.SHOP.INDEX}
+                        >
+                          {cate?.name}
+                        </Link>
                       </li>
                     ))
                   : ""}
-                {/* {Array(5)
-                  ?.fill("")
-                  ?.map((item, index) => {
-                    return (
-                      <li key={`${item}${index}`}>
-                        <Link to={PATHS.SHOP.DETAIL}>
-                          Lorem ipsum dolor sit, amet consectetur adipisicing
-                          elit. Lorem ipsum dolor sit, amet consectetur
-                          adipisicing elit.
-                        </Link>
-                      </li>
-                    );
-                  })} */}
               </ul>
             </div>
           </li>

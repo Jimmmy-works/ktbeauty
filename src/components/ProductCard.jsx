@@ -1,11 +1,14 @@
 import { PATHS } from "@/contants/path";
 import { formatPriceVND } from "@/utils/formatPrice";
-import { Rate, Tooltip } from "antd";
+import { Rate, Tooltip, Image, Space } from "antd";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { twMerge } from "tailwind-merge";
 import Button from "./Button";
 import useWindowSize from "@/utils/windowResize";
+import ImageCustom from "./ImageCustom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 const StyleRate = styled.div`
   line-height: 20px;
   height: auto;
@@ -44,7 +47,7 @@ const ProductCard = ({
   if (isProductDetail) {
     return (
       <div
-        className={`card relative shadow-header md:p-[16px] xs:p-[12px] ${
+        className={`card relative ${
           className ?? ""
         } transition-all duration-400 `}
       >
@@ -60,23 +63,35 @@ const ProductCard = ({
           ""
         )}
         <div className="relative group/img overflow-hidden  group/addtocart ">
-          <Link
-            to={`${PATHS.SHOP.INDEX}/${item?._id}`}
-            className="block relative  h-0 pb-[100%] "
-          >
-            <img
+          <Link to={`${PATHS.SHOP.INDEX}/${item?._id}`} className="">
+            <div
+              className="absolute w-full h-full top-1/2 left-1/2 bg-[rgba(0,0,0,0.05)]
+             -translate-x-1/2 -translate-y-1/2 z-[9]"
+            ></div>
+            <LazyLoadImage
+              wrapperClassName="block relative h-0 pb-[100%]"
+              loading="lazy"
+              key={_id}
+              className={twMerge(`center-absolute z-10 object-cover transition-all duration-400 group-hover/img:scale-105  
+                    h-full w-full `)}
+              alt={image?.[0]}
+              effect="blur"
+              src={image?.[0]}
+            />
+            {/* <img
               onLoad={onLoadingImage}
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = "/assets/img/error.png";
               }}
               className={twMerge(`center-absolute z-0 object-cover transition-all duration-400 group-hover/img:scale-105  
-                h-full w-full ${!imageloading ? "opacity-100" : "opacity-0"}`)}
+                    h-full w-full ${
+                      !imageloading ? "opacity-100" : "opacity-0"
+                    }`)}
               src={image?.length ? image?.[0] : "/assets/img/error.png"}
               alt={name}
-            />
+            /> */}
           </Link>
-
           <div
             onClick={() => onAddToCart(item)}
             className="h-[50px] w-[100%] bg-[rgba(0,0,0,0.03)] absolute bottom-0 translate-y-[100%]
@@ -142,10 +157,7 @@ const ProductCard = ({
             </Tooltip>
           </div>
         </div>
-        <div
-          className="pt-[20px]"
-          // className="xs:p-[20px_14px_10px_14px] md:p-[20px_14px_0_14px]"
-        >
+        <div className="pt-[20px] ">
           <Link
             to={`${PATHS.SHOP.INDEX}/${item?._id}`}
             className=" font-osb text-15px uppercase text-black-555 
@@ -193,9 +205,30 @@ const ProductCard = ({
         className={`block relative h-0 pb-[100%] 
         group overflow-hidden shine  transition-all duration-400 ${
           !imageloading ? "opacity-100" : "opacity-0"
-        }`}
+        } `}
       >
-        <img
+        <div
+          className="absolute w-full h-full top-1/2 left-1/2 bg-[rgba(0,0,0,0.1)]
+             -translate-x-1/2 -translate-y-1/2 z-[9]"
+        ></div>
+        <LazyLoadImage
+          loading="lazy"
+          wrapperClassName={`block relative h-0 pb-[100%] 
+                group overflow-hidden shine  transition-all duration-400`}
+          className={twMerge(
+            `center-absolute z-[10] object-cover  group-hover:scale-105  transition-all duration-400
+             group-hover:opacity-100 group-hover:visible 
+          `
+          )}
+          alt={name}
+          effect="blur"
+          src={image?.[1]}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "/assets/img/error.png";
+          }}
+        />
+        {/* <img
           onLoad={onLoadingImage}
           className={twMerge(
             `center-absolute z-0 object-cover  group-hover:scale-105  transition-all duration-400
@@ -205,17 +238,17 @@ const ProductCard = ({
           `
           )}
           src={image?.length ? image?.[1] : "/assets/img/error.png"}
-          alt=""
+          alt={name}
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = "/assets/img/error.png";
           }}
-        />
+        /> */}
         {image?.length > 1 && (
           <img
             onLoad={onLoadingImage}
             className={twMerge(
-              `center-absolute z-0 object-cover  group-hover:scale-105  transition-all duration-400
+              `center-absolute z-[10] object-cover  group-hover:scale-105  transition-all duration-400
                group-hover:opacity-0 group-hover:invisible  ${
                  !imageloading ? "opacity-100" : "opacity-0"
                }
@@ -229,8 +262,7 @@ const ProductCard = ({
             }}
           />
         )}
-
-        <button className="absolute z-50 xs:top-6 md:top-9 right-5 group/hover">
+        <button className="absolute z-[100] xs:top-6 md:top-9 right-5 group/hover">
           <svg
             className="xs:w-[18px] md:w-[22px] xs:h-[18px] md:h-[22px] "
             viewBox="0 0 24 24"

@@ -1,22 +1,22 @@
 import { MODAL_OPTION } from "@/contants/general";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
+import { getAllProduct } from "@/store/reducer/productReducer";
 import { formatPriceVND } from "@/utils/formatPrice";
 import { removeAccents } from "@/utils/removeAccents";
 import { dateVN } from "@/utils/timeVN";
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Image, Input, Slider, Spin, Table, message } from "antd";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import useDashboard from "../useDashboard";
 import ModalCreateProduct from "./ModalCreateProduct";
 import ModalUpdateProduct from "./ModalUpdateProduct";
-import { useDispatch } from "react-redux";
-import { getAllProduct } from "@/store/reducer/productReducer";
-import { THUNK_STATUS } from "@/contants/thunkstatus";
-import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
-import LoadingSpin from "@/components/Loading/LoadingSpin";
-import { LoadingOutlined } from "@ant-design/icons";
-import useQuery from "@/hooks/useQuery";
-import productService from "@/service/productService";
-
+import styled from "styled-components";
+const StyleImage = styled.div`
+  .ant-image-mask {
+    border-radius: 6px;
+  }
+`;
 const DashBoardProduct = () => {
   const dispatch = useDispatch();
   const { modalProps, productProps } = useDashboard();
@@ -261,16 +261,22 @@ const DashBoardProduct = () => {
           </strong>
         ),
       image: (
-        <div className="flex items-center xs:justify-center xs:gap-4 lg:gap-3 flex-wrap rounded-md ">
+        <div className="flex items-center xs:justify-center xs:gap-4 lg:gap-3 flex-wrap  ">
           <Image.PreviewGroup>
             {Array(product?.image?.length < 4 ? product?.image?.length : 2)
               ?.fill(product?.image)
               ?.map((item, index) => {
                 return (
-                  <div key={`${index}`} className=" flex items-center gap-2 ">
+                  <StyleImage
+                    key={`${index}`}
+                    className="flex items-center gap-2 "
+                  >
                     <Image
-                      onLoad={onLoadingImage}
-                      className="object-cover w-[60px] h-[60px]"
+                      placeholder={
+                        <div className="bg-black-ebe w-full h-full rounded-md"></div>
+                      }
+                      style={{ borderRadius: "6px" }}
+                      className="object-cover w-[60px] h-[60px] rounded-md"
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = "/assets/img/error.png";
@@ -282,7 +288,7 @@ const DashBoardProduct = () => {
                       }
                       alt=""
                     />
-                  </div>
+                  </StyleImage>
                 );
               })}
           </Image.PreviewGroup>

@@ -36,6 +36,7 @@ const Header = () => {
     onSearchProduct,
     pathname,
     productListSearch,
+    onChangeCategory,
   } = headerProps || {};
   const refHeader = useRef(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -58,6 +59,9 @@ const Header = () => {
   useEffect(() => {
     setSearchTerm("");
   }, [pathname]);
+  const categoryAll = categories
+    ?.filter((cate) => cate?.name === "all")
+    ?.map((item) => item?._id);
   return (
     <header className={`header `} ref={refHeader}>
       <div className="container h-full flex items-center justify-between">
@@ -76,7 +80,10 @@ const Header = () => {
             <NavLink to={`${PATHS.HOME}`}>TRANG CHỦ</NavLink>
           </li>
           <li className="header__menu-item relative ">
-            <NavLink to={`${PATHS.SHOP.INDEX}`}>
+            <NavLink
+              to={`${PATHS.SHOP.INDEX}`}
+              onClick={() => onChangeCategory(categoryAll)}
+            >
               SẢN PHẨM
               <div className="arrow-down">
                 <svg
@@ -94,7 +101,10 @@ const Header = () => {
                     key={`${item?._id}`}
                     className="sub__item capitalize min-w-[150px]"
                   >
-                    <Link to={`${PATHS.SHOP}/${item?._id}`}>
+                    <Link
+                      onClick={() => onChangeCategory(item?._id)}
+                      to={`${PATHS.SHOP.INDEX}`}
+                    >
                       {item?.name || "Lorem ipsum dolor sit amet."}
                     </Link>
                   </li>
@@ -105,7 +115,7 @@ const Header = () => {
             )}
           </li>
           <li className="header__menu-item relative">
-            <Link to={`${PATHS.BLOG.INDEX}`}>
+            <NavLink to={`${PATHS.BLOG.INDEX}`}>
               BLOG
               <div className="arrow-down">
                 <svg
@@ -115,7 +125,7 @@ const Header = () => {
                   <path d="M556.01602 769.767264l453.883943-454.93226c18.798868-18.797098 18.798868-49.373591 0.008854-68.167148-9.057669-9.054127-21.159352-14.042485-34.080917-14.042485s-25.023249 4.988358-34.082688 14.044256L511.467873 687.601901 82.146769 246.561608c-8.95142-8.94965-21.054874-13.938008-33.972898-13.938008-12.919795 0-25.023249 4.988358-34.082688 14.044256-18.786473 18.791785-18.786473 49.368279 0 68.156523l452.562922 454.652473c10.723996 9.19225 25.28887 21.563095 38.55043 21.559553 1.156336 0 2.30913-0.093853 3.424737-0.279787l2.103717-0.348849 2.078925 0.462181c1.514038 0.336453 3.102451 0.504679 4.720967 0.504679 10.879827 0.001771 24.546902-7.672899 38.483139-21.607365z"></path>
                 </svg>
               </div>
-            </Link>
+            </NavLink>
             <ul className="sub">
               {Array(5)
                 .fill("")

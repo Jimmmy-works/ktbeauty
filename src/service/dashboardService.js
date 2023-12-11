@@ -98,9 +98,9 @@ const dashboardService = {
       `${BASE_URL}/api/order/get-revenue?startDate=${param.startDate}&endDate=${param.endDate}`
     );
   },
-  getInventory: (limit) => {
+  getInventory: (param) => {
     return instanceAxios.get(
-      `${BASE_URL}/api/order/get-revenue?limit=${limit}`
+      `${BASE_URL}/api/product/get-countInStock-sold${param}`
     );
   },
 };

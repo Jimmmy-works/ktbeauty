@@ -2,10 +2,10 @@ import Button from "@/components/Button";
 import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
 import ProductCard from "@/components/ProductCard";
 import Textbox from "@/components/Textbox";
-import { THUNK_STATUS } from "@/contants/thunkstatus";
+import { CATEGORIES_OPTIONS } from "@/contants/general";
 import useWindowSize from "@/utils/windowResize";
 import { Empty } from "antd";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Keyboard, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -47,11 +47,12 @@ const ShowcaseProduct = ({
   onChangeCategoryTab,
   categoryTab,
   categories,
-  statusGetProduct,
+
   imageloading,
   onImageLoading,
   onAddToCart,
-  filterProductShowcase,
+  dataShowcaseProduct,
+  loadingShowcaseProduct,
 }) => {
   const refLoading = useRef();
   const { width } = useWindowSize();
@@ -71,33 +72,19 @@ const ShowcaseProduct = ({
                       key={_id}
                       variant="outline"
                       className={`py-[5px] px-[10px] uppercase`}
-                      isActive={categoryTab === name ? true : false}
-                      onClick={() => onChangeCategoryTab(name)}
+                      isActive={categoryTab?.name === name ? true : false}
+                      onClick={() => onChangeCategoryTab(cate)}
                     >
                       {name}
                     </Button>
                   );
                 })
-              : ["Face", "Skin", "Body", "Supplement", "Other"].map(
-                  (item, index) => {
-                    return (
-                      <Button
-                        key={`${item}${index}`}
-                        variant="outline"
-                        className={`py-[5px] px-[10px] uppercase`}
-                        isActive={categoryTab === item ? true : false}
-                        onClick={() => onChangeCategoryTab(item)}
-                      >
-                        {item}
-                      </Button>
-                    );
-                  }
-                )}
+              : ""}
           </div>
         </Textbox>
         <div className="scshowcaseproduct__bottom">
           <div className="scshowcaseproduct__bottom-list" ref={refLoading}>
-            {filterProductShowcase?.length > 0 ? (
+            {dataShowcaseProduct?.data?.data?.length > 0 ? (
               <Swiper
                 modules={[Navigation, Keyboard]}
                 keyboard={{
@@ -126,10 +113,10 @@ const ShowcaseProduct = ({
                 pagination={false}
                 loop={true}
               >
-                {filterProductShowcase.map((item, index) => {
+                {dataShowcaseProduct?.data?.data.map((item) => {
                   return (
                     <SwiperSlide key={`${item?._id}`}>
-                      {statusGetProduct === THUNK_STATUS.fulfilled ? (
+                      {!loadingShowcaseProduct ? (
                         <ProductCard
                           onAddToCart={onAddToCart}
                           className={`item`}
@@ -140,7 +127,7 @@ const ShowcaseProduct = ({
                       ) : (
                         <LoadingSkeleton
                           isArray={1}
-                          isLoading={statusGetProduct}
+                          isLoading={loadingShowcaseProduct}
                           isParagraph={width >= 768 ? 3 : 0}
                         />
                       )}
@@ -158,7 +145,7 @@ const ShowcaseProduct = ({
             )}
             <div
               className={`prev shadow-header ${
-                filterProductShowcase?.length > 4 ? "block" : "hidden"
+                dataShowcaseProduct?.data?.data?.length > 4 ? "block" : "hidden"
               }`}
             >
               <div
@@ -179,7 +166,7 @@ const ShowcaseProduct = ({
             </div>
             <div
               className={`next shadow-header ${
-                filterProductShowcase?.length > 4 ? "block" : "hidden"
+                dataShowcaseProduct?.data?.data?.length > 4 ? "block" : "hidden"
               }`}
             >
               <div

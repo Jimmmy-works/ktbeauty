@@ -163,7 +163,6 @@ const DashboardOrder = () => {
       };
       return value;
     });
-    console.log("newCurrentTable", newCurrentTable);
     setCurrentTable(newCurrentTable);
     /// handle selected
   };
@@ -478,7 +477,6 @@ const DashboardOrder = () => {
       .saveAs("Excel.xlsx");
     console.log("excel-->2", excel);
   };
-
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const onSelectChange = (newSelectedRowKeys) => {

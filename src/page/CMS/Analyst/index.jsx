@@ -35,10 +35,18 @@ import {
   endDay,
 } from "@/utils/timeISOString";
 import { monthNameVN, monthNames } from "@/contants/general";
-import { DatePicker } from "antd";
+import { DatePicker, Image, Popconfirm, Space, Table, Tag } from "antd";
 import { localeVN, timeVN } from "@/utils/timeVN";
 import styled from "styled-components";
-import { FALSE } from "sass";
+import queryString from "query-string";
+import useQuery from "@/hooks/useQuery";
+import { Excel } from "antd-table-saveas-excel";
+import dashboardService from "@/service/dashboardService";
+const StyleImage = styled.div`
+  .ant-image-mask {
+    border-radius: 6px;
+  }
+`;
 const CustomCalendar = styled.div`
   display: flex !important;
   width: auto;
@@ -95,7 +103,10 @@ const DashboardAnalyst = () => {
   const [revenueObj, setRevenueObj] = useState({});
   const [soldProductObj, setSoldProductObj] = useState({});
   const [revenueFilter, setRevenueFilter] = useState({});
-  const [soldeProductFilter, setSoldProductFilter] = useState({});
+  const [soldProductFilter, setSoldProductFilter] = useState({});
+  const [inventoryObj, setInventoryObj] = useState({});
+  const [topCountInStock, setTopCountInStock] = useState([]);
+  const [topTopSold, setTopSold] = useState([]);
   const handleRevenue = async () => {
     try {
       let allMonths = [];
@@ -115,7 +126,9 @@ const DashboardAnalyst = () => {
         startDate: zeroDay,
         endDate: startToEndInYear,
       });
-      for (let index = 0; index < monthNames.length; index++) {
+      ///
+      const monthCurrentRender = new Date()?.getMonth();
+      for (let index = 0; index < monthCurrentRender + 1; index++) {
         const startMonth = new Date(year, index, 1).toISOString();
         const endMonth = new Date(
           year,
@@ -186,12 +199,32 @@ const DashboardAnalyst = () => {
       console.log("error", error);
     }
   };
+  const handleInventory = async () => {
+    try {
+      const today = await onGetInventory(
+        `?${queryString.stringify({
+          type: "top-in-stock",
+        })}`
+      );
+      setInventoryObj({
+        ...today?.data,
+      });
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   useEffect(() => {
     if (Object.keys(revenueObj).length < 1) {
       handleRevenue();
+    }
+    if (Object.keys(soldProductObj).length < 1) {
       handleSoldProducts();
     }
-  }, [revenueObj]);
+    if (Object.keys(soldProductObj).length < 1) {
+      handleInventory();
+    }
+  }, [revenueObj, soldProductObj]);
+
   const customDataRevenueBar = useMemo(() => {
     if (Object?.keys(revenueFilter)?.length) {
       return [revenueFilter?.data];
@@ -208,20 +241,20 @@ const DashboardAnalyst = () => {
     }
   }, [revenueFilter, revenueObj]);
   const customDataSoldProductLine = useMemo(() => {
-    if (Object?.keys(soldeProductFilter)?.length) {
-      return [soldeProductFilter?.data];
+    if (Object?.keys(soldProductFilter)?.length) {
+      return [soldProductFilter?.data];
     } else if (
-      !Object?.keys(soldeProductFilter)?.length &&
+      !Object?.keys(soldProductFilter)?.length &&
       Object?.keys(soldProductObj)?.length
     ) {
       return soldProductObj?.allMonths?.map((month) => Math.round(month?.data));
     } else if (
       Object.keys(soldProductObj).length < 1 &&
-      Object.keys(soldeProductFilter).length < 1
+      Object.keys(soldProductFilter).length < 1
     ) {
       return [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
     }
-  }, [soldProductObj, soldeProductFilter]);
+  }, [soldProductObj, soldProductFilter]);
   const dataBars = {
     labels: Object.keys(revenueFilter).length
       ? [
@@ -242,10 +275,10 @@ const DashboardAnalyst = () => {
     ],
   };
   const dataLines = {
-    labels: Object.keys(soldeProductFilter).length
+    labels: Object.keys(soldProductFilter).length
       ? [
-          `${localeVN(soldeProductFilter?.start?.localeDate)} - ${localeVN(
-            soldeProductFilter?.end?.localeDate
+          `${localeVN(soldProductFilter?.start?.localeDate)} - ${localeVN(
+            soldProductFilter?.end?.localeDate
           )}`,
         ]
       : monthNameVN?.map((month) => month),
@@ -263,11 +296,100 @@ const DashboardAnalyst = () => {
       },
     ],
   };
+  // const testColor = [
+  //   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+  // ];
+  // const mapColor = testColor?.map((color) => {
+  //   if (color === 0) {
+  //     return {
+  //       backgroundColor: "rgba(251, 8, 61, 0.2)",
+  //       borderColor: "rgba(255, 99, 132, 0.4)",
+  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
+  //     };
+  //   }
+  //   if (color === 1) {
+  //     return {
+  //       backgroundColor: "rgba(94, 255, 7, 0.2)",
+  //       borderColor: "rgba(99, 38, 52, 0.4)",
+  //       hoverBackgroundColor: "rgba(118, 41, 58, 0.7)",
+  //     };
+  //   }
+  //   if (color === 2) {
+  //     return {
+  //       backgroundColor: "rgba(218, 255, 5, 0.2)",
+  //       borderColor: "rgba(255, 99, 132, 0.4)",
+  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
+  //     };
+  //   }
+  //   if (color === 3) {
+  //     return {
+  //       backgroundColor: "rgba(4, 125, 255, 0.2)",
+  //       borderColor: "rgba(255, 99, 132, 0.4)",
+  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
+  //     };
+  //   }
+  //   if (color === 4) {
+  //     return {
+  //       backgroundColor: "rgba(255, 5, 5, 0.2)",
+  //       borderColor: "rgba(255, 99, 132, 0.4)",
+  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
+  //     };
+  //   }
+  //   if (color === 5) {
+  //     return {
+  //       backgroundColor: "rgba(5, 255, 55, 0.2)",
+  //       borderColor: "rgba(255, 99, 132, 0.4)",
+  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
+  //     };
+  //   }
+  //   if (color === 6) {
+  //     return {
+  //       backgroundColor: "rgba(255, 225, 0, 0.2)",
+  //       borderColor: "rgba(255, 99, 132, 0.4)",
+  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
+  //     };
+  //   }
+  //   if (color === 7) {
+  //     return {
+  //       backgroundColor: "rgba(0, 255, 136, 0.2)",
+  //       borderColor: "rgba(255, 99, 132, 0.4)",
+  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
+  //     };
+  //   }
+  //   if (color === 8) {
+  //     return {
+  //       backgroundColor: "rgba(238, 0, 255, 0.2)",
+  //       borderColor: "rgba(255, 99, 132, 0.4)",
+  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
+  //     };
+  //   }
+  //   if (color === 9) {
+  //     return {
+  //       backgroundColor: "rgba(255, 213, 3, 0.2)",
+  //       borderColor: "rgba(255, 99, 132, 0.4)",
+  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
+  //     };
+  //   }
+  //   if (color === 10) {
+  //     return {
+  //       backgroundColor: "rgba(0, 208, 255, 0.2)",
+  //       borderColor: "rgba(255, 99, 132, 0.4)",
+  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
+  //     };
+  //   }
+  //   if (color === 11) {
+  //     return {
+  //       backgroundColor: "rgba(255, 93, 5, 0.2)",
+  //       borderColor: "rgba(255, 99, 132, 0.4)",
+  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
+  //     };
+  //   }
+  // });
   const dataPies = {
-    labels: Object.keys(soldeProductFilter).length
+    labels: Object.keys(soldProductFilter).length
       ? [
-          `${localeVN(soldeProductFilter?.start?.localeDate)} - ${localeVN(
-            soldeProductFilter?.end?.localeDate
+          `${localeVN(soldProductFilter?.start?.localeDate)} - ${localeVN(
+            soldProductFilter?.end?.localeDate
           )}`,
         ]
       : monthNameVN?.map((month) => month),
@@ -276,6 +398,7 @@ const DashboardAnalyst = () => {
         type: "pie",
         label: "Đã bán",
         data: customDataSoldProductLine,
+        // backgroundColor: mapColor?.map((item) => item?.backgroundColor),
         backgroundColor: [
           "rgba(255, 99, 132,.2)",
           "rgba(255, 206, 86,.2)",
@@ -318,7 +441,7 @@ const DashboardAnalyst = () => {
           "rgba(241, 176, 218, 1)",
           "rgba(60, 40, 75, 1)",
         ],
-        borderWidth: Object.keys(soldeProductFilter).length ? 0 : 1,
+        borderWidth: Object.keys(soldProductFilter).length ? 0 : 1,
       },
     ],
   };
@@ -551,6 +674,144 @@ const DashboardAnalyst = () => {
   const onClick = (event) => {
     console.log("event", event);
   };
+  /////
+  const { data: dataTop10CountInStock } = useQuery(() => {
+    return dashboardService.getInventory(
+      `?${queryString.stringify({
+        limit: 10,
+        type: "top-in-stock",
+      })}`
+    );
+  });
+  const { data: dataTop10Sold } = useQuery(() => {
+    return dashboardService.getInventory(
+      `?${queryString.stringify({
+        limit: 10,
+        type: "top-sold",
+      })}`
+    );
+  });
+  const columnTopSold = [
+    {
+      title: "Top",
+      align: "center",
+      dataIndex: "top",
+    },
+    {
+      title: "Name",
+      align: "center",
+      dataIndex: "name",
+    },
+
+    {
+      title: "Image",
+      align: "center",
+      dataIndex: "image",
+    },
+    {
+      title: "Sold",
+      align: "center",
+      dataIndex: "sold",
+    },
+  ];
+  const columnTopCountInStock = [
+    {
+      title: "Top",
+      dataIndex: "top",
+      align: "center",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      align: "center",
+    },
+
+    {
+      title: "Image",
+      dataIndex: "image",
+      align: "center",
+    },
+    {
+      title: "Stock",
+      dataIndex: "stock",
+      align: "center",
+    },
+  ];
+  const dataTopCountInStock = dataTop10CountInStock?.data?.data?.map(
+    (item, index) => {
+      return {
+        key: `${item?._id}`,
+        name: `${item?.name}`,
+        stock: item?.countInStock,
+        top: index + 1,
+        image: (
+          <Image.PreviewGroup items={item?.image}>
+            <StyleImage>
+              <Image
+                placeholder={
+                  <div className="bg-black-ebe w-full h-full rounded-md"></div>
+                }
+                style={{ borderRadius: "6px" }}
+                className="object-cover w-[60px] h-[60px] rounded-md"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/assets/img/error.png";
+                }}
+                src={`${item?.image[0]}`}
+                alt={`${item?.image[0]}`}
+              />
+            </StyleImage>
+          </Image.PreviewGroup>
+        ),
+        priceCurrent: item?.price,
+      };
+    }
+  );
+  const dataTopSold = dataTop10Sold?.data?.data?.map((item, index) => {
+    return {
+      key: item?._id,
+      name: item?.name,
+      sold: item?.sold,
+      top: index + 1,
+      image: (
+        <Image.PreviewGroup items={item?.image}>
+          <StyleImage>
+            <Image
+              placeholder={
+                <div className="bg-black-ebe w-full h-full rounded-md"></div>
+              }
+              style={{ borderRadius: "6px" }}
+              className="object-cover w-[60px] h-[60px] rounded-md"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/assets/img/error.png";
+              }}
+              src={`${item?.image[0]}`}
+              alt={`${item?.image[0]}`}
+            />
+          </StyleImage>
+        </Image.PreviewGroup>
+      ),
+      priceCurrent: item?.price,
+    };
+  });
+  //// handle Table Excel
+  const [messageConfirm, setMessageConfirm] = useState();
+
+  const handleClick = (payload) => {
+    const newColums = payload?.colums?.filter(
+      (item) => item?.title !== "Image"
+    );
+    const excel = new Excel();
+    excel
+      .addSheet(messageConfirm)
+      .addColumns(newColums)
+      .addDataSource(payload?.data, {
+        str2Percent: true,
+      })
+      .saveAs("Excel.xlsx");
+    setMessageConfirm("");
+  };
   return (
     <>
       <div
@@ -560,15 +821,15 @@ const DashboardAnalyst = () => {
         toggleSidebar
           ? "xs:w-[calc(100%-200px)] md:w-[calc(100%-280px)] lg:w-[100%] left-[200px]"
           : "xs:w-[100%]"
-      }`}
+      } h-[70px]`}
       >
-        <h2 className="text-16px font-mam xs:hidden md:block text-[#033C73]">
+        <h2 className="text-16px font-mam xs:hidden md:block text-[#033C73] ">
           Dashboard Analyst
         </h2>
       </div>
-      <div className="lg:mt-0 xs:mt-[60px] p-[20px] ">
-        <div className=" flex xs:flex-wrap xl:flex-nowrap items-center ] m-[-8px] justify-start xl:justify-normal ">
-          <div className="xs:w-full sm:w-[30%] md:w-[45%] xl:w-1/4 rounded-[5px] shadow-header p-[20px] m-[8px]">
+      <div className="lg:mt-0 xs:mt-[60px] p-[0_20px_20px_20px] ">
+        <div className=" flex xs:flex-wrap xl:flex-nowrap items-center  m-[-8px] justify-start xl:justify-normal ">
+          <div className="xs:w-full sm:w-[30%] md:w-[45%] xl:w-1/3 rounded-[5px] shadow-header p-[20px] m-[8px]">
             <div className="flex items-center gap-[6px]">
               <h2 className="text-[rgba(0,0,0,.45)] text-sm font-osr ">
                 Doanh Thu
@@ -576,7 +837,7 @@ const DashboardAnalyst = () => {
             </div>
             <div
               className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-lg
-                          pb-[12px] border-solid border-b border-black-ebe flex items-center gap-[10px]"
+                          pb-[12px] border-solid border-b border-black-ebe flex justify-between items-center gap-[10px]"
             >
               {formatPriceVND(revenueObj?.zeroDayToCurrentDay?.data || 0)}
             </div>
@@ -584,21 +845,34 @@ const DashboardAnalyst = () => {
               Doanh thu hôm nay: {formatPriceVND(revenueObj?.today?.data || 0)}
             </div>
           </div>
-          <div className="xs:w-full sm:w-[30%] md:w-[45%] xl:w-1/4 rounded-[5px] shadow-header p-[20px] m-[8px] ">
+          <div className="xs:w-full sm:w-[30%] md:w-[45%] xl:w-1/3 rounded-[5px] shadow-header p-[20px] m-[8px] ">
             <div className="flex items-center gap-[6px]">
               <h2 className="text-[rgba(0,0,0,.45)] text-sm font-osr ">Kho</h2>
             </div>
             <div
               className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-lg
-                      pb-[12px] border-solid border-b border-black-ebe flex items-center gap-[10px]"
+                      pb-[12px] border-solid border-b border-black-ebe flex justify-between  items-center gap-[10px]"
             >
-              340
+              {console.log("inventoryObj", inventoryObj)}
+              <p>{inventoryObj?.totalCountInStock}</p>
+              <button
+                onClick={() =>
+                  handleClick({
+                    data: dataTopCountInStock,
+                    colums: columnTopCountInStock,
+                  })
+                }
+                className="text-sm border border-solid border-black-555 p-[4px_8px] rounded-md
+              hover:text-white hover:bg-[#033C73] hover:border-[#033C73] duration-400"
+              >
+                Top tồn kho
+              </button>
             </div>
             <div className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-sm ">
-              Xuất kho hôm nay: 32 sản phẩm
+              Tổng các loại sản phẩm : {inventoryObj?.totalProduct}
             </div>
           </div>
-          <div className="xs:w-full sm:w-[30%] md:w-[45%] xl:w-1/4 rounded-[5px] shadow-header p-[20px] m-[8px] ">
+          <div className="xs:w-full sm:w-[30%] md:w-[45%] xl:w-1/3 rounded-[5px] shadow-header p-[20px] m-[8px] ">
             <div className="flex items-center gap-[6px]">
               <h2 className="text-[rgba(0,0,0,.45)] text-sm font-osr ">
                 Đã bán
@@ -606,26 +880,22 @@ const DashboardAnalyst = () => {
             </div>
             <div
               className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-lg
-                      pb-[12px] border-solid border-b border-black-ebe flex items-center gap-[10px]"
+                      pb-[12px] border-solid border-b border-black-ebe flex justify-between items-center gap-[10px]"
             >
-              {soldProductObj?.zeroDayToCurrentDay?.data || 0}
+              <p> {soldProductObj?.zeroDayToCurrentDay?.data || 0}</p>
+
+              <button
+                onClick={() =>
+                  handleClick({ data: dataTopSold, colums: columnTopSold })
+                }
+                className="text-sm border border-solid border-black-555 p-[4px_8px] rounded-md
+              hover:text-white hover:bg-[#033C73] hover:border-[#033C73] duration-400"
+              >
+                Top bán chạy
+              </button>
             </div>
             <div className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-sm ">
               Bán được : {soldProductObj?.today?.data || 0} sản phẩm
-            </div>
-          </div>
-          <div className="xs:w-full sm:w-[30%] md:w-[45%] xl:w-1/4 rounded-[5px] shadow-header p-[20px] m-[8px] ">
-            <div className="flex items-center gap-[6px]">
-              <h2 className="text-[rgba(0,0,0,.45)] text-sm font-osr ">Nhập</h2>
-            </div>
-            <div
-              className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-lg
-                      pb-[12px] border-solid border-b border-black-ebe flex items-center gap-[10px]"
-            >
-              {formatPriceVND(15356000)}
-            </div>
-            <div className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-sm ">
-              Doanh thu hôm nay: {formatPriceVND(3459000)}
             </div>
           </div>
         </div>
@@ -707,7 +977,47 @@ const DashboardAnalyst = () => {
             />
           </div>
         </div>
-        <div className="mt-[20px] flex lg:flex-row xs:flex-col gap-[20px] items-center py-[20px]"></div>
+        <div className="py-[20px] flex lg:flex-row xs:flex-col gap-[20px] items-center        ">
+          <div className="lg:w-1/2 xs:w-full   table__dashboard-analyst ">
+            <div className="font-om text-md text-black-555 my-[15px] text-center ">
+              Top 10 CountInStock
+            </div>
+            <Table
+              rowClassName={`items-center `}
+              style={{ verticalAlign: "middle" }}
+              tableLayout={"auto"}
+              columns={columnTopCountInStock}
+              dataSource={dataTopCountInStock}
+              pagination={{
+                pageSize: 5,
+                // total: totalProducts,
+                position: ["bottomCenter"],
+                // onChange: onChangePagination,
+                // current: Number(pageCurrent || 1),
+              }}
+            />
+          </div>
+          <div className="lg:w-1/2 xs:w-full  table__dashboard-analyst">
+            <div className="font-om text-md text-black-555 my-[15px] text-center">
+              Top 10 Sold
+            </div>
+            <Table
+              rowClassName={`items-center `}
+              style={{ verticalAlign: "middle" }}
+              tableLayout={"auto"}
+              columns={columnTopSold}
+              dataSource={dataTopSold}
+              pagination={{
+                pageSize: 5,
+                // total: totalProducts,
+                position: ["bottomCenter"],
+                // onChange: onChangePagination,
+                // current: Number(pageCurrent || 1),
+              }}
+            />
+          </div>
+        </div>
+
         {/* <div
           className={`w-full `}
           style={{

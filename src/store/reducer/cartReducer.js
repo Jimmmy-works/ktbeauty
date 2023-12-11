@@ -123,7 +123,7 @@ export const updateCart = createAsyncThunk(
           user_id: payload?.user?.user_id,
         };
         const response = await cartService.updateCart(customPayload, _token);
-        message.success(response?.data?.message);
+        // message.success(response?.data?.message);
         return response;
       }
     } catch (error) {

@@ -12,6 +12,11 @@ export const MainProvider = ({ children }) => {
     (state) => state.auth
   );
   const { cartInfo } = useSelector((state) => state.cart);
+  ///// Category
+  const [categoryGlobalTab, setCategoryGlobalTab] = useState();
+  const onChangeCategoryGlobal = (tab) => {
+    setCategoryGlobalTab(tab);
+  };
   ///// Nav + Filter Nav
   const [isNavbar, setIsNavbar] = useState(false);
   const [isFilter, setIsFilter] = useState(false);
@@ -137,6 +142,9 @@ export const MainProvider = ({ children }) => {
         activeLinkTab,
         setActiveLinkTab,
         onActiveLinkTab,
+        // Category
+        categoryGlobalTab,
+        onChangeCategoryGlobal,
       }}
     >
       {children}

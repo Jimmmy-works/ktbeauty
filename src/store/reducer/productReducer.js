@@ -9,7 +9,7 @@ const initialState = {
   products: [],
   productDetail: null,
   statusGetProductDetail: THUNK_STATUS.fulfilled,
-  statusGetProduct: null,
+  statusGetProducts: null,
   totalProducts: null,
   totalPage: null,
   /// filter
@@ -55,6 +55,16 @@ export const { reducer: productReducer, actions: productActions } = createSlice(
       });
       builder.addCase(getAllProduct.rejected, (state) => {
         state.statusGetProduct = THUNK_STATUS.rejected;
+      });
+      //statusGetProduct
+      builder.addCase(getProductSelected.pending, (state) => {
+        state.statusGetProducts = THUNK_STATUS.pending;
+      });
+      builder.addCase(getProductSelected.fulfilled, (state) => {
+        state.statusGetProducts = THUNK_STATUS.fulfilled;
+      });
+      builder.addCase(getProductSelected.rejected, (state) => {
+        state.statusGetProducts = THUNK_STATUS.rejected;
       });
     },
   }
@@ -104,7 +114,7 @@ export const getProductDetail = createAsyncThunk(
   }
 );
 export const getProductSelected = createAsyncThunk(
-  "product-detail/get",
+  "product/get/param",
   async (query, thunkAPI) => {
     try {
       if (query) {

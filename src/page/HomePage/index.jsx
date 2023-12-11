@@ -8,7 +8,6 @@ import useHome from "./useHome";
 
 const HomePage = () => {
   const { featuredProps, showcaseProductProps } = useHome();
-
   return (
     <main className="text-3xl text-green-400">
       <Hero />

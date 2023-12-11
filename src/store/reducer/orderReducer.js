@@ -88,7 +88,7 @@ export const getOrderUser = createAsyncThunk(
       if (response?.status === 200) {
         thunkAPI.dispatch(orderActions.setOrderList(response?.data?.data));
       }
-      message.success(response?.data?.message);
+      // message.success(response?.data?.message);
       return response?.data?.data;
     } catch (error) {
       console.log("error", error);

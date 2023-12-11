@@ -1,14 +1,13 @@
 import { firebaseStorage } from "@/config/firebase";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
 import useMutation from "@/hooks/useMutation";
-import useQuery from "@/hooks/useQuery";
 import dashboardService from "@/service/dashboardService";
-import productService from "@/service/productService";
 import { register } from "@/store/reducer/authReducer";
 import {
   createProduct,
   getAllOrder,
   getAllUsers,
+  getInventory,
   getRevenue,
   getSoldProducts,
 } from "@/store/reducer/dashboardReducer";
@@ -54,7 +53,6 @@ const useDashboard = () => {
   const onCreateUser = async (payload) => {
     try {
       const response = await dispatch(register(payload));
-      console.log("response", response);
       if (response?.payload?.status === 200) {
         dispatch(getAllUsers());
       }
@@ -66,7 +64,6 @@ const useDashboard = () => {
   const onDeleteUser = async (id) => {
     try {
       const response = await dashboardService.deleteProfile(id, _token);
-      console.log("response", response);
       dispatch(getAllUsers());
       message.success(response?.data?.message);
     } catch (error) {
@@ -75,7 +72,6 @@ const useDashboard = () => {
     }
   };
   //// CRUD PRODUCT
-
   const onUpdateProduct = async (id, payload) => {
     try {
       const response = await dashboardService.updateProduct(id, payload);
@@ -166,6 +162,7 @@ const useDashboard = () => {
     { value: 6, name: "complete", label: "Hoàn thành đơn hàng" },
     { value: 7, name: "cancel", label: "Đã hủy đơn" },
   ];
+
   const onDeleteOrder = async (id) => {
     try {
       const response = await dashboardService.deleteOrder(id, _token);
@@ -249,7 +246,9 @@ const useDashboard = () => {
   const onGetRevenue = (payload) => {
     return dispatch(getRevenue(payload)).unwrap();
   };
-  const onGetInventory = () => {};
+  const onGetInventory = (param) => {
+    return dispatch(getInventory(param)).unwrap();
+  };
   const categoryProps = {
     categories,
     onCreateCategory,

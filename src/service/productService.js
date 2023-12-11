@@ -16,7 +16,7 @@ export const productService = {
     return axios.get(`${BASE_URL}/api/product/get-detail-product/${id}`);
   },
   getProductSelected: (query) => {
-    return axios.get(`${BASE_URL}/api/product/get-all-product-client?${query}`);
+    return axios.get(`${BASE_URL}/api/product/get-all-product-client${query}`);
   },
 };
 

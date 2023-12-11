@@ -17,6 +17,7 @@
 @import "swiper/css/pagination";
 @import "swiper/css/effect-flip";
 @import "swiper/css/effect-creative";
+@import "react-lazy-load-image-component/src/effects/blur.css";
 
 @layer base {
   html {
@@ -554,7 +555,7 @@
     content: "";
     width: 30%;
     height: 100%;
-    z-index: 300;
+    z-index: 10;
     background: linear-gradient(
       to right,
       rgba(255, 255, 225, 0) 0,
@@ -786,7 +787,28 @@ input[type="file"]::file-selector-button:hover {
       }
     }
   }
+  &-analyst {
+    .ant-table {
+      @apply border-x border-solid border-[#f0f0f0];
+    }
+    .ant-table-wrapper {
+      .ant-table-container {
+        .ant-table-content {
+          .ant-table-tbody {
+            .ant-table-cell {
+              @apply border-r align-middle lg:p-[16px] xs:p-[10px]
+            [&:nth-child(1)]:w-[50px] 
+            [&:nth-child(2)]:w-[250px] 
+             [&:nth-child(3)]:w-[100px] 
+            [&:nth-child(4)]:w-[50px];
+            }
+          }
+        }
+      }
+    }
+  }
 }
+
 :where(.css-dev-only-do-not-override-18iikkb).ant-select-dropdown {
   border-radius: 0 !important;
 }
@@ -814,4 +836,14 @@ input[type="file"]::file-selector-button:hover {
 }
 .ant-slider {
   min-width: 300px !important;
+}
+.lazy-load-image-background.blur.lazy-load-image-loaded {
+  filter: blur(0) !important;
+  transition: filter 0.3s !important;
+}
+.ant-picker-dropdown {
+  @apply z-[100000];
+}
+.ant-picker-panels {
+  @apply md:flex md:flex-row xs:flex-col;
 }

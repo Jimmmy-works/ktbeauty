@@ -176,13 +176,13 @@ export const getRevenue = createAsyncThunk(
 );
 export const getInventory = createAsyncThunk(
   "dashboard/product/get/inventory",
-  async (payload, thunkAPI) => {
+  async (param, thunkAPI) => {
     try {
-      const revenueData = await dashboardService.getInventory(payload);
-      if (revenueData?.status === 200) {
-        thunkAPI.dispatch(dashboardActions.setInventory(revenueData?.data));
+      const inventotyData = await dashboardService.getInventory(param);
+      if (inventotyData?.status === 200) {
+        thunkAPI.dispatch(dashboardActions.setInventory(inventotyData?.data));
       }
-      return revenueData?.data;
+      return inventotyData?.data;
     } catch (error) {
       message.error(error?.response?.data?.message);
       console.log("error", error);

@@ -5,7 +5,6 @@ const Pagination = ({ onChange, pageCurrent = 0, totalPage }) => {
   let limit = 9;
   const PAGE_STEP = 2;
   const onChangePage = (numbPage) => {
-    console.log("numbPage", numbPage);
     onChange(numbPage);
   };
   const onNext = () => {

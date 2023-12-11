@@ -16,6 +16,7 @@ import styled from "styled-components";
 import { Keyboard, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useShop from "./useShop";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 const StyleRate = styled.div`
   display: flex;
   gap: 8px;

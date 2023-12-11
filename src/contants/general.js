@@ -4,8 +4,8 @@ export const FEATURED_OPTIONS = {
   POPULAR: "popular",
 };
 export const CATEGORIES_OPTIONS = {
-  OTHER: "other",
   ALL: "all",
+  OTHER: "other",
   SUPPLEMENT: "supplement",
   BODY: "body",
   SKIN: "skin",

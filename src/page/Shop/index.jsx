@@ -29,37 +29,34 @@ const EmptyWrapper = styled.div`
 `;
 const Shop = () => {
   const {
-    // min,
-    // max,
-    // onChangeMax,
-    // onChangeMin,
     isFilter,
     onToggleFilter,
     setIsFilter,
+    ///
     categories,
     products,
-    statusGetProduct,
+    statusGetProducts,
+    ///
     imageloading,
     onImageLoading,
+    ///
     onAddToCart,
-    onChangeCategoryTab,
-    categoryTab,
     customCategories,
+    ////
     onFilterButtonClick,
     selectedFilters,
-    filteredItems,
     setSelectedFilters,
     optionSort,
     onChangeFeaturedTab,
+    ////
     onChangePageCurrent,
     pageCurrent,
-    findCategoryAll,
-    totalProducts,
     totalPage,
+    ///
+    dataShop,
+    loadingDataShop,
   } = useShop();
   const filterMobileProps = {
-    onChangeCategoryTab,
-    categoryTab,
     setSelectedFilters,
     isFilter,
     onToggleFilter,
@@ -67,9 +64,6 @@ const Shop = () => {
     setIsFilter,
   };
   const { width } = useWindowSize();
-  const handleClearSelectedFilters = () => {
-    setSelectedFilters([findCategoryAll?._id]);
-  };
   return (
     <main className="main-wrapper">
       <BreadCrumb>
@@ -142,22 +136,6 @@ const Shop = () => {
                         </Tooltip>
                       );
                     })}
-                    {/* <Button
-                      onClick={handleClearSelectedFilters}
-                      className={`capitalize md:py-[6px] md:px-[20px]  `}
-                      isActive={!selectedFilters?.length ? true : false}
-                      variant="outline"
-                    >
-                      All
-                    </Button> */}
-                    <Button
-                      onClick={handleClearSelectedFilters}
-                      variant="outline"
-                      className={`bg-black-ebe border-black-ebe text-black-333 capitalize 
-                      md:py-[6px] md:px-[20px]  `}
-                    >
-                      Clear
-                    </Button>
                   </ul>
                 </div>
               )}
@@ -211,21 +189,6 @@ const Shop = () => {
                         </Tooltip>
                       );
                     })}
-                    <Button
-                      className={`capitalize md:py-[6px] md:px-[20px] `}
-                      isActive={!selectedFilters?.length ? true : false}
-                      variant="outline"
-                    >
-                      All
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => setSelectedFilters([])}
-                      className="cursor-pointer font-om text-black-333 text-sm bg-[#e5e5e5] border-solid
-                     border-[#e5e5e5] border p-[5px_13px]  md:py-[6px] md:px-[20px]"
-                    >
-                      Clear
-                    </Button>
                   </ul>
                 </div>
               )}
@@ -239,12 +202,13 @@ const Shop = () => {
             </div>
           </div>
           <div
-            className="flex items-center flex-wrap  xs:gap-y-[20px] xs:gap-x-[14px] md:gap-[20px] 
-          lg:gap-[30px] mb-[30px]"
+            className={`flex items-center flex-wrap xs:gap-y-[20px] xs:gap-x-[14px] md:gap-[20px] 
+                  lg:gap-[30px] mb-[30px]   
+                    `}
           >
-            {statusGetProduct === THUNK_STATUS.fulfilled ? (
-              products?.length ? (
-                products?.map((item) => {
+            {!loadingDataShop ? (
+              dataShop?.data?.data?.length ? (
+                dataShop?.data?.data?.map((item) => {
                   return (
                     <ProductCard
                       onLoadingImage={onImageLoading}
@@ -266,7 +230,7 @@ const Shop = () => {
               <div className="w-full flex flex-wrap gap-[10px]">
                 <LoadingSkeleton
                   isClassName={`mb-[30px] xs:w-[calc(50%-7px)] md:w-[calc(50%-10px)] lg:w-[calc(33.33333%-20px)]`}
-                  isLoading={statusGetProduct !== THUNK_STATUS.fulfilled}
+                  isLoading={loadingDataShop}
                   isParagraph={2}
                   isArray={9}
                 />
@@ -274,7 +238,7 @@ const Shop = () => {
             )}
           </div>
           <Pagination
-            totalPage={totalPage}
+            totalPage={dataShop?.data?.totalPage}
             onChange={onChangePageCurrent}
             pageCurrent={pageCurrent}
           />

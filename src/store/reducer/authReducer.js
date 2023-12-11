@@ -126,7 +126,7 @@ export const getProfileSlug = createAsyncThunk(
       const decode = decodeToken(_token);
       const dataProfile = await authService.getProfileSlug(decode?.id, _token);
       thunkAPI.dispatch(authActions.setProfile(dataProfile?.data?.data));
-      message.success(dataProfile?.data?.message);
+      // message.success(dataProfile?.data?.message);
       return dataProfile?.data?.data;
     } catch (error) {
       console.log("error", error);
