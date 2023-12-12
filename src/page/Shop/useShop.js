@@ -77,13 +77,24 @@ const useShop = () => {
   const [pageCurrent, setPageCurrent] = useState(1);
   const onChangeFeaturedTab = (name) => {
     setOptionSortSelected(name);
-    if (name) updateQueryString({ ...queryObject, sort: name });
+    console.log("name", name);
+    if (name)
+      updateQueryString({
+        ...queryObject,
+        sort: name,
+        priceStart: newMin,
+        priceEnd: newMax,
+      });
   };
   const newMin = minPrice * 1000;
   const newMax = maxPrice * 1000;
   const onChangePageCurrent = (pageNumb) => {
     setPageCurrent(pageNumb);
-    if (pageNumb) updateQueryString({ ...queryObject, page: pageNumb - 1 });
+    if (pageNumb)
+      updateQueryString({
+        ...queryObject,
+        page: pageNumb - 1,
+      });
   };
   const onFilterButtonClick = (selectedCategory) => {
     if (selectedCategory === findCategoryAll?._id) {
@@ -270,17 +281,15 @@ const useShop = () => {
     loading: loadingDataShop,
     refetch: refetchDataShop,
   } = useQuery(() => {
-    if (search)
-      return productService.getProductSelected(
-        search ||
-          `?${queryString.stringify({
-            ...queryObject,
-            page: 0,
-            limit: _limit,
-            categories: findCategoryAll?._id?.toString(),
-            sort: "newest",
-          })}`
-      );
+    return productService.getProductSelected(
+      `?${queryString.stringify({
+        ...queryObject,
+        page: pageCurrent - 1 || 0,
+        limit: _limit,
+        categories: findCategoryAll?._id?.toString(),
+        sort: optionSortSelected || "newest",
+      })}`
+    );
   });
   /// Main
   const onAddToCart = async (payload) => {
@@ -342,23 +351,28 @@ const useShop = () => {
     }
   };
   useEffect(() => {
-    if (search) refetchDataShop?.(search);
-    if (!search) {
+    if (search)
       refetchDataShop?.(
         `?${queryString.stringify({
           ...queryObject,
           page: 0,
           limit: _limit,
           categories: findCategoryAll?._id?.toString(),
-          sort: "newest",
+          priceStart: newMin,
+          priceEnd: newMax,
         })}`
       );
-    }
   }, [search]);
   useEffect(() => {
-    updateQueryString({ ...queryObject, priceStart: newMin, priceEnd: newMax });
+    updateQueryString({
+      ...queryObject,
+      page: 0,
+      limit: _limit,
+      categories: findCategoryAll?._id?.toString(),
+      priceStart: newMin,
+      priceEnd: newMax,
+    });
   }, [newMax, newMin]);
-  console.log("search", search);
   return {
     isFilter,
     onToggleFilter,

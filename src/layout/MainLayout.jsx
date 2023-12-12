@@ -12,6 +12,7 @@ import {
   getAllCategories,
   getAllProduct,
 } from "@/store/reducer/productReducer";
+import backtotop from "@/utils/backtotop";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation } from "react-router-dom";
@@ -21,7 +22,7 @@ const MainLayout = () => {
   const { checkLogin } = useSelector((state) => state.auth);
   useEffect(() => {
     document.querySelector("html").setAttribute("style", "overflow-y : scroll");
-    // backtotop();
+    backtotop();
   }, [pathname]);
 
   const _token = localStorage.getItem(LOCAL_STORAGE.token);

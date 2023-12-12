@@ -11,7 +11,7 @@ const useHeader = () => {
   const { isNavbar, onToggleNav, onAuthenModal, onActiveLinkTab, onLogout } =
     useMainContext();
   const { profile } = useSelector((state) => state.auth);
-  const { cartInfo } = useSelector((state) => state.cart);
+  const { cartInfo, minPrice, maxPrice } = useSelector((state) => state.cart);
   const [productListSearch, setProductListSearch] = useState([]);
   const [categoryTab, setCategoryTab] = useState();
   //// useParams
@@ -44,12 +44,16 @@ const useHeader = () => {
   const onChangeCategory = (tab) => {
     setCategoryTab(tab);
   };
+  const newMin = minPrice * 1000;
+  const newMax = maxPrice * 1000;
   useEffect(() => {
     updateQueryString({
       ...queryObject,
       limit: _limit,
       page: 0,
       categories: categoryTab,
+      priceStart: newMin,
+      priceEnd: newMax,
     });
   }, [categoryTab]);
   const headerProps = {

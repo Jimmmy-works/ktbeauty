@@ -2427,6 +2427,10 @@ input[type="number"] {
   height: 60px !important;
 }
 
+.h-\[70px\] {
+  height: 70px !important;
+}
+
 .h-\[8px\] {
   height: 8px !important;
 }
@@ -3332,6 +3336,10 @@ input[type="number"] {
   padding: 0 0 8px 0 !important;
 }
 
+.p-\[0_20px_20px_20px\] {
+  padding: 0 20px 20px 20px !important;
+}
+
 .p-\[0px_14px_0px\] {
   padding: 0px 14px 0px !important;
 }
@@ -3398,6 +3406,10 @@ input[type="number"] {
 
 .p-\[35px_0\] {
   padding: 35px 0 !important;
+}
+
+.p-\[4px_8px\] {
+  padding: 4px 8px !important;
 }
 
 .p-\[5\.5px\] {
@@ -4897,16 +4909,23 @@ input[type="file"]::file-selector-button:hover {
     }
   }
   &-analyst {
+    .ant-table {
+      border-left-width: 1px;
+      border-right-width: 1px;
+    }
+    .ant-table {
+      border-style: solid;
+    }
+    .ant-table {
+      --tw-border-opacity: 1;
+      border-color: rgb(240 240 240 / var(--tw-border-opacity));
+    }
     .ant-table-wrapper {
       .ant-table-container {
         .ant-table-content {
           .ant-table-tbody {
             .ant-table-cell {
-              border-width: 0px;
-            }
-            .ant-table-cell {
-              --tw-bg-opacity: 1;
-              background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+              border-right-width: 1px;
             }
             .ant-table-cell {
               vertical-align: middle;
@@ -4921,45 +4940,17 @@ input[type="file"]::file-selector-button:hover {
                 padding: 16px;
               }
             }
-            @media (min-width: 360px) {
-              .ant-table-cell:nth-child(1) {
-                width: 300px;
-              }
+            .ant-table-cell:nth-child(1) {
+              width: 50px;
             }
-            @media (min-width: 768px) {
-              .ant-table-cell:nth-child(1) {
-                width: 50px;
-              }
+            .ant-table-cell:nth-child(2) {
+              width: 250px;
             }
-            @media (min-width: 360px) {
-              .ant-table-cell:nth-child(2) {
-                width: 300px;
-              }
+            .ant-table-cell:nth-child(3) {
+              width: 100px;
             }
-            @media (min-width: 768px) {
-              .ant-table-cell:nth-child(2) {
-                width: 250px;
-              }
-            }
-            @media (min-width: 360px) {
-              .ant-table-cell:nth-child(3) {
-                width: 300px;
-              }
-            }
-            @media (min-width: 768px) {
-              .ant-table-cell:nth-child(3) {
-                width: 100px;
-              }
-            }
-            @media (min-width: 360px) {
-              .ant-table-cell:nth-child(4) {
-                width: 300px;
-              }
-            }
-            @media (min-width: 768px) {
-              .ant-table-cell:nth-child(4) {
-                width: 50px;
-              }
+            .ant-table-cell:nth-child(4) {
+              width: 50px;
             }
           }
         }
@@ -5011,13 +5002,13 @@ input[type="file"]::file-selector-button:hover {
 }
 
 @media (min-width: 360px) {
-  .ant-picker-panel-layout {
+  .ant-picker-panels {
     flex-direction: column;
   }
 }
 
 @media (min-width: 768px) {
-  .ant-picker-panel-layout {
+  .ant-picker-panels {
     display: flex;
     flex-direction: row;
   }
@@ -5244,9 +5235,19 @@ input[type="file"]::file-selector-button:hover {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
 }
 
+.hover\:border-\[\#033C73\]:hover {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(3 60 115 / var(--tw-border-opacity)) !important;
+}
+
 .hover\:border-primary:hover {
   --tw-border-opacity: 1 !important;
   border-color: rgb(255 136 123 / var(--tw-border-opacity)) !important;
+}
+
+.hover\:bg-\[\#033C73\]:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(3 60 115 / var(--tw-bg-opacity)) !important;
 }
 
 .hover\:bg-\[\#555\]:hover {

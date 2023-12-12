@@ -108,16 +108,18 @@ const useHome = () => {
   const paramPayload = queryString.stringify({
     categories: categoryTab?._id?.toString(),
     limit: 9,
+    page: 0,
   });
   const { data: dataShowcaseProduct, loading: loadingShowcaseProduct } =
     useQuery(
-      () => productService.getProductSelected(paramPayload),
+      () => productService.getProductSelected(`?${paramPayload}`),
       [categoryTab]
     );
   useEffect(() => {
     updateQueryString({
       categories: categoryTab?._id?.toString(),
       limit: 9,
+      page: 0,
     });
   }, [categoryTab]);
   /// ShowcaseProduct

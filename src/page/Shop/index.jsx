@@ -195,7 +195,7 @@ const Shop = () => {
             </NavbarFilter>
             <div className=" gap-2 items-center xs:hidden xl:flex">
               <SelectCustom
-                defaultTitle={`Tất cả`}
+                defaultTitle={optionSort?.[0]?.label}
                 onChangeSort={onChangeFeaturedTab}
                 data={optionSort}
               />

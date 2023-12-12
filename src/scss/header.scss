@@ -4,10 +4,10 @@
     @apply p-[10px_14px_0px]  top-[120%] -left-[75%] absolute 
     bg-white shadow-header  transition-all duration-300 invisible opacity-0;
     &__item {
-      @apply w-full min-w-max  cursor-pointer flex items-center
+      @apply w-full min-w-max  cursor-pointer flex items-center pb-[14px]
       gap-2;
       a {
-        @apply text-sm leading-[20px] text-black-555 font-om pb-[14px] w-full
+        @apply text-sm leading-[20px] text-black-555 font-om  w-full
         duration-400 transition-colors max-w-[300px];
       }
       svg {

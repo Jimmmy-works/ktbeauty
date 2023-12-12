@@ -191,33 +191,47 @@ const ModalUpdateProduct = ({
     cancel();
     ///
   };
-  const handleUpdateProduct = async () => {
-    try {
-      var promise = new Promise(function (resolve, reject) {
-        if (currentFileURLs.length > 0) {
-          resolve();
-        } else {
-          reject();
-        }
-      });
-      promise.then(
-        () => {
-          uploadImages(currentFileURLs);
-          setLoadingUploadImage(true);
-          console.log("111", 111);
-        },
-        (error) => {
-          console.log("error", error);
-        }
-      );
-    } catch (error) {
-      console.log("error", error);
+  const handleUpdateProduct = () => {
+    if (fileURLs?.length) {
+      console.log("1111", 1111);
+      uploadImages(currentFileURLs);
+      setLoadingUploadImage(true);
+    } else {
+      console.log("2222", 2222);
+      setLoadingUploadImage(true);
     }
   };
-
+  console.log("currentImages", currentImages);
   useEffect(() => {
+    if (loadingUploadImage && fileURLs?.length < 1) {
+      const payload = {
+        name: name,
+        price: price,
+        countInStock: countInStock,
+        discount: discount || 0,
+        rating: rating,
+        category_id: {
+          name: category?.name,
+          _id: category?._id,
+        },
+        descTitle: descHeading,
+        descIntro: descIntro,
+        descSub: renderDesc,
+      };
+      executeUpdateProduct(productDetail?._id, payload);
+      if (loadingUpdateProduct) {
+        setURLs([]);
+        setImages([]);
+        setCurrentImages([]);
+        setCurrnetFileURLs([]);
+        setProgress("");
+      }
+      setLoadingUploadImage(false);
+      return;
+    }
     const timeout = setTimeout(() => {
-      if (loadingUploadImage && fileURLs?.length) {
+      if (loadingUploadImage && fileURLs?.length > 1) {
+        console.log("3333", 3333);
         const payload = {
           name: name,
           price: price,
@@ -242,8 +256,9 @@ const ModalUpdateProduct = ({
           setProgress("");
         }
         setLoadingUploadImage(false);
+        return;
       }
-    }, 1000);
+    }, 1200);
     return () => {
       clearTimeout(timeout);
     };
