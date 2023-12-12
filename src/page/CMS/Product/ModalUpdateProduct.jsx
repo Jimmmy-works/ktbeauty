@@ -193,15 +193,12 @@ const ModalUpdateProduct = ({
   };
   const handleUpdateProduct = () => {
     if (fileURLs?.length) {
-      console.log("1111", 1111);
       uploadImages(currentFileURLs);
       setLoadingUploadImage(true);
     } else {
-      console.log("2222", 2222);
       setLoadingUploadImage(true);
     }
   };
-  console.log("currentImages", currentImages);
   useEffect(() => {
     if (loadingUploadImage && fileURLs?.length < 1) {
       const payload = {

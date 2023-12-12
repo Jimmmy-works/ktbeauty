@@ -1,24 +1,29 @@
 import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import LoadingPage from "../Loading/LoadingPage";
+import { getProfileSlug } from "@/store/reducer/authReducer";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
 
 const PrivateRouteCMS = () => {
-  const { profile } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { profile, updateStatusUser } = useSelector((state) => state.auth);
   const _token = localStorage.getItem(LOCAL_STORAGE.token);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!_token) {
+  if (updateStatusUser === THUNK_STATUS) {
+    if (!profile && !profile?.isAdmin) {
       navigate("/");
     }
-    // if (!profile || !_token || !profile?.isAdmin) {
-    //   navigate("/");
-    // }
-  }, [profile]);
-  // if (!profile || !profile?.isAdmin) {
-  //   return <LoadingPage />;
-  // }
+  }
+  useEffect(() => {
+    if (_token) {
+      dispatch(getProfileSlug());
+    }
+  }, []);
+  if (!profile || !profile?.isAdmin) {
+    return <LoadingPage />;
+  }
   return <Outlet></Outlet>;
 };
 export default PrivateRouteCMS;

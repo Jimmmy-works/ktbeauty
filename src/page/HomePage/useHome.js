@@ -105,21 +105,21 @@ const useHome = () => {
       console.log("error", error);
     }
   };
-  const paramPayload = queryString.stringify({
-    categories: categoryTab?._id?.toString(),
-    limit: 9,
-    page: 0,
-  });
   const { data: dataShowcaseProduct, loading: loadingShowcaseProduct } =
     useQuery(
-      () => productService.getProductSelected(`?${paramPayload}`),
+      () =>
+        productService.getProductSelected(
+          `?${queryString.stringify({
+            categories: categoryTab?._id?.toString(),
+            limit: 9,
+          })}`
+        ),
       [categoryTab]
     );
   useEffect(() => {
     updateQueryString({
       categories: categoryTab?._id?.toString(),
       limit: 9,
-      page: 0,
     });
   }, [categoryTab]);
   /// ShowcaseProduct
