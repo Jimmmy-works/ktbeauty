@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "@/store/reducer/cartReducer";
 
 const InputRange = ({ ...props }) => {
+  const { updateQueryString, queryObject } = props || {};
   const { minPrice, maxPrice } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const milion = 1000000;
@@ -27,6 +28,7 @@ const InputRange = ({ ...props }) => {
     const newMaxVal = Math.max(e.target.value, minValue + step);
     setMaxValue(newMaxVal);
   };
+
   return (
     <>
       <div className="range mt-[20px] ">
@@ -46,7 +48,6 @@ const InputRange = ({ ...props }) => {
             step={step}
             value={minValue}
             onChange={handleMinChange}
-            defaultValue={minPrice * 1000}
           />
           <input
             ref={refMax}
@@ -57,7 +58,6 @@ const InputRange = ({ ...props }) => {
             step={step}
             value={maxValue}
             onChange={handleMaxChange}
-            defaultValue={maxPrice * 1000}
           />
         </div>
         <div className="price-input  flex items-center mt-[26px] gap-2 flex-wrap xl:flex-nowrap">
@@ -83,6 +83,11 @@ const InputRange = ({ ...props }) => {
             onClick={() => {
               dispatch(cartActions.setMinPrice(minValue));
               dispatch(cartActions.setMaxPrice(maxValue));
+              updateQueryString({
+                ...queryObject,
+                priceStart: minValue * 1000,
+                priceEnd: maxValue * 1000,
+              });
             }}
             className={`rounded-[4px] md:text-[13px] max-h-[30px] md:p-[6px_10px]`}
           >

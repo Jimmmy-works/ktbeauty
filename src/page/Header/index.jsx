@@ -44,17 +44,23 @@ const Header = () => {
   const onChangeSearch = (e) => {
     setSearchTerm(e.target.value);
   };
+  const onClickSearch = () => {
+    onSearchProduct(searchTerm);
+  };
   const onToggleSearch = (e) => {
     setToggleSearch(!toggleSearch);
   };
   useEffect(() => {
-    const time = setTimeout(() => {
-      onSearchProduct(searchTerm);
-    }, 500);
+    // const time = setTimeout(() => {
+    //   onSearchProduct(searchTerm);
+    // }, 500);
+    // if (!toggleSearch) {
+    //   setSearchTerm("");
+    // }
+    // return () => clearTimeout(time);
     if (!toggleSearch) {
       setSearchTerm("");
     }
-    return () => clearTimeout(time);
   }, [searchTerm, toggleSearch]);
   useEffect(() => {
     setSearchTerm("");
@@ -116,7 +122,7 @@ const Header = () => {
           </li>
           <li className="header__menu-item relative">
             <NavLink to={`${PATHS.BLOG.INDEX}`}>
-              BLOG
+              TIN TỨC
               <div className="arrow-down">
                 <svg
                   className="w-2 h-2 fill-black-555 duration-400 transition-colors "
@@ -187,26 +193,35 @@ const Header = () => {
                    rounded-tr-[50px] rounded-br-[50px]  right-0 p-[10px] h-[42px]
                   cursor-pointer   transition-all duration-400 bg-black-555 hover:bg-primary`}
                   >
-                    <button className="text-sm font-osr text-white">
+                    <button
+                      onClick={onClickSearch}
+                      className="text-sm font-osr text-white"
+                    >
                       Search
                     </button>
                   </div>
                 </div>
                 <ul
-                  className="absolute left-1/2 -translate-x-1/2  top-[62px] w-full
-                      transition-all duration-400 shadow-[0_5px_5px_0_rgba(0,0,0,0.15)] bg-white"
+                  className={`absolute left-1/2 -translate-x-1/2  top-[62px] w-full min-w-max
+                      transition-all duration-400 shadow-[0_5px_5px_0_rgba(0,0,0,0.15)] bg-white ${
+                        productListSearch?.length
+                          ? "opacity-100 visible"
+                          : "opacity-0 invisible"
+                      } duration-400`}
                 >
                   {productListSearch?.length ? (
                     <h3 className="font-osb text-md text-black-555 p-[16px_14px_16px]">
-                      {`( ${productListSearch?.length} )`}
-                      Sản phẩm tìm kiếm
+                      Tổng {`${productListSearch?.length}`} sản phẩm
                     </h3>
                   ) : (
                     ""
                   )}
-                  <ul className="min-w-max flex flex-col  max-h-[390px] overflow-y-scroll scrollbar-cart  p-[0px_14px_0px]  ">
+                  <ul
+                    className={`min-w-max flex flex-col  max-h-[390px] overflow-y-scroll scrollbar-cart  p-[0px_14px_0px]
+                    `}
+                  >
                     {productListSearch?.length ? (
-                      productListSearch?.map((item, index) => {
+                      productListSearch?.map((item) => {
                         const { image, name, _id, price, discount } =
                           item || {};
                         return (

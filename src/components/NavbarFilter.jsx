@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import Accordion from "./Accordion";
 import useWindowSize from "@/utils/windowResize";
+import { useEffect } from "react";
+import Accordion from "./Accordion";
 import InputRange from "./Input/InputRange";
 
 const NavbarFilter = ({
@@ -20,7 +20,7 @@ const NavbarFilter = ({
   }, [width]);
   return (
     <div
-      className={`fixed h-screen w-screen bg-white top-0 left-0 z-[10000] transition-all duration-[400ms] ease-linear
+      className={`fixed h-screen w-screen bg-white top-0 left-0 z-[1000] transition-all duration-[400ms] 
     ${isFilter ? " visible translate-x-0" : " invisible -translate-x-[100%]"}`}
     >
       <div className="flex flex-col items-center h-full w-full">

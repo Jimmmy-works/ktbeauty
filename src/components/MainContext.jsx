@@ -21,29 +21,27 @@ export const MainProvider = ({ children }) => {
   const [isNavbar, setIsNavbar] = useState(false);
   const [isFilter, setIsFilter] = useState(false);
   const [dropDownNav, setdropDownNav] = useState(false);
-  const [controlSubNav, setControlSubNav] = useState("");
   const html = document.querySelector("html");
   const navigate = useNavigate();
   const onToggleNav = () => {
     setIsNavbar(!isNavbar);
     if (isNavbar) {
       setdropDownNav(false);
-      html.setAttribute("style", "overflow-y : scroll");
+      html?.setAttribute("style", "overflow-y : scroll");
+      document
+        ?.querySelector(`main`)
+        ?.setAttribute("style", "transform: translateX(0)");
     } else {
-      html.setAttribute("style", "overflow-y: hidden ");
+      html.setAttribute("style", "overflow-y: hidden");
+      document
+        ?.querySelector(`main`)
+        ?.setAttribute("style", "transform: translateX(150px)");
     }
   };
   const onToggleFilter = () => {
     setIsFilter(!isFilter);
   };
-  const onShowSubNav = (id) => {
-    setControlSubNav(id);
-    setdropDownNav(true);
-  };
-  const onCloseSubNav = () => {
-    setControlSubNav("");
-    setdropDownNav(false);
-  };
+
   /////// Authen
   const [isAuthenModal, setIsAuthenModal] = useState(false);
   const [controlAuthen, setControlAuthen] = useState("");
@@ -122,9 +120,6 @@ export const MainProvider = ({ children }) => {
         setIsFilter,
         isFilter,
         dropDownNav,
-        controlSubNav,
-        onShowSubNav,
-        onCloseSubNav,
         html,
         /// Authen
         onLogin,

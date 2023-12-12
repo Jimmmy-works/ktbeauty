@@ -6,11 +6,15 @@ export const productService = {
     return axios.get(`${BASE_URL}/api/category/get-all-category`);
   },
   getAllProduct: (payload) => {
-    return axios.get(
-      `${BASE_URL}/api/product/get-all-product?limit=${
-        payload?.limit || 9
-      }&page=${payload?.page || 0}`
-    );
+    if (payload) {
+      return axios.get(
+        `${BASE_URL}/api/product/get-all-product?limit=${
+          payload?.limit || 9
+        }&page=${payload?.page || 0}`
+      );
+    } else {
+      return axios.get(`${BASE_URL}/api/product/get-all-product`);
+    }
   },
   getProductById: (id) => {
     return axios.get(`${BASE_URL}/api/product/get-detail-product/${id}`);

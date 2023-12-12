@@ -434,6 +434,12 @@ video {
   display: none;
 }
 
+main {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
 html {
   overflow-x: hidden;
   font-family: MontserratAlternates-Regular;
@@ -2157,20 +2163,12 @@ input[type="number"] {
   margin: -8px !important;
 }
 
-.m-\[0px\] {
-  margin: 0px !important;
-}
-
 .m-\[14px_0_10px_0\] {
   margin: 14px 0 10px 0 !important;
 }
 
 .m-\[15px_10px\] {
   margin: 15px 10px !important;
-}
-
-.m-\[20px\] {
-  margin: 20px !important;
 }
 
 .m-\[30px_0_20px_0\] {
@@ -2212,10 +2210,6 @@ input[type="number"] {
 .my-\[50px\] {
   margin-top: 50px !important;
   margin-bottom: 50px !important;
-}
-
-.mb-\[0px\] {
-  margin-bottom: 0px !important;
 }
 
 .mb-\[10px\] {
@@ -2490,10 +2484,6 @@ input[type="number"] {
 
 .w-0 {
   width: 0px !important;
-}
-
-.w-1\/4 {
-  width: 25% !important;
 }
 
 .w-12 {
@@ -3185,8 +3175,8 @@ input[type="number"] {
   background-color: rgba(0,0,0,0.3) !important;
 }
 
-.bg-\[rgba\(0\2c 0\2c 0\2c 0\.94\)\] {
-  background-color: rgba(0,0,0,0.94) !important;
+.bg-\[rgba\(0\2c 0\2c 0\2c 0\.44\)\] {
+  background-color: rgba(0,0,0,0.44) !important;
 }
 
 .bg-\[rgba\(255\2c 255\2c 255\2c 0\.3\)\] {
@@ -3287,6 +3277,10 @@ input[type="number"] {
   background-repeat: no-repeat !important;
 }
 
+.fill-\[\#000000BF\] {
+  fill: #000000BF !important;
+}
+
 .fill-\[\#033C73\] {
   fill: #033C73 !important;
 }
@@ -3313,6 +3307,10 @@ input[type="number"] {
 
 .fill-white {
   fill: #fff !important;
+}
+
+.fill-red-600 {
+  fill: #dc2626 !important;
 }
 
 .stroke-primary {
@@ -4110,6 +4108,18 @@ input[type="number"] {
 
 .rotate-y-0 {
   transform: rotateY(0deg) !important;
+}
+
+.transform-3d-nav {
+  transform: translate3d(100%,0,0) !important;
+}
+
+.transform-3d-0 {
+  transform: translate3d(0,0,0) !important;
+}
+
+.-transform-3d-30 {
+  transform: translate3d(-30%,0,0) !important;
 }
 
 .center-absolute {
@@ -5591,6 +5601,10 @@ input[type="file"]::file-selector-button:hover {
     height: 12px !important;
   }
 
+  .xs\:h-\[14px\] {
+    height: 14px !important;
+  }
+
   .xs\:h-\[16px\] {
     height: 16px !important;
   }
@@ -5863,11 +5877,6 @@ input[type="file"]::file-selector-button:hover {
   .xs\:py-\[10px\] {
     padding-top: 10px !important;
     padding-bottom: 10px !important;
-  }
-
-  .xs\:py-\[12px\] {
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
   }
 
   .xs\:py-\[16px\] {

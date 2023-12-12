@@ -7,7 +7,7 @@ import { cartActions } from "@/store/reducer/cartReducer";
 import { getProductSelected } from "@/store/reducer/productReducer";
 import { message } from "antd";
 import queryString from "query-string";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
 const useShop = () => {
@@ -35,12 +35,13 @@ const useShop = () => {
     productFilterAll,
     totalProducts,
     totalPage,
+    productSearch,
   } = useSelector((state) => state.product);
   const { updateStatusCreateCart, cartInfo, minPrice, maxPrice } = useSelector(
     (state) => state.cart
   );
   /// useParams
-  const { search } = useLocation();
+  const { search, pathname } = useLocation();
   const queryObject = queryString.parse(search);
   const { slug: slugParams } = useParams();
   /// handle Update Query String
@@ -60,11 +61,16 @@ const useShop = () => {
     return cate?.name === "all";
   });
   /// filter
+  const defaultFilters = useMemo(() => {
+    let querryParse = queryString.parse(search);
+    return querryParse;
+  }, [search]);
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [filteredItems, setFilteredItems] = useState(products);
   const [optionSortSelected, setOptionSortSelected] = useState(
     OPTION_SORT.NEWEST
   );
+  console.log("selectedFilters", selectedFilters);
   ////// Sort
   const optionSort = [
     // { value: 1, name: "all", label: "Sort By Popularity" },
@@ -77,7 +83,6 @@ const useShop = () => {
   const [pageCurrent, setPageCurrent] = useState(1);
   const onChangeFeaturedTab = (name) => {
     setOptionSortSelected(name);
-    console.log("name", name);
     if (name)
       updateQueryString({
         ...queryObject,
@@ -98,7 +103,6 @@ const useShop = () => {
   };
   const onFilterButtonClick = (selectedCategory) => {
     if (selectedCategory === findCategoryAll?._id) {
-      console.log("1111", 1111);
       setSelectedFilters([findCategoryAll?._id]);
       updateQueryString({
         ...queryObject,
@@ -109,7 +113,6 @@ const useShop = () => {
     } else {
       if (selectedFilters?.includes(selectedCategory)) {
         if (selectedFilters?.length <= 1) {
-          console.log("3333", 3333);
           setSelectedFilters([findCategoryAll?._id]);
           updateQueryString({
             ...queryObject,
@@ -118,11 +121,9 @@ const useShop = () => {
             categories: [findCategoryAll?._id]?.toString(),
           });
         } else {
-          console.log("4444", 4444);
           let filterCate = selectedFilters?.filter((el) => {
             return el !== selectedCategory;
           });
-          console.log("selectedFilters", selectedFilters);
           setSelectedFilters(filterCate);
           updateQueryString({
             ...queryObject,
@@ -136,7 +137,6 @@ const useShop = () => {
           selectedFilters?.includes(findCategoryAll?._id) &&
           selectedFilters?.length > 2
         ) {
-          console.log("5555", 5555);
           setSelectedFilters([findCategoryAll?._id]);
           updateQueryString({
             ...queryObject,
@@ -145,7 +145,6 @@ const useShop = () => {
             categories: [findCategoryAll?._id]?.toString(),
           });
         } else {
-          console.log("6666", 6666);
           let filterCate = selectedFilters?.filter((el) => {
             return el !== findCategoryAll?._id;
           });
@@ -276,21 +275,7 @@ const useShop = () => {
   //     return finalItems;
   //   }
   // };
-  const {
-    data: dataShop,
-    loading: loadingDataShop,
-    refetch: refetchDataShop,
-  } = useQuery(() => {
-    return productService.getProductSelected(
-      `?${queryString.stringify({
-        ...queryObject,
-        page: pageCurrent - 1 || 0,
-        limit: _limit,
-        categories: findCategoryAll?._id?.toString(),
-        sort: optionSortSelected || "newest",
-      })}`
-    );
-  });
+
   /// Main
   const onAddToCart = async (payload) => {
     try {
@@ -350,29 +335,33 @@ const useShop = () => {
       console.log("error", error);
     }
   };
-  useEffect(() => {
-    if (search)
-      refetchDataShop?.(
-        `?${queryString.stringify({
-          ...queryObject,
-          page: 0,
-          limit: _limit,
-          categories: findCategoryAll?._id?.toString(),
-          priceStart: newMin,
-          priceEnd: newMax,
-        })}`
-      );
-  }, [search]);
-  useEffect(() => {
-    updateQueryString({
-      ...queryObject,
-      page: 0,
-      limit: _limit,
-      categories: findCategoryAll?._id?.toString(),
-      priceStart: newMin,
-      priceEnd: newMax,
-    });
-  }, [newMax, newMin]);
+  const {
+    data: dataShop,
+    loading: loadingDataShop,
+    refetch: refetchDataShop,
+  } = useQuery(
+    (query) => {
+      if (search) {
+        return productService.getProductSelected(
+          query ||
+            `?${queryString.stringify({
+              ...queryObject,
+              page: pageCurrent - 1 || 0,
+              limit: _limit || 9,
+              sort: optionSortSelected || "newest",
+              categories:
+                selectedFilters?.toString() ||
+                defaultFilters?.categories ||
+                findCategoryAll?._id,
+              priceStart: newMin,
+              priceEnd: newMax,
+            })}`
+        );
+      }
+    },
+    [search]
+  );
+
   return {
     isFilter,
     onToggleFilter,
@@ -410,6 +399,10 @@ const useShop = () => {
     pageCurrent,
     dataShop,
     loadingDataShop,
+    productSearch,
+    updateQueryString,
+    queryObject,
+    search,
   };
 };
 

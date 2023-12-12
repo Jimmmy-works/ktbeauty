@@ -7,7 +7,7 @@ import { message } from "antd";
 import queryString from "query-string";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 const useHome = () => {
   const [imageloading, setImageLoading] = useState(true);
@@ -15,6 +15,8 @@ const useHome = () => {
     setImageLoading(false);
   };
   ////
+  const { search, pathname } = useLocation();
+  const queryObject = queryString.parse(search);
   const [searchParams, setSearchParams] = useSearchParams();
   const updateQueryString = (queryObject) => {
     const newQuerryString = queryString.stringify({
@@ -36,6 +38,7 @@ const useHome = () => {
   });
   const onChangeCategoryTab = (tab) => {
     setCategoryTab(tab);
+    updateQueryString({ limit: 9, categories: tab?._id });
   };
   /// featuredProps
   const [featuerdTab, setFeaturedTab] = useState(FEATURED_OPTIONS.FEATURED);
@@ -107,21 +110,32 @@ const useHome = () => {
   };
   const { data: dataShowcaseProduct, loading: loadingShowcaseProduct } =
     useQuery(
-      () =>
-        productService.getProductSelected(
-          `?${queryString.stringify({
-            categories: categoryTab?._id?.toString(),
-            limit: 9,
-          })}`
-        ),
-      [categoryTab]
+      (query) => {
+        if (search) {
+          return productService.getProductSelected(
+            query ||
+              `?${queryString.stringify({
+                ...queryObject,
+                limit: 9,
+                sort: "newest",
+                categories: categoryTab?._id?.toString(),
+              })}`
+          );
+        } else {
+          return productService.getProductSelected(
+            query ||
+              `?${queryString.stringify({
+                ...queryObject,
+                limit: 9,
+                sort: "newest",
+                categories: categoryTab?._id?.toString(),
+              })}`
+          );
+        }
+      },
+      [search]
     );
-  useEffect(() => {
-    updateQueryString({
-      categories: categoryTab?._id?.toString(),
-      limit: 9,
-    });
-  }, [categoryTab]);
+
   /// ShowcaseProduct
   const showcaseProductProps = {
     onChangeCategoryTab,

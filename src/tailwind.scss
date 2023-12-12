@@ -20,6 +20,9 @@
 @import "react-lazy-load-image-component/src/effects/blur.css";
 
 @layer base {
+  main {
+    @apply transition-transform duration-300;
+  }
   html {
     @apply font-mar text-base text-black-555 overflow-x-hidden;
   }

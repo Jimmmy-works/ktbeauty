@@ -1,5 +1,5 @@
 .header {
-  @apply h-header fixed w-full left-0 top-0 shadow-header z-[1000] bg-white;
+  @apply h-header fixed w-full left-0 top-0 shadow-header z-[999] bg-white;
   .sub {
     @apply p-[10px_14px_0px]  top-[120%] -left-[75%] absolute 
     bg-white shadow-header  transition-all duration-300 invisible opacity-0;
@@ -100,51 +100,41 @@
   }
 }
 .nav {
-  @apply fixed left-0 xs:top-[56px] 
-  md:top-[75px] h-screen xs:w-[50%] md:w-[35%] z-[100];
+  @apply fixed left-0 top-0  h-screen min-w-[240px]
+   max-w-[440px] w-[80%]  z-[10000];
   &__inner {
-    @apply h-full w-[100%] bg-[#343434] bg-opacity-75;
-    &-list {
-      @apply h-full w-full flex flex-col  py-[10px]
-       xs:p-[10px] md:p-[10px_30px_10px_20px];
-      .has-sub {
-        @apply md:py-[16px] xs:py-[12px];
+    @apply bg-white h-full relative overflow-hidden;
+    &-wrapper {
+      @apply absolute top-0 left-0 right-0 bottom-0;
+      &.is-open {
+        @apply duration-400  z-10;
+        transition: all 0.4s ease;
+        .nav__inner-list {
+        }
       }
-      .item {
-        @apply text-white font-om xs:text-[14px] md:text-[18px];
-        &:nth-child(2),
-        &:nth-child(5),
-        &:nth-child(6) {
-          a {
-            @apply block w-full md:py-[16px] xs:py-[12px];
-          }
+      &.is-hidden {
+        @apply duration-400 z-0;
+        transition: all 0.4s ease;
+        .nav__inner-list {
         }
+      }
+    }
+    &-title {
+      @apply text-[#000000BF] xs:text-[14px] md:text-[16px] min-h-[44px] font-om 
+      flex justify-start items-center border-b border-solid border-[rgba(0,0,0,.1)];
+    }
+    &-list {
+      @apply h-full w-full flex flex-col bg-white;
 
-        &__wrap {
-          @apply flex items-center justify-between gap-2 h-full;
-          a {
-            @apply duration-400 transition-colors;
-          }
-        }
-        &__sub {
-          @apply absolute xs:left-[calc(100%+10px)]  md:left-[calc(100%+30px)] flex top-0
-          items-center justify-center transition-all duration-400
-           min-w-max invisible opacity-0 border-y border-solid border-white;
-          &-list {
-            @apply flex flex-col xs:gap-4 md:gap-3 md:max-w-[250px] md:max-h-[400px]
-           xs:max-w-[180px] xs:max-h-[244px] overflow-y-auto;
-            li {
-              @apply flex items-center  gap-2 md:text-16px xs:text-[14px] pl-[12px]
-              first:pt-[12px] pb-[12px]  not-lastChild:border-b border-solid  border-white
-                 font-osr text-white;
-              a {
-                @apply leading-[20px];
-              }
-            }
-          }
+      .item {
+        @apply text-[#000000BF] font-om xs:text-[14px] md:text-[16px] flex items-center;
+        a {
+          @apply block w-full p-[12px_10px_12px_20px] uppercase;
+          transition: transform 0.4s;
         }
         .arrow-down {
-          @apply transition-all duration-400;
+          @apply transition-all duration-400 min-w-[50px] min-h-[38px] flex
+          justify-center items-center rotate-[-90deg];
         }
       }
     }

@@ -1133,6 +1133,15 @@ export default {
         ".rotate-y-0": {
           transform: "rotateY(0deg)",
         },
+        ".transform-3d-nav": {
+          transform: "translate3d(100%,0,0)",
+        },
+        ".transform-3d-0": {
+          transform: "translate3d(0,0,0)",
+        },
+        ".-transform-3d-30": {
+          transform: "translate3d(-30%,0,0)",
+        },
       });
       addVariant("not-lastChild", "&:not(:last-child)");
       addVariant("not-firstChild", "&:not(:first-child)");

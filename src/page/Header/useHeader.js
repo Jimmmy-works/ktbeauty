@@ -1,9 +1,13 @@
 import { useMainContext } from "@/components/MainContext";
+import { PATHS } from "@/contants/path";
+import productService from "@/service/productService";
 import { cartActions } from "@/store/reducer/cartReducer";
+import { removeAccents } from "@/utils/removeAccents";
+import { limit } from "firebase/firestore";
 import queryString from "query-string";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 const useHeader = () => {
   const _limit = 9;
   const { categories, products } = useSelector((state) => state.product);
@@ -31,31 +35,51 @@ const useHeader = () => {
     );
     dispatch(cartActions?.setCartInfo({ ...cartInfo, products: filterItem }));
   };
-  const onSearchProduct = (productName) => {
-    const result = products?.filter((product) => {
-      return product?.name.toLowerCase().includes(productName);
-    });
-    if (productName) {
-      setProductListSearch(result);
-    } else {
-      setProductListSearch([]);
+  const onSearchProduct = async (productName) => {
+    try {
+      const dataProduct = await productService.getAllProduct();
+      if (dataProduct?.status === 200) {
+        const result = dataProduct?.data?.data?.filter((product) => {
+          return removeAccents(product?.name ?? "")
+            .toLowerCase()
+            .includes(removeAccents(productName.toLowerCase()));
+        });
+        if (productName) {
+          setProductListSearch(result);
+        } else {
+          setProductListSearch([]);
+        }
+      }
+    } catch (error) {
+      console.log("error", error);
     }
   };
   const onChangeCategory = (tab) => {
     setCategoryTab(tab);
   };
-  const newMin = minPrice * 1000;
-  const newMax = maxPrice * 1000;
   useEffect(() => {
     updateQueryString({
       ...queryObject,
       limit: _limit,
       page: 0,
       categories: categoryTab,
-      priceStart: newMin,
-      priceEnd: newMax,
     });
   }, [categoryTab]);
+  // const newMin = minPrice * 1000;
+  // const newMax = maxPrice * 1000;
+  // useEffect(() => {
+  //   if (search) {
+  //     console.log("search", search);
+  //     updateQueryString({
+  //       ...queryObject,
+  //       limit: _limit,
+  //       page: 0,
+  //       categories: categoryTab,
+  //       priceStart: newMin,
+  //       priceEnd: newMax,
+  //     });
+  //   }
+  // }, [search]);
   const headerProps = {
     profile,
     isNavbar,

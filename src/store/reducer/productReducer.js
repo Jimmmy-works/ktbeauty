@@ -8,8 +8,10 @@ const initialState = {
   ////Product
   products: [],
   productDetail: null,
+  productSearch: [],
   statusGetProductDetail: THUNK_STATUS.fulfilled,
   statusGetProducts: null,
+  statusGetAllProducts: null,
   totalProducts: null,
   totalPage: null,
   /// filter
@@ -34,6 +36,9 @@ export const { reducer: productReducer, actions: productActions } = createSlice(
       setProductDetail: (state, action) => {
         state.productDetail = action.payload;
       },
+      setProductSearch: (state, action) => {
+        state.productSearch = action.payload;
+      },
     },
     extraReducers: (builder) => {
       //statusGetProductDetail
@@ -46,15 +51,15 @@ export const { reducer: productReducer, actions: productActions } = createSlice(
       builder.addCase(getProductDetail.rejected, (state) => {
         state.statusGetProductDetail = THUNK_STATUS.rejected;
       });
-      //statusGetProduct
+      //statusGetAllProducts
       builder.addCase(getAllProduct.pending, (state) => {
-        state.statusGetProduct = THUNK_STATUS.pending;
+        state.statusGetAllProducts = THUNK_STATUS.pending;
       });
       builder.addCase(getAllProduct.fulfilled, (state) => {
-        state.statusGetProduct = THUNK_STATUS.fulfilled;
+        state.statusGetAllProducts = THUNK_STATUS.fulfilled;
       });
       builder.addCase(getAllProduct.rejected, (state) => {
-        state.statusGetProduct = THUNK_STATUS.rejected;
+        state.statusGetAllProducts = THUNK_STATUS.rejected;
       });
       //statusGetProduct
       builder.addCase(getProductSelected.pending, (state) => {
