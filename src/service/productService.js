@@ -16,6 +16,9 @@ export const productService = {
       return axios.get(`${BASE_URL}/api/product/get-all-product`);
     }
   },
+  getTopRate: (param) => {
+    return axios.get(`${BASE_URL}/api/product/get-top-rate${param}`);
+  },
   getProductById: (id) => {
     return axios.get(`${BASE_URL}/api/product/get-detail-product/${id}`);
   },

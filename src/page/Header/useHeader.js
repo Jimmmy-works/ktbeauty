@@ -65,21 +65,6 @@ const useHeader = () => {
       categories: categoryTab,
     });
   }, [categoryTab]);
-  // const newMin = minPrice * 1000;
-  // const newMax = maxPrice * 1000;
-  // useEffect(() => {
-  //   if (search) {
-  //     console.log("search", search);
-  //     updateQueryString({
-  //       ...queryObject,
-  //       limit: _limit,
-  //       page: 0,
-  //       categories: categoryTab,
-  //       priceStart: newMin,
-  //       priceEnd: newMax,
-  //     });
-  //   }
-  // }, [search]);
   const headerProps = {
     profile,
     isNavbar,
@@ -94,6 +79,7 @@ const useHeader = () => {
     pathname,
     productListSearch,
     onChangeCategory,
+    categoryTab,
   };
   return { headerProps };
 };

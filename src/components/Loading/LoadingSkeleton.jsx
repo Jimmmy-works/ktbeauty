@@ -68,7 +68,11 @@ function LoadingSkeletonM(
                 key={index}
               >
                 <SkeletonWrapper>
-                  <Skeleton.Image style={isImageStyle} />
+                  <Skeleton.Image
+                    className={`${isImageStyle}`}
+                    // style={isImageStyle}
+                  />
+
                   <Skeleton
                     title={null}
                     isData={isData}

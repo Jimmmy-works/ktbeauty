@@ -1025,6 +1025,7 @@ export default {
       xxs: "300px",
       xs: "360px",
       x: "500px",
+      "min-576px": "576px",
       sm: "640px",
       md: "768px",
       lg: "1024px",

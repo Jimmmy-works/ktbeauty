@@ -1,7 +1,7 @@
 export const FEATURED_OPTIONS = {
   FEATURED: "featured",
-  BEST_SELLER: "best-seller",
-  POPULAR: "popular",
+  TOP_SOLD: "top-sold",
+  TOP_SALE: "top-discount",
 };
 export const CATEGORIES_OPTIONS = {
   ALL: "all",
@@ -89,3 +89,11 @@ export const monthNameVN = [
   "Tháng 11",
   "Tháng 12",
 ];
+export const STATUS_OPTION = {
+  VERIFIED: "verified",
+  VERIFYING: "verifying",
+  PREPARING: "preparing",
+  DELIVERY: "delivery",
+  COMPLETE: "complete",
+  CANCEL: "canceled",
+};

@@ -9,7 +9,7 @@ import { THUNK_STATUS } from "@/contants/thunkstatus";
 const initialState = {
   orderList: {},
   statusGetOrderUser: THUNK_STATUS.pending,
-  statusOrder: null,
+  statusCreateOrder: THUNK_STATUS.fulfilled,
 };
 export const { reducer: orderReducer, actions: orderActions } = createSlice({
   initialState,
@@ -17,6 +17,9 @@ export const { reducer: orderReducer, actions: orderActions } = createSlice({
   reducers: {
     setOrderList: (state, action) => {
       state.orderList = action.payload;
+    },
+    setStatusCreateOrder: (state, action) => {
+      state.statusCreateOrder = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -40,6 +43,17 @@ export const { reducer: orderReducer, actions: orderActions } = createSlice({
     builder.addCase(updataStatusOrder.rejected, (state) => {
       state.getStatusOrder = THUNK_STATUS.rejected;
     });
+    //CreateOrder status
+    builder.addCase(createOrder.pending, (state) => {
+      state.statusCreateOrder = THUNK_STATUS.pending;
+    });
+    builder.addCase(createOrder.fulfilled, (state) => {
+      console.log("state", state);
+      state.statusCreateOrder = THUNK_STATUS.fulfilled;
+    });
+    builder.addCase(createOrder.rejected, (state) => {
+      state.statusCreateOrder = THUNK_STATUS.rejected;
+    });
   },
 });
 export const createOrder = createAsyncThunk(
@@ -48,7 +62,6 @@ export const createOrder = createAsyncThunk(
     try {
       const _token = localStorage.getItem(LOCAL_STORAGE.token);
       const decode = decodeToken(localStorage.getItem(LOCAL_STORAGE.token));
-
       const response = await orderService.createOrder(payload, _token);
       if (response?.status === 200) {
         thunkAPI.dispatch(
@@ -75,6 +88,12 @@ export const createOrder = createAsyncThunk(
     } catch (error) {
       console.log("error", error);
       message.error(error?.response?.data?.message);
+      thunkAPI.dispatch(
+        orderActions.setStatusCreateOrder(THUNK_STATUS.fulfilled)
+      );
+      thunkAPI.dispatch(cartActions.setDiscountCode({}));
+      thunkAPI.dispatch(cartActions.setTotal(0));
+      thunkAPI.dispatch(cartActions.setSubTotal(0));
       throw error;
     }
   }

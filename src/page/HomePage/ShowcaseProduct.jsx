@@ -2,13 +2,14 @@ import Button from "@/components/Button";
 import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
 import ProductCard from "@/components/ProductCard";
 import Textbox from "@/components/Textbox";
-import { CATEGORIES_OPTIONS } from "@/contants/general";
 import useWindowSize from "@/utils/windowResize";
 import { Empty } from "antd";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Keyboard, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 const EmptyWrapper = styled.div`
   margin-bottom: 12px;
   min-width: 200px;
@@ -47,7 +48,6 @@ const ShowcaseProduct = ({
   onChangeCategoryTab,
   categoryTab,
   categories,
-
   imageloading,
   onImageLoading,
   onAddToCart,
@@ -97,7 +97,7 @@ const ShowcaseProduct = ({
                   },
                   576: {
                     slidesPerView: 3,
-                    spaceBetween: 30,
+                    spaceBetween: 20,
                   },
                   1024: {
                     slidesPerView: 4,
@@ -128,20 +128,27 @@ const ShowcaseProduct = ({
                         <LoadingSkeleton
                           isArray={1}
                           isLoading={loadingShowcaseProduct}
-                          isParagraph={width >= 768 ? 3 : 0}
+                          isParagraph={width >= 768 ? 3 : 2}
                         />
                       )}
                     </SwiperSlide>
                   );
                 })}
               </Swiper>
-            ) : (
+            ) : !loadingShowcaseProduct ? (
               <EmptyWrapper
                 windowx={width}
                 refhegiht={refLoading?.current?.clientHeight}
               >
                 <Empty description={false} />
               </EmptyWrapper>
+            ) : (
+              <LoadingSkeleton
+                isClassName={`lg:w-1/4 min-576px:w-1/3 xs:w-1/2`}
+                isArray={1}
+                isLoading={loadingShowcaseProduct}
+                isParagraph={width >= 768 ? 3 : 2}
+              />
             )}
             <div
               className={`prev shadow-header ${

@@ -12,7 +12,7 @@ export const orderService = {
     });
   },
   updateOrder: (payload, order_id, token) => {
-    return instanceAxios.put(`/api/order/cancel-order/${order_id}`, payload, {
+    return instanceAxios.put(`/api/order/update-order/${order_id}`, payload, {
       headers: { token: `Bearer ${token}` },
     });
   },

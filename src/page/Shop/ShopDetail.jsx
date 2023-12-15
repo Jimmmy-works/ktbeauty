@@ -17,6 +17,8 @@ import { Keyboard, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useShop from "./useShop";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 const StyleRate = styled.div`
   display: flex;
   gap: 8px;
@@ -107,7 +109,26 @@ const ShopDetail = () => {
         <BreadCrumb.Item>
           <Link to={`${PATHS.SHOP.INDEX}`}>Sản phẩm</Link>
         </BreadCrumb.Item>
-        <BreadCrumb.Item isActive>{name}</BreadCrumb.Item>
+        <BreadCrumb.Item isActive>
+          {statusGetProductDetail === THUNK_STATUS.fulfilled ? (
+            name
+          ) : (
+            <div className="ml-[4px] ">
+              <Spin
+                indicator={
+                  <LoadingOutlined
+                    style={{
+                      color: "#555",
+                      fontSize: 12,
+                    }}
+                    spin
+                  />
+                }
+                size="default"
+              />
+            </div>
+          )}
+        </BreadCrumb.Item>
       </BreadCrumb>
       <div className="container ">
         {statusGetProductDetail === THUNK_STATUS.fulfilled ? (
@@ -117,7 +138,7 @@ const ShopDetail = () => {
                 <div className="shoppage__left-wrapper flex gap-[10px] ">
                   <div className=" h-fit w-fit relative ">
                     <div
-                      className="shoppage-swiper-up cursor-pointer absolute z-10 top-[calc(100%+20px)] left-[8px]  p-[5.5px] group/hover
+                      className="shoppage-swiper-up next cursor-pointer absolute z-10 top-[calc(100%+20px)] left-[8px]  p-[5.5px] group/hover
                    bg-white rounded-[50%] hover:shadow-[0_0px_10px_0_rgba(0,0,0,0.2)] duration-300 transition-shadow"
                       ref={navigationNextRef}
                       id="shoppage-swiper-up"
@@ -132,7 +153,7 @@ const ShopDetail = () => {
                       </div>
                     </div>
                     <div
-                      className="shoppage-swiper-down cursor-pointer absolute z-10 top-[calc(100%+20px)] right-[8px]  p-[5.5px] group/hover
+                      className="shoppage-swiper-down prev cursor-pointer absolute z-10 top-[calc(100%+20px)] right-[8px]  p-[5.5px] group/hover
                    bg-white rounded-[50%] hover:shadow-[0_0px_10px_0_rgba(0,0,0,0.2)] duration-300 transition-shadow"
                       ref={navigationPrevRef}
                       id="shoppage-swiper-down"
@@ -147,16 +168,31 @@ const ShopDetail = () => {
                       </div>
                     </div>
                     <Swiper
-                      grabCursor={true}
                       modules={[Navigation, Keyboard]}
                       keyboard={{ enabled: true }}
+                      grabCursor={true}
                       className="shoppage-swiper"
                       spaceBetween={10}
+                      loop={true}
                       direction={"vertical"}
+                      // breakpoints={{
+                      //   360: {
+                      //     slidesPerView: 2,
+                      //     spaceBetween: 10,
+                      //   },
+                      //   768: {
+                      //     slidesPerView: 2,
+                      //     spaceBetween: 20,
+                      //   },
+                      //   1024: {
+                      //     spaceBetween: 10,
+                      //     slidesPerView: 3,
+                      //   },
+                      // }}
                       slidesPerView={"auto"}
                       navigation={{
-                        prevEl: `#shoppage-swiper-up`,
-                        nextEl: `#shoppage-swiper-down`,
+                        prevEl: `.shoppage .prev`,
+                        nextEl: `.shoppage .next`,
                       }}
                     >
                       {image?.length &&
@@ -203,17 +239,6 @@ const ShopDetail = () => {
                           magnifierWidth="250"
                           src={`${currentImg || image[0]}`}
                         />
-                        {/* {discount > 0 ? (
-                          <StyleDiscount
-                            className="absolute top-3 right-[-3px] w-[60px] h-[24px] 
-                            border border-red-200 text-[14px] tracking-wider  flex justify-center
-                            bg-primary items-center z-50 text-white font-om "
-                          >
-                            {`-${Math.round((discount / price) * 100)}%`}
-                          </StyleDiscount>
-                        ) : (
-                          ""
-                        )} */}
                       </a>
                     )}
                     <div className="social flex justify-center items-center gap-[10px] mt-[34px]">
@@ -472,14 +497,20 @@ const ShopDetail = () => {
             </Tabs>
           </>
         ) : (
-          <LoadingSkeleton
-            isData={image}
-            isClassName={"mt-[20px]"}
-            isArray={1}
-            isParagraph={5}
-            isImageStyle={{ height: "450px" }}
-            isLoading={statusGetProductDetail}
-          />
+          <div className="h-[650px] flex justify-center items-center">
+            <Spin
+              indicator={
+                <LoadingOutlined
+                  style={{
+                    color: "#555",
+                    fontSize: 24,
+                  }}
+                  spin
+                />
+              }
+              size="default"
+            />
+          </div>
         )}
       </div>
     </main>

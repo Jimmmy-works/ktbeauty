@@ -8,6 +8,7 @@ const useCheckout = () => {
     (state) => state.cart
   );
   const { profile } = useSelector((state) => state.auth);
+  const { statusCreateOrder } = useSelector((state) => state.order);
   const [controlSwitch, setControlSwitch] = useState(true);
   const [provinces, setProvinces] = useState([]);
   const [provinceId, setProvinceId] = useState("");
@@ -173,6 +174,7 @@ const useCheckout = () => {
     total,
     subTotal,
     form,
+    statusCreateOrder,
   };
 };
 

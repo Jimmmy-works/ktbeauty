@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import useCartPage from "./useCartPage";
-
 const StepsWrapper = styled.div`
   .ant-steps-item-icon {
     background-color: #555 !important;
@@ -107,7 +106,6 @@ const CartPage = () => {
       updateIndex
     );
   };
-
   const modifyValue = (value) => {
     if (value > max) {
       return (value = max);
@@ -117,7 +115,6 @@ const CartPage = () => {
       return value;
     }
   };
-
   const million = 1000000;
   const onChangeShippingType = useCallback(
     (value, current) => {

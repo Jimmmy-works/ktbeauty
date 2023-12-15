@@ -1,6 +1,8 @@
 import { CATEGORIES_OPTIONS, FEATURED_OPTIONS } from "@/contants/general";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import useQuery from "@/hooks/useQuery";
+import dashboardService from "@/service/dashboardService";
 import productService from "@/service/productService";
 import { cartActions } from "@/store/reducer/cartReducer";
 import { message } from "antd";
@@ -41,68 +43,73 @@ const useHome = () => {
     updateQueryString({ limit: 9, categories: tab?._id });
   };
   /// featuredProps
-  const [featuerdTab, setFeaturedTab] = useState(FEATURED_OPTIONS.FEATURED);
+  const [featuerdTab, setFeaturedTab] = useState(FEATURED_OPTIONS.TOP_SOLD);
   const onChangeFeaturedTab = (tab) => {
     setFeaturedTab(tab);
   };
   const onAddToCart = async (payload) => {
+    const _token = localStorage.getItem(LOCAL_STORAGE.token);
     try {
-      if (payload?._id && updateStatusCreateCart !== THUNK_STATUS.pending) {
-        let cartPayload = {};
-        const matchIndex = cartInfo?.products?.findIndex(
-          (productMatched) => productMatched?.product_id === payload?._id
-        );
-        let newProductPayload = cartInfo?.products?.map((product) => product);
-        if (cartInfo?._id) {
-          if (matchIndex > -1) {
-            if (newProductPayload[matchIndex]?.quantity >= 20) {
-              message.error(
-                `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
-              );
+      if (_token) {
+        if (payload?._id && updateStatusCreateCart !== THUNK_STATUS.pending) {
+          let cartPayload = {};
+          const matchIndex = cartInfo?.products?.findIndex(
+            (productMatched) => productMatched?.product_id === payload?._id
+          );
+          let newProductPayload = cartInfo?.products?.map((product) => product);
+          if (cartInfo?._id) {
+            if (matchIndex > -1) {
+              if (newProductPayload[matchIndex]?.quantity >= 20) {
+                message.error(
+                  `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+                );
+              } else {
+                newProductPayload[matchIndex] = {
+                  ...newProductPayload[matchIndex],
+                  quantity: newProductPayload[matchIndex]?.quantity + 1,
+                };
+                message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+              }
             } else {
-              newProductPayload[matchIndex] = {
-                ...newProductPayload[matchIndex],
-                quantity: newProductPayload[matchIndex]?.quantity + 1,
-              };
-              message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+              newProductPayload.push({
+                ...payload,
+                quantity: 1,
+                product_id: payload?._id,
+              });
             }
+            cartPayload = {
+              ...cartInfo,
+              products: newProductPayload,
+            };
           } else {
-            newProductPayload.push({
-              ...payload,
-              quantity: 1,
-              product_id: payload?._id,
-            });
-          }
-          cartPayload = {
-            ...cartInfo,
-            products: newProductPayload,
-          };
-        } else {
-          if (matchIndex > -1) {
-            if (newProductPayload[matchIndex]?.quantity >= 20) {
-              message.error(
-                `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
-              );
+            if (matchIndex > -1) {
+              if (newProductPayload[matchIndex]?.quantity >= 20) {
+                message.error(
+                  `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+                );
+              } else {
+                newProductPayload[matchIndex] = {
+                  ...newProductPayload[matchIndex],
+                  quantity: newProductPayload[matchIndex]?.quantity + 1,
+                };
+                message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+              }
             } else {
-              newProductPayload[matchIndex] = {
-                ...newProductPayload[matchIndex],
-                quantity: newProductPayload[matchIndex]?.quantity + 1,
-              };
-              message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+              newProductPayload.push({
+                ...payload,
+                quantity: 1,
+                product_id: payload?._id,
+              });
             }
-          } else {
-            newProductPayload.push({
-              ...payload,
-              quantity: 1,
-              product_id: payload?._id,
-            });
+            cartPayload = {
+              ...cartInfo,
+              products: newProductPayload,
+            };
           }
-          cartPayload = {
-            ...cartInfo,
-            products: newProductPayload,
-          };
+          dispatch(cartActions.setCartInfo(cartPayload));
         }
-        dispatch(cartActions.setCartInfo(cartPayload));
+      } else {
+        message.error(`Xin vui lòng đăng nhập để thêm sản phẩm`);
       }
     } catch (error) {
       console.log("error", error);
@@ -121,21 +128,18 @@ const useHome = () => {
                 categories: categoryTab?._id?.toString(),
               })}`
           );
-        } else {
-          return productService.getProductSelected(
-            query ||
-              `?${queryString.stringify({
-                ...queryObject,
-                limit: 9,
-                sort: "newest",
-                categories: categoryTab?._id?.toString(),
-              })}`
-          );
         }
       },
       [search]
     );
-
+  const { data: dataFeatured, loading: loadingFeatured } = useQuery(() => {
+    return productService.getTopRate(
+      `?${queryString.stringify({
+        limit: 9,
+        type: featuerdTab,
+      })}`
+    );
+  }, [featuerdTab]);
   /// ShowcaseProduct
   const showcaseProductProps = {
     onChangeCategoryTab,
@@ -156,6 +160,8 @@ const useHome = () => {
     imageloading,
     onImageLoading,
     onAddToCart,
+    dataFeatured,
+    loadingFeatured,
   };
   return { featuredProps, showcaseProductProps };
 };

@@ -135,7 +135,6 @@ const DashboardOrder = () => {
   const handleCloseDrawer = () => {
     setOpenDrawer(false);
   };
-
   const [statusButton, setStatusButton] = useState();
   const [titleButton, setTitleButton] = useState();
   const handleButtonMessage = (status, title) => {
@@ -166,6 +165,7 @@ const DashboardOrder = () => {
     setCurrentTable(newCurrentTable);
     /// handle selected
   };
+
   const data = orders?.map((order, index) => {
     return {
       key: `${order?._id}`,
@@ -205,15 +205,39 @@ const DashboardOrder = () => {
       status: (
         <p
           className={`
-          ${order?.status === "Đã hủy đơn" ? "text-red-500" : ""} 
-          ${order?.status === "Đang xác minh" ? "text-yellow-400" : ""} 
-          ${order?.status === "Đã xác minh" ? "text-blue-500" : ""} 
-          ${order?.status === "Đang chuẩn bị hàng" ? "text-violet-500" : ""} 
-          ${order?.status === "Đang giao hàng" ? "text-amber-600" : ""} 
-          ${order?.status === "Hoàn thành đơn hàng" ? "text-green-600" : ""} 
+          ${
+            order?.status?.[order?.status?.length - 1]?.type === "canceled"
+              ? "text-red-500"
+              : ""
+          } 
+          ${
+            order?.status?.[order?.status?.length - 1]?.type === "verifying"
+              ? "text-yellow-400"
+              : ""
+          } 
+          ${
+            order?.status?.[order?.status?.length - 1]?.type === "verified"
+              ? "text-blue-500"
+              : ""
+          } 
+          ${
+            order?.status?.[order?.status?.length - 1]?.type === "preparing"
+              ? "text-violet-500"
+              : ""
+          } 
+          ${
+            order?.status?.[order?.status?.length - 1]?.type === "delivery"
+              ? "text-amber-600"
+              : ""
+          } 
+          ${
+            order?.status?.[order?.status?.length - 1]?.type === "complete"
+              ? "text-green-600"
+              : ""
+          } 
           `}
         >
-          {order?.status}
+          {order?.status?.[order?.status?.length - 1]?.label}
         </p>
       ),
       action: (
@@ -255,9 +279,14 @@ const DashboardOrder = () => {
               okText="Yes"
               cancelText="No"
             >
-              {order?.status === "Đang xác minh" ? (
+              {console.log(
+                "first",
+                order?.status?.find((item) => item?.type === "verifying")
+              )}
+              {order?.status?.[order?.status?.length - 1]?.type ===
+              "verifying" ? (
                 <button
-                  onClick={() => handleButtonMessage("Đã xác minh", `đơn hàng`)}
+                  onClick={() => handleButtonMessage("verified", "đơn hàng")}
                   className="border-solid border-blue-500 text-blue-500  border 
                   xs:p-[6px_12px] xs:text-sm md:p-[4px_8px] md:text-xs lg:p-[6px_12px] lg:text-sm 
                   duration-400 transition-colors hover:bg-blue-500 hover:text-white"
@@ -267,11 +296,11 @@ const DashboardOrder = () => {
               ) : (
                 ""
               )}
-
-              {order?.status === "Đã xác minh" ? (
+              {order?.status?.[order?.status?.length - 1]?.type ===
+              "verified" ? (
                 <button
                   onClick={() =>
-                    handleButtonMessage("Đang chuẩn bị hàng", `chuẩn bị hàng`)
+                    handleButtonMessage("preparing", `chuẩn bị hàng`)
                   }
                   className="border-solid border-violet-500 text-violet-500 border 
                 hover:bg-violet-500 hover:text-white  duration-400 transition-colors
@@ -282,11 +311,10 @@ const DashboardOrder = () => {
               ) : (
                 ""
               )}
-              {order?.status === "Đang chuẩn bị hàng" ? (
+              {order?.status?.[order?.status?.length - 1]?.type ===
+              "preparing" ? (
                 <button
-                  onClick={() =>
-                    handleButtonMessage("Đang giao hàng", `giao hàng`)
-                  }
+                  onClick={() => handleButtonMessage("delivery", `giao hàng`)}
                   className="border-solid border-amber-600 text-amber-600 border 
                 hover:bg-amber-600 hover:text-white duration-400 transition-colors
                  xs:p-[6px_12px] xs:text-sm md:p-[4px_8px] md:text-xs lg:p-[6px_12px] lg:text-sm"
@@ -296,11 +324,10 @@ const DashboardOrder = () => {
               ) : (
                 ""
               )}
-              {order?.status === "Đang giao hàng" ? (
+              {order?.status?.[order?.status?.length - 1]?.type ===
+              "delivery" ? (
                 <button
-                  onClick={() =>
-                    handleButtonMessage("Hoàn thành đơn hàng", `hoàn thành`)
-                  }
+                  onClick={() => handleButtonMessage("complete", `hoàn thành`)}
                   className="border-solid border-green-600 text-green-600 border
                   xs:p-[6px_12px] xs:text-sm md:p-[4px_8px] md:text-xs lg:p-[6px_12px] lg:text-sm
                 hover:bg-green-600 hover:text-white duration-400 transition-colors"
@@ -377,7 +404,6 @@ const DashboardOrder = () => {
                       );
                     })}
                 </div>
-
                 <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
                   <div className="flex items-center justify-between ">
                     <h4 className="font-osb text-sm text-black-333">

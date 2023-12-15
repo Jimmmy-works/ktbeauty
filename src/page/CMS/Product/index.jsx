@@ -20,7 +20,7 @@ const StyleImage = styled.div`
 const DashBoardProduct = () => {
   const dispatch = useDispatch();
   const { modalProps, productProps } = useDashboard();
-  const { onDeleteProduct, statusGetProduct, totalProducts } =
+  const { onDeleteProduct, statusGetAllProducts, totalProducts } =
     productProps || {};
   const {
     onShowModal,
@@ -206,13 +206,6 @@ const DashBoardProduct = () => {
       ellipsis: true,
     },
   ];
-  const onLoadingImage = () => {
-    return (
-      <div className="w-screen h-screen top-0 left-0 fixed flex justify-center items-center">
-        <Spin size="default" />
-      </div>
-    );
-  };
   const data = products?.map((product, index) => {
     return {
       key: `${product?._id}`,
@@ -347,7 +340,7 @@ const DashBoardProduct = () => {
       dispatch(getAllProduct(payloadPagination));
     }
   };
-  if (statusGetProduct !== THUNK_STATUS.fulfilled) {
+  if (statusGetAllProducts !== THUNK_STATUS.fulfilled) {
     return (
       <div className="w-screen h-screen top-0 left-0 fixed flex justify-center items-center">
         <Spin size="default" />
@@ -432,7 +425,7 @@ const DashBoardProduct = () => {
         </div>
       </div>
 
-      {statusGetProduct === THUNK_STATUS.fulfilled ? (
+      {statusGetAllProducts === THUNK_STATUS.fulfilled ? (
         <Table
           style={{ verticalAlign: "middle" }}
           key={`cms/product`}

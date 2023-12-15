@@ -31,9 +31,8 @@ const useDashboard = () => {
   const { profile } = useSelector((state) => state.auth);
   const { users, orders, detailOrder, soldProducts, revenue, inventory } =
     useSelector((state) => state.dashboard);
-  const { categories, products, statusGetProduct, totalProducts } = useSelector(
-    (state) => state.product
-  );
+  const { categories, products, statusGetAllProducts, totalProducts } =
+    useSelector((state) => state.product);
   ///// Modal
   const [openModalAndt, setOpenModalAndt] = useState("");
   const [productList, setProductList] = useState([]);
@@ -135,7 +134,7 @@ const useDashboard = () => {
   const onCreateProduct = async (payload) => {
     try {
       const response = await dispatch(createProduct(payload));
-      dispatch(getAllProduct(_token));
+      dispatch(getAllProduct());
       return response;
     } catch (error) {
       message.error(error?.response?.data?.message);
@@ -162,7 +161,6 @@ const useDashboard = () => {
     { value: 6, name: "complete", label: "Hoàn thành đơn hàng" },
     { value: 7, name: "cancel", label: "Đã hủy đơn" },
   ];
-
   const onDeleteOrder = async (id) => {
     try {
       const response = await dashboardService.deleteOrder(id, _token);
@@ -228,18 +226,6 @@ const useDashboard = () => {
     }
   };
   /////// Analyst
-  // const onGetSoldProducts = async (payload) => {
-  //   try {
-  //     const test = {
-  //       startDate: "2023-01-01T11:44:54.271Z",
-  //       endDate: "2023-06-01T11:44:54.271Z",
-  //     };
-  //     const response = await dispatch(getSoldProducts(test));
-  //     console.log("response", response);
-  //   } catch (error) {
-  //     console.log("error", error);
-  //   }
-  // };
   const onGetSoldProducts = (payload) => {
     return dispatch(getSoldProducts(payload)).unwrap();
   };
@@ -275,7 +261,7 @@ const useDashboard = () => {
     onDeleteProduct,
     onDeleteImageFirebase,
     onUpdateProduct,
-    statusGetProduct,
+    statusGetAllProducts,
     ///
     loadingUpdateProduct,
     executeUpdateProduct,
@@ -289,7 +275,7 @@ const useDashboard = () => {
     loadingCreateProduct,
     executeCreateProduct,
     ///
-    statusGetProduct,
+    statusGetAllProducts,
     totalProducts,
   };
   const analystProps = {

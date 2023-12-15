@@ -3,6 +3,8 @@ import ProductCard from "@/components/ProductCard";
 import { FEATURED_OPTIONS } from "@/contants/general";
 import { Keyboard, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 const Featured = ({
   onChangeFeaturedTab,
   featuerdTab,
@@ -11,6 +13,8 @@ const Featured = ({
   imageloading,
   onImageLoading,
   onAddToCart,
+  dataFeatured,
+  loadingFeatured,
 }) => {
   return (
     <section className="scfeatured mt-section  bg-[#333] lg:py-[80px] md:py-[60px] xs:py-[50px]">
@@ -26,17 +30,17 @@ const Featured = ({
           </div>
           <div
             className={`scfeatured__tabs-item ${
-              featuerdTab === FEATURED_OPTIONS.BEST_SELLER ? "active" : ""
+              featuerdTab === FEATURED_OPTIONS.TOP_SOLD ? "active" : ""
             }`}
-            onClick={() => onChangeFeaturedTab(FEATURED_OPTIONS.BEST_SELLER)}
+            onClick={() => onChangeFeaturedTab(FEATURED_OPTIONS.TOP_SOLD)}
           >
             Bán chạy nhất
           </div>
           <div
             className={`scfeatured__tabs-item ${
-              featuerdTab === FEATURED_OPTIONS.POPULAR ? "active" : ""
+              featuerdTab === FEATURED_OPTIONS.TOP_SALE ? "active" : ""
             }`}
-            onClick={() => onChangeFeaturedTab(FEATURED_OPTIONS.POPULAR)}
+            onClick={() => onChangeFeaturedTab(FEATURED_OPTIONS.TOP_SALE)}
           >
             Ưu đãi
           </div>
@@ -75,7 +79,7 @@ const Featured = ({
                 </svg>
               </div>
             </div>
-            {products?.length > 0 ? (
+            {dataFeatured?.data?.data?.length > 0 ? (
               <Swiper
                 modules={[Navigation, Keyboard]}
                 keyboard={{
@@ -104,17 +108,37 @@ const Featured = ({
                 pagination={false}
                 loop={true}
               >
-                {products.map((item, index) => {
+                {dataFeatured?.data?.data.map((item, index) => {
                   return (
                     <SwiperSlide key={`${item?._id}`}>
-                      <ProductCard
-                        onAddToCart={onAddToCart}
-                        onLoadingImage={onImageLoading}
-                        imageloading={imageloading}
-                        isProductDetail
-                        className={`item`}
-                        item={item}
-                      />
+                      {!loadingFeatured ? (
+                        <ProductCard
+                          onAddToCart={onAddToCart}
+                          onLoadingImage={onImageLoading}
+                          imageloading={imageloading}
+                          isProductDetail
+                          className={`item`}
+                          item={item}
+                        />
+                      ) : (
+                        <div
+                          className="md:min-h-[466px]  xs:p-[20px_14px_14px] md:p-[30px_30px_20px] lg:p-[40px_40px_26px]
+                         h-full bg-black-333 flex justify-center items-center"
+                        >
+                          <Spin
+                            indicator={
+                              <LoadingOutlined
+                                style={{
+                                  color: "#fff",
+                                  fontSize: 24,
+                                }}
+                                spin
+                              />
+                            }
+                            size="default"
+                          />
+                        </div>
+                      )}
                     </SwiperSlide>
                   );
                 })}
@@ -148,16 +172,28 @@ const Featured = ({
                 pagination={false}
                 loop={true}
               >
+                {}
                 {Array(9)
                   ?.fill("")
                   ?.map((item, index) => (
                     <SwiperSlide key={`${item}${index}`}>
-                      <LoadingSkeleton
-                        isClassName={`item`}
-                        isArray={1}
-                        isLoading={statusGetProduct}
-                        isParagraph={4}
-                      />
+                      <div
+                        className="md:min-h-[466px]  xs:p-[20px_14px_14px] md:p-[30px_30px_20px] lg:p-[40px_40px_26px]
+                         h-full bg-black-333 flex justify-center items-center"
+                      >
+                        <Spin
+                          indicator={
+                            <LoadingOutlined
+                              style={{
+                                color: "#fff",
+                                fontSize: 24,
+                              }}
+                              spin
+                            />
+                          }
+                          size="default"
+                        />
+                      </div>
                     </SwiperSlide>
                   ))}
               </Swiper>

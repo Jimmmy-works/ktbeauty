@@ -37,6 +37,7 @@ const Header = () => {
     pathname,
     productListSearch,
     onChangeCategory,
+    categoryTab,
   } = headerProps || {};
   const refHeader = useRef(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -291,19 +292,21 @@ const Header = () => {
           </div>
 
           <div className="header__info-whitelist group/hover mb-[2px] relative">
-            <span
-              className="text-[13px] text-white font-om rounded-[50%] bg-primary h-[20px] w-[20px]
-            flex items-center justify-center absolute right-[3px] top-[42%] -translate-y-1/2"
-            >
-              {cartInfo?.products?.length || 0}
-            </span>
-            <svg className="w-[18px] h-[18px] " viewBox="0 0 24 24">
-              <path
-                className="group-hover/hover:fill-primary duration-300 transition-colors"
-                fill="#555 "
-                d="M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z"
-              />
-            </svg>
+            <div className="relative">
+              <span
+                className="text-xs text-white font-om rounded-[50%] bg-primary h-[18px] w-[18px]
+                   flex items-center justify-center absolute right-[-8px] top-[-8px] "
+              >
+                {cartInfo?.products?.length || 0}
+              </span>
+              <svg className="w-[18px] h-[18px] " viewBox="0 0 24 24">
+                <path
+                  className="group-hover/hover:fill-primary duration-300 transition-colors"
+                  fill="#555 "
+                  d="M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z"
+                />
+              </svg>
+            </div>
             <ul
               className="absolute top-[150%] md:-right-[30%] lg:-right-[100%]
                invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100
@@ -388,19 +391,21 @@ const Header = () => {
             </ul>
           </div>
           <div className="header__info-cart group/hover mb-[2px] relative">
-            <span
-              className="text-[13px] text-white font-om rounded-[50%] bg-primary h-[20px] w-[20px]
-                 flex items-center justify-center absolute right-[3px] top-[42%] -translate-y-1/2"
-            >
-              {cartInfo?.products?.length || 0}
-            </span>
-            <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24">
-              <path
-                className="group-hover/hover:fill-primary duration-300 transition-colors"
-                fill="#555"
-                d="M6 23.73l-3-2.122v-14.2l3 1.359v14.963zm2-14.855v15.125l13-1.954v-15.046l-13 1.875zm5.963-7.875c-2.097 0-3.958 2.005-3.962 4.266l-.001 1.683c0 .305.273.54.575.494.244-.037.425-.247.425-.494v-1.681c.003-1.71 1.416-3.268 2.963-3.268.537 0 1.016.195 1.384.564.422.423.654 1.035.653 1.727v1.747c0 .305.273.54.575.494.243-.037.423-.246.423-.492l.002-1.749c.002-1.904-1.32-3.291-3.037-3.291zm-6.39 5.995c.245-.037.427-.247.427-.495v-2.232c.002-1.71 1.416-3.268 2.963-3.268l.162.015c.366-.283.765-.513 1.188-.683-.405-.207-.858-.332-1.35-.332-2.096 0-3.958 2.005-3.962 4.266v2.235c0 .306.272.538.572.494z"
-              />
-            </svg>
+            <div className="relative">
+              <span
+                className="text-xs text-white font-om rounded-[50%] bg-primary h-[18px] w-[18px]
+                 flex items-center justify-center absolute right-[-8px] top-[-8px] "
+              >
+                {cartInfo?.products?.length || 0}
+              </span>
+              <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24">
+                <path
+                  className="group-hover/hover:fill-primary duration-300 transition-colors"
+                  fill="#555"
+                  d="M6 23.73l-3-2.122v-14.2l3 1.359v14.963zm2-14.855v15.125l13-1.954v-15.046l-13 1.875zm5.963-7.875c-2.097 0-3.958 2.005-3.962 4.266l-.001 1.683c0 .305.273.54.575.494.244-.037.425-.247.425-.494v-1.681c.003-1.71 1.416-3.268 2.963-3.268.537 0 1.016.195 1.384.564.422.423.654 1.035.653 1.727v1.747c0 .305.273.54.575.494.243-.037.423-.246.423-.492l.002-1.749c.002-1.904-1.32-3.291-3.037-3.291zm-6.39 5.995c.245-.037.427-.247.427-.495v-2.232c.002-1.71 1.416-3.268 2.963-3.268l.162.015c.366-.283.765-.513 1.188-.683-.405-.207-.858-.332-1.35-.332-2.096 0-3.958 2.005-3.962 4.266v2.235c0 .306.272.538.572.494z"
+                />
+              </svg>
+            </div>
             <ul
               className="absolute top-[150%] md:-right-[30%] lg:-right-[100%]
                invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100

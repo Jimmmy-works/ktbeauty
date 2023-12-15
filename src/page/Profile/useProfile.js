@@ -106,7 +106,6 @@ const useProfile = () => {
   }, [profile?.province?._id]);
   //////// ORder
   const onCancelOrder = (payload) => {
-    console.log("payload", payload);
     dispatch(updataStatusOrder(payload));
   };
   return {

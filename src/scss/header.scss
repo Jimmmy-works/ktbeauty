@@ -61,7 +61,7 @@
     &-whitelist,
     &-address,
     &-cart {
-      @apply cursor-pointer relative xs:px-[8px] md:px-[15px] h-full
+      @apply cursor-pointer relative md:px-[10px] xl:px-[12px] h-full
       flex items-center;
       .sub__item {
         @apply not-lastChild:border-b not-lastChild:border-[#e3e3e3]

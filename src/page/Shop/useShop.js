@@ -1,5 +1,6 @@
 import { useMainContext } from "@/components/MainContext";
 import { CATEGORIES_OPTIONS, OPTION_SORT } from "@/contants/general";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import useQuery from "@/hooks/useQuery";
 import productService from "@/service/productService";
@@ -278,58 +279,82 @@ const useShop = () => {
 
   /// Main
   const onAddToCart = async (payload) => {
+    const _token = localStorage.getItem(LOCAL_STORAGE.token);
     try {
-      if (payload?._id && updateStatusCreateCart !== THUNK_STATUS.pending) {
-        let cartPayload = {};
-        const matchIndex = cartInfo?.products?.findIndex(
-          (productMatched) => productMatched?.product_id === payload?._id
-        );
-        let newProductPayload = cartInfo?.products?.map((product) => product);
-        if (matchIndex > -1) {
-          if (
-            newProductPayload[matchIndex]?.quantity >= 20 ||
-            payload?.quantity > 20 - newProductPayload[matchIndex]?.quantity
-          ) {
-            message.error(
-              `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
-            );
-          } else {
-            newProductPayload[matchIndex] = {
-              ...newProductPayload[matchIndex],
-              quantity:
+      if (_token) {
+        if (payload?._id && updateStatusCreateCart !== THUNK_STATUS.pending) {
+          let cartPayload = {};
+          const matchIndex = cartInfo?.products?.findIndex(
+            (productMatched) => productMatched?.product_id === payload?._id
+          );
+          let newProductPayload = cartInfo?.products?.map((product) => product);
+          if (matchIndex > -1) {
+            if (
+              newProductPayload[matchIndex]?.quantity >= 20 ||
+              payload?.quantity > 20 - newProductPayload[matchIndex]?.quantity
+            ) {
+              message.error(
+                `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+              );
+            } else {
+              if (
                 newProductPayload[matchIndex]?.quantity +
-                (payload?.quantity ? payload?.quantity : 1),
-            };
-            message.success(
-              `+${payload?.quantity ? payload?.quantity : 1} ${
-                newProductPayload[matchIndex]?.name
-              }`
-            );
-          }
-        } else {
-          if (payload?.quantity < 20) {
-            newProductPayload.push({
-              ...payload,
-              quantity: payload?.quantity,
-              product_id: payload?._id,
-            });
-          } else if (!payload?.quantity) {
-            newProductPayload.push({
-              ...payload,
-              quantity: 1,
-              product_id: payload?._id,
-            });
+                  (payload?.quantity ? payload?.quantity : 1) >=
+                newProductPayload[matchIndex]?.countInStock
+              ) {
+                message.error(
+                  `Sản phẩm ${payload?.name}, chỉ còn ${payload?.countInStock}`
+                );
+              } else {
+                newProductPayload[matchIndex] = {
+                  ...newProductPayload[matchIndex],
+                  quantity:
+                    newProductPayload[matchIndex]?.quantity +
+                    (payload?.quantity ? payload?.quantity : 1),
+                };
+                message.success(
+                  `+${payload?.quantity ? payload?.quantity : 1} ${
+                    newProductPayload[matchIndex]?.name
+                  }`
+                );
+              }
+            }
           } else {
-            message.error(
-              `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
-            );
+            if (payload.quantity > payload?.countInStock) {
+              message.error(
+                `Sản phẩm ${payload?.name}, chỉ còn ${payload?.countInStock}`
+              );
+            } else {
+              if (payload?.quantity <= 20) {
+                newProductPayload.push({
+                  ...payload,
+                  quantity:
+                    payload?.quantity >= payload?.countInStock
+                      ? payload?.countInStock
+                      : payload.quantity,
+                  product_id: payload?._id,
+                });
+              } else if (!payload?.quantity) {
+                newProductPayload.push({
+                  ...payload,
+                  quantity: 1,
+                  product_id: payload?._id,
+                });
+              } else {
+                message.error(
+                  `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+                );
+              }
+            }
           }
+          cartPayload = {
+            ...cartInfo,
+            products: newProductPayload,
+          };
+          dispatch(cartActions.setCartInfo(cartPayload));
         }
-        cartPayload = {
-          ...cartInfo,
-          products: newProductPayload,
-        };
-        dispatch(cartActions.setCartInfo(cartPayload));
+      } else {
+        message.error(`Xin vui lòng đăng nhập để thêm sản phẩm`);
       }
     } catch (error) {
       console.log("error", error);

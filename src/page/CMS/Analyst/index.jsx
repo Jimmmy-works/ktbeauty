@@ -853,7 +853,6 @@ const DashboardAnalyst = () => {
               className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-lg
                       pb-[12px] border-solid border-b border-black-ebe flex justify-between  items-center gap-[10px]"
             >
-              {console.log("inventoryObj", inventoryObj)}
               <p>{inventoryObj?.totalCountInStock}</p>
               <button
                 onClick={() =>

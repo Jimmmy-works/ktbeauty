@@ -5,14 +5,16 @@ import { createOrder } from "@/store/reducer/orderReducer";
 import { formatPriceVND } from "@/utils/formatPrice";
 import { removeAccents } from "@/utils/removeAccents";
 import useWindowSize from "@/utils/windowResize";
-import { Checkbox, Empty, Select, Switch, Tooltip } from "antd";
+import { Checkbox, Empty, Select, Switch, Tooltip, message } from "antd";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import useCheckout from "./useCheckout";
-
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
 const SelectWrapper = styled.div`
   .select-antd-wrapper {
     background-color: #f9f9f9;
@@ -97,6 +99,7 @@ const Checkout = () => {
     onChangeWard,
     cartInfo,
     form,
+    statusCreateOrder,
   } = useCheckout();
   const {
     register,
@@ -117,7 +120,7 @@ const Checkout = () => {
     onToggleSwitch();
   };
   const million = 1000000;
-  const handleOrder = (data) => {
+  const handleOrder = async (data) => {
     const payload = {
       user_id: profile?._id,
       products: [...cartInfo?.products],
@@ -133,15 +136,21 @@ const Checkout = () => {
         price: Number(JSON.parse(discountCode)?.price),
       },
       shipping: {
-        type: JSON.parse(shipping)?.value,
-        label: JSON.parse(shipping)?.label,
-        price: Number(JSON.parse(shipping)?.price),
+        type: JSON.parse(shipping)?.value || "",
+        label: JSON.parse(shipping)?.label || "",
+        price: Number(JSON.parse(shipping)?.price) || 0,
       },
       payment_method: "cod",
       subTotal: subTotal,
       total: total,
     };
-    dispatch(createOrder(payload));
+    if (JSON.parse(shipping)?.value === "default") {
+      message.error(`Xin vui lòng chọn phương thức vận chuyển`);
+    } else if (payload?.products?.length < 1) {
+      message.error(`Bạn chưa có sản phẩm trong giỏ hàng`);
+    } else {
+      dispatch(createOrder(payload));
+    }
   };
   return (
     <main className="checkout main-wrapper relative">
@@ -538,10 +547,10 @@ const Checkout = () => {
                   <h4 className="font-osb text-sm text-black-333">
                     Vận chuyển
                   </h4>
-                  {JSON.parse(shipping)?.label ? (
-                    <p className="capitalize font-osb text-sm text-primary">
+                  {JSON.parse(shipping)?.value !== "default" ? (
+                    <a className="capitalize font-osb text-sm text-primary">
                       {JSON.parse(shipping)?.label}
-                    </p>
+                    </a>
                   ) : (
                     <Link
                       to={PATHS.CART}
@@ -602,13 +611,37 @@ const Checkout = () => {
                   {formatPriceVND(total)}
                 </p>
               </div>
-              <div className="mt-[10px]">
+              <div className="mt-[10px] relative">
                 <Button
+                  disabled={
+                    statusCreateOrder !== THUNK_STATUS.fulfilled ? true : false
+                  }
                   // link={PATHS.COMPLETE}
                   onClick={handleSubmit(handleOrder)}
-                  className={`block text-center rounded-none w-full md:p-[14px]`}
+                  className={`block text-center rounded-none w-full md:p-[14px] ${
+                    statusCreateOrder !== THUNK_STATUS.fulfilled
+                      ? "border-black-be "
+                      : ""
+                  }`}
                 >
-                  Đặt hàng
+                  {statusCreateOrder !== THUNK_STATUS.fulfilled ? (
+                    <div className={`flex items-center justify-center `}>
+                      <Spin
+                        indicator={
+                          <LoadingOutlined
+                            style={{
+                              color: "#555",
+                              fontSize: 16,
+                            }}
+                            spin
+                          />
+                        }
+                        size="default"
+                      />
+                    </div>
+                  ) : (
+                    "Đặt hàng"
+                  )}
                 </Button>
               </div>
             </div>
