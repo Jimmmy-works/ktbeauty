@@ -10,6 +10,7 @@ const initialState = {
   updateStatusRegister: THUNK_STATUS.fulfilled,
   updateStatusLogin: THUNK_STATUS.fulfilled,
   updateStatusUser: null,
+  updateStatusProfile: THUNK_STATUS.fulfilled,
   loginError: null,
   checkLogin: false,
 };
@@ -69,6 +70,16 @@ export const { reducer: authReducer, actions: authActions } = createSlice({
     });
     builder.addCase(getProfileSlug.rejected, (state) => {
       state.updateStatusUser = THUNK_STATUS.rejected;
+    });
+    // updateUser
+    builder.addCase(updateProfile.pending, (state) => {
+      state.updateStatusProfile = THUNK_STATUS.pending;
+    });
+    builder.addCase(updateProfile.fulfilled, (state) => {
+      state.updateStatusProfile = THUNK_STATUS.fulfilled;
+    });
+    builder.addCase(updateProfile.rejected, (state) => {
+      state.updateStatusProfile = THUNK_STATUS.rejected;
     });
   },
 });

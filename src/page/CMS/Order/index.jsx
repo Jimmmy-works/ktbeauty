@@ -263,8 +263,8 @@ const DashboardOrder = () => {
               onConfirm={() =>
                 handleConfirmOrder({
                   status: statusButton,
+                  user_id: order?.user?.user_id,
                   _id: order?._id,
-                  user_id: profile?._id,
                 })
               }
               okType={"default"}

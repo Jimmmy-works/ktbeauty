@@ -142,9 +142,6 @@ const useCheckout = () => {
       province: profile?.province?._id,
       district: profile?.district?._id,
       ward: profile?.ward?._id,
-      province: profile?.province?._id,
-      district: profile?.district?._id,
-      ward: profile?.ward?._id,
     });
   }, [profile]);
   useEffect(() => {

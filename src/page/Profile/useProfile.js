@@ -11,7 +11,7 @@ const useProfile = () => {
   const [districtId, setDistrictId] = useState("");
   const [wards, setWards] = useState([]);
   const [wardId, setWardId] = useState("");
-  const { profile } = useSelector((state) => state.auth);
+  const { profile, updateStatusProfile } = useSelector((state) => state.auth);
   const { orderList } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   //// Handle Province
@@ -83,25 +83,24 @@ const useProfile = () => {
   ////////
   const onUpdateProfile = async (payload) => {
     try {
-      const response = await dispatch(updateProfile(payload));
+      await dispatch(updateProfile(payload));
     } catch (error) {
       console.log("error", error);
     }
   };
   const onChangePassword = async (payload) => {
     try {
-      const response = await dispatch(changePassword(payload));
+      await dispatch(changePassword(payload));
     } catch (error) {
       console.log("error", error);
     }
   };
   useEffect(() => {
     getProvinces();
-    if (provinceId || profile?.province?._id) {
-      getDistricts(profile?.province?._id);
-    }
-    if (districtId || profile?.district?._id) {
-      getWards(profile?.district?._id);
+    if (profile?.province?._id) {
+      onChangeProvince(profile?.province?._id);
+      onChangeDistrict(profile?.district?._id);
+      onChangeWard(profile?.ward?._id);
     }
   }, [profile?.province?._id]);
   //////// ORder
@@ -126,6 +125,7 @@ const useProfile = () => {
     getWards,
     orderList,
     onCancelOrder,
+    updateStatusProfile,
   };
 };
 

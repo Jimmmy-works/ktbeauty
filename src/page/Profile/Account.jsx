@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import styled from "styled-components";
 import useProfile from "./useProfile";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
 const SelectWrapper = styled.div`
   .select-antd-wrapper {
     background-color: #f9f9f9;
@@ -66,6 +67,7 @@ const Account = () => {
     onUpdateProfile,
     onChangeWard,
     onChangePassword,
+    updateStatusProfile,
   } = useProfile();
   const {
     register,
@@ -96,6 +98,7 @@ const Account = () => {
       ward: profile?.ward?._id,
     },
   });
+
   const handleUpdateProfile = (data) => {
     const payload = {
       value: {
@@ -109,26 +112,23 @@ const Account = () => {
       },
       id: profile?._id,
     };
+    if (updateStatusProfile === THUNK_STATUS.fulfilled) {
+      onUpdateProfile(payload);
+    }
     // if (
     //   getValues("password") !== "" &&
     //   getValues("newPassword") !== "" &&
     //   getValues("confirmPassword") !== ""
     // ) {
     // }
-    onUpdateProfile(payload);
   };
   const handleUpdatePassword = (data) => {
     const payload = {
-      userId: getValues("password"),
+      userId: profile?._id,
       newPassword: getValues("newPassword"),
       confirmNewPassword: getValues("confirmPassword"),
     };
-    console.log("payload", payload);
-    // onChangePassword({
-    //   userId: getValues("password"),
-    //   newPassword: getValues("newPassword"),
-    //   confirmNewPassword: getValues("confirmPassword"),
-    // });
+    onChangePassword(payload);
   };
 
   useEffect(() => {
@@ -247,7 +247,7 @@ const Account = () => {
                       style={{ width: "100%" }}
                       placeholder="Tỉnh/Thành"
                       options={provinces}
-                      value={provinceId || profile?.province?._id}
+                      value={provinceId}
                       showSearch
                       labelInValue={provinces?.label}
                       onChange={(value, e) => {
@@ -299,7 +299,7 @@ const Account = () => {
                       style={{ width: "100%" }}
                       placeholder="Quận/Huyện"
                       options={districts}
-                      value={districtId || profile?.district?._id}
+                      value={districtId}
                       showSearch
                       onChange={(value, e) => {
                         field.onChange(value);
@@ -349,7 +349,7 @@ const Account = () => {
                       style={{ width: "100%" }}
                       placeholder="Phường/Xã"
                       options={wards}
-                      value={wardId || profile?.ward?._id}
+                      value={wardId}
                       showSearch
                       onChange={(value, e) => {
                         field.onChange(value);
@@ -441,7 +441,6 @@ const Account = () => {
           <input
             {...register("confirmPassword", {
               validate: (match) => {
-                console.log("match", match);
                 const newPassword = getValues("newPassword");
                 return match === newPassword || "Mật khẩu không giống";
               },

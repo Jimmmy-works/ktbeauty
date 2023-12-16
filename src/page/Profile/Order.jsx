@@ -2,7 +2,7 @@ import { PATHS } from "@/contants/path";
 import { formatPriceVND } from "@/utils/formatPrice";
 import { localeVN } from "@/utils/timeVN";
 import useWindowSize from "@/utils/windowResize";
-import { Button, Drawer, Empty, Popconfirm, Timeline } from "antd";
+import { Button, Drawer, Empty, Popconfirm, Timeline, message } from "antd";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -65,7 +65,6 @@ const Order = () => {
     const find = orderList?.find((item) => item?._id === id);
     setDrawerData(find);
   };
-
   return (
     <div className="order">
       <h3 className="text-[24px] font-osb text-black-333 xs:my-[16px]">
@@ -105,28 +104,6 @@ const Order = () => {
                     <p className="text-sm text-black-333 font-osr">
                       {`${localeVN(createdAt)}`}
                     </p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {/* <p
-                        className={`text-sm text-black font-om
-                        ${status === "Đã hủy đơn" ? "text-red-500" : ""}
-                        ${status === "Đang xác minh" ? "text-yellow-400" : ""}
-                        ${status === "Đã xác minh" ? "text-blue-500" : ""}
-                        ${
-                          status === "Đang chuẩn bị hàng"
-                            ? "text-violet-500"
-                            : ""
-                        }
-                        ${status === "Đang giao hàng" ? "text-amber-600" : ""}
-                        ${
-                          status === "Hoàn thành đơn hàng"
-                            ? "text-green-600"
-                            : ""
-                        }
-                      `}
-                      >
-                        {status} vào lúc {localeVN(createdAt)}
-                      </p> */}
                   </div>
                 </div>
                 <div
@@ -345,11 +322,23 @@ const Order = () => {
                       <Popconfirm
                         title="Hủy đơn hàng?"
                         description="Bạn có chắc muốn hủy đơn hàng?"
-                        onConfirm={() =>
-                          handleConfirmCancelOrder({
-                            _id: _id,
-                          })
-                        }
+                        onConfirm={() => {
+                          console.log("first", item?.type);
+
+                          if (
+                            status?.find((item) => {
+                              return item?.type === "preparing";
+                            })
+                          ) {
+                            message.error(
+                              `Không thể hủy đơn khi đang giao hàng!!`
+                            );
+                          } else {
+                            handleConfirmCancelOrder({
+                              _id: _id,
+                            });
+                          }
+                        }}
                         okText="Yes"
                         cancelText="No"
                       >

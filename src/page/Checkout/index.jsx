@@ -290,6 +290,7 @@ const Checkout = () => {
                     } `}
                   >
                     <label htmlFor="province">Thành/Tỉnh</label>
+
                     <Controller
                       control={control}
                       name="province"
@@ -614,17 +615,17 @@ const Checkout = () => {
               <div className="mt-[10px] relative">
                 <Button
                   disabled={
-                    statusCreateOrder !== THUNK_STATUS.fulfilled ? true : false
+                    statusCreateOrder === THUNK_STATUS.pending ? true : false
                   }
                   // link={PATHS.COMPLETE}
                   onClick={handleSubmit(handleOrder)}
                   className={`block text-center rounded-none w-full md:p-[14px] ${
-                    statusCreateOrder !== THUNK_STATUS.fulfilled
+                    statusCreateOrder === THUNK_STATUS.pending
                       ? "border-black-be "
                       : ""
                   }`}
                 >
-                  {statusCreateOrder !== THUNK_STATUS.fulfilled ? (
+                  {statusCreateOrder === THUNK_STATUS.pending ? (
                     <div className={`flex items-center justify-center `}>
                       <Spin
                         indicator={

@@ -37,7 +37,6 @@ export const { reducer: orderReducer, actions: orderActions } = createSlice({
       state.getStatusOrder = THUNK_STATUS.pending;
     });
     builder.addCase(updataStatusOrder.fulfilled, (state) => {
-      console.log("state", state);
       state.getStatusOrder = THUNK_STATUS.fulfilled;
     });
     builder.addCase(updataStatusOrder.rejected, (state) => {
@@ -48,7 +47,6 @@ export const { reducer: orderReducer, actions: orderActions } = createSlice({
       state.statusCreateOrder = THUNK_STATUS.pending;
     });
     builder.addCase(createOrder.fulfilled, (state) => {
-      console.log("state", state);
       state.statusCreateOrder = THUNK_STATUS.fulfilled;
     });
     builder.addCase(createOrder.rejected, (state) => {
@@ -132,7 +130,6 @@ export const updataStatusOrder = createAsyncThunk(
       if (response?.status === 200) {
         thunkAPI.dispatch(getOrderUser(_token));
       }
-      message.success(response?.data?.message);
       return response;
     } catch (error) {
       console.log("error", error);
