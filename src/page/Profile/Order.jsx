@@ -323,11 +323,9 @@ const Order = () => {
                         title="Hủy đơn hàng?"
                         description="Bạn có chắc muốn hủy đơn hàng?"
                         onConfirm={() => {
-                          console.log("first", item?.type);
-
                           if (
                             status?.find((item) => {
-                              return item?.type === "preparing";
+                              return item?.type === "delivery";
                             })
                           ) {
                             message.error(

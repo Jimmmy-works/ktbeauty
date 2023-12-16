@@ -167,17 +167,27 @@ const CartPage = () => {
         )
       );
       if (subTotal > 0) {
-        dispatch(
-          cartActions.setTotal(
-            Number(
-              subTotal -
-                (discountCodeCurrent?.price || 0) +
-                (shippingCurrent?.price && subTotal < 1 * million
-                  ? shippingCurrent?.price
-                  : 0)
+        if (subTotal >= 1) {
+          dispatch(
+            cartActions.setTotal(
+              Number(
+                subTotal -
+                  (discountCodeCurrent?.price || 0) +
+                  shippingCurrent?.price
+              )
             )
-          )
-        );
+          );
+        } else {
+          dispatch(
+            cartActions.setTotal(
+              Number(
+                subTotal -
+                  (discountCodeCurrent?.price || 0) +
+                  shippingCurrent?.price
+              )
+            )
+          );
+        }
       } else {
         dispatch(cartActions.setTotal(0));
       }
@@ -427,7 +437,6 @@ const CartPage = () => {
                 {formatPriceVND(subTotal)}
               </p>
             </div>
-
             <div className="flex justify-between items-center p-[16px_20px] ">
               <h4 className="text-[16px] font-om text-black">Giảm giá:</h4>
               <p className="text-[16px] font-om text-black tracking-wider">

@@ -12,7 +12,8 @@ const initialState = {
   orders: [],
   detailOrder: null,
   ////
-  errorGetUserAll: null,
+  statusGetAllUsers: null,
+  statusGetAllOrders: null,
   getStatusCreateProduct: null,
   ///
   soldProducts: null,
@@ -44,15 +45,25 @@ export const { reducer: dashboardReducer, actions: dashboardActions } =
       },
     },
     extraReducers: (builder) => {
-      // errorGetUserAll status
+      // statusGetAllUsers status
       builder.addCase(getAllUsers.pending, (state) => {
-        state.errorGetUserAll = THUNK_STATUS.pending;
+        state.statusGetAllUsers = THUNK_STATUS.pending;
       });
       builder.addCase(getAllUsers.fulfilled, (state) => {
-        state.errorGetUserAll = THUNK_STATUS.fulfilled;
+        state.statusGetAllUsers = THUNK_STATUS.fulfilled;
       });
       builder.addCase(getAllUsers.rejected, (state) => {
-        state.errorGetUserAll = THUNK_STATUS.rejected;
+        state.statusGetAllUsers = THUNK_STATUS.rejected;
+      });
+      // statusGetAllUsers status
+      builder.addCase(getAllOrder.pending, (state) => {
+        state.statusGetAllOrders = THUNK_STATUS.pending;
+      });
+      builder.addCase(getAllOrder.fulfilled, (state) => {
+        state.statusGetAllOrders = THUNK_STATUS.fulfilled;
+      });
+      builder.addCase(getAllOrder.rejected, (state) => {
+        state.statusGetAllOrders = THUNK_STATUS.rejected;
       });
       // getStatusCreateProduct status
       builder.addCase(createProduct.pending, (state) => {
@@ -89,7 +100,7 @@ export const getAllUsers = createAsyncThunk(
   }
 );
 export const getAllOrder = createAsyncThunk(
-  "dashboard/user/get",
+  "dashboard/order/get",
   async (_, thunkAPI) => {
     try {
       const _token = localStorage.getItem(LOCAL_STORAGE.token);

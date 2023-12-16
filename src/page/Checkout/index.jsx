@@ -570,11 +570,8 @@ const Checkout = () => {
                   <div className="flex items-start justify-between font-osb text-sm text-black-333">
                     <p>Tổng giảm giá</p>
                     <p className="text-primary tracking-wider">
-                      -
-                      {total >= 3 * million && shipping?.price > 0
-                        ? formatPriceVND(
-                            JSON.parse(discountCode)?.price + shipping?.price
-                          )
+                      {total >= 1 * million && JSON.parse(shipping)?.price > 0
+                        ? `- ${formatPriceVND(JSON.parse(discountCode)?.price)}`
                         : formatPriceVND(JSON.parse(discountCode)?.price)}
                     </p>
                   </div>
@@ -583,7 +580,10 @@ const Checkout = () => {
                       {`1. ` + JSON.parse(discountCode)?.name}
                     </p>
                     <p className="font-osb text-[12px] text-black-333 tracking-wider">
-                      {formatPriceVND(JSON.parse(discountCode)?.price)}
+                      {formatPriceVND(
+                        JSON.parse(discountCode)?.price -
+                          JSON.parse(shipping)?.price
+                      )}
                     </p>
                   </div>
                   <div className="flex items-start justify-between mt-[14px] ">

@@ -33,10 +33,11 @@ import {
   zeroTimeToday,
   year,
   endDay,
+  endMonth,
 } from "@/utils/timeISOString";
 import { monthNameVN, monthNames } from "@/contants/general";
 import { DatePicker, Image, Popconfirm, Space, Table, Tag } from "antd";
-import { localeVN, timeVN } from "@/utils/timeVN";
+import { dateVN, localeVN, timeVN } from "@/utils/timeVN";
 import styled from "styled-components";
 import queryString from "query-string";
 import useQuery from "@/hooks/useQuery";
@@ -114,41 +115,45 @@ const DashboardAnalyst = () => {
         startDate: zeroTimeToday,
         endDate: endDay,
       });
-      const startToCurrent = await onGetRevenue({
-        startDate: startMonth,
-        endDate: currentDayInMonth,
-      });
+      // const startToCurrent = await onGetRevenue({
+      //   startDate: startMonth,
+      //   endDate: currentDayInMonth,
+      // });
       const zeroDayToCurrentDay = await onGetRevenue({
         startDate: zeroDay,
         endDate: currentDayInMonth,
       });
-      const allDayInYear = await onGetRevenue({
-        startDate: zeroDay,
-        endDate: startToEndInYear,
+      // const allDayInYear = await onGetRevenue({
+      //   startDate: zeroDay,
+      //   endDate: startToEndInYear,
+      // });
+      const currentMonth = await onGetRevenue({
+        startDate: startMonth,
+        endDate: endMonth,
       });
       ///
       const monthCurrentRender = new Date()?.getMonth();
-      for (let index = 0; index < monthCurrentRender + 1; index++) {
-        const startMonth = new Date(year, index, 1).toISOString();
-        const endMonth = new Date(
-          year,
-          index,
-          31 || 30 || 29 || 28,
-          24,
-          0
-        ).toISOString();
-        const response = await onGetRevenue({
-          startDate: startMonth,
-          endDate: endMonth,
-        });
-        allMonths.push(response);
-      }
+      // for (let index = 0; index < monthCurrentRender + 1; index++) {
+      //   const startMonth = new Date(year, index, 1).toISOString();
+      //   const endMonth = new Date(
+      //     year,
+      //     index,
+      //     31 || 30 || 29 || 28,
+      //     24,
+      //     0
+      //   ).toISOString();
+      //   const response = await onGetRevenue({
+      //     startDate: startMonth,
+      //     endDate: endMonth,
+      //   });
+      //   allMonths.push(response);
+      // }
       setRevenueObj({
         today: today,
-        startToCurrent: startToCurrent,
+        // startToCurrent: startToCurrent,
         zeroDayToCurrentDay: zeroDayToCurrentDay,
-        allDayInYear: allDayInYear,
-        allMonths: allMonths,
+        // allDayInYear: allDayInYear,
+        currentMonth: currentMonth,
       });
     } catch (error) {
       console.log("error", error);
@@ -161,78 +166,92 @@ const DashboardAnalyst = () => {
         startDate: zeroTimeToday,
         endDate: endDay,
       });
-      const startToCurrent = await onGetSoldProducts({
-        startDate: startMonth,
-        endDate: currentDayInMonth,
-      });
+      // const startToCurrent = await onGetSoldProducts({
+      //   startDate: startMonth,
+      //   endDate: currentDayInMonth,
+      // });
       const zeroDayToCurrentDay = await onGetSoldProducts({
         startDate: zeroDay,
         endDate: currentDayInMonth,
       });
-      const allDayInYear = await onGetSoldProducts({
-        startDate: zeroDay,
-        endDate: startToEndInYear,
+      const currentMonth = await onGetSoldProducts({
+        startDate: startMonth,
+        endDate: endMonth,
       });
-      for (let index = 0; index < monthNames.length; index++) {
-        const startMonth = new Date(year, index, 1).toISOString();
-        const endMonth = new Date(
-          year,
-          index,
-          31 || 30 || 29 || 28,
-          24,
-          0
-        ).toISOString();
-        const response = await onGetSoldProducts({
-          startDate: startMonth,
-          endDate: endMonth,
-        });
-        allMonths.push(response);
-      }
+      // const allDayInYear = await onGetSoldProducts({
+      //   startDate: zeroDay,
+      //   endDate: startToEndInYear,
+      // });
+      // const currentMonth = await onGetSoldProducts({});
+      // for (let index = 0; index < monthNames.length; index++) {
+      //   const startMonth = new Date(year, index, 1).toISOString();
+      //   const endMonth = new Date(
+      //     year,
+      //     index,
+      //     31 || 30 || 29 || 28,
+      //     24,
+      //     0
+      //   ).toISOString();
+      //   const response = await onGetSoldProducts({
+      //     startDate: startMonth,
+      //     endDate: endMonth,
+      //   });
+      //   allMonths.push(response);
+      // }
       setSoldProductObj({
         today: today,
-        startToCurrent: startToCurrent,
+        // startToCurrent: startToCurrent,
         zeroDayToCurrentDay: zeroDayToCurrentDay,
-        allDayInYear: allDayInYear,
-        allMonths: allMonths,
-      });
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-  const handleInventory = async () => {
-    try {
-      const today = await onGetInventory(
-        `?${queryString.stringify({
-          type: "top-in-stock",
-        })}`
-      );
-      setInventoryObj({
-        ...today?.data,
+        // allDayInYear: allDayInYear,
+        currentMonth: currentMonth,
       });
     } catch (error) {
       console.log("error", error);
     }
   };
   useEffect(() => {
-    if (Object.keys(revenueObj).length < 1) {
-      handleRevenue();
-    }
-    if (Object.keys(soldProductObj).length < 1) {
-      handleSoldProducts();
-    }
-    if (Object.keys(soldProductObj).length < 1) {
-      handleInventory();
-    }
-  }, [revenueObj, soldProductObj]);
-
+    handleRevenue();
+    handleSoldProducts();
+  }, []);
+  // useEffect(() => {
+  //   if (Object.keys(revenueObj).length < 1) {
+  //     handleRevenue();
+  //   }
+  //   if (Object.keys(soldProductObj).length < 1) {
+  //     handleSoldProducts();
+  //   }
+  // }, [revenueObj, soldProductObj]);
+  const optionSelectDate = [
+    [
+      {
+        value: "three",
+        label: "Jack",
+      },
+      {
+        value: "lucy",
+        label: "Lucy",
+      },
+      {
+        value: "Yiminghe",
+        label: "yiminghe",
+      },
+      {
+        value: "disabled",
+        label: "Disabled",
+        disabled: true,
+      },
+    ],
+  ];
   const customDataRevenueBar = useMemo(() => {
     if (Object?.keys(revenueFilter)?.length) {
-      return [revenueFilter?.data];
+      return revenueFilter?.data?.data?.map((month) => Math.round(month?.data));
     } else if (
       !Object?.keys(revenueFilter)?.length &&
       Object?.keys(revenueObj)?.length
     ) {
-      return revenueObj?.allMonths?.map((month) => Math.round(month?.data));
+      return revenueObj?.currentMonth?.data?.map((month) =>
+        Math.round(month?.data)
+      );
     } else if (
       Object.keys(revenueObj).length < 1 &&
       Object.keys(revenueFilter).length < 1
@@ -242,31 +261,96 @@ const DashboardAnalyst = () => {
   }, [revenueFilter, revenueObj]);
   const customDataSoldProductLine = useMemo(() => {
     if (Object?.keys(soldProductFilter)?.length) {
-      return [soldProductFilter?.data];
+      return soldProductFilter?.data?.data?.map((month) =>
+        Math.round(month?.data)
+      );
     } else if (
       !Object?.keys(soldProductFilter)?.length &&
       Object?.keys(soldProductObj)?.length
     ) {
-      return soldProductObj?.allMonths?.map((month) => Math.round(month?.data));
+      return soldProductObj?.currentMonth?.data?.map((month) =>
+        Math.round(month?.data)
+      );
     } else if (
       Object.keys(soldProductObj).length < 1 &&
       Object.keys(soldProductFilter).length < 1
     ) {
       return [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
     }
+
+    // if (Object?.keys(soldProductFilter)?.length) {
+    //   return [soldProductFilter?.data];
+    // } else if (
+    //   !Object?.keys(soldProductFilter)?.length &&
+    //   Object?.keys(soldProductObj)?.length
+    // ) {
+    //   return soldProductObj?.allMonths?.map((month) => Math.round(month?.data));
+    // } else if (
+    //   Object.keys(soldProductObj).length < 1 &&
+    //   Object.keys(soldProductFilter).length < 1
+    // ) {
+    //   return [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
+    // }
   }, [soldProductObj, soldProductFilter]);
+  const customLabelRevenueBar = useMemo(() => {
+    if (Object?.keys(revenueFilter)?.length) {
+      return revenueFilter?.data?.data?.map((month) => {
+        return `${month?.date?.day?.toString()?.padStart(2, 0)}/${
+          month?.date?.month
+        }/${month?.date?.year}`;
+      });
+    } else if (
+      !Object?.keys(revenueFilter)?.length &&
+      Object?.keys(revenueObj)?.length
+    ) {
+      return revenueObj?.currentMonth?.data?.map((time) => {
+        return `${time?.date?.day?.toString()?.padStart(2, 0)}/${
+          time?.date?.month
+        }/${time?.date?.year}`;
+      });
+    } else if (
+      Object.keys(revenueObj).length < 1 &&
+      Object.keys(revenueFilter).length < 1
+    ) {
+      return monthNameVN?.map((item) => item);
+    }
+  }, [revenueFilter, revenueObj]);
+  const customLabelSoldLine = useMemo(() => {
+    if (Object?.keys(soldProductFilter)?.length) {
+      return soldProductFilter?.data?.data?.map((month) => {
+        return `${month?.date?.day?.toString()?.padStart(2, 0)}/${
+          month?.date?.month
+        }/${month?.date?.year}`;
+      });
+    } else if (
+      !Object?.keys(soldProductFilter)?.length &&
+      Object?.keys(soldProductObj)?.length
+    ) {
+      return soldProductObj?.currentMonth?.data?.map((time) => {
+        return `${time?.date?.day?.toString()?.padStart(2, 0)}/${
+          time?.date?.month
+        }/${time?.date?.year}`;
+      });
+    } else if (
+      Object.keys(soldProductObj).length < 1 &&
+      Object.keys(soldProductFilter).length < 1
+    ) {
+      return monthNameVN?.map((item) => item);
+    }
+  }, [soldProductFilter, soldProductObj]);
   const dataBars = {
-    labels: Object.keys(revenueFilter).length
-      ? [
-          `${localeVN(revenueFilter?.start?.localeDate)} - ${localeVN(
-            revenueFilter?.end?.localeDate
-          )}`,
-        ]
-      : monthNameVN?.map((month) => month),
+    labels: customLabelRevenueBar,
     datasets: [
       {
         type: "bar",
-        label: "Doanh thu",
+        label: Object?.keys(revenueFilter)?.length
+          ? `${revenueFilter?.start.day}/${revenueFilter?.start.month}/${
+              revenueFilter?.start.year
+            } - ${revenueFilter?.end?.day}/${revenueFilter?.end?.month}/${
+              revenueFilter?.end?.year
+            }: ${formatPriceVND(revenueFilter?.data?.total)}
+          `
+          : "Doanh thu",
         data: customDataRevenueBar,
         borderColor: "rgba(53, 162, 235,1)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
@@ -386,13 +470,7 @@ const DashboardAnalyst = () => {
   //   }
   // });
   const dataPies = {
-    labels: Object.keys(soldProductFilter).length
-      ? [
-          `${localeVN(soldProductFilter?.start?.localeDate)} - ${localeVN(
-            soldProductFilter?.end?.localeDate
-          )}`,
-        ]
-      : monthNameVN?.map((month) => month),
+    labels: customLabelSoldLine,
     datasets: [
       {
         type: "pie",
@@ -459,7 +537,7 @@ const DashboardAnalyst = () => {
     const startDates = dates?.[0];
     const endDates = dates?.[1];
     try {
-      if (dates) {
+      if (dates?.length) {
         if (startDates?.$d.toString() === endDates?.$d.toString()) {
           const response = await onGetRevenue({
             startDate: new Date(
@@ -467,7 +545,8 @@ const DashboardAnalyst = () => {
               startDates?.$M,
               startDates?.$D,
               0,
-              0
+              0,
+              1
             ).toISOString(),
             endDate: new Date(
               endDates?.$y,
@@ -480,11 +559,12 @@ const DashboardAnalyst = () => {
           });
           if (response?.code === 200)
             setRevenueFilter({
-              data: response?.data,
+              data: response,
               start: {
                 day: startDates?.$D,
                 month: startDates?.$M,
                 hour: startDates?.$H,
+                year: startDates?.$y,
                 localeDate: new Date(
                   startDates?.$y,
                   startDates?.$M,
@@ -497,6 +577,7 @@ const DashboardAnalyst = () => {
                 day: endDates?.$D,
                 month: endDates?.$M,
                 hour: endDates?.$H,
+                year: endDates?.$y,
                 localeDate: new Date(
                   endDates?.$y,
                   endDates?.$M,
@@ -514,7 +595,8 @@ const DashboardAnalyst = () => {
               startDates?.$M,
               startDates?.$D,
               0,
-              0
+              0,
+              1
             ).toISOString(),
             endDate: new Date(
               endDates?.$y,
@@ -527,11 +609,12 @@ const DashboardAnalyst = () => {
           });
           if (response?.code === 200)
             setRevenueFilter({
-              data: response?.data,
+              data: response,
               start: {
                 day: startDates?.$D,
                 month: startDates?.$M,
                 hour: startDates?.$H,
+                year: startDates?.$y,
                 localeDate: new Date(
                   startDates?.$y,
                   startDates?.$M,
@@ -544,6 +627,7 @@ const DashboardAnalyst = () => {
                 day: endDates?.$D,
                 month: endDates?.$M,
                 hour: endDates?.$H,
+                year: endDates?.$y,
                 localeDate: new Date(
                   endDates?.$y,
                   endDates?.$M,
@@ -839,10 +923,10 @@ const DashboardAnalyst = () => {
               className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-lg
                           pb-[12px] border-solid border-b border-black-ebe flex justify-between items-center gap-[10px]"
             >
-              {formatPriceVND(revenueObj?.zeroDayToCurrentDay?.data || 0)}
+              {formatPriceVND(revenueObj?.zeroDayToCurrentDay?.total || 0)}
             </div>
             <div className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-sm ">
-              Doanh thu hôm nay: {formatPriceVND(revenueObj?.today?.data || 0)}
+              Doanh thu hôm nay: {formatPriceVND(revenueObj?.today?.total || 0)}
             </div>
           </div>
           <div className="xs:w-full sm:w-[30%] md:w-[45%] xl:w-1/3 rounded-[5px] shadow-header p-[20px] m-[8px] ">
@@ -881,7 +965,7 @@ const DashboardAnalyst = () => {
               className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-lg
                       pb-[12px] border-solid border-b border-black-ebe flex justify-between items-center gap-[10px]"
             >
-              <p> {soldProductObj?.zeroDayToCurrentDay?.data || 0}</p>
+              <p> {soldProductObj?.zeroDayToCurrentDay?.total || 0}</p>
 
               <button
                 onClick={() =>
@@ -894,7 +978,7 @@ const DashboardAnalyst = () => {
               </button>
             </div>
             <div className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-sm ">
-              Bán được : {soldProductObj?.today?.data || 0} sản phẩm
+              Bán được : {soldProductObj?.today?.total || 0} sản phẩm
             </div>
           </div>
         </div>

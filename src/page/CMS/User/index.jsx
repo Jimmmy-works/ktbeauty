@@ -1,10 +1,11 @@
 import { MODAL_OPTION } from "@/contants/general";
 import { localeVN } from "@/utils/timeVN";
-import { Table } from "antd";
+import { Spin, Table } from "antd";
 import { useState } from "react";
 import useDashboard from "../useDashboard";
 import ModalCreateUser from "./ModalCreateUser";
 import ModalUpdateAvatar from "./ModalUpdateAvatar";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
 const DashboardUser = () => {
   const { modalProps, userProps } = useDashboard();
   const {
@@ -16,7 +17,8 @@ const DashboardUser = () => {
     toggleSidebar,
     width,
   } = modalProps || {};
-  const { onDeleteUser, onCreateUser, searchUsers, users } = userProps || {};
+  const { onDeleteUser, onCreateUser, searchUsers, users, statusGetAllUsers } =
+    userProps || {};
   const columns = [
     {
       title: "Serial",
@@ -156,6 +158,13 @@ const DashboardUser = () => {
       onDeleteUser(filterUsers[index]?.key);
     }
   };
+  if (statusGetAllUsers !== THUNK_STATUS.fulfilled) {
+    return (
+      <div className="w-screen h-screen top-0 left-0 fixed flex justify-center items-center">
+        <Spin size="default" />
+      </div>
+    );
+  }
   return (
     <div className="table__dashboard table__dashboard-user">
       <ModalUpdateAvatar

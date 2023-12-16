@@ -29,8 +29,16 @@ const useDashboard = () => {
   //// redux
   const dispatch = useDispatch();
   const { profile } = useSelector((state) => state.auth);
-  const { users, orders, detailOrder, soldProducts, revenue, inventory } =
-    useSelector((state) => state.dashboard);
+  const {
+    users,
+    statusGetAllUsers,
+    orders,
+    statusGetAllOrders,
+    detailOrder,
+    soldProducts,
+    revenue,
+    inventory,
+  } = useSelector((state) => state.dashboard);
   const { categories, products, statusGetAllProducts, totalProducts } =
     useSelector((state) => state.product);
   ///// Modal
@@ -248,11 +256,13 @@ const useDashboard = () => {
     profile,
     onConfirmOrder,
     optionSortOrderCMS,
+    statusGetAllOrders,
   };
   const userProps = {
     onDeleteUser,
     onCreateUser,
     users,
+    statusGetAllUsers,
   };
   const productProps = {
     categories,

@@ -25,7 +25,6 @@ const Register = ({
   const [phone, setPhone] = useState("");
   const [agree, setAgree] = useState(false);
   const [hiddenPassword, setHiddenPassword] = useState(true);
-  const [loadingRegister, setLoadingRegister] = useState(false);
   const handleRegister = async (data) => {
     try {
       if (updateStatusRegister !== THUNK_STATUS.pending) onRegister(data);
@@ -242,7 +241,13 @@ const Register = ({
         </div>
         <div className="mt-[20px]">
           <Button
-            disabled={agree ? false : true}
+            disabled={
+              agree === true &&
+              updateStatusRegister !== THUNK_STATUS.pending &&
+              updateStatusRegister !== THUNK_STATUS.rejected
+                ? false
+                : true
+            }
             onClick={handleSubmit(handleRegister)}
             className={`xs:p-[12px_12px_12px_12px] md:p-[16px_16px_16px_16px] xs:text-sm md:text-md
              bg-[#dddddd] text-black-333 border-transparent  w-full`}

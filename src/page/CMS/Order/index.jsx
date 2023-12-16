@@ -4,17 +4,24 @@ import { formatPriceVND } from "@/utils/formatPrice";
 import { removeAccents } from "@/utils/removeAccents";
 import { localeVN } from "@/utils/timeVN";
 import { CheckOutlined, SearchOutlined } from "@ant-design/icons";
-import { Button, Drawer, Input, Popconfirm, Table } from "antd";
+import { Button, Drawer, Input, Popconfirm, Spin, Table } from "antd";
 import { Excel } from "antd-table-saveas-excel";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import useDashboard from "../useDashboard";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
 const DashboardOrder = () => {
   const { modalProps, orderProps } = useDashboard();
   const { toggleSidebar, width } = modalProps || {};
   const dispatch = useDispatch();
-  const { orders, detailOrder, onDeleteOrder, profile, onConfirmOrder } =
-    orderProps || {};
+  const {
+    orders,
+    statusGetAllOrders,
+    detailOrder,
+    onDeleteOrder,
+    profile,
+    onConfirmOrder,
+  } = orderProps || {};
   const columns = [
     {
       title: "Serial",
@@ -279,10 +286,6 @@ const DashboardOrder = () => {
               okText="Yes"
               cancelText="No"
             >
-              {console.log(
-                "first",
-                order?.status?.find((item) => item?.type === "verifying")
-              )}
               {order?.status?.[order?.status?.length - 1]?.type ===
               "verifying" ? (
                 <button

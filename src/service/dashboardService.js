@@ -99,9 +99,7 @@ const dashboardService = {
     );
   },
   getInventory: (param) => {
-    return instanceAxios.get(
-      `${BASE_URL}/api/product/get-countInStock-sold${param}`
-    );
+    return instanceAxios.get(`${BASE_URL}/api/product/get-top-rate${param}`);
   },
 };
 export default dashboardService;
