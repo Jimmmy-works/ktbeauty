@@ -90,15 +90,15 @@ const dashboardService = {
   ///// Analyst
   getSoldProducts: (param) => {
     return instanceAxios.get(
-      `${BASE_URL}/api/order/get-sold?startDate=${param.startDate}&endDate=${param.endDate}`
+      `${BASE_URL}/api/order/get-sold?limit=${param.limit}&page=${param.page}&startDate=${param.startDate}&endDate=${param.endDate}`
     );
   },
   getRevenue: (param) => {
     return instanceAxios.get(
-      `${BASE_URL}/api/order/get-revenue?startDate=${param.startDate}&endDate=${param.endDate}`
+      `${BASE_URL}/api/order/get-revenue?limit=${param.limit}&startDate=${param.startDate}&endDate=${param.endDate}`
     );
   },
-  getInventory: (param) => {
+  getTopRate: (param) => {
     return instanceAxios.get(`${BASE_URL}/api/product/get-top-rate${param}`);
   },
 };

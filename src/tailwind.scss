@@ -57,6 +57,46 @@
 }
 @layer components {
   .breadcrumb {
+    ul {
+      @apply flex flex-wrap gap-y-[6px] py-[20px];
+      li {
+        &::first-child {
+          a {
+            @apply rounded-tl-[5px] rounded-bl-[5px];
+          }
+        }
+        &::last-child {
+          a {
+            @apply rounded-tr-[5px] rounded-br-[5px];
+            &::after {
+              @apply right-[-0.8em];
+            }
+          }
+        }
+        a {
+          @apply block bg-[#f3f5fa] text-sm font-om mr-[5px] text-black-555
+          p-[0.5em_1em_0.5em_1.5em] relative transition-colors duration-200;
+          &:hover {
+            @apply bg-primary text-[#fff];
+            &::after {
+              @apply border-l-primary;
+            }
+          }
+          &::after,
+          &::before {
+            @apply border-t-[1em] border-b-[1em] border-l-[1em] border-transparent
+             border-l-[#f3f5fa] border-solid   content-[''] absolute top-0 right-[-1em] z-10
+           transition-colors duration-200;
+          }
+          &::before {
+            @apply border-l-white left-0 z-0;
+          }
+        }
+      }
+    }
+  }
+  /* 
+   .breadcrumb {
     @apply border-t-[1px] border-b-[1px] border-solid border-[#e5e5e5] py-[20px];
     &__list {
       @apply flex flex-wrap gap-y-[6px];
@@ -84,6 +124,8 @@
       }
     }
   }
+  */
+
   .range {
     .slider {
       height: 5px;
@@ -849,4 +891,15 @@ input[type="file"]::file-selector-button:hover {
 }
 .ant-picker-panels {
   @apply md:flex md:flex-row xs:flex-col;
+}
+
+.my-drawer {
+  .ant-drawer-header {
+    .ant-drawer-header-title {
+      @apply flex-row-reverse;
+    }
+    .ant-drawer-title {
+      @apply font-osb text-md;
+    }
+  }
 }

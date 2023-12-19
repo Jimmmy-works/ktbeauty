@@ -103,11 +103,13 @@ const ShopDetail = () => {
   return (
     <main className="main-wrapper shoppage">
       <BreadCrumb>
-        <BreadCrumb.Item>
-          <Link to={`${PATHS.HOME}`}>Home</Link>
+        <BreadCrumb.Item link={`${PATHS.HOME}`}>
+          {/* <Link to={`${PATHS.HOME}`}>Home</Link> */}
+          Trang chủ
         </BreadCrumb.Item>
-        <BreadCrumb.Item>
-          <Link to={`${PATHS.SHOP.INDEX}`}>Sản phẩm</Link>
+        <BreadCrumb.Item link={`${PATHS.SHOP.INDEX}`}>
+          Sản phẩm
+          {/* <Link to={`${PATHS.SHOP.INDEX}`}>Sản phẩm</Link> */}
         </BreadCrumb.Item>
         <BreadCrumb.Item isActive>
           {statusGetProductDetail === THUNK_STATUS.fulfilled ? (

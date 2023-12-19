@@ -20,7 +20,7 @@
     }
     &-item {
       @apply md:h-[600px] xs:h-[400px] xl:h-screen xl:w-screen
-      x:bg-[50%_calc(50%+76px)] lg:bg-[50%_calc(50%+92px)] xs:bg-[50%_calc(50%+46px)] 
+      x:bg-[50%_calc(50%+76px)] lg:bg-[50%_calc(50%+80px)] xs:bg-[50%_calc(50%+46px)] 
       bg-no-repeat bg-cover  relative;
       .textbox {
         &__title {
@@ -61,14 +61,18 @@
   }
 }
 .scfeatured {
+  @apply mt-section  lg:py-[80px] md:py-[60px] xs:py-[50px];
+  &__wrapper {
+    @apply bg-[#01A98F] p-[50px_30px] rounded-2xl;
+  }
   &__tabs {
     @apply xs:flex-wrap xs:gap-[14px] lg:flex-nowrap flex items-center justify-center
            xs:mb-[30px] md:mb-[50px];
     &-item {
-      @apply bg-white font-osb xs:text-[13px] md:text-[18px] text-black-555  cursor-pointer uppercase
-            xs:py-[3px] md:py-[7px] xs:px-[20px] md:px-[72.2px]  rounded-[50px]  duration-400 
-          transition-all relative  before:absolute before:w-[10px] before:h-[10px]  before:top-1/2 
-         before:-translate-y-1/2 before:left-[52px] before:rounded-[50%] before:bg-white 
+      @apply bg-white font-osb xs:text-[13px] md:text-[18px] text-black-555  cursor-pointer capitalize
+            xs:py-[10px] md:py-[14px] xs:px-[20px] md:px-[60px]  rounded-[50px]  duration-400 
+          transition-all relative  before:absolute before:w-[8px] before:h-[8px]  before:top-1/2 
+         before:-translate-y-1/2 before:left-[44px] before:rounded-[50%] before:bg-white 
          md:before:block xs:before:hidden;
       &.active {
         @apply bg-primary text-white shadow-[inset_0px_8px_23px_13px_rgba(0,0,0,0.2)];
@@ -92,7 +96,7 @@
       }
 
       .item {
-        @apply bg-white xs:p-[20px_14px_14px] md:p-[30px_30px_20px] lg:p-[40px_40px_26px] #{!important};
+        @apply bg-[rgba(255,255,255,1)] #{!important};
       }
     }
   }

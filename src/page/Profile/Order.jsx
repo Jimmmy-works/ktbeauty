@@ -1,13 +1,11 @@
-import { PATHS } from "@/contants/path";
-import { formatPriceVND } from "@/utils/formatPrice";
 import { localeVN } from "@/utils/timeVN";
 import useWindowSize from "@/utils/windowResize";
 import { Button, Drawer, Empty, Popconfirm, Timeline, message } from "antd";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import useProfile from "./useProfile";
+import { formatPriceVND } from "@/utils/formatPrice";
 const EmptyWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -42,8 +40,6 @@ const Order = () => {
       return new Date(b?.createdAt) - new Date(a?.createdAt);
     })
     ?.map((item) => item);
-
-  const [items, setItems] = useState(["United States", "India", "Germany"]);
   const listRef = useRef([]);
   const [open, setOpen] = useState(false);
   const showDrawer = (_id) => {
@@ -94,7 +90,10 @@ const Order = () => {
           return (
             <div key={_id} className="not-productsChild:mt-[20px]">
               <div
-                className={`flex items-start justify-between mb-[6px] cursor-pointer `}
+                className={`flex items-start justify-between mb-[6px] cursor-pointer group/hover`}
+                onClick={() => {
+                  setIsActive((prev) => (prev === index ? null : index));
+                }}
               >
                 <div className="flex items-start flex-col gap-1">
                   <div className="flex items-center gap-2">
@@ -107,12 +106,9 @@ const Order = () => {
                   </div>
                 </div>
                 <div
-                  onClick={() => {
-                    setIsActive((prev) => (prev === index ? null : index));
-                  }}
-                  className={`p-[10px] rounded-[50%] cursor-pointer group/hover
+                  className={`p-[10px] rounded-[50%] cursor-pointer 
                     hover:bg-primary duration-400 transition-colors
-
+                    group-hover/hover:bg-primary
                      ${isActive === index ? "bg-primary" : "bg-gray-300 "}`}
                 >
                   <svg

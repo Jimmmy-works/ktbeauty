@@ -128,17 +128,17 @@ const DashboardHeader = ({
               </>
             ) : (
               <>
+                <li className="min-w-max font-om text-sm leading-[20px]  border-[#e3e3e3] border-solid border-b flex items-center gap-2 p-[10px]  duration-300 transition-colors hover:bg-black-ebe">
+                  <Link to={PATHS.HOME} className="text-[#222] p-0">
+                    Trang chủ
+                  </Link>
+                </li>
                 <li
                   onClick={onLogout}
                   className="min-w-max font-om text-sm leading-[20px]  border-[#e3e3e3] border-solid border-b flex items-center gap-2 p-[10px]  duration-300 transition-colors hover:bg-black-ebe"
                 >
                   <Link to={PATHS.HOME} className="text-[#222] p-0">
                     Đăng xuất
-                  </Link>
-                </li>
-                <li className="min-w-max font-om text-sm leading-[20px]  border-[#e3e3e3] border-solid border-b flex items-center gap-2 p-[10px]  duration-300 transition-colors hover:bg-black-ebe">
-                  <Link to={PATHS.HOME} className="text-[#222] p-0">
-                    Trang chủ
                   </Link>
                 </li>
               </>

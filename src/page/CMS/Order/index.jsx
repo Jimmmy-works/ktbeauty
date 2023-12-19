@@ -135,11 +135,13 @@ const DashboardOrder = () => {
     { title: "Action", dataIndex: "action", align: "center" },
   ];
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [controlDrawer, setControlDrawer] = useState();
   const handleShowDrawer = (id) => {
+    setControlDrawer(id);
     dispatch(getDetailOrder(id));
     setOpenDrawer(true);
   };
-  const handleCloseDrawer = () => {
+  const handleCloseDrawer = (index) => {
     setOpenDrawer(false);
   };
   const [statusButton, setStatusButton] = useState();
@@ -342,11 +344,12 @@ const DashboardOrder = () => {
               )}
             </Popconfirm>
             <Drawer
+              key={order?._id}
               bodyStyle={{ padding: 0 }}
               title="Order"
-              placement="left"
-              onClose={handleCloseDrawer}
-              open={openDrawer}
+              placement="right"
+              onClose={() => handleCloseDrawer(index)}
+              open={controlDrawer === order?._id && openDrawer}
             >
               <div className="w-full xs:p-[0] md:py-[15px] md:px-[20px] md:bg-[#f9f9f9]">
                 {width < 768 && (
@@ -378,6 +381,7 @@ const DashboardOrder = () => {
                                 src={image?.[0]}
                                 alt=""
                               />
+
                               <span
                                 className="text-xs text-white font-om rounded-[50%] bg-[#908f8f]  h-[22px] w-[22px]
                                        flex items-center justify-center absolute right-[-8px] top-[2px] -translate-y-1/2
@@ -386,6 +390,7 @@ const DashboardOrder = () => {
                                 {quantity || 0}
                               </span>
                             </a>
+
                             <a
                               className="text-sm text-black-333 font-om truncate whitespace-normal line-clamp-4
                            duration-400 transition-colors hover:text-primary"
@@ -393,16 +398,18 @@ const DashboardOrder = () => {
                               {name}
                             </a>
                           </div>
-                          <p className="text-xs text-primary font-osb">
-                            <div className=" text-xs text-primary font-osb flex gap-1 items-center justify-center">
-                              <span className="line-through text-black-555">
+                          <div className="text-sm  flex flex-col gap-1 items-center mt-[6px]">
+                            <span className="font-osb text-black-333">
+                              {formatPriceVND(price - discount)}
+                            </span>
+                            {discount ? (
+                              <span className="line-through font-om text-black-be  leading-[18px]">
                                 {formatPriceVND(price)}
                               </span>
-                              <span className="text-sm">
-                                {formatPriceVND(price - discount)}
-                              </span>
-                            </div>
-                          </p>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
                       );
                     })}

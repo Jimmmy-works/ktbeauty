@@ -7,7 +7,7 @@ import {
   createProduct,
   getAllOrder,
   getAllUsers,
-  getInventory,
+  getTopRate,
   getRevenue,
   getSoldProducts,
 } from "@/store/reducer/dashboardReducer";
@@ -241,7 +241,7 @@ const useDashboard = () => {
     return dispatch(getRevenue(payload)).unwrap();
   };
   const onGetInventory = (param) => {
-    return dispatch(getInventory(param)).unwrap();
+    return dispatch(getTopRate(param)).unwrap();
   };
   const categoryProps = {
     categories,

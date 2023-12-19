@@ -2,11 +2,12 @@ import Button from "@/components/Button";
 import Hamburger from "@/components/Hamburger";
 import { PATHS } from "@/contants/path";
 import { formatPriceVND } from "@/utils/formatPrice";
-import { Empty } from "antd";
+import { Drawer, Empty } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
 import useHeader from "./useHeader";
+import { useDispatch } from "react-redux";
 const EmptyWrapper = styled.div`
   margin-bottom: 12px;
   min-width: 200px;
@@ -38,6 +39,7 @@ const Header = () => {
     productListSearch,
     onChangeCategory,
     categoryTab,
+    width,
   } = headerProps || {};
   const refHeader = useRef(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -69,29 +71,65 @@ const Header = () => {
   const categoryAll = categories
     ?.filter((cate) => cate?.name === "all")
     ?.map((item) => item?._id);
+  const [open, setOpen] = useState("");
+  const showDrawer = (name) => {
+    setOpen(name);
+  };
+  const onClose = () => {
+    setOpen("");
+  };
+  const max = 20;
+  const min = 1;
+  const [numbInput, setNumbInput] = useState(min);
+  const onIncrease = () => {
+    const value = modifyValue(Number(numbInput) + 1);
+    setNumbInput(value);
+  };
+  const onDecrease = () => {
+    const value = modifyValue(Number(numbInput) - 1);
+    setNumbInput(value);
+  };
+  const onChangeInput = (e) => {
+    setNumbInput(modifyValue(Number(e.target.value)));
+  };
+  const modifyValue = (value) => {
+    if (value > max) {
+      return (value = max);
+    } else if (value < min) {
+      return (value = min);
+    } else {
+      return value;
+    }
+  };
+  const listRef = useRef([]);
   return (
-    <header className={`header `} ref={refHeader}>
-      <div className="container h-full flex items-center justify-between">
-        <NavLink to={`${PATHS.HOME}`} className={`header__logo`}>
+    <header className={`header`} ref={refHeader}>
+      <div className="header__advertisement">
+        <p>Giảm 10% đơn 3 triệu - 20% cho đơn 5 triệu</p>
+        <p>Miễn phí tư vấn da</p>
+      </div>
+      <div className="header__main">
+        <NavLink to={`${PATHS.HOME}`} className={`header__logo `}>
           {/* <svg className="group " viewBox="3 -40.5 215.18 41.1">
             <path
               className="fill-black-555 group-hover:fill-primary duration-400 transition-colors"
               d="M11.95 0L3 0 3-40.5 11.95-40.5 11.95-23.95 18.75-40.5 27.5-40.5 20-22.2 27.85 0 18.75 0 12.9-17.9 11.95-16.3 11.95 0ZM44 0L35 0 35-33.85 28.9-33.85 28.9-40.5 50.05-40.5 50.05-33.85 44-33.85 44 0ZM78.84 0L66.39 0 66.39-40.5 76.94-40.5Q79.54-40.5 81.87-40.1 84.19-39.7 85.99-38.58 87.79-37.45 88.82-35.38 89.84-33.3 89.84-29.9L89.84-29.9Q89.84-27.45 89.12-25.78 88.39-24.1 87.07-23.1 85.74-22.1 83.89-21.75L83.89-21.75Q86.24-21.45 87.84-20.23 89.44-19 90.27-16.95 91.09-14.9 91.09-12L91.09-12Q91.09-8.85 90.27-6.58 89.44-4.3 87.89-2.85 86.34-1.4 84.07-0.7 81.79 0 78.84 0L78.84 0ZM75.34-18.4L75.34-6.25 77.24-6.25Q80.19-6.25 81.32-7.75 82.44-9.25 82.44-12.15L82.44-12.15Q82.44-14.45 81.94-15.8 81.44-17.15 80.29-17.78 79.14-18.4 77.19-18.4L77.19-18.4 75.34-18.4ZM75.34-34.5L75.34-24.3 77.09-24.3Q79.14-24.3 80.19-24.93 81.24-25.55 81.62-26.75 81.99-27.95 81.99-29.65L81.99-29.65Q81.99-31.25 81.42-32.33 80.84-33.4 79.72-33.95 78.59-34.5 76.89-34.5L76.89-34.5 75.34-34.5ZM114.09 0L95.79 0 95.79-40.5 113.99-40.5 113.99-34.4 104.74-34.4 104.74-24.35 111.79-24.35 111.79-18.15 104.74-18.15 104.74-6.05 114.09-6.05 114.09 0ZM124.64 0L116.19 0 123.84-40.5 134.04-40.5 141.59 0 133.34 0 131.99-8.55 126.04-8.55 124.64 0ZM128.99-29.7L126.84-13.9 131.14-13.9 128.99-29.7ZM156.99 0.6L156.99 0.6Q152.34 0.6 149.71-0.93 147.09-2.45 146.04-5.38 144.99-8.3 144.99-12.55L144.99-12.55 144.99-40.5 153.84-40.5 153.84-11.2Q153.84-9.95 154.04-8.7 154.24-7.45 154.91-6.65 155.59-5.85 156.99-5.85L156.99-5.85Q158.44-5.85 159.09-6.65 159.74-7.45 159.91-8.7 160.09-9.95 160.09-11.2L160.09-11.2 160.09-40.5 168.99-40.5 168.99-12.55Q168.99-8.3 167.91-5.38 166.84-2.45 164.24-0.93 161.64 0.6 156.99 0.6ZM187.33 0L178.33 0 178.33-33.85 172.23-33.85 172.23-40.5 193.38-40.5 193.38-33.85 187.33-33.85 187.33 0ZM210.63 0L202.03 0 202.03-16.55 194.33-40.5 202.78-40.5 206.63-27.7 210.08-40.5 218.18-40.5 210.63-16.55 210.63 0Z"
             ></path>
           </svg> */}
+
           <img srcSet="/assets/img/sammishop.png 10x" alt="" />
         </NavLink>
         <Hamburger isNavbar={isNavbar} onToggleNav={onToggleNav} />
         <ul className="header__menu xs:hidden lg:flex">
           <li className="header__menu-item ">
-            <NavLink to={`${PATHS.HOME}`}>TRANG CHỦ</NavLink>
+            <NavLink to={`${PATHS.HOME}`}>trang chủ</NavLink>
           </li>
           <li className="header__menu-item relative ">
             <NavLink
               to={`${PATHS.SHOP.INDEX}`}
               onClick={() => onChangeCategory(categoryAll)}
             >
-              SẢN PHẨM
+              sản phẩm
               <div className="arrow-down">
                 <svg
                   className="w-2 h-2 fill-black-555 duration-400 transition-colors "
@@ -123,7 +161,7 @@ const Header = () => {
           </li>
           <li className="header__menu-item relative">
             <NavLink to={`${PATHS.BLOG.INDEX}`}>
-              TIN TỨC
+              tin tức
               <div className="arrow-down">
                 <svg
                   className="w-2 h-2 fill-black-555 duration-400 transition-colors "
@@ -147,10 +185,10 @@ const Header = () => {
             </ul>
           </li>
           <li className="header__menu-item ">
-            <NavLink to={`${PATHS.ABOUT}`}>CHÚNG TÔI</NavLink>
+            <NavLink to={`${PATHS.ABOUT}`}>chúng tôi</NavLink>
           </li>
           <li className="header__menu-item ">
-            <NavLink to={`${PATHS.CONTACT}`}>LIÊN HỆ</NavLink>
+            <NavLink to={`${PATHS.CONTACT}`}>liên hệ</NavLink>
           </li>
         </ul>
         <div className="header__info xs:hidden md:flex h-full items-center relative">
@@ -254,7 +292,7 @@ const Header = () => {
                               </Link>
                               <div
                                 className=" text-xs text-primary font-osb flex gap-1 
-                          items-center   mt-[6px]"
+                          items-center mt-[6px]"
                               >
                                 <span className="line-through text-black-555">
                                   {formatPriceVND(price)}
@@ -290,8 +328,10 @@ const Header = () => {
               </div>
             </div>
           </div>
-
-          <div className="header__info-whitelist group/hover mb-[2px] relative">
+          <div
+            className="header__info-whitelist group/hover mb-[2px] relative"
+            onClick={() => showDrawer("whitelist")}
+          >
             <div className="relative">
               <span
                 className="text-xs text-white font-om rounded-[50%] bg-primary h-[18px] w-[18px]
@@ -390,10 +430,143 @@ const Header = () => {
               </div>
             </ul>
           </div>
-          <div className="header__info-cart group/hover mb-[2px] relative">
-            <div className="relative">
+          <Drawer
+            rootClassName="my-drawer"
+            title="Sản phẩm yêu thích"
+            placement="right"
+            onClose={onClose}
+            open={open === "whitelist"}
+            contentWrapperStyle={{ width: "460px" }}
+          >
+            <div className="flex flex-col h-full">
+              <ul className="product__list h-full flex flex-col ">
+                {cartInfo?.products?.length ? (
+                  cartInfo?.products.map((item, index) => {
+                    const { image, name, _id, countInStock, price, discount } =
+                      item || {};
+                    return (
+                      <li
+                        key={`${_id}`}
+                        className="product__list-item flex items-center w-full justify-between gap-3 not-firstChild:pt-[10px] pb-[10px]"
+                      >
+                        <Link
+                          to={`${PATHS.SHOP.INDEX}/${_id}`}
+                          className="relative block   min-h-[84px] min-w-[84px] "
+                        >
+                          <img
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = "/assets/img/error.png";
+                            }}
+                            className="w-full h-full object-cover center-absolute rounded-[6px] border border-solid
+                          border-[#e2e0e0] duration-400 transition-colors hover:border-primary "
+                            src={image?.[0]}
+                            alt=""
+                          />
+                        </Link>
+                        <div className="w-full">
+                          <div className="flex items-start gap-3">
+                            <Link
+                              to={`${PATHS.SHOP.INDEX}/${_id}`}
+                              className="text-sm text-black-555 font-om leading-[16px] truncate line-clamp-2 w-full
+                                   whitespace-normal hover:text-primary transition-colors duration-400"
+                            >
+                              {name}
+                            </Link>
+                            <div
+                              className="font-om text-sm text-black-555 border border-solid 
+                            border-black-333 hover:border-red-500  p-[2px] rounded-md group/delete transition-colors duration-400 "
+                            >
+                              <button
+                                onClick={() => onDeleteProductInCart(_id)}
+                                className=" block group-hover/delete:text-red-500  
+                                text-red-555 transition-colors duration-400 "
+                              >
+                                <svg
+                                  className="w-[14px] h-[14px]"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M17 5V4C17 2.89543 16.1046 2 15 2H9C7.89543 2 7 2.89543 7 4V5H4C3.44772 5 3 5.44772 3 6C3 6.55228 3.44772 7 4 7H5V18C5 19.6569 6.34315 21 8 21H16C17.6569 21 19 19.6569 19 18V7H20C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5H17ZM15 4H9V5H15V4ZM17 7H7V18C7 18.5523 7.44772 19 8 19H16C16.5523 19 17 18.5523 17 18V7Z"
+                                    fill="currentColor"
+                                  />
+                                  <path
+                                    d="M9 9H11V17H9V9Z"
+                                    fill="currentColor"
+                                  />
+                                  <path
+                                    d="M13 9H15V17H13V9Z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                          <div className="text-sm  flex gap-1 items-center justify-between mt-[6px]">
+                            {countInStock ? (
+                              <span className="font-om text-secondary">
+                                Còn {countInStock} sản phẩm
+                              </span>
+                            ) : (
+                              <span className="font-om text-red-400">
+                                Hết hàng
+                              </span>
+                            )}
+
+                            <div className="flex gap-1 items-center">
+                              {discount ? (
+                                <span className="line-through font-om text-black-be  leading-[18px]">
+                                  {formatPriceVND(price)}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                              <span className="font-osb text-black">
+                                {formatPriceVND(price - discount)}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })
+                ) : (
+                  <EmptyWrapper>
+                    <Empty description={`Không có sản phẩm`} />
+                  </EmptyWrapper>
+                )}
+              </ul>
+              <div
+                className={`flex flex-col gap-[16px] items-center justify-center border-solid border-t
+                 border-[rgba(5,5,5,0.06)] pt-[20px] `}
+              >
+                <div className="w-full flex gap-1 items-center justify-between text-15px font-osb text-black">
+                  <p className="">Tổng giá trị đơn hàng</p>
+                  <p className="">{formatPriceVND(304000)}</p>
+                </div>
+                <p className="font-om text text-black">
+                  Bạn có thể xem các chương trình khuyến mãi ở màn hình kế tiếp
+                </p>
+                <Button
+                  link={PATHS.CART}
+                  variant="outline-secondary"
+                  className={`w-full uppercase text-center text-sm xs:py-[12px] md:py-[17px]`}
+                >
+                  Tiếp tục với hình thức giao hàng
+                </Button>
+              </div>
+            </div>
+          </Drawer>
+          <div
+            className="header__info-cart group/hover mb-[2px] relative"
+            onClick={() => showDrawer("cart")}
+          >
+            <div className="quantity relative">
               <span
-                className="text-xs text-white font-om rounded-[50%] bg-primary h-[18px] w-[18px]
+                className="quantity__numb text-xs text-white font-om rounded-[50%] bg-primary h-[18px] w-[18px]
                  flex items-center justify-center absolute right-[-8px] top-[-8px] "
               >
                 {cartInfo?.products?.length || 0}
@@ -406,21 +579,17 @@ const Header = () => {
                 />
               </svg>
             </div>
-            <ul
-              className="absolute top-[150%] md:-right-[30%] lg:-right-[100%]
-               invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100
-              group-hover/hover:top-[calc(100%+2px)] transition-all duration-400 shadow-[0_5px_5px_0_rgba(0,0,0,0.15)] bg-white"
-            >
-              {cartInfo?.products?.length ? (
-                <h3 className="font-osb text-md text-black-555 p-[16px_14px_16px]">
-                  {` (${cartInfo?.products?.length}) `}
-                  Sản phẩm vừa thêm
-                </h3>
-              ) : (
-                ""
-              )}
-
-              <ul className="min-w-max flex flex-col  max-h-[390px] overflow-y-scroll scrollbar-cart p-[0px_14px_0px]  ">
+          </div>
+          <Drawer
+            rootClassName="my-drawer"
+            title="Giỏ hàng của bạn"
+            placement="right"
+            onClose={onClose}
+            open={open === "cart"}
+            contentWrapperStyle={{ width: "460px" }}
+          >
+            <div className="flex flex-col h-full">
+              <ul className="product__list h-full flex flex-col ">
                 {cartInfo?.products?.length ? (
                   cartInfo?.products.map((item, index) => {
                     const { image, name, _id, quantity, price, discount } =
@@ -428,54 +597,122 @@ const Header = () => {
                     return (
                       <li
                         key={`${_id}`}
-                        className="flex items-center w-full gap-3 max-w-[280px] not-firstChild:pt-[10px] pb-[10px]"
+                        className="product__list-item flex items-center w-full justify-between gap-3 not-firstChild:pt-[10px] pb-[10px]"
                       >
                         <Link
                           to={`${PATHS.SHOP.INDEX}/${_id}`}
-                          className="relative block min-h-[80px] min-w-[80px] "
+                          className="relative block   min-h-[84px] min-w-[84px] "
                         >
                           <img
                             onError={(e) => {
                               e.target.onerror = null;
                               e.target.src = "/assets/img/error.png";
                             }}
-                            className="w-full h-full object-cover center-absolute hover:scale-105 transition-transform duration-300"
+                            className="w-full h-full object-cover center-absolute rounded-[6px] border border-solid
+                          border-[#e2e0e0] duration-400 transition-colors hover:border-primary "
                             src={image?.[0]}
                             alt=""
                           />
                         </Link>
-                        <div>
-                          <Link
-                            to={`${PATHS.SHOP.INDEX}/${_id}`}
-                            className="text-[16px] text-black-555 font-ossb  truncate line-clamp-2 
-                           whitespace-normal hover:text-primary transition-colors duration-400"
-                          >
-                            {name}
-                          </Link>
-                          <div
-                            className=" text-xs text-primary font-osb flex gap-1 
-                          items-center   mt-[6px]"
-                          >
-                            <span className="line-through text-black-555">
-                              {formatPriceVND(price)}
-                            </span>
-                            <span className="text-sm">
-                              {formatPriceVND(price - discount)}
-                            </span>
-                          </div>
-
-                          <div
-                            className="font-om text-15px text-black-555 mt-[6px] flex items-start gap-[6px]
-                        flex-col"
-                          >
-                            <p> Quantity: {quantity}</p>
-                            <button
-                              onClick={() => onDeleteProductInCart(_id)}
-                              className=" block font-om text-sm   hover:text-red-500
-                           text-red-black-555nsition-all duration-400 "
+                        <div className="w-full ">
+                          <div className="flex items-start gap-3">
+                            <Link
+                              to={`${PATHS.SHOP.INDEX}/${_id}`}
+                              className="text-sm text-black-555 font-om leading-[16px] truncate line-clamp-2 w-full
+                                   whitespace-normal hover:text-primary transition-colors duration-400"
                             >
-                              Xóa
-                            </button>
+                              {name}
+                            </Link>
+                            <div
+                              className="font-om text-sm text-black-555 border border-solid 
+                            border-black-333 hover:border-red-500  p-[2px] rounded-md group/delete transition-colors duration-400 "
+                            >
+                              <button
+                                onClick={() => onDeleteProductInCart(_id)}
+                                className=" block group-hover/delete:text-red-500  
+                                text-red-555 transition-colors duration-400 "
+                              >
+                                <svg
+                                  className="w-[14px] h-[14px]"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M17 5V4C17 2.89543 16.1046 2 15 2H9C7.89543 2 7 2.89543 7 4V5H4C3.44772 5 3 5.44772 3 6C3 6.55228 3.44772 7 4 7H5V18C5 19.6569 6.34315 21 8 21H16C17.6569 21 19 19.6569 19 18V7H20C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5H17ZM15 4H9V5H15V4ZM17 7H7V18C7 18.5523 7.44772 19 8 19H16C16.5523 19 17 18.5523 17 18V7Z"
+                                    fill="currentColor"
+                                  />
+                                  <path
+                                    d="M9 9H11V17H9V9Z"
+                                    fill="currentColor"
+                                  />
+                                  <path
+                                    d="M13 9H15V17H13V9Z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                          <div className="text-sm  flex gap-1 justify-between items-center mt-[6px]">
+                            <div className="input my-[6px] w-fit flex items-center border border-solid border-[#ececec] rounded-[20px]  h-[26px]">
+                              <div
+                                onClick={onDecrease}
+                                className="h-full flex items-center justify-center p-[8px] cursor-pointer group"
+                              >
+                                <svg
+                                  className="h-[12px] w-[12px]"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                >
+                                  <path
+                                    className="fill-black group-hover:fill-primary duration-300 transition-colors "
+                                    d="M4 12C4 11.4477 4.44772 11 5 11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H5C4.44772 13 4 12.5523 4 12Z"
+                                  />
+                                </svg>
+                              </div>
+                              <input
+                                ref={(element) =>
+                                  (listRef.current[index] = element)
+                                }
+                                className="w-[30px] text-[13px] tracking-wider text-center text-black-555 font-osb"
+                                value={quantity}
+                                type="number"
+                                min={min}
+                                max={max}
+                                onChange={onChangeInput}
+                              />
+                              <div
+                                onClick={onIncrease}
+                                className="h-full flex items-center justify-center p-[8px] cursor-pointer  group"
+                              >
+                                <svg
+                                  className="h-[12px] w-[12px]"
+                                  width="24"
+                                  height="24"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    className="fill-black group-hover:fill-primary duration-300 transition-colors "
+                                    d="M12 4C11.4477 4 11 4.44772 11 5V11H5C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13H11V19C11 19.5523 11.4477 20 12 20C12.5523 20 13 19.5523 13 19V13H19C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11H13V5C13 4.44772 12.5523 4 12 4Z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                            <div className="flex gap-1 items-center">
+                              {discount ? (
+                                <span className="line-through font-om text-black-be  leading-[18px]">
+                                  {formatPriceVND(price)}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                              <span className="font-osb text-black">
+                                {formatPriceVND(price - discount)}
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </li>
@@ -487,17 +724,28 @@ const Header = () => {
                   </EmptyWrapper>
                 )}
               </ul>
-              <div className={`flex items-center justify-center `}>
+              <div
+                className={`flex flex-col gap-[16px] items-center justify-center border-solid border-t
+                 border-[rgba(5,5,5,0.06)] pt-[20px] `}
+              >
+                <div className="w-full flex gap-1 items-center justify-between text-15px font-osb text-black">
+                  <p className="">Tổng giá trị đơn hàng</p>
+                  <p className="">{formatPriceVND(304000)}</p>
+                </div>
+                <p className="font-om text text-black">
+                  Bạn có thể xem các chương trình khuyến mãi ở màn hình kế tiếp
+                </p>
                 <Button
                   link={PATHS.CART}
-                  variant="filled"
-                  className={`w-full text-center text-sm md:py-[12px]`}
+                  variant="outline-secondary"
+                  className={`w-full uppercase text-center text-sm xs:py-[12px] md:py-[17px]`}
                 >
-                  Xem tất cả
+                  Tiếp tục với hình thức giao hàng
                 </Button>
               </div>
-            </ul>
-          </div>
+            </div>
+          </Drawer>
+
           <div className="header__info-profile group/hover relative">
             <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24">
               <path

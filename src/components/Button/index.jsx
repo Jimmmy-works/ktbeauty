@@ -19,8 +19,19 @@ const Button = ({
         rounded-[50px]  group/hover ${
           isActive === true ? "bg-primary text-white" : "text-primary bg-white"
         }`;
+      case "outline-secondary":
+        return ` hover:bg-secondary hover:text-white border-solid border border-secondary   
+        rounded-[50px]  group/hover ${
+          isActive === true
+            ? "bg-secondary text-white"
+            : "text-secondary bg-white"
+        }`;
       case "filled":
         return `text-white bg-primary hover:opacity-90   group/hover ${
+          isActive === true ? "opacity-90" : "opacity-100"
+        }`;
+      case "secondary":
+        return `text-white bg-secondary hover:opacity-90 rounded-[20px]   group/hover ${
           isActive === true ? "opacity-90" : "opacity-100"
         }`;
 

@@ -1,13 +1,13 @@
 .header {
-  @apply h-header fixed w-full left-0 top-0 shadow-header z-[999] bg-white;
+  @apply h-header fixed w-full left-0 top-[30px] shadow-header z-[999] bg-white;
   .sub {
     @apply p-[10px_14px_0px]  top-[120%] -left-[75%] absolute 
     bg-white shadow-header  transition-all duration-300 invisible opacity-0;
     &__item {
-      @apply w-full min-w-max  cursor-pointer flex items-center pb-[14px]
+      @apply w-full min-w-max  cursor-pointer flex items-center pb-[10px]
       gap-2;
       a {
-        @apply text-sm leading-[20px] text-black-555 font-om  w-full
+        @apply text-sm leading-[20px] text-black-555 font-osr w-full
         duration-400 transition-colors max-w-[300px];
       }
       svg {
@@ -22,6 +22,9 @@
       }
     }
   }
+  &__main {
+    @apply h-full container flex items-center justify-between;
+  }
   &__menu {
     @apply h-full center-absolute flex items-center lg:gap-[20px] xl:gap-[40px];
     &-item {
@@ -32,8 +35,8 @@
         }
       }
       a {
-        @apply flex items-center h-full text-sm text-black-555 font-osb  
-          duration-400 cursor-pointer gap-[5px] transition-colors;
+        @apply flex items-center h-full text-sm text-black-555 font-osr font-semibold  
+          duration-400 cursor-pointer gap-[5px] transition-colors capitalize;
         .arrow-down {
           @apply duration-400 transition-transform;
           path {
@@ -42,12 +45,12 @@
         }
         &:hover,
         &.active {
-          @apply text-primary;
+          @apply text-black;
           .arrow-down {
             @apply -rotate-180;
             svg {
               path {
-                @apply fill-primary;
+                @apply fill-black;
               }
             }
           }
@@ -91,11 +94,20 @@
       }
     }
   }
+  &__advertisement {
+    @apply fixed w-full left-0 top-0 flex items-center justify-center gap-2
+     bg-header-banner py-[9px];
+    p {
+      @apply text-xs font-om text-white relative flex items-center justify-center
+      before:rounded-[50%] gap-1 before:block before:h-[4px] 
+      before:w-[4px] before:bg-white;
+    }
+  }
   &__logo {
     @apply md:-translate-x-[65%] md:-translate-y-1/2
     lg:translate-x-0 lg:translate-y-0 lg:static md:absolute md:top-1/2 md:left-1/2;
     svg {
-      @apply xs:w-[90px] md:w-[120px] lg:w-[150px];
+      @apply xs:w-[90px] md:w-[120px] lg:w-[120px];
     }
   }
 }

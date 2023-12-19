@@ -3,6 +3,7 @@ import { PATHS } from "@/contants/path";
 import productService from "@/service/productService";
 import { cartActions } from "@/store/reducer/cartReducer";
 import { removeAccents } from "@/utils/removeAccents";
+import useWindowSize from "@/utils/windowResize";
 import { limit } from "firebase/firestore";
 import queryString from "query-string";
 import { useEffect, useState } from "react";
@@ -10,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 const useHeader = () => {
   const _limit = 9;
+  const { width } = useWindowSize();
   const { categories, products } = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const { isNavbar, onToggleNav, onAuthenModal, onActiveLinkTab, onLogout } =
@@ -80,6 +82,7 @@ const useHeader = () => {
     productListSearch,
     onChangeCategory,
     categoryTab,
+    width,
   };
   return { headerProps };
 };

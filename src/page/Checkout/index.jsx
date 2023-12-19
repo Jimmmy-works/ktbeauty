@@ -2,7 +2,6 @@ import BreadCrumb from "@/components/BreadCrumb";
 import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
 import { createOrder } from "@/store/reducer/orderReducer";
-import { formatPriceVND } from "@/utils/formatPrice";
 import { removeAccents } from "@/utils/removeAccents";
 import useWindowSize from "@/utils/windowResize";
 import { Checkbox, Empty, Select, Switch, Tooltip, message } from "antd";
@@ -15,6 +14,7 @@ import useCheckout from "./useCheckout";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
+import { formatPriceVND } from "@/utils/formatPrice";
 const SelectWrapper = styled.div`
   .select-antd-wrapper {
     background-color: #f9f9f9;
@@ -114,8 +114,8 @@ const Checkout = () => {
   } = form || {};
   const discountCode = localStorage.getItem("discount");
   const shipping = localStorage.getItem("shipping");
-  const total = localStorage.getItem("total");
-  const subTotal = localStorage.getItem("subTotal");
+  const total = Number(localStorage.getItem("total"));
+  const subTotal = Number(localStorage.getItem("subTotal"));
   const handleChangeSwitch = () => {
     onToggleSwitch();
   };

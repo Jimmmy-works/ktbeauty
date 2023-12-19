@@ -163,23 +163,32 @@ const DashboardAnalyst = () => {
     try {
       let allMonths = [];
       const today = await onGetSoldProducts({
+        limit: 100000,
+        page: 0,
         startDate: zeroTimeToday,
         endDate: endDay,
       });
       // const startToCurrent = await onGetSoldProducts({
+      // limit: 100000,
+      // page:0,
       //   startDate: startMonth,
       //   endDate: currentDayInMonth,
       // });
       const zeroDayToCurrentDay = await onGetSoldProducts({
+        limit: 100000,
+        page: 0,
         startDate: zeroDay,
         endDate: currentDayInMonth,
       });
       const currentMonth = await onGetSoldProducts({
+        limit: 100000,
+        page: 0,
         startDate: startMonth,
         endDate: endMonth,
       });
       // const allDayInYear = await onGetSoldProducts({
-      //   startDate: zeroDay,
+      //   startDate: zeroDay, // limit: 100000,
+      // page:0,
       //   endDate: startToEndInYear,
       // });
       // const currentMonth = await onGetSoldProducts({});
@@ -194,7 +203,8 @@ const DashboardAnalyst = () => {
       //   ).toISOString();
       //   const response = await onGetSoldProducts({
       //     startDate: startMonth,
-      //     endDate: endMonth,
+      //     endDate: endMonth, // limit: 100000,
+      // page:0,
       //   });
       //   allMonths.push(response);
       // }
@@ -221,27 +231,6 @@ const DashboardAnalyst = () => {
   //     handleSoldProducts();
   //   }
   // }, [revenueObj, soldProductObj]);
-  const optionSelectDate = [
-    [
-      {
-        value: "three",
-        label: "Jack",
-      },
-      {
-        value: "lucy",
-        label: "Lucy",
-      },
-      {
-        value: "Yiminghe",
-        label: "yiminghe",
-      },
-      {
-        value: "disabled",
-        label: "Disabled",
-        disabled: true,
-      },
-    ],
-  ];
   const customDataRevenueBar = useMemo(() => {
     if (Object?.keys(revenueFilter)?.length) {
       return revenueFilter?.data?.data?.map((month) => Math.round(month?.data));
@@ -262,35 +251,21 @@ const DashboardAnalyst = () => {
   const customDataSoldProductLine = useMemo(() => {
     if (Object?.keys(soldProductFilter)?.length) {
       return soldProductFilter?.data?.data?.map((month) =>
-        Math.round(month?.data)
+        Math.round(month?.sold)
       );
     } else if (
       !Object?.keys(soldProductFilter)?.length &&
       Object?.keys(soldProductObj)?.length
     ) {
       return soldProductObj?.currentMonth?.data?.map((month) =>
-        Math.round(month?.data)
+        Math.round(month?.sold)
       );
     } else if (
       Object.keys(soldProductObj).length < 1 &&
       Object.keys(soldProductFilter).length < 1
     ) {
-      return [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
+      return [100, 250, 300, 450, 500, 650, 700, 850, 900, 1050, 1100, 1250];
     }
-
-    // if (Object?.keys(soldProductFilter)?.length) {
-    //   return [soldProductFilter?.data];
-    // } else if (
-    //   !Object?.keys(soldProductFilter)?.length &&
-    //   Object?.keys(soldProductObj)?.length
-    // ) {
-    //   return soldProductObj?.allMonths?.map((month) => Math.round(month?.data));
-    // } else if (
-    //   Object.keys(soldProductObj).length < 1 &&
-    //   Object.keys(soldProductFilter).length < 1
-    // ) {
-    //   return [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
-    // }
   }, [soldProductObj, soldProductFilter]);
   const customLabelRevenueBar = useMemo(() => {
     if (Object?.keys(revenueFilter)?.length) {
@@ -318,18 +293,14 @@ const DashboardAnalyst = () => {
   const customLabelSoldLine = useMemo(() => {
     if (Object?.keys(soldProductFilter)?.length) {
       return soldProductFilter?.data?.data?.map((month) => {
-        return `${month?.date?.day?.toString()?.padStart(2, 0)}/${
-          month?.date?.month
-        }/${month?.date?.year}`;
+        return `${time.sold}`;
       });
     } else if (
       !Object?.keys(soldProductFilter)?.length &&
       Object?.keys(soldProductObj)?.length
     ) {
       return soldProductObj?.currentMonth?.data?.map((time) => {
-        return `${time?.date?.day?.toString()?.padStart(2, 0)}/${
-          time?.date?.month
-        }/${time?.date?.year}`;
+        return `${time.sold}`;
       });
     } else if (
       Object.keys(soldProductObj).length < 1 &&
@@ -343,14 +314,7 @@ const DashboardAnalyst = () => {
     datasets: [
       {
         type: "bar",
-        label: Object?.keys(revenueFilter)?.length
-          ? `${revenueFilter?.start.day}/${revenueFilter?.start.month}/${
-              revenueFilter?.start.year
-            } - ${revenueFilter?.end?.day}/${revenueFilter?.end?.month}/${
-              revenueFilter?.end?.year
-            }: ${formatPriceVND(revenueFilter?.data?.total)}
-          `
-          : "Doanh thu",
+        label: "Doanh thu",
         data: customDataRevenueBar,
         borderColor: "rgba(53, 162, 235,1)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
@@ -380,100 +344,11 @@ const DashboardAnalyst = () => {
       },
     ],
   };
-  // const testColor = [
-  //   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-  // ];
-  // const mapColor = testColor?.map((color) => {
-  //   if (color === 0) {
-  //     return {
-  //       backgroundColor: "rgba(251, 8, 61, 0.2)",
-  //       borderColor: "rgba(255, 99, 132, 0.4)",
-  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
-  //     };
-  //   }
-  //   if (color === 1) {
-  //     return {
-  //       backgroundColor: "rgba(94, 255, 7, 0.2)",
-  //       borderColor: "rgba(99, 38, 52, 0.4)",
-  //       hoverBackgroundColor: "rgba(118, 41, 58, 0.7)",
-  //     };
-  //   }
-  //   if (color === 2) {
-  //     return {
-  //       backgroundColor: "rgba(218, 255, 5, 0.2)",
-  //       borderColor: "rgba(255, 99, 132, 0.4)",
-  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
-  //     };
-  //   }
-  //   if (color === 3) {
-  //     return {
-  //       backgroundColor: "rgba(4, 125, 255, 0.2)",
-  //       borderColor: "rgba(255, 99, 132, 0.4)",
-  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
-  //     };
-  //   }
-  //   if (color === 4) {
-  //     return {
-  //       backgroundColor: "rgba(255, 5, 5, 0.2)",
-  //       borderColor: "rgba(255, 99, 132, 0.4)",
-  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
-  //     };
-  //   }
-  //   if (color === 5) {
-  //     return {
-  //       backgroundColor: "rgba(5, 255, 55, 0.2)",
-  //       borderColor: "rgba(255, 99, 132, 0.4)",
-  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
-  //     };
-  //   }
-  //   if (color === 6) {
-  //     return {
-  //       backgroundColor: "rgba(255, 225, 0, 0.2)",
-  //       borderColor: "rgba(255, 99, 132, 0.4)",
-  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
-  //     };
-  //   }
-  //   if (color === 7) {
-  //     return {
-  //       backgroundColor: "rgba(0, 255, 136, 0.2)",
-  //       borderColor: "rgba(255, 99, 132, 0.4)",
-  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
-  //     };
-  //   }
-  //   if (color === 8) {
-  //     return {
-  //       backgroundColor: "rgba(238, 0, 255, 0.2)",
-  //       borderColor: "rgba(255, 99, 132, 0.4)",
-  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
-  //     };
-  //   }
-  //   if (color === 9) {
-  //     return {
-  //       backgroundColor: "rgba(255, 213, 3, 0.2)",
-  //       borderColor: "rgba(255, 99, 132, 0.4)",
-  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
-  //     };
-  //   }
-  //   if (color === 10) {
-  //     return {
-  //       backgroundColor: "rgba(0, 208, 255, 0.2)",
-  //       borderColor: "rgba(255, 99, 132, 0.4)",
-  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
-  //     };
-  //   }
-  //   if (color === 11) {
-  //     return {
-  //       backgroundColor: "rgba(255, 93, 5, 0.2)",
-  //       borderColor: "rgba(255, 99, 132, 0.4)",
-  //       hoverBackgroundColor: "rgba(255, 99, 132, 0.7)",
-  //     };
-  //   }
-  // });
   const dataPies = {
     labels: customLabelSoldLine,
     datasets: [
       {
-        type: "pie",
+        type: "doughnut",
         label: "Đã bán",
         data: customDataSoldProductLine,
         // backgroundColor: mapColor?.map((item) => item?.backgroundColor),
@@ -545,8 +420,7 @@ const DashboardAnalyst = () => {
               startDates?.$M,
               startDates?.$D,
               0,
-              0,
-              1
+              0
             ).toISOString(),
             endDate: new Date(
               endDates?.$y,
@@ -595,8 +469,7 @@ const DashboardAnalyst = () => {
               startDates?.$M,
               startDates?.$D,
               0,
-              0,
-              1
+              0
             ).toISOString(),
             endDate: new Date(
               endDates?.$y,
@@ -651,9 +524,11 @@ const DashboardAnalyst = () => {
     const startDates = dates?.[0];
     const endDates = dates?.[1];
     try {
-      if (dates) {
+      if (dates?.length) {
         if (startDates?.$d.toString() === endDates?.$d.toString()) {
           const response = await onGetSoldProducts({
+            limit: 100000,
+            page: 0,
             startDate: new Date(
               startDates?.$y,
               startDates?.$M,
@@ -672,11 +547,12 @@ const DashboardAnalyst = () => {
           });
           if (response?.code === 200)
             setSoldProductFilter({
-              data: response?.data,
+              data: response,
               start: {
                 day: startDates?.$D,
                 month: startDates?.$M,
                 hour: startDates?.$H,
+                year: startDates?.$y,
                 localeDate: new Date(
                   startDates?.$y,
                   startDates?.$M,
@@ -689,6 +565,7 @@ const DashboardAnalyst = () => {
                 day: endDates?.$D,
                 month: endDates?.$M,
                 hour: endDates?.$H,
+                year: endDates?.$y,
                 localeDate: new Date(
                   endDates?.$y,
                   endDates?.$M,
@@ -701,6 +578,8 @@ const DashboardAnalyst = () => {
             });
         } else {
           const response = await onGetSoldProducts({
+            limit: 100000,
+            page: 0,
             startDate: new Date(
               startDates?.$y,
               startDates?.$M,
@@ -719,11 +598,12 @@ const DashboardAnalyst = () => {
           });
           if (response?.code === 200)
             setSoldProductFilter({
-              data: response?.data,
+              data: response,
               start: {
                 day: startDates?.$D,
                 month: startDates?.$M,
                 hour: startDates?.$H,
+                year: startDates?.$y,
                 localeDate: new Date(
                   startDates?.$y,
                   startDates?.$M,
@@ -736,6 +616,7 @@ const DashboardAnalyst = () => {
                 day: endDates?.$D,
                 month: endDates?.$M,
                 hour: endDates?.$H,
+                year: endDates?.$y,
                 localeDate: new Date(
                   endDates?.$y,
                   endDates?.$M,
@@ -755,12 +636,120 @@ const DashboardAnalyst = () => {
       console.log("error", error);
     }
   };
+  // const onChangeDatePickerSoldProducts = async (dates, dateStrings) => {
+  //   const startDates = dates?.[0];
+  //   const endDates = dates?.[1];
+  //   try {
+  //     if (dates) {
+  //       if (startDates?.$d.toString() === endDates?.$d.toString()) {
+  //         const response = await onGetSoldProducts({
+  //           startDate: new Date(
+  //             startDates?.$y,
+  //             startDates?.$M,
+  //             startDates?.$D,
+  //             0,
+  //             0
+  //           ).toISOString(),
+  //           endDate: new Date(
+  //             endDates?.$y,
+  //             endDates?.$M,
+  //             endDates?.$D,
+  //             23,
+  //             59,
+  //             59
+  //           ).toISOString(),
+  //         });
+  //         if (response?.code === 200)
+  //           setSoldProductFilter({
+  //             data: response?.data,
+  //             start: {
+  //               day: startDates?.$D,
+  //               month: startDates?.$M,
+  //               hour: startDates?.$H,
+  //               localeDate: new Date(
+  //                 startDates?.$y,
+  //                 startDates?.$M,
+  //                 startDates?.$D,
+  //                 0,
+  //                 0
+  //               ).toISOString(),
+  //             },
+  //             end: {
+  //               day: endDates?.$D,
+  //               month: endDates?.$M,
+  //               hour: endDates?.$H,
+  //               localeDate: new Date(
+  //                 endDates?.$y,
+  //                 endDates?.$M,
+  //                 endDates?.$D,
+  //                 23,
+  //                 59,
+  //                 59
+  //               ).toISOString(),
+  //             },
+  //           });
+  //       } else {
+  //         const response = await onGetSoldProducts({
+  //           startDate: new Date(
+  //             startDates?.$y,
+  //             startDates?.$M,
+  //             startDates?.$D,
+  //             0,
+  //             0
+  //           ).toISOString(),
+  //           endDate: new Date(
+  //             endDates?.$y,
+  //             endDates?.$M,
+  //             endDates?.$D,
+  //             23,
+  //             59,
+  //             59
+  //           ).toISOString(),
+  //         });
+  //         if (response?.code === 200)
+  //           setSoldProductFilter({
+  //             data: response?.data,
+  //             start: {
+  //               day: startDates?.$D,
+  //               month: startDates?.$M,
+  //               hour: startDates?.$H,
+  //               localeDate: new Date(
+  //                 startDates?.$y,
+  //                 startDates?.$M,
+  //                 startDates?.$D,
+  //                 0,
+  //                 0
+  //               ),
+  //             },
+  //             end: {
+  //               day: endDates?.$D,
+  //               month: endDates?.$M,
+  //               hour: endDates?.$H,
+  //               localeDate: new Date(
+  //                 endDates?.$y,
+  //                 endDates?.$M,
+  //                 endDates?.$D,
+  //                 23,
+  //                 59,
+  //                 59
+  //               ),
+  //             },
+  //           });
+  //       }
+  //     } else {
+  //       console.log("Clear");
+  //       setSoldProductFilter({});
+  //     }
+  //   } catch (error) {
+  //     console.log("error", error);
+  //   }
+  // };
   const onClick = (event) => {
     console.log("event", event);
   };
   /////
   const { data: dataTop10CountInStock } = useQuery(() => {
-    return dashboardService.getInventory(
+    return dashboardService.getTopRate(
       `?${queryString.stringify({
         limit: 10,
         type: "top-in-stock",
@@ -768,7 +757,7 @@ const DashboardAnalyst = () => {
     );
   });
   const { data: dataTop10Sold } = useQuery(() => {
-    return dashboardService.getInventory(
+    return dashboardService.getTopRate(
       `?${queryString.stringify({
         limit: 10,
         type: "top-sold",
@@ -1011,7 +1000,15 @@ const DashboardAnalyst = () => {
                   },
                   title: {
                     display: true,
-                    text: "Tổng doanh thu",
+                    text: Object?.keys(revenueFilter)?.length
+                      ? `Doanh thu: ${revenueFilter?.start.day}/${
+                          revenueFilter?.start.month
+                        }/${revenueFilter?.start.year} - ${
+                          revenueFilter?.end?.day
+                        }/${revenueFilter?.end?.month}/${
+                          revenueFilter?.end?.year
+                        }: ${formatPriceVND(revenueFilter?.data?.total)}`
+                      : "Tổng doanh thu",
                   },
                   scales: {
                     y: {
@@ -1043,7 +1040,7 @@ const DashboardAnalyst = () => {
                 onChange={onChangeDatePickerSoldProducts}
               />
             </CustomCalendar>
-            <Pie
+            <Line
               className="shadow-header p-[10px] rounded-[5px]"
               typeof="line"
               data={dataPies}

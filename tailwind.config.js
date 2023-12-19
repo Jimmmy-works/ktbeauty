@@ -104,6 +104,7 @@ export default {
           0 0.9375rem 1.40625rem rgba(0, 0, 0, 0.03),
           0 0.25rem 0.53125rem rgba(0, 0, 0, 0.05),
           0 0.125rem 0.1875rem rgba(0, 0, 0, 0.03)`,
+      card: `rgba(0, 0, 0, 0.15) 0px 2px 15px`,
       header: "0 5px 5px 0 rgba(0, 0, 0, 0.1)",
       authen: "5px 5px 5px 0 rgba(255, 255, 255, 0.9)",
       sm: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
@@ -953,9 +954,10 @@ export default {
       "black-ebe": "#ebebeb",
       "grey-999": "#999",
       "grey-f7f6": "#f7f6f6",
-      // primary: "#bf4352 ",
-      // secondary: "#967ADC",
-      primary: "#ff887b",
+      "header-banner": "#162818",
+      // primary: "#ff887b",
+      primary: "#01A98F",
+      secondary: "#94C83D",
       inherit: colors.inherit,
       current: colors.current,
       transparent: colors.transparent,
@@ -1016,7 +1018,7 @@ export default {
         lg: "970px",
         // lg: "984px",
         // 1280px
-        xl: "1200px",
+        xl: "1300px",
         // 1536px
         // "2xl": "1280px",
       },
@@ -1103,8 +1105,17 @@ export default {
             height: "76px",
           },
           "@media (min-width: 1024px)": {
-            height: "92px",
+            height: "80px",
           },
+          // "@media (min-width: 360px)": {
+          //   height: "56px",
+          // },
+          // "@media (min-width: 768px)": {
+          //   height: "76px",
+          // },
+          // "@media (min-width: 1024px)": {
+          //   height: "92px",
+          // },
         },
         ".pt-section": {
           "@media (min-width: 360px)": {
@@ -1136,6 +1147,9 @@ export default {
         },
         ".transform-3d-nav": {
           transform: "translate3d(100%,0,0)",
+        },
+        ".transform-3d-card": {
+          transform: "translate3d(0px,-10px,0px)",
         },
         ".transform-3d-0": {
           transform: "translate3d(0,0,0)",

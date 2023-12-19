@@ -185,11 +185,11 @@ export const getRevenue = createAsyncThunk(
     }
   }
 );
-export const getInventory = createAsyncThunk(
+export const getTopRate = createAsyncThunk(
   "dashboard/product/get/inventory",
   async (param, thunkAPI) => {
     try {
-      const inventotyData = await dashboardService.getInventory(param);
+      const inventotyData = await dashboardService.getTopRate(param);
       if (inventotyData?.status === 200) {
         thunkAPI.dispatch(dashboardActions.setInventory(inventotyData?.data));
       }

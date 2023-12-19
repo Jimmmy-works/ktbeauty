@@ -8,21 +8,10 @@ import Pagination from "@/components/Pagination";
 import ProductCard from "@/components/ProductCard";
 import SelectCustom from "@/components/Select/SelectCustom";
 import { PATHS } from "@/contants/path";
-import { THUNK_STATUS } from "@/contants/thunkstatus";
 import useWindowSize from "@/utils/windowResize";
 import { Empty, Tooltip } from "antd";
-import {
-  Link,
-  useLocation,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
 import styled from "styled-components";
 import useShop from "./useShop";
-import useQuery from "@/hooks/useQuery";
-import productService from "@/service/productService";
-import queryString from "query-string";
-import { useCallback, useEffect, useMemo } from "react";
 const EmptyWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -77,17 +66,14 @@ const Shop = () => {
   };
   const { width } = useWindowSize();
   //////
+
   const inputRangeProps = { updateQueryString, queryObject };
   return (
     <>
       <main className="main-wrapper ">
         <BreadCrumb>
-          <BreadCrumb.Item>
-            <Link to={`${PATHS.HOME}`}>Home</Link>
-          </BreadCrumb.Item>
-          <BreadCrumb.Item isActive>
-            <Link>Sản phẩm</Link>
-          </BreadCrumb.Item>
+          <BreadCrumb.Item link={`${PATHS.HOME}`}>Trang chủ</BreadCrumb.Item>
+          <BreadCrumb.Item isActive>Sản phẩm</BreadCrumb.Item>
         </BreadCrumb>
 
         <div className="container flex lg:flex-row xs:flex-col gap-[30px]">
@@ -181,9 +167,7 @@ const Shop = () => {
               </div>
             </div>
             <div
-              className={`flex items-center flex-wrap xs:gap-y-[20px] xs:gap-x-[14px] md:gap-[20px] 
-                    lg:gap-[30px] mb-[30px]   
-                      `}
+              className={`flex items-center flex-wrap xs:gap-y-[20px] gap-[10px]  mb-[30px] `}
             >
               {!loadingDataShop ? (
                 dataShop?.data?.data?.length ? (
@@ -193,7 +177,7 @@ const Shop = () => {
                         onLoadingImage={onImageLoading}
                         imageloading={imageloading}
                         key={`${item?._id}`}
-                        className={` xs:w-[calc(50%-7px)] md:w-[calc(50%-10px)] lg:w-[calc(33.333333%-20px)]`}
+                        className={` lg:w-[calc(25%-10px)] xs:w-[calc(50%-10px)] md:w-[calc(33.333333%-10px)]`}
                         item={item}
                         isProductDetail={true}
                         onAddToCart={onAddToCart}
@@ -208,7 +192,7 @@ const Shop = () => {
               ) : (
                 <div className="w-full flex flex-wrap gap-[10px]">
                   <LoadingSkeleton
-                    isClassName={`mb-[30px] xs:w-[calc(50%-7px)] md:w-[calc(50%-10px)] lg:w-[calc(33.33333%-20px)]`}
+                    isClassName={`mb-[30px] lg:w-[calc(25%-10px)] xs:w-[calc(50%-10px)] md:w-[calc(33.333333%-10px)]`}
                     isLoading={loadingDataShop}
                     isParagraph={2}
                     isArray={9}
