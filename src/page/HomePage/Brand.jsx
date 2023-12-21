@@ -17,7 +17,7 @@ const Brand = () => {
     "/assets/img/brand-7.svg",
   ];
   return (
-    <section className="scbrand pt-section">
+    <section className="scbrand m-section xs:my-[40px]">
       <div className="container">
         <div className="scbrand__list">
           <Swiper
@@ -31,7 +31,7 @@ const Brand = () => {
             }}
             breakpoints={{
               360: {
-                slidesPerView: 3,
+                slidesPerView: 4,
                 spaceBetween: 10,
               },
               768: {
@@ -49,7 +49,7 @@ const Brand = () => {
             {images?.map((img, index) => (
               <SwiperSlide key={`${img}${index}`}>
                 <img
-                  className="w-full xs:h-[80px] md:h-[100px]"
+                  className="w-full xs:h-[60px] md:h-[100px]"
                   src={img}
                   alt=""
                 />

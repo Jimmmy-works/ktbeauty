@@ -6,10 +6,12 @@ import useWindowSize from "@/utils/windowResize";
 import { Empty } from "antd";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import { Keyboard, Navigation } from "swiper/modules";
+import { FreeMode, Keyboard, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { Link, NavLink } from "react-router-dom";
+import { PATHS } from "@/contants/path";
 const EmptyWrapper = styled.div`
   margin-bottom: 12px;
   min-width: 200px;
@@ -57,29 +59,66 @@ const ShowcaseProduct = ({
   const refLoading = useRef();
   const { width } = useWindowSize();
   return (
-    <section className="scshowcaseproduct pt-section">
-      <div className="container">
+    <section className="scshowcaseproduct   ">
+      <div className="container ">
         <Textbox title={`Sản phẩm`}>
-          <div
-            className="scshowcaseproduct__top-category flex items-center justify-center gap-3
-          lg:flex-nowrap xs:flex-wrap"
-          >
-            {categories?.length > 0
-              ? categories?.map((cate) => {
-                  const { _id, name } = cate || {};
-                  return (
-                    <Button
-                      key={_id}
-                      variant="outline"
-                      className={`py-[5px] px-[10px] uppercase`}
-                      isActive={categoryTab?.name === name ? true : false}
-                      onClick={() => onChangeCategoryTab(cate)}
-                    >
-                      {name}
-                    </Button>
-                  );
-                })
-              : ""}
+          <div className="scshowcaseproduct__top ">
+            <div className={`prev  `}>
+              <svg className="" viewBox="0 0 24 24">
+                <path
+                  d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+            <div className={`next  `}>
+              <div className="rotate-180">
+                <svg viewBox="0 0 24 24">
+                  <path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" />
+                </svg>
+              </div>
+            </div>
+            <Swiper
+              className="overflow-y-visible "
+              wrapperClass="pb-0 "
+              grabCursor={true}
+              pagination={false}
+              slidesPerView={"auto"}
+              modules={[Navigation]}
+              navigation={{
+                prevEl: ".scshowcaseproduct__top .prev",
+                nextEl: ".scshowcaseproduct__top .next",
+              }}
+            >
+              {categories?.length > 0
+                ? categories?.map((cate) => {
+                    const { _id, name } = cate || {};
+                    return (
+                      <SwiperSlide
+                        className={`w-fit animate-link-hover-1   ${
+                          categoryTab?._id === _id ? "active" : ""
+                        }`}
+                        style={{ width: "fit-content" }}
+                        key={_id}
+                      >
+                        {console.log(
+                          "categoryTab?._id === _id",
+                          categoryTab?._id === _id
+                        )}
+                        <a
+                          onClick={() => onChangeCategoryTab(cate)}
+                          className={`${
+                            categoryTab?._id === _id ? "text-primary" : ""
+                          }
+                             `}
+                        >
+                          {name}
+                        </a>
+                      </SwiperSlide>
+                    );
+                  })
+                : ""}
+            </Swiper>
           </div>
         </Textbox>
         <div className="scshowcaseproduct__bottom">
@@ -93,24 +132,24 @@ const ShowcaseProduct = ({
                 breakpoints={{
                   360: {
                     slidesPerView: 2,
-                    spaceBetween: 20,
+                    spaceBetween: 10,
                   },
-                  576: {
+                  768: {
                     slidesPerView: 3,
-                    spaceBetween: 20,
+                    spaceBetween: 10,
                   },
                   1024: {
-                    slidesPerView: 4,
-                    spaceBetween: 30,
+                    spaceBetween: 15,
+                    slidesPerView: 5,
                   },
                 }}
                 navigation={{
-                  prevEl: ".scshowcaseproduct .prev",
-                  nextEl: ".scshowcaseproduct .next",
+                  prevEl: ".scshowcaseproduct__bottom .prev",
+                  nextEl: ".scshowcaseproduct__bottom .next",
                 }}
-                freeMode
                 grabCursor={true}
                 pagination={false}
+                freeMode={true}
                 loop={true}
               >
                 {dataShowcaseProduct?.data?.data.map((item) => {
@@ -151,18 +190,12 @@ const ShowcaseProduct = ({
               />
             )}
             <div
-              className={`prev shadow-header ${
+              className={`prev  ${
                 dataShowcaseProduct?.data?.data?.length > 4 ? "block" : "hidden"
               }`}
             >
-              <div
-                className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors rotate-180
-                group-hover/hover:bg-white"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  className="md:w-[14px] md:h-[14px] xs:h-[10px] xs:w-[10px]"
-                >
+              <div className="rotate-180 prev__wrapper">
+                <svg viewBox="0 0 24 24">
                   <path
                     fill="#fff"
                     d="m13.022 14.999v3.251c0 .412.335.75.752.75.188 0 .375-.071.518-.206 1.775-1.685 4.945-4.692 6.396-6.069.2-.189.312-.452.312-.725 0-.274-.112-.536-.312-.725-1.451-1.377-4.621-4.385-6.396-6.068-.143-.136-.33-.207-.518-.207-.417 0-.752.337-.752.75v3.251h-9.02c-.531 0-1.002.47-1.002 1v3.998c0 .53.471 1 1.002 1z"
@@ -172,20 +205,13 @@ const ShowcaseProduct = ({
               </div>
             </div>
             <div
-              className={`next shadow-header ${
+              className={`next ${
                 dataShowcaseProduct?.data?.data?.length > 4 ? "block" : "hidden"
               }`}
             >
-              <div
-                className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors 
-                group-hover/hover:bg-white"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  className="md:w-[14px] md:h-[14px] xs:h-[10px] xs:w-[10px]"
-                >
+              <div className="next__wrapper">
+                <svg viewBox="0 0 24 24">
                   <path
-                    fill="#fff"
                     d="m13.022 14.999v3.251c0 .412.335.75.752.75.188 0 .375-.071.518-.206 1.775-1.685 4.945-4.692 6.396-6.069.2-.189.312-.452.312-.725 0-.274-.112-.536-.312-.725-1.451-1.377-4.621-4.385-6.396-6.068-.143-.136-.33-.207-.518-.207-.417 0-.752.337-.752.75v3.251h-9.02c-.531 0-1.002.47-1.002 1v3.998c0 .53.471 1 1.002 1z"
                     className="group-hover/hover:fill-primary duration-400 transition-colors"
                   ></path>
@@ -193,6 +219,14 @@ const ShowcaseProduct = ({
               </div>
             </div>
           </div>
+        </div>
+        <div className="w-fit mx-auto">
+          <Link
+            to={`${PATHS.SHOP.INDEX}`}
+            class="btn-flip"
+            data-back="Đến shop"
+            data-front="Xem tất cả"
+          ></Link>
         </div>
       </div>
     </section>

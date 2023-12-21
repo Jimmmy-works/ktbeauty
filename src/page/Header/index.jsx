@@ -6,8 +6,9 @@ import { Drawer, Empty } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { Autoplay } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 import useHeader from "./useHeader";
-import { useDispatch } from "react-redux";
 const EmptyWrapper = styled.div`
   margin-bottom: 12px;
   min-width: 200px;
@@ -53,21 +54,6 @@ const Header = () => {
   const onToggleSearch = (e) => {
     setToggleSearch(!toggleSearch);
   };
-  useEffect(() => {
-    // const time = setTimeout(() => {
-    //   onSearchProduct(searchTerm);
-    // }, 500);
-    // if (!toggleSearch) {
-    //   setSearchTerm("");
-    // }
-    // return () => clearTimeout(time);
-    if (!toggleSearch) {
-      setSearchTerm("");
-    }
-  }, [searchTerm, toggleSearch]);
-  useEffect(() => {
-    setSearchTerm("");
-  }, [pathname]);
   const categoryAll = categories
     ?.filter((cate) => cate?.name === "all")
     ?.map((item) => item?._id);
@@ -102,11 +88,62 @@ const Header = () => {
     }
   };
   const listRef = useRef([]);
+  useEffect(() => {
+    // const time = setTimeout(() => {
+    //   onSearchProduct(searchTerm);
+    // }, 500);
+    // if (!toggleSearch) {
+    //   setSearchTerm("");
+    // }
+    // return () => clearTimeout(time);
+    if (!toggleSearch) {
+      setSearchTerm("");
+    }
+  }, [searchTerm, toggleSearch]);
+  useEffect(() => {
+    setSearchTerm("");
+    onClose();
+  }, [pathname]);
+  const onChange = (currentSlide) => {
+    console.log(currentSlide);
+  };
+  const contentStyle = {
+    margin: 0,
+    color: "#fff",
+    textAlign: "center",
+    background: "#364d79",
+  };
   return (
     <header className={`header`} ref={refHeader}>
       <div className="header__advertisement">
-        <p>Giảm 10% đơn 3 triệu - 20% cho đơn 5 triệu</p>
-        <p>Miễn phí tư vấn da</p>
+        {width > 834 ? (
+          <>
+            <p>Giao hàng 24h - Giảm 10% đơn 3 triệu - 20% cho đơn 5 triệu</p>
+            <p>Miễn phí tư vấn da</p>
+            <p>Flash Sale Upto 50% </p>
+          </>
+        ) : (
+          <Swiper
+            className="overflow-y-visible"
+            modules={[Autoplay]}
+            speed={600}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            freeMode
+            grabCursor={true}
+            pagination={false}
+            loop={true}
+          >
+            <SwiperSlide>
+              <p>Giao hàng 24h - Giảm 10% đơn 3 triệu - 20% cho đơn 5 triệu</p>
+            </SwiperSlide>
+            <SwiperSlide>
+              <p>Miễn phí tư vấn da</p>
+            </SwiperSlide>
+          </Swiper>
+        )}
       </div>
       <div className="header__main">
         <NavLink to={`${PATHS.HOME}`} className={`header__logo `}>
@@ -347,7 +384,7 @@ const Header = () => {
                 />
               </svg>
             </div>
-            <ul
+            {/* <ul
               className="absolute top-[150%] md:-right-[30%] lg:-right-[100%]
                invisible opacity-0 group-hover/hover:visible group-hover/hover:opacity-100
               group-hover/hover:top-[calc(100%+2px)] transition-all duration-400 shadow-[0_5px_5px_0_rgba(0,0,0,0.15)] bg-white"
@@ -428,7 +465,7 @@ const Header = () => {
                   Xem tất cả
                 </Button>
               </div>
-            </ul>
+            </ul> */}
           </div>
           <Drawer
             rootClassName="my-drawer"
@@ -540,22 +577,26 @@ const Header = () => {
                 )}
               </ul>
               <div
-                className={`flex flex-col gap-[16px] items-center justify-center border-solid border-t
+                className={`flex flex-col gap-[16px] items-start justify-start border-solid border-t
                  border-[rgba(5,5,5,0.06)] pt-[20px] `}
               >
-                <div className="w-full flex gap-1 items-center justify-between text-15px font-osb text-black">
-                  <p className="">Tổng giá trị đơn hàng</p>
-                  <p className="">{formatPriceVND(304000)}</p>
-                </div>
+                <p className="font-om text text-black">Ưu đãi</p>
                 <p className="font-om text text-black">
-                  Bạn có thể xem các chương trình khuyến mãi ở màn hình kế tiếp
+                  1/ Miễn phí vận chuyển cho đơn hàng từ{" "}
+                  {formatPriceVND(1000000)}
+                </p>
+                <p className="font-om text text-black">
+                  2/ Giảm 10% cho đơn hàng từ {formatPriceVND(3000000)}
+                </p>
+                <p className="font-om text text-black">
+                  3/ Giảm 20% cho đơn hàng từ {formatPriceVND(5000000)}
                 </p>
                 <Button
-                  link={PATHS.CART}
+                  link={PATHS.SHOP.INDEX}
                   variant="outline-secondary"
                   className={`w-full uppercase text-center text-sm xs:py-[12px] md:py-[17px]`}
                 >
-                  Tiếp tục với hình thức giao hàng
+                  Xem thêm các sản phẩm khác
                 </Button>
               </div>
             </div>

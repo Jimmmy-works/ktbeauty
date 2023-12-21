@@ -955,9 +955,21 @@ export default {
       "grey-999": "#999",
       "grey-f7f6": "#f7f6f6",
       "header-banner": "#162818",
-      // primary: "#ff887b",
-      primary: "#01A98F",
-      secondary: "#94C83D",
+      primary: "#ff887b",
+      secondary: "#ffc1c8",
+      ////////
+      // primary: "#87b0a5",
+      // secondary: "#628588",
+      // "nude-8be": "#ffd8be",
+      // "nude-edd": "#ffeedd",
+      // primary: "#c78283",
+      // "cosmetics-283": "#c78283",
+      // "cosmetics-9dc": "#f3d9dc",
+      // "cosmetics-ea8": "#d7bea8",
+      // "cosmetics-286": "#b49286",
+      // "cosmetics-253": "#744253",
+      // primary: "#01A98F",
+      // secondary: "#94C83D",
       inherit: colors.inherit,
       current: colors.current,
       transparent: colors.transparent,
@@ -989,7 +1001,7 @@ export default {
     fontFamily: {
       // gvr: ["MontserratAlternates-Regular"],
       gvr: ["GreatVibes-Regular"],
-
+      molla: ["Linearicons"],
       mam: ["MontserratAlternates-Medium"],
       mal: ["MontserratAlternates-Light"],
       mab: ["MontserratAlternates-Bold"],
@@ -1126,6 +1138,34 @@ export default {
           },
           "@media (min-width: 1024px)": {
             paddingTop: "80px",
+          },
+        },
+        ".p-section": {
+          "@media (min-width: 360px)": {
+            paddingTop: "50px",
+            paddingBottom: "50px",
+          },
+          "@media (min-width: 768px)": {
+            paddingTop: "60px",
+            paddingBottom: "60px",
+          },
+          "@media (min-width: 1024px)": {
+            paddingTop: "80px",
+            paddingBottom: "80px",
+          },
+        },
+        ".m-section": {
+          "@media (min-width: 360px)": {
+            marginTop: "50px",
+            marginBottom: "50px",
+          },
+          "@media (min-width: 768px)": {
+            marginTop: "60px",
+            marginBottom: "60px",
+          },
+          "@media (min-width: 1024px)": {
+            marginTop: "80px",
+            marginBottom: "80px",
           },
         },
         ".mt-section": {

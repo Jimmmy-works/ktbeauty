@@ -33,9 +33,9 @@ const StyleDiscount = styled.div`
     content: "";
     position: absolute;
     left: 0;
-    bottom: -4px;
-    border-top: 4px solid #c95e52;
-    border-left: 4px solid transparent;
+    bottom: -5px;
+    border-top: 5px solid #8ccc1d;
+    border-left: 5px solid transparent;
   }
 `;
 
@@ -60,7 +60,7 @@ const ProductCard = ({
         <div className="relative rounded-tl-[10px] rounded-tr-[10px]  group/img overflow-hidden ">
           {discount > 0 ? (
             <StyleDiscount
-              className="absolute top-3 left-[-3px] w-[50px] h-[16px] 
+              className="absolute top-4 left-[-3px] w-[50px] h-[16px] 
                     border border-red-200 text-xs tracking-wider  flex justify-center
                     bg-secondary items-center z-50 text-white font-om "
             >
@@ -83,14 +83,14 @@ const ProductCard = ({
           </Link>
           <div
             onClick={() => onAddToCart(item)}
-            className="py-[5px] w-[100%] bg-[rgba(0,0,0,0.03)] absolute bottom-0 translate-y-[100%]
+            className="py-[6px] w-[100%] bg-[rgba(0,0,0,0.03)] absolute bottom-0 translate-y-[100%]
             flex gap-[16px] items-center justify-center  group-hover/addtocart:translate-y-0 overflow-hidden 
             transition-all duration-400 z-[100]"
           >
-            <Tooltip placement="top" title="Thêm vào giỏ" color={`#999`}>
+            <Tooltip placement="top" title="Thêm vào giỏ" color={`#333`}>
               <div
                 className="cart xs:p-[6px] md:p-[6px] bg-white border-[1px] rounded-[50%] border-[#ececec]  max-w-[38px]
-                   cursor-pointer group/hover max-h-[38px] hover:bg-primary duration-300 transition-colors"
+                   cursor-pointer group/hover max-h-[38px] hover:bg-black-333 duration-300 transition-colors"
               >
                 <svg className=" w-[13px] h-[13px]" viewBox="0 0 24 24">
                   <path
@@ -100,10 +100,10 @@ const ProductCard = ({
                 </svg>
               </div>
             </Tooltip>
-            <Tooltip placement="top" color="#999" title="Yêu thích">
+            <Tooltip placement="top" color="#333" title="Yêu thích">
               <div
                 className="whitelist xs:p-[6px] md:p-[6px] bg-white border-[1px] rounded-[50%] border-[#ececec]  max-w-[38px]
-                                cursor-pointer group/hover hover:bg-primary duration-300 transition-colors max-h-[38px]"
+                                cursor-pointer group/hover hover:bg-black-333 duration-300 transition-colors max-h-[38px]"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -116,10 +116,10 @@ const ProductCard = ({
                 </svg>
               </div>
             </Tooltip>
-            <Tooltip placement="top" color="#999" title="Chia sẻ">
+            <Tooltip placement="top" color="#333" title="Chia sẻ">
               <div
                 className="share xs:p-[6px] md:p-[6px] bg-white border-[1px] rounded-[50%] border-[#ececec]  max-w-[38px]
-                                 cursor-pointer group/hover max-h-[38px] hover:bg-primary duration-300 transition-colors"
+                                 cursor-pointer group/hover max-h-[38px] hover:bg-black-333 duration-300 transition-colors"
               >
                 <svg
                   className="group-hover/hover:fill-white duration-300 transition-colors h-[13px] w-[13px]"
@@ -148,7 +148,7 @@ const ProductCard = ({
         <div className="xs:p-[10px] md:p-[10px_14px] ">
           <Link
             to={`${PATHS.SHOP.INDEX}/${item?._id}`}
-            className="text-center font-om text-15px capitalize text-black-555 
+            className="text-center font-ossb text-15px capitalize text-black-555 
                     xs:leading-[16px] md:leading-[18px] truncate whitespace-normal line-clamp-2 hover:text-primary
                     duration-400 transition-colors xs:min-h-[32px] md:min-h-[36px]"
           >
@@ -181,7 +181,7 @@ const ProductCard = ({
   }
   return (
     <div
-      className={`card shadow-header   ${
+      className={`card shadow-header rounded-[10px]   ${
         className ?? ""
       } transition-all duration-400`}
     >
@@ -196,7 +196,7 @@ const ProductCard = ({
       )}
       <Link
         to={`${PATHS.SHOP.INDEX}/${item?._id}`}
-        className={`block relative h-0 pb-[100%] 
+        className={`block relative h-0 pb-[100%] rounded-tl-[10px] rounded-tr-[10px]
         group overflow-hidden shine  transition-all duration-400 ${
           !imageloading ? "opacity-100" : "opacity-0"
         } `}
@@ -208,9 +208,9 @@ const ProductCard = ({
         <LazyLoadImage
           loading="lazy"
           wrapperClassName={`block relative h-0 pb-[100%] 
-                group overflow-hidden shine  transition-all duration-400`}
+                group overflow-hidden shine  transition-all duration-400 `}
           className={twMerge(
-            `center-absolute z-[10] object-cover  group-hover:scale-105  transition-all duration-400
+            ` center-absolute z-[10] object-cover w-full h-full  group-hover:scale-105  transition-all duration-400
              group-hover:opacity-100 group-hover:visible 
           `
           )}
@@ -238,6 +238,7 @@ const ProductCard = ({
             e.target.src = "/assets/img/error.png";
           }}
         /> */}
+
         {image?.length > 1 && (
           <img
             onLoad={onLoadingImage}
@@ -269,40 +270,54 @@ const ProductCard = ({
           </svg>
         </button>
       </Link>
-      <div className="text-center p-[20px_12px_14px]">
+      <div className="text-center p-[16px_12px_14px]">
         <Link
           to={`${PATHS.SHOP.INDEX}/${item?._id}`}
-          className="font-osb text-sm uppercase text-black-555 
+          className="font-ossb text-sm capitalize text-black-555 
                     md:leading-[18px] xs:leading-[16px] truncate whitespace-normal line-clamp-2 hover:text-primary
                     duration-400 transition-colors  xs:min-h-[32px] md:min-h-[36px]"
         >
           {name}
         </Link>
-        <div
-          className={`font-osb text-sm items-center justify-center flex xs:gap-[4px]
-           md:gap-2 text-primary mt-[6px] xs:mb-[4px] md:mb-[10px] 
-          leading-[18px] `}
-        >
-          <span className={`text-15px text-primary`}>
+        <div className="flex justify-center items-center font-osb  xs:gap-[4px] md:gap-2 mt-[8px]  ">
+          <span className="text-sm  text-black leading-[18px]">
             {formatPriceVND(price - discount)}
           </span>
           {discount > 1000 && width >= 388 ? (
-            <span className="line-through text-[14px] text-black-555">
+            <span className="line-through text-sm font-om text-black-be  leading-[18px]">
               {formatPriceVND(price)}
             </span>
           ) : (
             ""
           )}
         </div>
-
-        <Button
+        <div
+          className={`relative cursor-pointer pt-[8px] font-ossb text-sm  capitalize flex 
+            items-center justify-center gap-[6px] group hover:text-primary duration-300 transition-all ${
+              countInStock === 0
+                ? "pointer-events-none text-black-be"
+                : "pointer-events-auto text-black-555"
+            } group underline`}
           onClick={() => onAddToCart(item)}
-          outStock={countInStock === 0 && true}
-          className={`md:px-[30.35px] md:py-[10px] xs:px-[17px] xs:py-[5px] md:text-sm
-          xs:text-xs`}
         >
-          Thêm vào giỏ
-        </Button>
+          {countInStock !== 0 ? (
+            <div className="text-md ">
+              <svg className="h-[14px] w-[14px]" viewBox="0 0 491.00 491.00">
+                <path
+                  className="duration-300 group-hover:fill-primary fill-black-555"
+                  d="M484.058,112.28c-7.247-10.404-19.144-16.614-31.816-16.614h-94.624c13.291,2.775,24.603,11.714,29.943,24.615 c1.063,2.569,1.761,5.212,2.283,7.869h62.396c2.063,0,3.997,1.015,5.155,2.67c1.175,1.698,1.444,3.862,0.73,5.791 l-44.992,121.107c-0.905,2.451-3.267,4.102-5.887,4.102H154.939L114.734,90.314c-5.01-21.286-23.772-36.153-45.631-36.153H24.361 C10.912,54.161,0,65.065,0,78.522s10.912,24.362,24.361,24.362h43.286l54.131,230.919c4.914,20.864,23.058,35.479,44.36,36.042 c-12.532,9.103-20.764,23.765-20.764,40.436c0,27.662,22.429,50.078,50.09,50.078c27.662,0,50.072-22.416,50.072-50.078 c0-16.605-8.17-31.212-20.623-40.326h93.421c-12.454,9.114-20.634,23.721-20.634,40.326c0,27.662,22.428,50.078,50.083,50.078 c27.646,0,50.072-22.416,50.072-50.078c0-16.605-8.187-31.212-20.634-40.326h22.714c13.448,0,24.361-10.901,24.361-24.361 c0-13.457-10.913-24.361-24.361-24.361h-231.07l-6.313-26.931h244.693c16.113,0,30.703-10.143,36.338-25.256l44.994-121.118 C492.986,136.046,491.305,122.732,484.058,112.28z"
+                />
+                <path
+                  className="duration-300 group-hover:fill-primary fill-black-555"
+                  d="M275.701,209.63c1.776,1.785,4.109,2.673,6.437,2.673c2.334,0,4.667-0.888,6.426-2.673l67.007-66.987 c2.621-2.609,3.396-6.525,1.986-9.935c-0.923-2.221-3.986-5.64-8.422-5.64c-6.472,0-25.886,0-25.886,0V95.665v-55.89 c-0.017-5.035-4.094-9.137-9.138-9.137h-63.964c-5.044,0-9.12,4.102-9.12,9.12v55.908v31.412c0,0-19.408,0-25.878,0 c-4.144,0-7.473,3.332-8.424,5.622c-1.41,3.41-0.635,7.334,1.962,9.943L275.701,209.63z"
+                />
+              </svg>
+            </div>
+          ) : (
+            ""
+          )}
+          <div>{countInStock === 0 ? "Hết hàng" : " Thêm vào giỏ hàng"}</div>
+        </div>
       </div>
     </div>
   );

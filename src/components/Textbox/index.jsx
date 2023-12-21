@@ -1,9 +1,13 @@
 import React, { useMemo } from "react";
 
-const Textbox = ({ textSlider, children, title, desc }) => {
+const Textbox = ({ textSlider, children, title, desc, className }) => {
   if (textSlider)
     return (
-      <div className="textbox center-absolute text-center w-full">
+      <div
+        className={`textbox center-absolute text-center w-full ${
+          className ?? ""
+        }`}
+      >
         <h2 className="textbox__title font-gvr text-lg text-white mb-[10px]">
           {title}
         </h2>
@@ -15,9 +19,9 @@ const Textbox = ({ textSlider, children, title, desc }) => {
     );
   return (
     <div
-      className="border-b-[1px] border-dashed border-primary pb-[15px]
+      className={`border-b-[1px] border-dashed border-primary pb-[15px]
       xs:mb-[30px] lg:mb-[50px] flex items-center justify-between
-       xs:flex-col xs:gap-5 lg:gap-0 lg:flex-row "
+       xs:flex-col xs:gap-5 lg:gap-0 lg:flex-row   ${className ?? ""}`}
     >
       <div className="heading-section flex items-center gap-3">
         <svg className="w-[32px] h-[32px]" viewBox="0 0 347 511.82">

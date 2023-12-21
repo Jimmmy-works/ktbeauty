@@ -35,9 +35,8 @@ const useHome = () => {
     (state) => state.product
   );
   /// categoryProps
-  const [categoryTab, setCategoryTab] = useState({
-    name: CATEGORIES_OPTIONS.ALL,
-  });
+  const [categoryTab, setCategoryTab] = useState({});
+  console.log("categoryTab", categoryTab);
   const onChangeCategoryTab = (tab) => {
     setCategoryTab(tab);
     updateQueryString({ limit: 9, categories: tab?._id });

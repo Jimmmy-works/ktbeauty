@@ -894,6 +894,7 @@ input[type="file"]::file-selector-button:hover {
 }
 
 .my-drawer {
+  z-index: 10001;
   .ant-drawer-header {
     .ant-drawer-header-title {
       @apply flex-row-reverse;
@@ -901,5 +902,89 @@ input[type="file"]::file-selector-button:hover {
     .ant-drawer-title {
       @apply font-osb text-md;
     }
+  }
+}
+
+.animate-link-hover-1 {
+  @apply not-lastChild:border-r not-lastChild:border-solid 
+    not-lastChild:border-[#8a8a8a];
+  a {
+    @apply relative block font-om cursor-pointer capitalize p-[1px_10px]
+    transition-all duration-400;
+    &::before {
+      @apply z-10 content-[''] block h-[1px] w-[calc(100%-20px)] absolute bottom-[-2px] left-1/2
+      -translate-x-1/2 scale-x-0 origin-right transition-transform duration-400
+      bg-primary;
+    }
+    &:hover {
+      @apply text-primary;
+      &::before {
+        @apply -translate-x-1/2 scale-x-100 origin-left;
+      }
+    }
+  }
+  &.active {
+    a {
+      @apply text-primary;
+      &::before {
+        transform: translateX(-50%) scaleX(1);
+        transform-origin: left;
+      }
+    }
+  }
+}
+
+.btn-flip {
+  @apply font-osb;
+  opacity: 1;
+  outline: 0;
+  color: #fff;
+  line-height: 40px;
+  position: relative;
+  text-align: center;
+  letter-spacing: 1px;
+  display: inline-block;
+  text-decoration: none;
+  text-transform: capitalize;
+  &:hover {
+    &:after {
+      opacity: 1;
+      transform: translateY(0) rotateX(0);
+    }
+    &:before {
+      opacity: 0;
+      transform: translateY(50%) rotateX(90deg);
+    }
+  }
+  &::after,
+  &::before {
+    @apply shadow-header rounded-lg;
+  }
+  &:after {
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    color: #fff;
+    display: block;
+    transition: 0.5s;
+    position: absolute;
+    background: #ff887b;
+    content: attr(data-back);
+    transform: translateY(-50%) rotateX(90deg);
+  }
+  &:before {
+    top: 0;
+    left: 0;
+    opacity: 1;
+    color: #555;
+    display: block;
+    padding: 0 30px;
+    line-height: 40px;
+    transition: 0.5s;
+    position: relative;
+    background: #fff;
+    content: attr(data-front);
+    transform: translateY(0) rotateX(0);
   }
 }

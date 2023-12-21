@@ -1,5 +1,7 @@
 import Button from "@/components/Button";
 import Textbox from "@/components/Textbox";
+import { PATHS } from "@/contants/path";
+import { Link } from "react-router-dom";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 const Hero = () => {
@@ -58,8 +60,8 @@ const Hero = () => {
           <SwiperSlide>
             <div className="schero__slider-item bg-slider-1">
               <Textbox textSlider title={`Mega Store`} desc={`UP TO SALE 70%`}>
-                <div className="xs:mt-[20px] lg:mt-[38px] ">
-                  <Button link={`#`}>Browse Now</Button>
+                <div className="xs:mt-[20px] lg:mt-[38px]">
+                  <Button link={`${PATHS.SHOP.INDEX}`}>Xem ngay</Button>
                 </div>
               </Textbox>
             </div>
@@ -72,7 +74,7 @@ const Hero = () => {
                 desc={`Great shop`}
               >
                 <div className="xs:mt-[20px] lg:mt-[38px] ">
-                  <Button link={`#`}>Browse Now</Button>
+                  <Button link={`${PATHS.SHOP.INDEX}`}>Xem ngay</Button>
                 </div>
               </Textbox>
             </div>
@@ -85,7 +87,7 @@ const Hero = () => {
                 desc={`Skincare night`}
               >
                 <div className="xs:mt-[20px] lg:mt-[38px] ">
-                  <Button link={`#`}>Browse Now</Button>
+                  <Button link={`${PATHS.SHOP.INDEX}`}>Xem ngay</Button>
                 </div>
               </Textbox>
             </div>

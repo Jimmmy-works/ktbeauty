@@ -22,7 +22,7 @@ const Countdown = () => {
   // const countDownProps = { seconds, minutes, hours, days, weeks };
   return (
     <section
-      className="sccountdown bg-marketing-banner mt-section xs:py-[40px] md:py-[75px] bg-no-repeat bg-center bg-cover
+      className="sccountdown bg-marketing-banner  xs:py-[40px] md:py-[75px] bg-no-repeat bg-center bg-cover
     bg-fixed"
     >
       <div className="container flex lg:flex-row xs:flex-col lg:gap-0 gap-7 items-center justify-between">

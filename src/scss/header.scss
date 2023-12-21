@@ -95,7 +95,7 @@
     }
   }
   &__advertisement {
-    @apply fixed w-full left-0 top-0 flex items-center justify-center gap-2
+    @apply fixed w-full h-[30px] left-0 top-0 flex items-center justify-center gap-2
      bg-header-banner py-[9px];
     p {
       @apply text-xs font-om text-white relative flex items-center justify-center
