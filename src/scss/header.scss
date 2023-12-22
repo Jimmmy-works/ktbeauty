@@ -26,7 +26,7 @@
     @apply h-full container flex items-center justify-between;
   }
   &__menu {
-    @apply h-full center-absolute flex items-center lg:gap-[20px] xl:gap-[40px];
+    @apply h-full center-absolute flex items-center lg:gap-[20px] xl:gap-[30px];
     &-item {
       @apply h-full flex items-center;
       &:hover {

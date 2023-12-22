@@ -48,18 +48,18 @@ const EmptyWrapper = styled.div`
 `;
 const ShowcaseProduct = ({
   onChangeCategoryTab,
-  categoryTab,
   categories,
   imageloading,
   onImageLoading,
   onAddToCart,
   dataShowcaseProduct,
   loadingShowcaseProduct,
+  customCategoryTab,
 }) => {
   const refLoading = useRef();
   const { width } = useWindowSize();
   return (
-    <section className="scshowcaseproduct   ">
+    <section className="scshowcaseproduct relative">
       <div className="container ">
         <Textbox title={`Sản phẩm`}>
           <div className="scshowcaseproduct__top ">
@@ -96,19 +96,17 @@ const ShowcaseProduct = ({
                     return (
                       <SwiperSlide
                         className={`w-fit animate-link-hover-1   ${
-                          categoryTab?._id === _id ? "active" : ""
+                          customCategoryTab?.name === name ? "active" : ""
                         }`}
                         style={{ width: "fit-content" }}
                         key={_id}
                       >
-                        {console.log(
-                          "categoryTab?._id === _id",
-                          categoryTab?._id === _id
-                        )}
                         <a
                           onClick={() => onChangeCategoryTab(cate)}
                           className={`${
-                            categoryTab?._id === _id ? "text-primary" : ""
+                            customCategoryTab?.name === name
+                              ? "text-primary"
+                              : ""
                           }
                              `}
                         >
@@ -220,7 +218,7 @@ const ShowcaseProduct = ({
             </div>
           </div>
         </div>
-        <div className="w-fit mx-auto">
+        <div className="w-fit mx-auto md:mt-[10px]">
           <Link
             to={`${PATHS.SHOP.INDEX}`}
             class="btn-flip"

@@ -929,6 +929,7 @@ export default {
       "slider-2": "url('/assets/img/slider-2.jpg')",
       "slider-3": "url('/assets/img/slider-3.jpg')",
       "product-banner": "url('/assets/img/product-banner.jpg')",
+      "shop-banner": "url('/assets/img/shop-banner.jpg')",
       "footer-banner": "url('/assets/img/footer-banner.jpg')",
       "marketing-banner": "url('/assets/img/marketing-banner.jpg')",
       "advertising-banner-1": "url('/assets/img/advertising-banner-1.gif')",
@@ -956,7 +957,7 @@ export default {
       "grey-f7f6": "#f7f6f6",
       "header-banner": "#162818",
       primary: "#ff887b",
-      secondary: "#ffc1c8",
+      secondary: "#A50C20",
       ////////
       // primary: "#87b0a5",
       // secondary: "#628588",
@@ -1028,9 +1029,11 @@ export default {
         // md: "728px",
         // 1024px
         lg: "970px",
+        // lg: "970px",
         // lg: "984px",
         // 1280px
-        xl: "1300px",
+        xl: "1330px",
+        // xl: "1300px",
         // 1536px
         // "2xl": "1280px",
       },
@@ -1109,12 +1112,13 @@ export default {
         ".text-2xl": {
           fontSize: "72px",
         },
+
         ".h-header": {
           "@media (min-width: 360px)": {
             height: "56px",
           },
           "@media (min-width: 768px)": {
-            height: "76px",
+            height: "66px",
           },
           "@media (min-width: 1024px)": {
             height: "80px",
@@ -1128,6 +1132,17 @@ export default {
           // "@media (min-width: 1024px)": {
           //   height: "92px",
           // },
+        },
+        ".pt-main-wrapper": {
+          "@media (min-width: 360px)": {
+            paddingTop: "86px",
+          },
+          "@media (min-width: 768px)": {
+            paddingTop: "96px",
+          },
+          "@media (min-width: 1024px)": {
+            paddingTop: "110px",
+          },
         },
         ".pt-section": {
           "@media (min-width: 360px)": {

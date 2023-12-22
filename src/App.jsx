@@ -62,12 +62,14 @@ import DashboardUser from "./page/CMS/User";
 import Page404 from "./page/Page404";
 import store from "./store";
 import DashboardAnalyst from "./page/CMS/Analyst";
+import ConselPage from "./page/Consel";
 function App() {
   return (
     <Provider store={store}>
       <Suspense fallback={<LoadingPage />}>
         <BrowserRouter>
           <Routes>
+            <Route path={PATHS.COUNSEL} element={<ConselPage />} />
             <Route path={PATHS.HOME} element={<MainLayout />}>
               <Route index element={<HomePage />} />
               <Route path={PATHS.SHOP.INDEX} element={<Shop />} />

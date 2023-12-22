@@ -62,7 +62,7 @@ const ProductCard = ({
             <StyleDiscount
               className="absolute top-4 left-[-3px] w-[50px] h-[16px] 
                     border border-red-200 text-xs tracking-wider  flex justify-center
-                    bg-secondary items-center z-50 text-white font-om "
+                    bg-primary items-center z-50 text-white font-om "
             >
               {`-${Math.round((discount / price) * 100)}%`}
             </StyleDiscount>

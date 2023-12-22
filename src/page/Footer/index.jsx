@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="footer ">
+    <footer className="footer mt-section">
       <div className="footer__subscription bg-footer-banner bg-fixed bg-no-repeat bg-center xs:py-[40px] xl:py-[100px] h-full">
         <div
           className="container flex items-center justify-between xl:gap-0  xl:flex-row 

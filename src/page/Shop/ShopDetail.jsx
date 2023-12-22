@@ -19,6 +19,7 @@ import useShop from "./useShop";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import queryString from "query-string";
 const StyleRate = styled.div`
   display: flex;
   gap: 8px;
@@ -36,16 +37,6 @@ const StyleRate = styled.div`
     }
   }
 `;
-const StyleDiscount = styled.div`
-  &::before {
-    content: "";
-    position: absolute;
-    right: 0;
-    bottom: -5px;
-    border-top: 5px solid #bd6960;
-    border-right: 5px solid transparent;
-  }
-`;
 const ShopDetail = () => {
   const {
     productDetail,
@@ -53,6 +44,7 @@ const ShopDetail = () => {
     imageloading,
     onImageLoading,
     slugParams,
+    findCategoryAll,
   } = useShop();
   const {
     _id,
@@ -103,13 +95,15 @@ const ShopDetail = () => {
   return (
     <main className="main-wrapper shoppage">
       <BreadCrumb>
-        <BreadCrumb.Item link={`${PATHS.HOME}`}>
-          {/* <Link to={`${PATHS.HOME}`}>Home</Link> */}
-          Trang chủ
-        </BreadCrumb.Item>
-        <BreadCrumb.Item link={`${PATHS.SHOP.INDEX}`}>
+        <BreadCrumb.Item link={`${PATHS.HOME}`}>Trang chủ</BreadCrumb.Item>
+        <BreadCrumb.Item
+          link={`${PATHS.SHOP.INDEX}?${queryString.stringify({
+            limit: 9,
+            page: 0,
+            categories: findCategoryAll?._id,
+          })}`}
+        >
           Sản phẩm
-          {/* <Link to={`${PATHS.SHOP.INDEX}`}>Sản phẩm</Link> */}
         </BreadCrumb.Item>
         <BreadCrumb.Item isActive>
           {statusGetProductDetail === THUNK_STATUS.fulfilled ? (

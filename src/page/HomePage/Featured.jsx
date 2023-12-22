@@ -20,7 +20,10 @@ const Featured = ({
   loadingFeatured,
 }) => {
   return (
-    <section className="scfeatured ">
+    <section
+      className="scfeatured 
+    "
+    >
       <div className="container">
         <div className="scfeatured__tabs  ">
           <div
@@ -204,7 +207,7 @@ const Featured = ({
             )}
           </div>
         </div>
-        <div className="w-fit mx-auto xs:mt-[20px] md:mt-[32px]">
+        <div className="w-fit mx-auto xs:mt-[30px] lg:mt-[40px]">
           <Link
             to={`${PATHS.SHOP.INDEX}`}
             class="btn-flip"

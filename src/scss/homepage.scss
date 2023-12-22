@@ -61,7 +61,8 @@
   }
 }
 .scfeatured {
-  @apply mt-section p-section  bg-[#333];
+  @apply mt-section p-section bg-gradient-to-r to-[#313131] from-[#393939];
+
   &__tabs {
     @apply xs:flex-wrap xs:gap-[14px] lg:flex-nowrap flex items-center justify-center
            xs:mb-[30px] lg:mb-[50px];
@@ -106,7 +107,7 @@
   }
 }
 .scshowcaseproduct {
-  @apply bg-[#f9f9f9] p-section;
+  @apply pt-section;
   .swiper-wrapper {
     @apply pb-[20px];
   }

@@ -2,14 +2,13 @@ import { CATEGORIES_OPTIONS, FEATURED_OPTIONS } from "@/contants/general";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import useQuery from "@/hooks/useQuery";
-import dashboardService from "@/service/dashboardService";
 import productService from "@/service/productService";
 import { cartActions } from "@/store/reducer/cartReducer";
 import { message } from "antd";
 import queryString from "query-string";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const useHome = () => {
   const [imageloading, setImageLoading] = useState(true);
@@ -17,15 +16,9 @@ const useHome = () => {
     setImageLoading(false);
   };
   ////
-  const { search, pathname } = useLocation();
+  const { search } = useLocation();
   const queryObject = queryString.parse(search);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const updateQueryString = (queryObject) => {
-    const newQuerryString = queryString.stringify({
-      ...queryObject,
-    });
-    setSearchParams(new URLSearchParams(newQuerryString));
-  };
+
   //// redux
   const dispatch = useDispatch();
   const { updateStatusCreateCart, cartInfo } = useSelector(
@@ -36,10 +29,20 @@ const useHome = () => {
   );
   /// categoryProps
   const [categoryTab, setCategoryTab] = useState({});
-  console.log("categoryTab", categoryTab);
+  const customCategoryTab = useMemo(() => {
+    const findCategories = categories?.find((cate) => {
+      if (cate?.name === CATEGORIES_OPTIONS.ALL) {
+        return cate?._id;
+      }
+    });
+    if (Object.keys(categoryTab).length > 0) {
+      return categoryTab;
+    } else {
+      return findCategories;
+    }
+  }, [categoryTab, categories]);
   const onChangeCategoryTab = (tab) => {
     setCategoryTab(tab);
-    updateQueryString({ limit: 9, categories: tab?._id });
   };
   /// featuredProps
   const [featuerdTab, setFeaturedTab] = useState(FEATURED_OPTIONS.TOP_SOLD);
@@ -117,19 +120,17 @@ const useHome = () => {
   const { data: dataShowcaseProduct, loading: loadingShowcaseProduct } =
     useQuery(
       (query) => {
-        if (search) {
-          return productService.getProductSelected(
-            query ||
-              `?${queryString.stringify({
-                ...queryObject,
-                limit: 9,
-                sort: "newest",
-                categories: categoryTab?._id?.toString(),
-              })}`
-          );
-        }
+        return productService.getProductSelected(
+          query ||
+            `?${queryString.stringify({
+              ...queryObject,
+              limit: 9,
+              sort: "newest",
+              categories: categoryTab?._id?.toString(),
+            })}`
+        );
       },
-      [search]
+      [categoryTab]
     );
   const { data: dataFeatured, loading: loadingFeatured } = useQuery(() => {
     return productService.getTopRate(
@@ -150,6 +151,7 @@ const useHome = () => {
     onAddToCart,
     dataShowcaseProduct,
     loadingShowcaseProduct,
+    customCategoryTab,
   };
   const featuredProps = {
     onChangeFeaturedTab,

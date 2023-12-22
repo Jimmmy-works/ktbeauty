@@ -71,7 +71,6 @@ const useShop = () => {
   const [optionSortSelected, setOptionSortSelected] = useState(
     OPTION_SORT.NEWEST
   );
-  console.log("selectedFilters", selectedFilters);
   ////// Sort
   const optionSort = [
     // { value: 1, name: "all", label: "Sort By Popularity" },
@@ -374,10 +373,7 @@ const useShop = () => {
               page: pageCurrent - 1 || 0,
               limit: _limit || 9,
               sort: optionSortSelected || "newest",
-              categories:
-                selectedFilters?.toString() ||
-                defaultFilters?.categories ||
-                findCategoryAll?._id,
+              categories: selectedFilters?.toString() || findCategoryAll?._id,
               priceStart: newMin,
               priceEnd: newMax,
             })}`

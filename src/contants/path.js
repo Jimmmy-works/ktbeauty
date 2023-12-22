@@ -35,6 +35,7 @@ export const PATHS = {
 
   CHECKOUT: "/checkout",
   CART: "/cart",
+  COUNSEL: "/counsel",
   COMPLETE: "/complete" + "/:slug",
   NOT_FOUND: "/not-found",
 };

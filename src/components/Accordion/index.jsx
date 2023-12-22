@@ -32,7 +32,7 @@ const Accordion = ({
         </div>
       </div>
       <div
-        className="accordion__content overflow-hidden"
+        className={`accordion__content overflow-hidden `}
         ref={refContent}
         style={{
           maxHeight: `${

@@ -8,9 +8,7 @@ export const productService = {
   getAllProduct: (payload) => {
     if (payload) {
       return axios.get(
-        `${BASE_URL}/api/product/get-all-product?limit=${
-          payload?.limit || 9
-        }&page=${payload?.page || 0}`
+        `${BASE_URL}/api/product/get-all-product?limit=${payload?.limit}&page=${payload?.page}`
       );
     } else {
       return axios.get(`${BASE_URL}/api/product/get-all-product`);

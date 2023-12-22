@@ -70,41 +70,64 @@ const Shop = () => {
   const inputRangeProps = { updateQueryString, queryObject };
   return (
     <>
+      {width < 1280 && (
+        <div
+          className="fixed z-[10] left-[5%] bottom-[20px] 
+            p-[7px] md:p-[13px] flex items-center  gap-2  bg-black-333 rounded-[50%]"
+          onClick={onToggleFilter}
+        >
+          <svg
+            className="rotate-[90deg] w-[20px] h-[20px] fill-white"
+            viewBox="0 0 24 24"
+          >
+            <path d="M17 8c.552 0 1 .449 1 1s-.448 1-1 1-1-.449-1-1 .448-1 1-1zm0-2c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm-10 6c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm10-8c.343 0 .677.035 1 .101v-2.101c0-.552-.447-1-1-1s-1 .448-1 1v2.101c.323-.066.657-.101 1-.101zm-10 6c.343 0 .677.035 1 .101v-8.101c0-.552-.447-1-1-1s-1 .448-1 1v8.101c.323-.066.657-.101 1-.101zm10 4c-.343 0-.677-.035-1-.101v8.101c0 .552.447 1 1 1s1-.448 1-1v-8.101c-.323.066-.657.101-1 .101zm-10 6c-.343 0-.677-.035-1-.101v2.101c0 .552.447 1 1 1s1-.448 1-1v-2.101c-.323.066-.657.101-1 .101z" />
+          </svg>
+        </div>
+      )}
       <main className="main-wrapper ">
+        <div className="container ">
+          <div className="m-[44px_0_0_0] md:h-[350px] xs:h-[250px]">
+            <img
+              className="w-full h-full object-cover rounded-lg"
+              src="/assets/img/shop-banner.jpg"
+              alt=""
+            />
+          </div>
+        </div>
         <BreadCrumb>
           <BreadCrumb.Item link={`${PATHS.HOME}`}>Trang chủ</BreadCrumb.Item>
           <BreadCrumb.Item isActive>Sản phẩm</BreadCrumb.Item>
         </BreadCrumb>
-
-        <div className="container flex lg:flex-row xs:flex-col gap-[30px]">
-          <aside
-            className="sidebar-shop xs:w-full xl:max-w-[265px]  xl:w-1/4 border-r-[5px] 
-          border-solid border-[#e5e5e5] xl:block xs:hidden"
-          >
-            <div className=" lg:pr-[18.4px] xs:flex gap-4 lg:block">
-              <Accordion
-                heading={`Danh mục sản phẩm`}
-                onChangeFilter={setSelectedFilters}
-                data={categories}
-              />
-              <Accordion
-                {...inputRangeProps}
-                heading={`Lọc theo giá`}
-                renderProps={(props) => {
-                  return <InputRange {...props} />;
-                }}
-              ></Accordion>
-            </div>
-          </aside>
-          <div className="w-full ">
-            <div
-              className="flex xl:items-center md:items-start  justify-between xs:py-[16px] md:py-[24px] mb-[30px] border-b 
-            border-solid border-[#e5e5e5]"
+        <div className="container ">
+          <div className="flex lg:flex-row xs:flex-col gap-[30px]">
+            <aside
+              className="sidebar-shop xs:w-full xl:max-w-[265px]  xl:w-1/4 border-r-[5px] 
+            border-solid border-[#e5e5e5] xl:block xs:hidden"
             >
-              <div className=" flex xl:items-center md:items-start gap-5">
-                <h2 className="font-mab text-md leading-[30px] text-black-333 uppercase">
-                  Shop
-                </h2>
+              <div className=" lg:pr-[18.4px] xs:flex gap-4 lg:block">
+                <Accordion
+                  heading={`Danh mục sản phẩm`}
+                  onChangeFilter={setSelectedFilters}
+                  data={categories}
+                />
+                <Accordion
+                  {...inputRangeProps}
+                  heading={`Lọc theo giá`}
+                  renderProps={(props) => {
+                    return <InputRange {...props} />;
+                  }}
+                ></Accordion>
+              </div>
+            </aside>
+            <div className="w-full ">
+              <div
+                className="flex  xs:justify-between lg:justify-start xs:items-center lg:items-start 
+                gap-y-[12px] xs:py-[16px] md:py-[24px] mb-[30px] border-b 
+              border-solid border-[#e5e5e5]"
+              >
+                <h3 className="min-w-fit text-md font-ossb">
+                  {dataShop?.data?.total} Kết quả
+                </h3>
                 {width >= 1280 && customCategories?.length > 0 && (
                   <div className="flex items-center justify-center gap-2 flex-wrap">
                     <ul className=" flex items-center justify-center gap-2 flex-wrap">
@@ -118,7 +141,7 @@ const Shop = () => {
                           >
                             <li
                               className="cursor-pointer font-om text-white text-sm 
-                              uppercase"
+                                uppercase"
                               onClick={() => onFilterButtonClick(category?._id)}
                             >
                               <Button
@@ -140,71 +163,52 @@ const Shop = () => {
                     </ul>
                   </div>
                 )}
-              </div>
-              {width < 1280 && (
-                <div
-                  className="flex items-center  gap-2 p-2 bg-black-be rounded-[20px]"
-                  onClick={onToggleFilter}
-                >
-                  <svg
-                    className="rotate-[90deg] w-[16px] h-[16px]"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M17 8c.552 0 1 .449 1 1s-.448 1-1 1-1-.449-1-1 .448-1 1-1zm0-2c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm-10 6c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm10-8c.343 0 .677.035 1 .101v-2.101c0-.552-.447-1-1-1s-1 .448-1 1v2.101c.323-.066.657-.101 1-.101zm-10 6c.343 0 .677.035 1 .101v-8.101c0-.552-.447-1-1-1s-1 .448-1 1v8.101c.323-.066.657-.101 1-.101zm10 4c-.343 0-.677-.035-1-.101v8.101c0 .552.447 1 1 1s1-.448 1-1v-8.101c-.323.066-.657.101-1 .101zm-10 6c-.343 0-.677-.035-1-.101v2.101c0 .552.447 1 1 1s1-.448 1-1v-2.101c-.323.066-.657.101-1 .101z" />
-                  </svg>
-                  <p className="text-sm font-osr font-medium text-black-333">
-                    Filter
-                  </p>
-                </div>
-              )}
-
-              <div className=" gap-2 items-center xs:hidden xl:flex">
                 <SelectCustom
                   defaultTitle={optionSort?.[0]?.lael}
                   onChangeSort={onChangeFeaturedTab}
                   data={optionSort}
                 />
               </div>
-            </div>
-            <div
-              className={`flex items-center flex-wrap xs:gap-y-[20px] gap-[10px]  mb-[30px] `}
-            >
-              {!loadingDataShop ? (
-                dataShop?.data?.data?.length ? (
-                  dataShop?.data?.data?.map((item) => {
-                    return (
-                      <ProductCard
-                        onLoadingImage={onImageLoading}
-                        imageloading={imageloading}
-                        key={`${item?._id}`}
-                        className={` lg:w-[calc(25%-10px)] xs:w-[calc(50%-10px)] md:w-[calc(33.333333%-10px)]`}
-                        item={item}
-                        isProductDetail={true}
-                        onAddToCart={onAddToCart}
-                      />
-                    );
-                  })
+              <div
+                className={`flex items-center flex-wrap xs:gap-y-[20px] gap-[10px]  mb-[30px] `}
+              >
+                {!loadingDataShop ? (
+                  dataShop?.data?.data?.length ? (
+                    dataShop?.data?.data?.map((item) => {
+                      return (
+                        <ProductCard
+                          onLoadingImage={onImageLoading}
+                          imageloading={imageloading}
+                          key={`${item?._id}`}
+                          className={` lg:w-[calc(25%-10px)] xs:w-[calc(50%-10px)] md:w-[calc(33.333333%-10px)]`}
+                          item={item}
+                          isProductDetail={true}
+                          onAddToCart={onAddToCart}
+                        />
+                      );
+                    })
+                  ) : (
+                    <EmptyWrapper>
+                      <Empty description={false} />
+                    </EmptyWrapper>
+                  )
                 ) : (
-                  <EmptyWrapper>
-                    <Empty description={false} />
-                  </EmptyWrapper>
-                )
-              ) : (
-                <div className="w-full flex flex-wrap gap-[10px]">
-                  <LoadingSkeleton
-                    isClassName={`mb-[30px] lg:w-[calc(25%-10px)] xs:w-[calc(50%-10px)] md:w-[calc(33.333333%-10px)]`}
-                    isLoading={loadingDataShop}
-                    isParagraph={2}
-                    isArray={9}
-                  />
-                </div>
-              )}
+                  <div className="w-full flex flex-wrap gap-[10px]">
+                    <LoadingSkeleton
+                      isClassName={`mb-[30px] lg:w-[calc(25%-10px)] xs:w-[calc(50%-10px)] md:w-[calc(33.333333%-10px)]`}
+                      isLoading={loadingDataShop}
+                      isParagraph={2}
+                      isArray={9}
+                    />
+                  </div>
+                )}
+              </div>
+              <Pagination
+                totalPage={dataShop?.data?.totalPage}
+                onChange={onChangePageCurrent}
+                pageCurrent={pageCurrent}
+              />
             </div>
-            <Pagination
-              totalPage={dataShop?.data?.totalPage}
-              onChange={onChangePageCurrent}
-              pageCurrent={pageCurrent}
-            />
           </div>
         </div>
       </main>
