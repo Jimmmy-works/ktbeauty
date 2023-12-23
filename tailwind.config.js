@@ -925,6 +925,17 @@ export default {
     },
     backgroundImage: {
       none: "none",
+      "consel-sex-1": "url('/assets/img/bg-consel-sex-1.png')",
+      "consel-sex-2": "url('/assets/img/bg-consel-sex-2.png')",
+      "consel-skin-1": "url('/assets/img/bg-consel-skin-1.png')",
+      "consel-skin-2": "url('/assets/img/bg-consel-skin-2.png')",
+      "consel-skin-3": "url('/assets/img/bg-consel-skin-3.png')",
+      "consel-skin-4": "url('/assets/img/bg-consel-skin-4.png')",
+      "consel-hobby-1": "url('/assets/img/bg-consel-hobby-1.png')",
+      "consel-hobby-2": "url('/assets/img/bg-consel-hobby-2.png')",
+      "consel-hobby-3": "url('/assets/img/bg-consel-hobby-3.png')",
+      "consel-hobby-4": "url('/assets/img/bg-consel-hobby-4.png')",
+
       "slider-1": "url('/assets/img/slider-1.jpg')",
       "slider-2": "url('/assets/img/slider-2.jpg')",
       "slider-3": "url('/assets/img/slider-3.jpg')",
