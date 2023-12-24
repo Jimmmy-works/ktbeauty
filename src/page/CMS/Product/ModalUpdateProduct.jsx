@@ -38,7 +38,7 @@ const ModalUpdateProduct = ({
     .map((cate) => {
       let value = {
         _id: cate?._id,
-        name: cate?.name,
+        label: cate?.label,
       };
       return value;
     });
@@ -383,7 +383,7 @@ const ModalUpdateProduct = ({
                          }`}
                     >
                       <span className="xs:text-xs md:text-sm font-osr  capitalize">
-                        {cate?.name}
+                        {cate?.label}
                       </span>
                     </button>
                   );
@@ -468,6 +468,7 @@ const ModalUpdateProduct = ({
           <div className="form__container-wrapper w-full mb-[20px]  ">
             <label htmlFor="first-name">Rating</label>
             <Rate
+              allowHalf
               defaultValue={productDetail?.rating}
               value={rating}
               onChange={setRating}

@@ -1,12 +1,14 @@
+import useQuery from "@/hooks/useQuery";
+import productService from "@/service/productService";
 import {
   getAllCategories,
   getAllProduct,
 } from "@/store/reducer/productReducer";
 import { formatPriceVND } from "@/utils/formatPrice";
 import { removeAccents } from "@/utils/removeAccents";
-import { dateVN } from "@/utils/timeVN";
-import { SearchOutlined } from "@ant-design/icons";
-import { Button, Image, Input, Slider, Table } from "antd";
+import { LoadingOutlined, SearchOutlined } from "@ant-design/icons";
+import { Button, Image, Input, Slider, Spin, Table } from "antd";
+import queryString from "query-string";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -15,15 +17,32 @@ const StyleImage = styled.div`
     border-radius: 6px;
   }
 `;
-const ConselShowcaseProduct = ({ width }) => {
+const ConselShowcaseProduct = ({
+  width,
+  valueSex,
+  valueAge,
+  valueSkinType,
+  valueLifeStyle,
+}) => {
   const dispatch = useDispatch();
-  const { products, categories } = useSelector((state) => state.product);
+  const { categories } = useSelector((state) => state.product);
   const [searchTerm, setSearchTerm] = useState("");
   const [valueSlider, setValueSiler] = useState();
+  const { data: dataConsel, loading: loadingConsel } = useQuery(() => {
+    return productService.getProductSelected(
+      `?${queryString.stringify({
+        sex: valueSex?.value,
+        age: valueAge?.value,
+        hobby: valueLifeStyle?.value,
+        limit: 1000,
+        skinType: valueSkinType?.value,
+      })}`
+    );
+  });
+
   const onChangeSlider = (value) => {
     setValueSiler(value);
   };
-  const customCategories = categories?.map((cate) => cate?._id);
   const columns = [
     {
       title: "Stt",
@@ -40,7 +59,7 @@ const ConselShowcaseProduct = ({ width }) => {
 
       filters: categories?.map((item) => {
         return {
-          text: item?.name,
+          text: item?.label,
           value: item?._id,
         };
       }),
@@ -210,7 +229,7 @@ const ConselShowcaseProduct = ({ width }) => {
       key: 5,
     },
   ];
-  const data = products?.map((product, index) => {
+  const data = dataConsel?.data?.data?.map((product, index) => {
     return {
       key: `${product?._id}`,
       priceCurrent: product?.price,
@@ -282,7 +301,7 @@ const ConselShowcaseProduct = ({ width }) => {
         </div>
       ),
       category_id: product?.category_id?._id,
-      category: product?.category_id?.name,
+      category: product?.category_id?.label,
     };
   });
   const onChange = (pagination, filters, sorter, extra) => {
@@ -295,39 +314,75 @@ const ConselShowcaseProduct = ({ width }) => {
   useEffect(() => {
     onChangeSlider([0, 2000]);
   }, []);
-
   useEffect(() => {
     const myTimeout = setTimeout(() => {
       setSearchTerm(valueSlider);
     }, 500);
     return () => clearTimeout(myTimeout);
   }, [searchTerm, valueSlider]);
+  const [loadingPage, setLoadingPage] = useState(true);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoadingPage(false);
+    }, 1500);
+    return () => clearTimeout(timeout);
+  }, [valueSex, valueAge, valueSkinType, valueLifeStyle]);
+  console.log("loadingConsel", loadingConsel);
+  console.log("loadingPage", loadingPage);
   return (
-    <div className="table__dashboard ">
-      <Table
-        key={`page/consel`}
-        style={{ verticalAlign: "middle" }}
-        columns={columns}
-        dataSource={data}
-        onChange={onChange}
-      />
-      {/* <Table
-           style={{ verticalAlign: "middle" }}
-           key={`cms/product`}
-           tableLayout={"auto"}
-           pagination={{
-             pageSize: 9,
-             total: totalProducts,
-             position: ["bottomCenter"],
-             onChange: onChangePagination,
-             current: Number(pageCurrent || 1),
-           }}
-           onChange={handleOnchangeTable}
-           rowSelection={rowSelection}
-           columns={columns}
-           dataSource={data}
-         /> */}
-    </div>
+    <>
+      <div
+        className={`w-screen h-screen fixed bottom-0 right-0 top-0 left-0 bg-[#1c2020] z-[1000]
+        ${
+          !loadingPage && !loadingConsel
+            ? "opacity-100 visible"
+            : "opacity-0 invisible"
+        } transition-all duration-300`}
+      >
+        <div
+          className="text-white text-lg font-osr center-absolute z-[20]
+        flex flex-col items-center gap-6"
+        >
+          Đợi giây lát, chuyên gia đang hỗ trợ
+          <Spin
+            indicator={
+              <LoadingOutlined
+                style={{
+                  fontSize: 30,
+                  color: "#fff",
+                }}
+                spin
+              />
+            }
+          />
+        </div>
+      </div>
+      <div className="table__dashboard">
+        <Table
+          key={`page/consel`}
+          style={{ verticalAlign: "middle" }}
+          columns={columns}
+          dataSource={data}
+          onChange={onChange}
+        />
+        {/* <Table
+                 style={{ verticalAlign: "middle" }}
+                 key={`cms/product`}
+                 tableLayout={"auto"}
+                 pagination={{
+                   pageSize: 9,
+                   total: totalProducts,
+                   position: ["bottomCenter"],
+                   onChange: onChangePagination,
+                   current: Number(pageCurrent || 1),
+                 }}
+                 onChange={handleOnchangeTable}
+                 rowSelection={rowSelection}
+                 columns={columns}
+                 dataSource={data}
+               /> */}
+      </div>
+    </>
   );
 };
 

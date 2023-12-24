@@ -1,3 +1,4 @@
+import { Checkbox } from "antd";
 import React, { forwardRef, useRef, useState } from "react";
 
 const Accordion = ({
@@ -16,7 +17,7 @@ const Accordion = ({
   const refContent = useRef(null);
   const refContentSubcase = useRef(null);
   return (
-    <div className={`accordion `}>
+    <div className={`accordion`}>
       <div
         className={`accordion__heading ${toggleContent ? "active" : ""}`}
         onClick={() => setToggleContent(!toggleContent)}
@@ -32,7 +33,7 @@ const Accordion = ({
         </div>
       </div>
       <div
-        className={`accordion__content overflow-hidden `}
+        className={`accordion__content  overflow-hidden`}
         ref={refContent}
         style={{
           maxHeight: `${
@@ -42,12 +43,12 @@ const Accordion = ({
       >
         {data?.length &&
           data?.map((item, index) => {
-            const { _id, name } = item || {};
+            const { _id, name, label } = item || {};
             return (
               <div
                 onClick={() => {
                   if (name !== "all") {
-                    onChangeFilter([name]);
+                    onChangeFilter(_id);
                   } else {
                     onChangeFilter([]);
                   }
@@ -71,7 +72,10 @@ const Accordion = ({
                       </svg>
                     </div>
                   )}
-                  <h3>{name}</h3>
+                  <div className="flex items-center gap-2">
+                    <Checkbox value={item?._id} />
+                    <h3>{label}</h3>
+                  </div>
                 </div>
                 {item?.subCase?.length &&
                   item?.subCase?.map((subcase) => {
@@ -120,7 +124,6 @@ const Accordion = ({
           {renderProps?.({ ...props })}
         </div>
       )}
-      {children}
     </div>
   );
 };

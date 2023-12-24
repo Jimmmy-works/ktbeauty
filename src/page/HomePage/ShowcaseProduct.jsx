@@ -92,7 +92,7 @@ const ShowcaseProduct = ({
             >
               {categories?.length > 0
                 ? categories?.map((cate) => {
-                    const { _id, name } = cate || {};
+                    const { _id, name, label } = cate || {};
                     return (
                       <SwiperSlide
                         className={`w-fit animate-link-hover-1   ${
@@ -110,7 +110,7 @@ const ShowcaseProduct = ({
                           }
                              `}
                         >
-                          {name}
+                          {label}
                         </a>
                       </SwiperSlide>
                     );

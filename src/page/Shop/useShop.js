@@ -1,14 +1,13 @@
 import { useMainContext } from "@/components/MainContext";
-import { CATEGORIES_OPTIONS, OPTION_SORT } from "@/contants/general";
+import { OPTION_SORT } from "@/contants/general";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import useQuery from "@/hooks/useQuery";
 import productService from "@/service/productService";
 import { cartActions } from "@/store/reducer/cartReducer";
-import { getProductSelected } from "@/store/reducer/productReducer";
 import { message } from "antd";
 import queryString from "query-string";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
 const useShop = () => {
@@ -55,7 +54,7 @@ const useShop = () => {
   };
   /// category
   const customCategories = categories?.map((cate) => {
-    let value = { _id: cate?._id, name: cate?.name };
+    let value = { _id: cate?._id, name: cate?.name, label: cate?.label };
     return value;
   });
   const findCategoryAll = categories?.find((cate) => {
@@ -66,20 +65,18 @@ const useShop = () => {
     let querryParse = queryString.parse(search);
     return querryParse;
   }, [search]);
-  const [selectedFilters, setSelectedFilters] = useState([]);
-  const [filteredItems, setFilteredItems] = useState(products);
+  const [valueChecked, setValueChecked] = useState([]);
+  const [renderChecked, setRenderChecked] = useState([]);
   const [optionSortSelected, setOptionSortSelected] = useState(
     OPTION_SORT.NEWEST
   );
   ////// Sort
   const optionSort = [
-    // { value: 1, name: "all", label: "Sort By Popularity" },
     { value: 1, name: "newest", label: "Sort By Newest" },
     { value: 2, name: "old", label: "Sort By Old" },
     { value: 3, name: "high", label: "Sort By High Price" },
     { value: 4, name: "lower", label: "Sort By Lower Price" },
   ];
-
   const [pageCurrent, setPageCurrent] = useState(1);
   const onChangeFeaturedTab = (name) => {
     setOptionSortSelected(name);
@@ -101,181 +98,33 @@ const useShop = () => {
         page: pageNumb - 1,
       });
   };
-  const onFilterButtonClick = (selectedCategory) => {
-    if (selectedCategory === findCategoryAll?._id) {
-      setSelectedFilters([findCategoryAll?._id]);
-      updateQueryString({
-        ...queryObject,
-        page: 0,
-        limit: _limit,
-        categories: [findCategoryAll?._id]?.toString(),
+
+  const onChangeCheckbox = (id) => {
+    if (valueChecked?.includes(id)) {
+      let filterCate = valueChecked?.filter((cate) => {
+        return cate !== id;
       });
+      setValueChecked(filterCate);
     } else {
-      if (selectedFilters?.includes(selectedCategory)) {
-        if (selectedFilters?.length <= 1) {
-          setSelectedFilters([findCategoryAll?._id]);
-          updateQueryString({
-            ...queryObject,
-            page: 0,
-            limit: _limit,
-            categories: [findCategoryAll?._id]?.toString(),
-          });
-        } else {
-          let filterCate = selectedFilters?.filter((el) => {
-            return el !== selectedCategory;
-          });
-          setSelectedFilters(filterCate);
-          updateQueryString({
-            ...queryObject,
-            page: 0,
-            limit: _limit,
-            categories: filterCate?.toString(),
-          });
-        }
-      } else {
-        if (
-          selectedFilters?.includes(findCategoryAll?._id) &&
-          selectedFilters?.length > 2
-        ) {
-          setSelectedFilters([findCategoryAll?._id]);
-          updateQueryString({
-            ...queryObject,
-            page: 0,
-            limit: _limit,
-            categories: [findCategoryAll?._id]?.toString(),
-          });
-        } else {
-          let filterCate = selectedFilters?.filter((el) => {
-            return el !== findCategoryAll?._id;
-          });
-          setSelectedFilters([...filterCate, selectedCategory]);
-          updateQueryString({
-            ...queryObject,
-            page: 0,
-            limit: _limit,
-            categories: [...filterCate, selectedCategory]?.toString(),
-          });
-        }
-      }
+      let filterCate = valueChecked?.filter((cate) => {
+        return cate !== id;
+      });
+      setValueChecked([...filterCate, id]);
     }
   };
-  // const customCategories = categories
-  //   .filter((cate) => {
-  //     return cate?.name !== "all";
-  //   })
-  //   .map((cate) => {
-  //     let value = cate?.name;
-  //     return value;
-  //   });
-  // const onFilterButtonClick = (selectedCategory) => {
-  //   if (selectedFilters?.includes(selectedCategory)) {
-  //     let filterCate = selectedFilters?.filter((el) => {
-  //       return el !== selectedCategory;
-  //     });
-  //     setSelectedFilters(filterCate);
-  //     updateQueryString({ categories: filterCate?.toString() });
-  //   } else {
-  //     setSelectedFilters([...selectedFilters, selectedCategory]);
-  //     updateQueryString({
-  //       categories: [...selectedFilters, selectedCategory]?.toString(),
-  //     });
-  //   }
-  // };
-  // const onFilterItems = () => {
-  //   let finalItems = [];
-  //   if (selectedFilters?.length > 0) {
-  //     let items = selectedFilters?.map((selectedCategory) => {
-  //       let _temp = products?.filter(
-  //         (item) => item?.category_id?.name === selectedCategory
-  //       );
-  //       return _temp;
-  //     });
-  //     finalItems = items?.flat()?.filter((item) => {
-  //       const afterDiscount =
-  //         item?.price - (item?.discount ? item?.discount : 0);
-
-  //       if (afterDiscount >= newMin && afterDiscount <= newMax) {
-  //         return item;
-  //       }
-  //     });
-  //     if (optionSortSelected === OPTION_SORT.OLD) {
-  //       finalItems = [...finalItems]
-  //         ?.sort((a, b) => {
-  //           return new Date(a?.createdAt) - new Date(b?.createdAt);
-  //         })
-  //         ?.map((item) => item);
-  //     }
-  //     if (optionSortSelected === OPTION_SORT.NEWEST) {
-  //       finalItems = [...finalItems]
-  //         ?.sort((a, b) => {
-  //           return new Date(b?.createdAt) - new Date(a?.createdAt);
-  //         })
-  //         ?.map((item) => item);
-  //     }
-  //     if (optionSortSelected === OPTION_SORT.LOWER_PRICE) {
-  //       finalItems = [...finalItems]
-  //         ?.sort((a, b) => {
-  //           return a?.price - a?.discount - (b?.price - b?.discount);
-  //         })
-  //         ?.map((item) => item);
-  //     }
-  //     if (optionSortSelected === OPTION_SORT.HIGH_PRICE) {
-  //       finalItems = [...finalItems]
-  //         ?.sort((a, b) => {
-  //           return b?.price - b?.discount - (a?.price - a?.discount);
-  //         })
-  //         ?.map((item) => item);
-  //     }
-  //     if (optionSortSelected === OPTION_SORT.POPULAR) {
-  //       finalItems = [...finalItems];
-  //     }
-
-  //     setFilteredItems(finalItems);
-  //     return finalItems;
-  //   } else {
-  //     finalItems = products?.filter((item) => {
-  //       const afterDiscount =
-  //         item?.price - (item?.discount ? item?.discount : 0);
-  //       if (afterDiscount >= newMin && afterDiscount <= newMax) {
-  //         return item;
-  //       }
-  //     });
-  //     if (optionSortSelected === OPTION_SORT.OLD) {
-  //       finalItems = [...finalItems]
-  //         ?.sort((a, b) => {
-  //           return new Date(a?.createdAt) - new Date(b?.createdAt);
-  //         })
-  //         ?.map((item) => item);
-  //     }
-  //     if (optionSortSelected === OPTION_SORT.NEWEST) {
-  //       finalItems = [...finalItems]
-  //         ?.sort((a, b) => {
-  //           return new Date(b?.createdAt) - new Date(a?.createdAt);
-  //         })
-  //         ?.map((item) => item);
-  //     }
-  //     if (optionSortSelected === OPTION_SORT.LOWER_PRICE) {
-  //       finalItems = [...finalItems]
-  //         ?.sort((a, b) => {
-  //           return a?.price - a?.discount - (b?.price - b?.discount);
-  //         })
-  //         ?.map((item) => item);
-  //     }
-  //     if (optionSortSelected === OPTION_SORT.HIGH_PRICE) {
-  //       finalItems = [...finalItems]
-  //         ?.sort((a, b) => {
-  //           return b?.price - b?.discount - (a?.price - a?.discount);
-  //         })
-  //         ?.map((item) => item);
-  //     }
-  //     if (optionSortSelected === OPTION_SORT.POPULAR) {
-  //       finalItems = [...finalItems];
-  //     }
-  //     setFilteredItems(finalItems);
-  //     return finalItems;
-  //   }
-  // };
-
+  const onChangeRenderCheckbox = (selected) => {
+    if (valueChecked?.includes(selected?._id)) {
+      let filterRenderCate = renderChecked?.filter((cate) => {
+        return cate?._id !== selected?._id;
+      });
+      setRenderChecked(filterRenderCate);
+    } else {
+      let filterRenderCate = renderChecked?.filter((cate) => {
+        return cate?._id !== selected?._id;
+      });
+      setRenderChecked([...filterRenderCate, selected]);
+    }
+  };
   /// Main
   const onAddToCart = async (payload) => {
     const _token = localStorage.getItem(LOCAL_STORAGE.token);
@@ -363,26 +212,25 @@ const useShop = () => {
     data: dataShop,
     loading: loadingDataShop,
     refetch: refetchDataShop,
-  } = useQuery(
-    (query) => {
-      if (search) {
-        return productService.getProductSelected(
-          query ||
-            `?${queryString.stringify({
-              ...queryObject,
-              page: pageCurrent - 1 || 0,
-              limit: _limit || 9,
-              sort: optionSortSelected || "newest",
-              categories: selectedFilters?.toString() || findCategoryAll?._id,
-              priceStart: newMin,
-              priceEnd: newMax,
-            })}`
-        );
-      }
-    },
-    [search]
-  );
-
+  } = useQuery((query) => {
+    if (search) {
+      return productService.getProductSelected(search);
+    }
+  });
+  useEffect(() => {
+    updateQueryString({
+      ...queryObject,
+      page: pageCurrent - 1 || 0,
+      limit: 12,
+      sort: optionSortSelected || "newest",
+      categories: valueChecked?.toString() || findCategoryAll?._id,
+      priceStart: newMin,
+      priceEnd: newMax,
+    });
+    if (search) {
+      refetchDataShop();
+    }
+  }, [valueChecked, newMin, newMax, optionSortSelected]);
   return {
     isFilter,
     onToggleFilter,
@@ -399,12 +247,6 @@ const useShop = () => {
     onChangeCategoryGlobal,
     categoryGlobalTab,
     customCategories,
-    onFilterButtonClick,
-    selectedFilters,
-    filteredItems,
-    setSelectedFilters,
-    selectedFilters,
-    setFilteredItems,
     totalProducts,
     totalPage,
     ////
@@ -424,6 +266,11 @@ const useShop = () => {
     updateQueryString,
     queryObject,
     search,
+    ////
+    valueChecked,
+    renderChecked,
+    onChangeCheckbox,
+    onChangeRenderCheckbox,
   };
 };
 

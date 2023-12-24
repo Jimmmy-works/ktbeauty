@@ -1,6 +1,4 @@
-import Accordion from "@/components/Accordion/index.jsx";
 import BreadCrumb from "@/components/BreadCrumb";
-import Button from "@/components/Button";
 import InputRange from "@/components/Input/InputRange";
 import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
 import NavbarFilter from "@/components/NavbarFilter";
@@ -9,7 +7,8 @@ import ProductCard from "@/components/ProductCard";
 import SelectCustom from "@/components/Select/SelectCustom";
 import { PATHS } from "@/contants/path";
 import useWindowSize from "@/utils/windowResize";
-import { Empty, Tooltip } from "antd";
+import { Checkbox, Collapse, Empty, Tooltip } from "antd";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import useShop from "./useShop";
 const EmptyWrapper = styled.div`
@@ -37,11 +36,7 @@ const Shop = () => {
     onImageLoading,
     ///
     onAddToCart,
-    customCategories,
     ////
-    onFilterButtonClick,
-    selectedFilters,
-    setSelectedFilters,
     optionSort,
     onChangeFeaturedTab,
     ////
@@ -55,19 +50,85 @@ const Shop = () => {
     search,
     /////
     productSearch,
+    valueChecked,
+    renderChecked,
+    onChangeCheckbox,
+    onChangeRenderCheckbox,
   } = useShop();
-
+  const listRef = useRef([]);
+  const { width } = useWindowSize();
+  const [controlCollapse, setControlCollapse] = useState([]);
+  //////
+  const inputRangeProps = { updateQueryString, queryObject };
+  const itemCategories = [
+    {
+      key: "1",
+      label: (
+        <p
+          className={`font-ossb text-16px transition-all duration-400 ${
+            controlCollapse?.includes("1") ? "text-black" : "text-black-333"
+          }`}
+        >
+          Loại sản phẩm
+        </p>
+      ),
+      children: categories?.map((cate, index) => {
+        console.log("cate?._id", cate?._id);
+        const filterLength = dataShop?.data?.data?.filter((item) => {
+          console.log("item", item);
+          return item?.category_id?._id === cate?._id;
+        });
+        console.log("filterLength", filterLength);
+        return (
+          <div
+            key={cate?._id}
+            className={`hover:text-primary cursor-pointer duration-400 transition-all
+           flex items-start gap-2 my-[4px] ${
+             valueChecked?.includes(cate?._id) ? "font-om text-black" : ""
+           }`}
+            onClick={() => {
+              onChangeCheckbox(cate?._id, cate), onChangeRenderCheckbox(cate);
+            }}
+          >
+            <Checkbox
+              checked={valueChecked?.includes(cate?._id, cate)}
+              onChange={() => {
+                onChangeCheckbox(cate?._id, cate), onChangeRenderCheckbox(cate);
+              }}
+            />
+            <p className=" ">
+              {cate?.label}{" "}
+              {filterLength?.length ? `(${filterLength?.length})` : `(0)`}
+            </p>
+          </div>
+        );
+      }),
+    },
+    {
+      key: "2",
+      label: (
+        <p
+          className={`font-ossb text-16px transition-all duration-400 ${
+            controlCollapse?.includes("2") ? "text-black" : "text-black-333"
+          }`}
+        >
+          Giá sản phẩm
+        </p>
+      ),
+      children: <InputRange {...inputRangeProps} />,
+    },
+  ];
+  const onChangeCollapse = (key) => {
+    setControlCollapse(key);
+  };
   const filterMobileProps = {
-    setSelectedFilters,
     isFilter,
     onToggleFilter,
     categories,
     setIsFilter,
+    itemCategories,
+    onChangeCollapse,
   };
-  const { width } = useWindowSize();
-  //////
-
-  const inputRangeProps = { updateQueryString, queryObject };
   return (
     <>
       {width < 1280 && (
@@ -86,7 +147,7 @@ const Shop = () => {
       )}
       <main className="main-wrapper ">
         <div className="container ">
-          <div className="m-[44px_0_0_0] md:h-[350px] xs:h-[250px]">
+          <div className="xs:mt-[30px] lg:mt-[40px] md:h-[350px] xs:h-[250px]">
             <img
               className="w-full h-full object-cover rounded-lg"
               src="/assets/img/shop-banner.jpg"
@@ -100,62 +161,78 @@ const Shop = () => {
         </BreadCrumb>
         <div className="container ">
           <div className="flex lg:flex-row xs:flex-col gap-[30px]">
-            <aside
-              className="sidebar-shop xs:w-full xl:max-w-[265px]  xl:w-1/4 border-r-[5px] 
-            border-solid border-[#e5e5e5] xl:block xs:hidden"
-            >
-              <div className=" lg:pr-[18.4px] xs:flex gap-4 lg:block">
-                <Accordion
-                  heading={`Danh mục sản phẩm`}
-                  onChangeFilter={setSelectedFilters}
-                  data={categories}
-                />
-                <Accordion
-                  {...inputRangeProps}
-                  heading={`Lọc theo giá`}
-                  renderProps={(props) => {
-                    return <InputRange {...props} />;
+            <aside className="sidebar-shop xs:w-full xl:max-w-[265px]  xl:w-1/4 xl:block xs:hidden">
+              <div className="">
+                <Collapse
+                  onChange={onChangeCollapse}
+                  className="my-antd-accordion"
+                  expandIconPosition={"end"}
+                  expandIcon={({ isActive }) => {
+                    return (
+                      <div
+                        className={`rounded-[50%] bg-[#f9f9f9] p-[9px] transition-all duration-400 ${
+                          isActive ? "rotate-[-90deg]" : "rotate-[-180deg]"
+                        }`}
+                        rotate={isActive ? 90 : 0}
+                      >
+                        <svg className="w-[15px] h-[15px]" viewBox="0 0 24 24">
+                          <path
+                            className="fill-black-333"
+                            d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z"
+                          ></path>
+                        </svg>
+                      </div>
+                    );
                   }}
-                ></Accordion>
+                  defaultActiveKey={["1", "2"]}
+                  ghost
+                  items={itemCategories}
+                />
               </div>
             </aside>
             <div className="w-full ">
               <div
-                className="flex  xs:justify-between lg:justify-start xs:items-center lg:items-start 
-                gap-y-[12px] xs:py-[16px] md:py-[24px] mb-[30px] border-b 
+                className="flex items-center  justify-between
+                gap-y-[12px] xs:pb-[16px] md:pb-[24px] mb-[24px] border-b 
               border-solid border-[#e5e5e5]"
               >
-                <h3 className="min-w-fit text-md font-ossb">
-                  {dataShop?.data?.total} Kết quả
-                </h3>
-                {width >= 1280 && customCategories?.length > 0 && (
-                  <div className="flex items-center justify-center gap-2 flex-wrap">
-                    <ul className=" flex items-center justify-center gap-2 flex-wrap">
-                      {customCategories?.map((category, index) => {
+                {!renderChecked?.length && width >= 1280 ? (
+                  <h3 className="min-w-fit text-md font-ossb">
+                    {dataShop?.data?.total} Kết quả
+                  </h3>
+                ) : (
+                  ""
+                )}
+                {renderChecked?.length && width < 1280 ? (
+                  <h3 className="min-w-fit text-md font-ossb">
+                    {dataShop?.data?.total} Kết quả
+                  </h3>
+                ) : (
+                  ""
+                )}
+                {width >= 1280 && renderChecked?.length > 0 && (
+                  <div className="flex items-center justify-start gap-2 flex-wrap">
+                    <ul className=" flex items-center justify-start gap-x-3 gap-y-2 flex-wrap">
+                      <h3 className="min-h-full  min-w-fit text-md font-ossb">
+                        {dataShop?.data?.total} Kết quả
+                      </h3>
+                      {renderChecked?.map((category, index) => {
                         return (
                           <Tooltip
                             key={`${category?._id}${index}`}
                             placement={`top`}
                             color="#999"
-                            title={`Bỏ filter ${category?.name}`}
+                            title={`Bỏ filter ${category?.label}`}
                           >
                             <li
-                              className="cursor-pointer font-om text-white text-sm 
-                                uppercase"
-                              onClick={() => onFilterButtonClick(category?._id)}
+                              className="cursor-pointer font-om text-black-333 text-sm 
+                                 rounded-md border border-black-333 border-solid p-[4px]"
+                              onClick={() => {
+                                onChangeCheckbox(category?._id);
+                                onChangeRenderCheckbox(category);
+                              }}
                             >
-                              <Button
-                                className={`capitalize md:py-[6px] md:px-[20px]  `}
-                                key={`filter-${category?._id}`}
-                                isActive={
-                                  selectedFilters?.includes(category?._id)
-                                    ? true
-                                    : false
-                                }
-                                variant="outline"
-                              >
-                                {category?.name}
-                              </Button>
+                              <div>{category?.label} &#10006;</div>
                             </li>
                           </Tooltip>
                         );
@@ -213,34 +290,26 @@ const Shop = () => {
         </div>
       </main>
       <NavbarFilter {...filterMobileProps}>
-        {width < 1280 && customCategories?.length > 0 && (
+        {width < 1280 && renderChecked?.length > 0 && (
           <div className="flex w-full p-[20px_20px_0_20px]  gap-4 flex-wrap">
             <ul className=" flex w-full items-center  gap-2 flex-wrap">
-              {customCategories?.map((category, index) => {
+              {renderChecked?.map((category, index) => {
                 return (
                   <Tooltip
                     key={`${category?._id}${index}`}
                     placement={`top`}
                     color="#999"
-                    title={`Bỏ filter ${category?.name}`}
+                    title={`Bỏ filter ${category?.label}`}
                   >
                     <li
-                      className="cursor-pointer font-om text-white text-sm 
-                            uppercase"
-                      onClick={() => onFilterButtonClick(category?._id)}
+                      className="cursor-pointer font-om text-black-333 text-sm 
+                                 rounded-md border border-black-333 border-solid p-[4px]"
+                      onClick={() => {
+                        onChangeCheckbox(category?._id);
+                        onChangeRenderCheckbox(category);
+                      }}
                     >
-                      <Button
-                        className={`capitalize md:py-[6px] md:px-[20px]  `}
-                        key={`filter-${category?._id}`}
-                        isActive={
-                          selectedFilters?.includes(category?._id)
-                            ? true
-                            : false
-                        }
-                        variant="outline"
-                      >
-                        {category?.name}
-                      </Button>
+                      <div>{category?.label} &#10006;</div>
                     </li>
                   </Tooltip>
                 );

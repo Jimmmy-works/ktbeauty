@@ -7,11 +7,9 @@ import queryString from "query-string";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, NavLink, useLocation, useSearchParams } from "react-router-dom";
-import useHeader from "../Header/useHeader";
 
 const Nav = () => {
   const { pathname } = useLocation();
-  const { onChangeCategory } = useHeader();
   const { isNavbar, setIsNavbar, onAuthenModal, onLogout, onToggleNav, html } =
     useMainContext();
   const { products, categories } = useSelector((state) => state.product);
@@ -152,6 +150,9 @@ const Nav = () => {
               <Link to={PATHS.CONTACT}>LIÊN HỆ</Link>
             </li>
             <li className="item">
+              <Link to={PATHS.COUNSEL}>tư vấn</Link>
+            </li>
+            <li className="item">
               <a>Tài khoản cá nhân</a>
               <div
                 onClick={() => onChangeDrawer("inner-3")}
@@ -199,7 +200,7 @@ const Nav = () => {
                     to={PATHS.SHOP.INDEX}
                     onClick={() => setCategoryTab(item?._id)}
                   >
-                    {item?.name}
+                    {item?.label}
                   </NavLink>
                 </li>
               );

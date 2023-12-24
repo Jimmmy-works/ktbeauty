@@ -34,7 +34,7 @@ const StyleDiscount = styled.div`
     position: absolute;
     left: 0;
     bottom: -5px;
-    border-top: 5px solid #8ccc1d;
+    border-top: 5px solid #ff887b;
     border-left: 5px solid transparent;
   }
 `;
@@ -216,7 +216,7 @@ const ProductCard = ({
           )}
           alt={name}
           effect="blur"
-          src={image?.[1]}
+          src={image?.[0]}
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = "/assets/img/error.png";
@@ -239,7 +239,7 @@ const ProductCard = ({
           }}
         /> */}
 
-        {image?.length > 1 && (
+        {image?.length >= 1 && (
           <img
             onLoad={onLoadingImage}
             className={twMerge(

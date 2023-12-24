@@ -8,7 +8,7 @@ const ConselLifeStyle = ({
   return (
     <div className="flex flex-wrap gap-y-[20px] justify-center items-center -mx-[15px]">
       <div
-        className={`relative xs:w-full md:w-[calc(50%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
+        className={`relative xs:w-full md:w-[calc(50%-30px)] lg:w-[calc(33.33333%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
          bg-contain bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
        ${valueLifeStyle?.value === "nomal" ? "bg-gray-700" : "bg-black-555"} 
        group/hover`}
@@ -19,15 +19,10 @@ const ConselLifeStyle = ({
           })
         }
       >
-        <img
-          srcSet={`/assets/img/bg-consel-hobby-1.png ${
-            width >= 1280 ? "" : "1.5x"
-          }`}
-          alt=""
-        />
+        <img srcSet={`/assets/img/bg-consel-hobby-1.png 1.5x`} alt="" />
       </div>
       <div
-        className={`xs:w-full md:w-[calc(50%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
+        className={`xs:w-full md:w-[calc(50%-30px)] lg:w-[calc(33.33333%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
          bg-contain bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
        ${valueLifeStyle?.value === "oil" ? "bg-gray-700" : "bg-black-555"}`}
         onClick={() =>
@@ -37,15 +32,10 @@ const ConselLifeStyle = ({
           })
         }
       >
-        <img
-          srcSet={`/assets/img/bg-consel-hobby-2.png ${
-            width >= 1280 ? "" : "1.5x"
-          }`}
-          alt=""
-        />
+        <img srcSet={`/assets/img/bg-consel-hobby-2.png 1.5x`} alt="" />
       </div>
       <div
-        className={`xs:w-full md:w-[calc(50%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
+        className={`xs:w-full md:w-[calc(50%-30px)] lg:w-[calc(33.33333%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
          bg-contain bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
        ${valueLifeStyle?.value === "dry" ? "bg-gray-700" : "bg-black-555"}`}
         onClick={() =>
@@ -55,15 +45,10 @@ const ConselLifeStyle = ({
           })
         }
       >
-        <img
-          srcSet={`/assets/img/bg-consel-hobby-3.png ${
-            width >= 1280 ? "" : "1.5x"
-          }`}
-          alt=""
-        />
+        <img srcSet={`/assets/img/bg-consel-hobby-3.png 1.5x`} alt="" />
       </div>
       <div
-        className={`xs:w-full md:w-[calc(50%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
+        className={`xs:w-full md:w-[calc(50%-30px)] lg:w-[calc(33.33333%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
          bg-contain bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
        ${
          valueLifeStyle?.value === "combination"
@@ -77,12 +62,7 @@ const ConselLifeStyle = ({
           })
         }
       >
-        <img
-          srcSet={`/assets/img/bg-consel-hobby-4.png ${
-            width >= 1280 ? "" : "1.5x"
-          }`}
-          alt=""
-        />
+        <img srcSet={`/assets/img/bg-consel-hobby-4.png 1.5x`} alt="" />
       </div>
     </div>
   );

@@ -1,36 +1,57 @@
 import React from "react";
 
-const ConselSkinType = ({ onChangeConselSkinType, valueSkinType }) => {
+const ConselSkinType = ({ onChangeConselSkinType, valueSkinType, width }) => {
   return (
     <div className="flex flex-wrap gap-y-[20px] justify-center items-center -mx-[15px]">
       <div
-        className={`relative xs:w-full md:w-[calc(50%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
-        bg-consel-skin-1 bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
+        className={`relative xs:w-full lg:w-[calc(33.3333%-30px)] md:w-[calc(50%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
+         bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
        ${valueSkinType?.value === "nomal" ? "bg-gray-700" : "bg-black-555"} 
        group/hover`}
         onClick={() =>
           onChangeConselSkinType({ label: "Da thường", value: "nomal" })
         }
-      ></div>
+      >
+        <img
+          srcSet={`/assets/img/bg-consel-skin-1.png ${
+            width >= 1280 ? "" : "1.5x"
+          }`}
+          alt=""
+        />
+      </div>
       <div
-        className={`xs:w-full md:w-[calc(50%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
-        bg-consel-skin-2 bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
+        className={`xs:w-full lg:w-[calc(33.3333%-30px)] md:w-[calc(50%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
+        bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
        ${valueSkinType?.value === "oil" ? "bg-gray-700" : "bg-black-555"}`}
         onClick={() =>
           onChangeConselSkinType({ label: "Da dầu", value: "oil" })
         }
-      ></div>
+      >
+        <img
+          srcSet={`/assets/img/bg-consel-skin-2.png ${
+            width >= 1280 ? "" : "1.5x"
+          }`}
+          alt=""
+        />
+      </div>
       <div
-        className={`xs:w-full md:w-[calc(50%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
-        bg-consel-skin-3 bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
+        className={`xs:w-full lg:w-[calc(33.3333%-30px)] md:w-[calc(50%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
+        bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
        ${valueSkinType?.value === "dry" ? "bg-gray-700" : "bg-black-555"}`}
         onClick={() =>
           onChangeConselSkinType({ label: "Da khô", value: "dry" })
         }
-      ></div>
+      >
+        <img
+          srcSet={`/assets/img/bg-consel-skin-3.png ${
+            width >= 1280 ? "" : "1.5x"
+          }`}
+          alt=""
+        />
+      </div>
       <div
-        className={`xs:w-full md:w-[calc(50%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
-        bg-consel-skin-4 bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
+        className={`xs:w-full lg:w-[calc(33.3333%-30px)] md:w-[calc(50%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
+        bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
        ${
          valueSkinType?.value === "combination" ? "bg-gray-700" : "bg-black-555"
        }`}
@@ -40,7 +61,14 @@ const ConselSkinType = ({ onChangeConselSkinType, valueSkinType }) => {
             value: "combination",
           })
         }
-      ></div>
+      >
+        <img
+          srcSet={`/assets/img/bg-consel-skin-4.png ${
+            width >= 1280 ? "" : "1.5x"
+          }`}
+          alt=""
+        />
+      </div>
     </div>
   );
 };

@@ -33,13 +33,16 @@ export const MainProvider = ({ children }) => {
         ?.setAttribute("style", "transform: translateX(0)");
     } else {
       html.setAttribute("style", "overflow-y: hidden");
-      document
-        ?.querySelector(`main`)
-        ?.setAttribute("style", "transform: translateX(150px)");
     }
   };
   const onToggleFilter = () => {
     setIsFilter(!isFilter);
+    if (isFilter) {
+      setdropDownNav(false);
+      html?.setAttribute("style", "overflow-y : scroll");
+    } else {
+      html.setAttribute("style", "overflow-y: hidden");
+    }
   };
 
   /////// Authen

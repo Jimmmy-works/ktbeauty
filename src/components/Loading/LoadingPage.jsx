@@ -37,7 +37,6 @@ const LoadingSpin = styled.div`
       margin-left: 2px;
       animation: delay 0.8s infinite ease-in-out;
     }
-
     .bar1 {
       background-color: #754fa0;
     }

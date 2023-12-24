@@ -8,6 +8,10 @@ import ConselLifeStyle from "./ConselLifeStyle";
 import ConselProgress from "./ConselProgress";
 import ConselShowcaseProduct from "./ConselShowcaseProduct";
 import useWindowSize from "@/utils/windowResize";
+import { MainProvider } from "@/components/MainContext";
+import Nav from "../Nav";
+import Overplay from "@/components/Overplay";
+import BackToTop from "@/components/BackToTop";
 const style = {
   background: "#0092ff",
   padding: "8px 0",
@@ -68,10 +72,8 @@ const ConselPage = () => {
     valueLifeStyle,
     width,
   };
-  console.log("valueSex", valueSex);
   const controlDisableButton = useMemo(() => {
     if (controlSteps === 0) {
-      console.log("111", 111);
       if (!Object?.keys(valueSex)?.length > 0) {
         return true;
       } else {
@@ -79,7 +81,6 @@ const ConselPage = () => {
       }
     }
     if (controlSteps === 1) {
-      console.log("222", 222);
       if (!Object?.keys(valueAge)?.length > 0) {
         return true;
       } else {
@@ -87,7 +88,6 @@ const ConselPage = () => {
       }
     }
     if (controlSteps === 2) {
-      console.log("3333", 3333);
       if (!Object?.keys(valueSkinType)?.length > 0) {
         return true;
       } else {
@@ -95,7 +95,6 @@ const ConselPage = () => {
       }
     }
     if (controlSteps === 3) {
-      console.log("4444", 4444);
       if (!Object?.keys(valueLifeStyle)?.length > 0) {
         return true;
       } else {
@@ -103,11 +102,13 @@ const ConselPage = () => {
       }
     }
   }, [controlSteps, valueSex, valueAge, valueLifeStyle, valueSkinType]);
-  console.log("controlDisableButton", controlDisableButton);
   return (
-    <>
+    <MainProvider>
+      <Overplay className={`z-50`} />
+      <BackToTop />
+      <Nav />
       <Header />
-      <main className="main-wrapper">
+      <main className="main-wrapper w-full h-full">
         <div className="container">
           <div className="my-[30px] relative">
             <div className="my-[20px]">
@@ -171,17 +172,16 @@ const ConselPage = () => {
                     : "opacity-0 invisible"
                 }`}
               >
-                Tiếp tục
+                {controlSteps === 3 ? "Tư vấn" : "Tiếp tục"}
               </Button>
             </div>
             <div className="my-[20px] ">
               <CurrentConsel {...currentConselProps} />
-              {/* {CurrentConsel[controlSteps]} */}
             </div>
           </div>
         </div>
       </main>
-    </>
+    </MainProvider>
   );
 };
 

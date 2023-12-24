@@ -60,7 +60,7 @@ const ModalCreateProduct = ({
     .map((cate) => {
       let value = {
         _id: cate?._id,
-        name: cate?.name,
+        label: cate?.label,
       };
       return value;
     });
@@ -314,7 +314,7 @@ const ModalCreateProduct = ({
                          }`}
                     >
                       <span className="xs:text-xs md:text-sm font-osr  capitalize">
-                        {cate?.name}
+                        {cate?.label}
                       </span>
                     </button>
                   );
@@ -399,7 +399,7 @@ const ModalCreateProduct = ({
         <div className="form__container mt-0 ">
           <div className="form__container-wrapper w-full mb-[20px]  ">
             <label htmlFor="first-name">Rating</label>
-            <Rate value={rating} onChange={setRating} />
+            <Rate allowHalf value={rating} onChange={setRating} />
           </div>
         </div>
 

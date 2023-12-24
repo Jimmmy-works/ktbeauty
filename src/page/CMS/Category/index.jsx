@@ -32,7 +32,6 @@ const DashboardCategory = () => {
       }),
       filterSearch: true,
       onFilter: (value, record) => {
-        console.log("record", record);
         if (width >= 768) {
           return record?.name?.props?.children?.[1]?.indexOf(value) === 0;
         } else {
@@ -70,11 +69,11 @@ const DashboardCategory = () => {
         ),
       name:
         width >= 768 ? (
-          <p className="font-om capitalize"> {`${category?.name}`}</p>
+          <p className="font-om capitalize"> {`${category?.label}`}</p>
         ) : (
           <strong className="text-sm font-osr font-semibold capitalize ">
             Name:
-            <span className="text-sm font-osr font-normal ml-[4px] capitalize">{`${category?.name}`}</span>
+            <span className="text-sm font-osr font-normal ml-[4px] capitalize">{`${category?.label}`}</span>
           </strong>
         ),
     };
@@ -96,6 +95,7 @@ const DashboardCategory = () => {
   const filterCategories = data?.filter((item) => {
     return selectedRowKeys.indexOf(item.key) !== -1;
   });
+
   const handleDeleteCategorySelected = () => {
     for (let index = 0; index < filterCategories.length; index++) {
       onDeleteCategory(filterCategories[index]?._id);

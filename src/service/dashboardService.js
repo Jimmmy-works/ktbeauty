@@ -46,7 +46,7 @@ const dashboardService = {
   updateCategory: (payload, token) => {
     return instanceAxios.put(
       `/api/category/update-category/${payload?._id}`,
-      { name: payload?.name },
+      { name: payload?.name, label: payload?.label },
       {
         headers: { token: `Bearer ${token}` },
       }
