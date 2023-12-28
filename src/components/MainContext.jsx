@@ -21,30 +21,31 @@ export const MainProvider = ({ children }) => {
   const [isNavbar, setIsNavbar] = useState(false);
   const [isFilter, setIsFilter] = useState(false);
   const [dropDownNav, setdropDownNav] = useState(false);
-  const html = document.querySelector("html");
   const navigate = useNavigate();
   const onToggleNav = () => {
     setIsNavbar(!isNavbar);
     if (isNavbar) {
       setdropDownNav(false);
-      html?.setAttribute("style", "overflow-y : scroll");
       document
-        ?.querySelector(`main`)
-        ?.setAttribute("style", "transform: translateX(0)");
+        .querySelector("main")
+        ?.setAttribute("style", "transform: translateX(0px)");
+      document.body?.setAttribute("style", "overflow-y : scroll");
     } else {
-      html.setAttribute("style", "overflow-y: hidden");
+      document
+        .querySelector("main")
+        ?.setAttribute("style", "transform: translateX(150px)");
+      document.body.setAttribute("style", "overflow-y: hidden");
     }
   };
   const onToggleFilter = () => {
     setIsFilter(!isFilter);
     if (isFilter) {
       setdropDownNav(false);
-      html?.setAttribute("style", "overflow-y : scroll");
+      document.body?.setAttribute("style", "overflow-y : scroll");
     } else {
-      html.setAttribute("style", "overflow-y: hidden");
+      document.body.setAttribute("style", "overflow-y: hidden");
     }
   };
-
   /////// Authen
   const [isAuthenModal, setIsAuthenModal] = useState(false);
   const [controlAuthen, setControlAuthen] = useState("");
@@ -63,24 +64,24 @@ export const MainProvider = ({ children }) => {
       console.log("error", error);
     }
   };
-
   const onLogout = async () => {
     try {
-      if (Object.values(cartInfo).length !== 0) {
-        const _token = localStorage.getItem(LOCAL_STORAGE.token);
-        const resUpdateCart = await dispatch(
-          updateCart({ ...cartInfo }, _token)
-        );
-        if (resUpdateCart?.payload?.status === 200) {
-          dispatch(cartActions.setCartInfo(null));
-          dispatch(authActions.logout());
-          setIsNavbar(false);
-        }
-      } else {
-        dispatch(cartActions.setCartInfo(null));
-        dispatch(authActions.logout());
-      }
-      navigate("/");
+      // if (Object.values(cartInfo).length !== 0) {
+      //   const _token = localStorage.getItem(LOCAL_STORAGE.token);
+      //   const resUpdateCart = await dispatch(
+      //     updateCart({ ...cartInfo }, _token)
+      //   );
+      //   if (resUpdateCart?.payload?.status === 200) {
+      //     dispatch(cartActions.setCartInfo(null));
+      //     dispatch(authActions.logout());
+      //     setIsNavbar(false);
+      //   }
+      // } else {
+      //   dispatch(cartActions.setCartInfo(null));
+      //   dispatch(authActions.logout());
+      // }
+      // navigate("/");
+      dispatch(authActions.logout());
     } catch (error) {
       console.log("error", error);
     }
@@ -123,7 +124,6 @@ export const MainProvider = ({ children }) => {
         setIsFilter,
         isFilter,
         dropDownNav,
-        html,
         /// Authen
         onLogin,
         onLogout,

@@ -51,7 +51,6 @@ const ShowcaseProduct = ({
   categories,
   imageloading,
   onImageLoading,
-  onAddToCart,
   dataShowcaseProduct,
   loadingShowcaseProduct,
   customCategoryTab,
@@ -155,7 +154,6 @@ const ShowcaseProduct = ({
                     <SwiperSlide key={`${item?._id}`}>
                       {!loadingShowcaseProduct ? (
                         <ProductCard
-                          onAddToCart={onAddToCart}
                           className={`item`}
                           item={item}
                           onLoadingImage={onImageLoading}
@@ -221,7 +219,7 @@ const ShowcaseProduct = ({
         <div className="w-fit mx-auto md:mt-[10px]">
           <Link
             to={`${PATHS.SHOP.INDEX}`}
-            class="btn-flip"
+            className="btn-flip"
             data-back="Đến shop"
             data-front="Xem tất cả"
           ></Link>

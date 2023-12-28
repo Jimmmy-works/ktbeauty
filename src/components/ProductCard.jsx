@@ -1,14 +1,17 @@
+import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { PATHS } from "@/contants/path";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
+import { updateCart } from "@/store/reducer/cartReducer";
 import { formatPriceVND } from "@/utils/formatPrice";
-import { Rate, Tooltip, Image, Space } from "antd";
+import useWindowSize from "@/utils/windowResize";
+import { Rate, Tooltip, message } from "antd";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { twMerge } from "tailwind-merge";
-import Button from "./Button";
-import useWindowSize from "@/utils/windowResize";
-import ImageCustom from "./ImageCustom";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
+import { useMainContext } from "./MainContext";
 const StyleRate = styled.div`
   display: flex;
   justify-content: center;
@@ -45,11 +48,87 @@ const ProductCard = ({
   isProductDetail = false,
   imageloading,
   onLoadingImage,
-  onAddToCart,
 }) => {
   const { _id, name, price, rating, image, discount, countInStock, createdAt } =
     item || {};
   const { width } = useWindowSize();
+  const dispatch = useDispatch();
+  const { updateStatusUpdateCart, cartInfo } = useSelector(
+    (state) => state.cart
+  );
+  const { onAuthenModal } = useMainContext();
+  const onAddToCart = async () => {
+    const payload = item;
+    const _token = localStorage.getItem(LOCAL_STORAGE.token);
+    try {
+      if (_token) {
+        if (payload?._id && updateStatusUpdateCart !== THUNK_STATUS.pending) {
+          let cartPayload = {};
+          const matchIndex = cartInfo?.products?.findIndex(
+            (productMatched) => productMatched?.product_id === payload?._id
+          );
+          let newProductPayload = cartInfo?.products?.map((product) => product);
+          if (cartInfo?._id) {
+            if (matchIndex > -1) {
+              if (newProductPayload[matchIndex]?.quantity >= 20) {
+                return message.error(
+                  `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+                );
+              } else {
+                newProductPayload[matchIndex] = {
+                  ...newProductPayload[matchIndex],
+                  quantity: newProductPayload[matchIndex]?.quantity + 1,
+                };
+                message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+              }
+            } else {
+              newProductPayload.push({
+                ...payload,
+                quantity: 1,
+                product_id: payload?._id,
+              });
+              message.success(`+1 ${payload?.name}`);
+            }
+            cartPayload = {
+              ...cartInfo,
+              products: newProductPayload,
+            };
+          } else {
+            cartPayload = {
+              ...cartInfo,
+              products: newProductPayload,
+            };
+            if (matchIndex > -1) {
+              if (newProductPayload[matchIndex]?.quantity >= 20) {
+                return message.error(
+                  `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+                );
+              } else {
+                newProductPayload[matchIndex] = {
+                  ...newProductPayload[matchIndex],
+                  quantity: newProductPayload[matchIndex]?.quantity + 1,
+                };
+                message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+              }
+            } else {
+              newProductPayload.push({
+                ...payload,
+                quantity: 1,
+                product_id: payload?._id,
+              });
+              message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+            }
+          }
+          dispatch(updateCart(cartPayload));
+        }
+      } else {
+        onAuthenModal("login");
+        return message.error(`Xin vui lòng đăng nhập để thêm sản phẩm`);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   if (isProductDetail) {
     return (
       <div
@@ -82,7 +161,7 @@ const ProductCard = ({
             />
           </Link>
           <div
-            onClick={() => onAddToCart(item)}
+            onClick={onAddToCart}
             className="py-[6px] w-[100%] bg-[rgba(0,0,0,0.03)] absolute bottom-0 translate-y-[100%]
             flex gap-[16px] items-center justify-center  group-hover/addtocart:translate-y-0 overflow-hidden 
             transition-all duration-400 z-[100]"
@@ -298,7 +377,7 @@ const ProductCard = ({
                 ? "pointer-events-none text-black-be"
                 : "pointer-events-auto text-black-555"
             } group underline`}
-          onClick={() => onAddToCart(item)}
+          onClick={onAddToCart}
         >
           {countInStock !== 0 ? (
             <div className="text-md ">

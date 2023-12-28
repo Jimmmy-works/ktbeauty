@@ -1,4 +1,4 @@
-import { MODAL_OPTION } from "@/contants/general";
+import { MODAL_OPTION, _LIMIT } from "@/contants/general";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import { getAllProduct } from "@/store/reducer/productReducer";
 import { formatPriceVND } from "@/utils/formatPrice";
@@ -332,7 +332,7 @@ const DashBoardProduct = () => {
   }, [searchTerm, valueSlider]);
   const onChangePagination = (pageNumber) => {
     const payloadPagination = {
-      limit: 9,
+      limit: _LIMIT,
       page: pageNumber - 1,
     };
     setPageCurrent(pageNumber);

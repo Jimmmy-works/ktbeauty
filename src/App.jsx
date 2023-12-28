@@ -19,7 +19,6 @@ const ProfileLayout = lazy(() => import("./layout/ProfileLayout"));
 const Account = lazy(() => import("./page/Profile/Account"));
 const Order = lazy(() => import("./page/Profile/Order"));
 const WhiteList = lazy(() => import("./page/Profile/WhiteList"));
-const Address = lazy(() => import("./page/Profile/Address"));
 const PrivateRoute = lazy(() => import("./components/PrivateRoute"));
 
 // import MainLayout from "./layout/MainLayout";
@@ -37,7 +36,6 @@ const PrivateRoute = lazy(() => import("./components/PrivateRoute"));
 // import Account from "./page/Profile/Account";
 // import Order from "./page/Profile/Order";
 // import WhiteList from "./page/Profile/WhiteList";
-// import Address from "./page/Profile/Address";
 // import PrivateRoute from "./components/PrivateRoute";
 
 // import DashboardLayout from "./layout/DashboardLayout";
@@ -88,7 +86,6 @@ function App() {
                     path={PATHS.PROFILE.WHITELIST}
                     element={<WhiteList />}
                   />
-                  <Route path={PATHS.PROFILE.ADDRESS} element={<Address />} />
                 </Route>
               </Route>
             </Route>
@@ -113,9 +110,7 @@ function App() {
                 <Route path="" />
               </Route>
             </Route>
-            <Route path={PATHS.HOME} element={<MainLayout />}>
-              <Route path="*" element={<Page404 />} />
-            </Route>
+            <Route path="*" element={<Page404 />} />
           </Routes>
         </BrowserRouter>
       </Suspense>

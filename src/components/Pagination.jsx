@@ -1,8 +1,7 @@
 import { useMemo } from "react";
 
-const Pagination = ({ onChange, pageCurrent = 0, totalPage }) => {
+const Pagination = ({ limit = 12, onChange, pageCurrent = 0, total }) => {
   /// Demo
-  let limit = 9;
   const PAGE_STEP = 2;
   const onChangePage = (numbPage) => {
     onChange(numbPage);
@@ -16,13 +15,13 @@ const Pagination = ({ onChange, pageCurrent = 0, totalPage }) => {
     if (pageCurrent <= 0) return;
   };
   //////
-  // const totalPage = useMemo(() => {
-  //   if (!limit || !total) {
-  //     return 1;
-  //   } else {
-  //     return Math.ceil(Number(total) / Number(limit)) || 1;
-  //   }
-  // }, [total, limit]);
+  const totalPage = useMemo(() => {
+    if (!limit || !total) {
+      return 1;
+    } else {
+      return Math.ceil(Number(total) / Number(limit)) || 1;
+    }
+  }, [total, limit]);
   const myPagination = useMemo(() => {
     let startPage = pageCurrent - PAGE_STEP;
     let endPage = pageCurrent + PAGE_STEP;

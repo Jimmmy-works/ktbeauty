@@ -10,7 +10,7 @@ const ConselLifeStyle = ({
       <div
         className={`relative xs:w-full md:w-[calc(50%-30px)] lg:w-[calc(33.33333%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
          bg-contain bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
-       ${valueLifeStyle?.value === "nomal" ? "bg-gray-700" : "bg-black-555"} 
+       ${valueLifeStyle?.value === "office" ? "bg-gray-700" : "bg-black-555"} 
        group/hover`}
         onClick={() =>
           onChangeConselLifeStyle({
@@ -24,7 +24,7 @@ const ConselLifeStyle = ({
       <div
         className={`xs:w-full md:w-[calc(50%-30px)] lg:w-[calc(33.33333%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
          bg-contain bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
-       ${valueLifeStyle?.value === "oil" ? "bg-gray-700" : "bg-black-555"}`}
+       ${valueLifeStyle?.value === "makeup" ? "bg-gray-700" : "bg-black-555"}`}
         onClick={() =>
           onChangeConselLifeStyle({
             label: "Dành cho người Makeup nhiều",
@@ -37,7 +37,7 @@ const ConselLifeStyle = ({
       <div
         className={`xs:w-full md:w-[calc(50%-30px)] lg:w-[calc(33.33333%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
          bg-contain bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
-       ${valueLifeStyle?.value === "dry" ? "bg-gray-700" : "bg-black-555"}`}
+       ${valueLifeStyle?.value === "student" ? "bg-gray-700" : "bg-black-555"}`}
         onClick={() =>
           onChangeConselLifeStyle({
             label: "Dành cho Học sinh - Sinh viên",
@@ -50,15 +50,11 @@ const ConselLifeStyle = ({
       <div
         className={`xs:w-full md:w-[calc(50%-30px)] lg:w-[calc(33.33333%-30px)] flex gap-3 items-center justify-center mx-[15px] cursor-pointer
          bg-contain bg-no-repeat bg-center aspect-[16/12] rounded-[20px] duration-300 transition-all hover:bg-gray-700
-       ${
-         valueLifeStyle?.value === "combination"
-           ? "bg-gray-700"
-           : "bg-black-555"
-       }`}
+       ${valueLifeStyle?.value === "outside" ? "bg-gray-700" : "bg-black-555"}`}
         onClick={() =>
           onChangeConselLifeStyle({
             label: "Dành cho người Năng động hoặc Làm việc ngoài trời",
-            value: "combination",
+            value: "outside",
           })
         }
       >

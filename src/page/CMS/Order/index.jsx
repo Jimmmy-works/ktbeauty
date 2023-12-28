@@ -479,7 +479,7 @@ const DashboardOrder = () => {
                 )}
                 <div className=" py-[20px] flex items-center justify-between">
                   <h4 className="font-osb text-md text-black-333">Tổng cộng</h4>
-                  <p className="font-osb text-md text-primary ">
+                  <p className="font-osb text-md text-primary tracking-wider">
                     {formatPriceVND(detailOrder?.total)}
                   </p>
                 </div>

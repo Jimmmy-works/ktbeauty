@@ -1,3 +1,4 @@
+import QuantityInput from "@/assets/Input/QuantityInput";
 import BreadCrumb from "@/components/BreadCrumb";
 import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
@@ -10,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import useCartPage from "./useCartPage";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
 const StepsWrapper = styled.div`
   .ant-steps-item-icon {
     background-color: #555 !important;
@@ -77,8 +79,14 @@ const CartPage = () => {
   ];
   const dispatch = useDispatch();
   const { width } = useWindowSize();
-  const { cartInfo, onChangeQuantity, onDeleteProductInCart, total, subTotal } =
-    useCartPage();
+  const {
+    cartInfo,
+    onChangeQuantity,
+    onDeleteProductInCart,
+    total,
+    subTotal,
+    updateStatusUpdateCart,
+  } = useCartPage();
   const { products } = cartInfo || {};
   const [discountCodeCurrent, setDiscountCodeCurrent] = useState();
   const [shippingCurrent, setShippingCurrent] = useState(
@@ -88,33 +96,6 @@ const CartPage = () => {
   const [stepDiscount, setStepDiscount] = useState();
   const min = 1;
   const max = 20;
-  const onInputOnchange = (e, updateIndex) => {
-    onChangeQuantity(modifyValue(Number(e.target.value)), updateIndex);
-  };
-  const onInputBlur = (e, updateIndex) => {
-    onChangeQuantity(modifyValue(Number(e.target.value)), updateIndex);
-  };
-  const onIncrease = (updateIndex) => {
-    onChangeQuantity(
-      modifyValue(Number(products?.[updateIndex]?.quantity) + Number(1)),
-      updateIndex
-    );
-  };
-  const onDecrease = (updateIndex) => {
-    onChangeQuantity(
-      modifyValue(Number(products?.[updateIndex]?.quantity) - Number(1)),
-      updateIndex
-    );
-  };
-  const modifyValue = (value) => {
-    if (value > max) {
-      return (value = max);
-    } else if (value < min) {
-      return (value = min);
-    } else {
-      return value;
-    }
-  };
   const million = 1000000;
   const onChangeShippingType = useCallback(
     (value, current) => {
@@ -158,7 +139,7 @@ const CartPage = () => {
   useEffect(() => {
     dispatch(cartActions.setDiscountCode(discountCodeCurrent));
     dispatch(cartActions.setShipping(shippingCurrent));
-    if (products) {
+    if (products?.length) {
       dispatch(
         cartActions.setSubTotal(
           products?.reduce((acc, cur) => {
@@ -167,27 +148,15 @@ const CartPage = () => {
         )
       );
       if (subTotal > 0) {
-        if (subTotal >= 1) {
-          dispatch(
-            cartActions.setTotal(
-              Number(
-                subTotal -
-                  (discountCodeCurrent?.price || 0) +
-                  shippingCurrent?.price
-              )
+        dispatch(
+          cartActions.setTotal(
+            Number(
+              subTotal -
+                (discountCodeCurrent?.price || 0) +
+                shippingCurrent?.price
             )
-          );
-        } else {
-          dispatch(
-            cartActions.setTotal(
-              Number(
-                subTotal -
-                  (discountCodeCurrent?.price || 0) +
-                  shippingCurrent?.price
-              )
-            )
-          );
-        }
+          )
+        );
       } else {
         dispatch(cartActions.setTotal(0));
       }
@@ -217,156 +186,134 @@ const CartPage = () => {
           </h3>
         </div>
 
-        <table className="table ">
-          <thead>
-            <tr>
-              <td>Sản phẩm</td>
-              <td>Tên Sản phẩm</td>
-              <td>Giá</td>
-              <td>Số lượng</td>
-              <td>Tổng</td>
-            </tr>
-          </thead>
-          <tbody className="table__body">
-            {cartInfo?.products?.map((item, index) => {
-              const {
-                image,
-                name,
-                _id,
-                product_id,
-                quantity,
-                price,
-                discount,
-              } = item || {};
-              return (
-                <tr key={_id}>
-                  <td className="table__body-row">
-                    <Link
-                      to={`${PATHS.SHOP.INDEX}/${product_id}`}
-                      className="img group/hover
-                      "
-                    >
-                      <img
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = "/assets/img/error.png";
-                        }}
-                        className="max-w-[90px] center-absolute  group-hover/hover:scale-105 md:left-0 md:translate-x-0 "
-                        src={image?.[0]}
-                        alt=""
-                      />
-                    </Link>
-                  </td>
-                  <td className="">
-                    <Link
-                      to={`${PATHS.SHOP.INDEX}/${product_id}`}
-                      className="text  hover:text-primary "
-                      href=""
-                    >
-                      {name}
-                    </Link>
-                  </td>
-                  {width >= 768 ? (
-                    <td className="tracking-wider">
-                      <div className=" text-sm text-primary font-osb flex gap-3 items-center justify-center">
-                        <span className="line-through text-black-555">
-                          {formatPriceVND(price)}
-                        </span>
-                        <span className="text-16px">
-                          {formatPriceVND(price - discount)}
-                        </span>
-                      </div>
-                    </td>
-                  ) : (
-                    <td className="tracking-wider ">
-                      <div className=" text-sm text-primary font-osb flex gap-3 items-center justify-center">
-                        <span className="text-black-555">Giá:</span>
-                        <span className="line-through text-black-555">
-                          {formatPriceVND(price)}
-                        </span>
-                        <span className="text-16px">
-                          {formatPriceVND(price - discount)}
-                        </span>
-                      </div>
-                    </td>
-                  )}
-                  <td className="">
-                    <div
-                      className="flex items-center border border-solid border-[#ececec] rounded-md
-                        h-[50px] justify-center w-fit mx-auto "
-                    >
-                      <div
-                        className="px-[10px] cursor-pointer h-full flex items-center justify-center group/hover"
-                        onClick={() => onDecrease(index)}
+        {cartInfo?._id && (
+          <table className="table ">
+            <thead>
+              <tr>
+                <td>Sản phẩm</td>
+                <td>Tên Sản phẩm</td>
+                <td>Giá</td>
+                <td>Số lượng</td>
+                <td>Tổng</td>
+              </tr>
+            </thead>
+            <tbody className="table__body">
+              {cartInfo?.products?.map((item, index) => {
+                const {
+                  image,
+                  name,
+                  _id,
+                  product_id,
+                  quantity,
+                  price,
+                  discount,
+                } = item || {};
+                return (
+                  <tr key={_id}>
+                    <td className="table__body-row ">
+                      <Link
+                        to={`${PATHS.SHOP.INDEX}/${product_id}`}
+                        className="img rounded-lg duration-500 transition-all border border-solid border-[#fff]
+                       hover:border-primary max-w-[90px]"
                       >
-                        <svg className="h-[10px] w-[10px]" viewBox="0 0 24 24">
-                          <path
-                            className="fill-black-555 duration-300 transition-colors group-hover/hover:fill-primary"
-                            d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
-                          ></path>
-                        </svg>
-                      </div>
-                      <input
-                        className="w-[30px] text-15px tracking-wider text-center text-black-555 font-osb"
-                        type="number"
-                        min={min}
-                        max={max}
-                        value={quantity}
-                        // value={renderValue}
-                        onChange={(e) => onInputOnchange(e, index)}
-                        onBlur={(e) => onInputBlur(e, index)}
-                      />
-                      <div
-                        className="px-[10px] cursor-pointer h-full flex items-center justify-center group/hover"
-                        onClick={() => onIncrease(index)}
-                      >
-                        <svg
-                          className="h-[10px] w-[10px] rotate-[180deg]"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            className="fill-black-555 duration-300 transition-colors group-hover/hover:fill-primary"
-                            d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
-                          ></path>
-                        </svg>
-                      </div>
-                    </div>
-                  </td>
-                  {width >= 768 ? (
-                    <td className="text-black font-om tracking-wider">
-                      {formatPriceVND(quantity * (price - discount))}
+                        <img
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "/assets/img/error.png";
+                          }}
+                          className="max-w-[90px] rounded-lg center-absolute "
+                          src={image?.[0]}
+                          alt=""
+                        />
+                      </Link>
                     </td>
-                  ) : (
-                    <td className="text-black font-om tracking-wider">
-                      Tổng: {formatPriceVND(quantity * (price - discount))}
-                    </td>
-                  )}
-                  {width >= 768 ? (
                     <td className="">
-                      <button
-                        onClick={() => onDeleteProductInCart(_id)}
-                        className="px-[10px] block xs:text-[12px] lg:text-[14px] text-white rounded-md 
+                      <Link
+                        to={`${PATHS.SHOP.INDEX}/${product_id}`}
+                        className="leading-[20px] hover:text-primary duration-400 transition-colors"
+                        href=""
+                      >
+                        {name}
+                      </Link>
+                    </td>
+                    {width >= 768 ? (
+                      <td className="tracking-wider">
+                        <div className=" text-sm text-primary font-osb flex gap-3 items-center justify-center">
+                          <span className="line-through text-black-555">
+                            {formatPriceVND(price)}
+                          </span>
+                          <span className="text-16px">
+                            {formatPriceVND(price - discount)}
+                          </span>
+                        </div>
+                      </td>
+                    ) : (
+                      <td className="tracking-wider ">
+                        <div className=" text-sm text-primary font-osb flex gap-3 items-center justify-center">
+                          <span className="text-black-555">Giá:</span>
+                          <span className="line-through text-black-555">
+                            {formatPriceVND(price)}
+                          </span>
+                          <span className="text-16px">
+                            {formatPriceVND(price - discount)}
+                          </span>
+                        </div>
+                      </td>
+                    )}
+                    <td className="">
+                      <div
+                        className="flex items-center border border-solid border-[#ececec] rounded-md
+                        h-[50px] justify-center w-fit mx-auto "
+                      >
+                        <QuantityInput
+                          min={min}
+                          max={max}
+                          loading={
+                            updateStatusUpdateCart !== THUNK_STATUS.fulfilled
+                          }
+                          value={quantity}
+                          onChange={(value) => {
+                            return onChangeQuantity(value, index);
+                          }}
+                        />
+                      </div>
+                    </td>
+                    {width >= 768 ? (
+                      <td className="text-black font-om tracking-wider">
+                        {formatPriceVND(quantity * (price - discount))}
+                      </td>
+                    ) : (
+                      <td className="text-black font-om tracking-wider">
+                        Tổng: {formatPriceVND(quantity * (price - discount))}
+                      </td>
+                    )}
+                    {width >= 768 ? (
+                      <td className="">
+                        <button
+                          onClick={() => onDeleteProductInCart(_id)}
+                          className="px-[10px] block xs:text-[12px] lg:text-[14px] text-white rounded-md 
                         py-[6px] hover:bg-red-500
                       bg-black-333 transition-all duration-400 mx-auto"
-                      >
-                        Xóa
-                      </button>
-                    </td>
-                  ) : (
-                    <td className="absolute top-0 right-3 w-[22px] p-0">
-                      <svg className="w-[22px] h-[22px]" viewBox="0 0 24 24">
-                        <path
-                          fill="#555"
-                          d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"
-                        />
-                      </svg>
-                    </td>
-                  )}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                        >
+                          Xóa
+                        </button>
+                      </td>
+                    ) : (
+                      <td className="absolute top-0 right-3 w-[22px] p-0">
+                        <svg className="w-[22px] h-[22px]" viewBox="0 0 24 24">
+                          <path
+                            fill="#555"
+                            d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"
+                          />
+                        </svg>
+                      </td>
+                    )}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
         {!cartInfo?.products?.length && (
           <div className="w-full flex items-center justify-center ">
             <EmptyWrapper>

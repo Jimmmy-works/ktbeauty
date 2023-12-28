@@ -1,13 +1,19 @@
 import BreadCrumb from "@/components/BreadCrumb";
 import InputRange from "@/components/Input/InputRange";
 import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
+import {
+  MainParamShopProvider,
+  useMainParamContext,
+} from "@/components/MainParamShopContext";
 import NavbarFilter from "@/components/NavbarFilter";
 import Pagination from "@/components/Pagination";
 import ProductCard from "@/components/ProductCard";
 import SelectCustom from "@/components/Select/SelectCustom";
+import { _LIMIT } from "@/contants/general";
 import { PATHS } from "@/contants/path";
 import useWindowSize from "@/utils/windowResize";
-import { Checkbox, Collapse, Empty, Tooltip } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Checkbox, Collapse, Empty, Spin, Tooltip } from "antd";
 import { useRef, useState } from "react";
 import styled from "styled-components";
 import useShop from "./useShop";
@@ -50,16 +56,27 @@ const Shop = () => {
     search,
     /////
     productSearch,
+    // valueChecked,
+    // renderChecked,
+    // onChangeCheckbox,
+    // onChangeRenderCheckbox,
+    // setValueChecked,
+    // setRenderChecked,
+  } = useShop();
+  const {
     valueChecked,
     renderChecked,
     onChangeCheckbox,
     onChangeRenderCheckbox,
-  } = useShop();
+    setValueChecked,
+    setRenderChecked,
+  } = useMainParamContext();
   const listRef = useRef([]);
   const { width } = useWindowSize();
   const [controlCollapse, setControlCollapse] = useState([]);
   //////
   const inputRangeProps = { updateQueryString, queryObject };
+
   const itemCategories = [
     {
       key: "1",
@@ -73,32 +90,30 @@ const Shop = () => {
         </p>
       ),
       children: categories?.map((cate, index) => {
-        console.log("cate?._id", cate?._id);
-        const filterLength = dataShop?.data?.data?.filter((item) => {
-          console.log("item", item);
-          return item?.category_id?._id === cate?._id;
-        });
-        console.log("filterLength", filterLength);
         return (
           <div
             key={cate?._id}
             className={`hover:text-primary cursor-pointer duration-400 transition-all
            flex items-start gap-2 my-[4px] ${
              valueChecked?.includes(cate?._id) ? "font-om text-black" : ""
-           }`}
+           } ${loadingDataShop ? "text-[#d9d9d9] cursor-not-allowed" : ""}`}
             onClick={() => {
-              onChangeCheckbox(cate?._id, cate), onChangeRenderCheckbox(cate);
+              if (!loadingDataShop)
+                onChangeCheckbox(cate?._id), onChangeRenderCheckbox(cate);
             }}
           >
             <Checkbox
-              checked={valueChecked?.includes(cate?._id, cate)}
+              disabled={loadingDataShop ? true : false}
+              checked={
+                valueChecked?.length && valueChecked?.includes(cate?._id)
+              }
               onChange={() => {
-                onChangeCheckbox(cate?._id, cate), onChangeRenderCheckbox(cate);
+                onChangeCheckbox(cate?._id), onChangeRenderCheckbox(cate);
               }}
             />
-            <p className=" ">
+            <p className="">
               {cate?.label}{" "}
-              {filterLength?.length ? `(${filterLength?.length})` : `(0)`}
+              {cate?.totalProduct ? `(${cate?.totalProduct})` : `(0)`}
             </p>
           </div>
         );
@@ -130,7 +145,7 @@ const Shop = () => {
     onChangeCollapse,
   };
   return (
-    <>
+    <MainParamShopProvider>
       {width < 1280 && (
         <div
           className="fixed z-[10] left-[5%] bottom-[20px] 
@@ -196,48 +211,97 @@ const Shop = () => {
                 gap-y-[12px] xs:pb-[16px] md:pb-[24px] mb-[24px] border-b 
               border-solid border-[#e5e5e5]"
               >
-                {!renderChecked?.length && width >= 1280 ? (
-                  <h3 className="min-w-fit text-md font-ossb">
-                    {dataShop?.data?.total} Kết quả
-                  </h3>
+                {width < 1280 ? (
+                  !loadingDataShop ? (
+                    <h3 className="min-h-full  min-w-fit text-md font-ossb">
+                      {dataShop?.data?.total} Kết quả
+                    </h3>
+                  ) : (
+                    <Spin
+                      indicator={
+                        <LoadingOutlined
+                          style={{
+                            minWidth: 50,
+                            color: "#555",
+                            fontSize: 24,
+                          }}
+                          spin
+                        />
+                      }
+                      size="default"
+                    />
+                  )
                 ) : (
                   ""
                 )}
-                {renderChecked?.length && width < 1280 ? (
-                  <h3 className="min-w-fit text-md font-ossb">
-                    {dataShop?.data?.total} Kết quả
-                  </h3>
-                ) : (
-                  ""
-                )}
-                {width >= 1280 && renderChecked?.length > 0 && (
-                  <div className="flex items-center justify-start gap-2 flex-wrap">
-                    <ul className=" flex items-center justify-start gap-x-3 gap-y-2 flex-wrap">
+                {width >= 1280 && (
+                  <div className="flex items-center justify-start gap-3 flex-wrap">
+                    {!loadingDataShop ? (
                       <h3 className="min-h-full  min-w-fit text-md font-ossb">
                         {dataShop?.data?.total} Kết quả
                       </h3>
-                      {renderChecked?.map((category, index) => {
-                        return (
-                          <Tooltip
-                            key={`${category?._id}${index}`}
-                            placement={`top`}
-                            color="#999"
-                            title={`Bỏ filter ${category?.label}`}
-                          >
-                            <li
-                              className="cursor-pointer font-om text-black-333 text-sm 
-                                 rounded-md border border-black-333 border-solid p-[4px]"
-                              onClick={() => {
-                                onChangeCheckbox(category?._id);
-                                onChangeRenderCheckbox(category);
-                              }}
+                    ) : (
+                      <Spin
+                        indicator={
+                          <LoadingOutlined
+                            style={{
+                              minWidth: 50,
+                              color: "#555",
+                              fontSize: 24,
+                            }}
+                            spin
+                          />
+                        }
+                        size="default"
+                      />
+                    )}
+                    {renderChecked?.length ? (
+                      <ul className=" flex items-center justify-start gap-x-3 gap-y-2 flex-wrap">
+                        {renderChecked?.map((category, index) => {
+                          return (
+                            <Tooltip
+                              key={`${category?._id}${index}`}
+                              placement={`top`}
+                              color="#999"
+                              title={`Bỏ filter ${category?.label}`}
                             >
-                              <div>{category?.label} &#10006;</div>
-                            </li>
-                          </Tooltip>
-                        );
-                      })}
-                    </ul>
+                              <li
+                                className="cursor-pointer font-om text-black-333 text-sm 
+                                 rounded-md border border-black-333 border-solid p-[4px]"
+                                onClick={() => {
+                                  onChangeCheckbox(category?._id);
+                                  onChangeRenderCheckbox(category);
+                                }}
+                              >
+                                <div>{category?.label} &#10006;</div>
+                              </li>
+                            </Tooltip>
+                          );
+                        })}
+                        <Tooltip
+                          key={`delete-all`}
+                          placement={`top`}
+                          color="#999"
+                          title={`Bỏ tất cả filter`}
+                        >
+                          <li
+                            className="cursor-pointer font-om text-red-700 text-sm 
+                                 rounded-md border border-red-700 border-solid p-[4px]"
+                            onClick={() => {
+                              setValueChecked([]), setRenderChecked([]);
+                              updateQueryString({
+                                page: 0,
+                                limit: _LIMIT,
+                              });
+                            }}
+                          >
+                            <div>Xóa tất cả &#10006;</div>
+                          </li>
+                        </Tooltip>
+                      </ul>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 )}
                 <SelectCustom
@@ -257,7 +321,7 @@ const Shop = () => {
                           onLoadingImage={onImageLoading}
                           imageloading={imageloading}
                           key={`${item?._id}`}
-                          className={` lg:w-[calc(25%-10px)] xs:w-[calc(50%-10px)] md:w-[calc(33.333333%-10px)]`}
+                          className={`lg:w-[calc(25%-10px)] xs:w-[calc(50%-10px)] md:w-[calc(33.333333%-10px)]`}
                           item={item}
                           isProductDetail={true}
                           onAddToCart={onAddToCart}
@@ -281,7 +345,8 @@ const Shop = () => {
                 )}
               </div>
               <Pagination
-                totalPage={dataShop?.data?.totalPage}
+                limit={_LIMIT}
+                total={dataShop?.data?.total}
                 onChange={onChangePageCurrent}
                 pageCurrent={pageCurrent}
               />
@@ -314,11 +379,31 @@ const Shop = () => {
                   </Tooltip>
                 );
               })}
+              <Tooltip
+                key={`delete-all`}
+                placement={`top`}
+                color="#999"
+                title={`Bỏ tất cả filter`}
+              >
+                <li
+                  className="cursor-pointer font-om text-red-700 text-sm 
+                                 rounded-md border border-red-700 border-solid p-[4px]"
+                  onClick={() => {
+                    setValueChecked([]), setRenderChecked([]);
+                    updateQueryString({
+                      page: 0,
+                      limit: _LIMIT,
+                    });
+                  }}
+                >
+                  <div>Xóa tất cả &#10006;</div>
+                </li>
+              </Tooltip>
             </ul>
           </div>
         )}
       </NavbarFilter>
-    </>
+    </MainParamShopProvider>
   );
 };
 

@@ -961,6 +961,7 @@ export default {
     },
     colors: ({ colors }) => ({
       "black-333": "#333",
+      "black-222": "#222",
       "black-555": "#555",
       "black-be": "#bebebe",
       "black-ebe": "#ebebeb",
@@ -968,7 +969,7 @@ export default {
       "grey-f7f6": "#f7f6f6",
       "header-banner": "#162818",
       primary: "#ff887b",
-      secondary: "#A50C20",
+      secondary: "#8F82CC",
       ////////
       // primary: "#87b0a5",
       // secondary: "#628588",
@@ -1039,7 +1040,7 @@ export default {
         md: "750px",
         // md: "728px",
         // 1024px
-        lg: "970px",
+        lg: "1010px",
         // lg: "970px",
         // lg: "984px",
         // 1280px
@@ -1157,52 +1158,52 @@ export default {
         },
         ".pt-section": {
           "@media (min-width: 360px)": {
-            paddingTop: "50px",
+            paddingTop: "30px",
           },
           "@media (min-width: 768px)": {
-            paddingTop: "60px",
+            paddingTop: "46px",
           },
           "@media (min-width: 1024px)": {
-            paddingTop: "80px",
+            paddingTop: "56px",
           },
         },
         ".p-section": {
           "@media (min-width: 360px)": {
-            paddingTop: "50px",
-            paddingBottom: "50px",
+            paddingTop: "30px",
+            paddingBottom: "30px",
           },
           "@media (min-width: 768px)": {
-            paddingTop: "60px",
-            paddingBottom: "60px",
+            paddingTop: "46px",
+            paddingBottom: "46px",
           },
           "@media (min-width: 1024px)": {
-            paddingTop: "80px",
-            paddingBottom: "80px",
+            paddingTop: "56px",
+            paddingBottom: "56px",
           },
         },
         ".m-section": {
           "@media (min-width: 360px)": {
-            marginTop: "50px",
-            marginBottom: "50px",
+            marginTop: "30px",
+            marginBottom: "30px",
           },
           "@media (min-width: 768px)": {
-            marginTop: "60px",
-            marginBottom: "60px",
+            marginTop: "46px",
+            marginBottom: "46px",
           },
           "@media (min-width: 1024px)": {
-            marginTop: "80px",
-            marginBottom: "80px",
+            marginTop: "56px",
+            marginBottom: "56px",
           },
         },
         ".mt-section": {
           "@media (min-width: 360px)": {
-            marginTop: "50px",
+            marginTop: "30px",
           },
           "@media (min-width: 768px)": {
-            marginTop: "60px",
+            marginTop: "46px",
           },
           "@media (min-width: 1024px)": {
-            marginTop: "80px",
+            marginTop: "56px",
           },
         },
         ".rotate-y-180": {

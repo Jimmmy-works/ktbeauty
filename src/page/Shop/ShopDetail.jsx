@@ -20,6 +20,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import queryString from "query-string";
+import { _LIMIT } from "@/contants/general";
 const StyleRate = styled.div`
   display: flex;
   gap: 8px;
@@ -45,6 +46,7 @@ const ShopDetail = () => {
     onImageLoading,
     slugParams,
     findCategoryAll,
+    updateStatusUpdateCart,
   } = useShop();
   const {
     _id,
@@ -98,7 +100,7 @@ const ShopDetail = () => {
         <BreadCrumb.Item link={`${PATHS.HOME}`}>Trang chủ</BreadCrumb.Item>
         <BreadCrumb.Item
           link={`${PATHS.SHOP.INDEX}?${queryString.stringify({
-            limit: 9,
+            limit: _LIMIT,
             page: 0,
             categories: findCategoryAll?._id,
           })}`}
@@ -302,7 +304,7 @@ const ShopDetail = () => {
                   <p className="line-through text-15px text-[#979797] font-osr leading-[18px]">
                     {formatPriceVND(price)}
                   </p>
-                  <p class="text-white text-15px p-[5px_8px] rounded-3xl font-osr  bg-primary">
+                  <p className="text-white text-15px p-[5px_8px] rounded-3xl font-osr  bg-primary">
                     -29%
                   </p>
                 </div>
@@ -333,18 +335,33 @@ const ShopDetail = () => {
                   <div className="input flex items-center border border-solid border-[#ececec] rounded-md  h-[60px]">
                     <div
                       onClick={onDecrease}
-                      className="h-full flex items-center justify-center px-[16px] cursor-pointer
-                      group"
+                      className={`h-full flex items-center justify-center px-[16px] cursor-pointer
+                      group  ${
+                        updateStatusUpdateCart !== THUNK_STATUS.fulfilled ||
+                        numbInput <= min
+                          ? " cursor-not-allowed"
+                          : "cursor-pointer pointer-events-auto"
+                      }`}
                     >
                       <svg className="h-[10px] w-[10px]" viewBox="0 0 24 24">
                         <path
-                          className="fill-black-555 group-hover:fill-primary duration-300 transition-colors "
+                          className={`fill-black-555  duration-300 transition-colors ${
+                            updateStatusUpdateCart !== THUNK_STATUS.fulfilled ||
+                            numbInput <= min
+                              ? "fill-[#e5e5e5]"
+                              : "fill-black-555 group-hover:fill-primary"
+                          }`}
                           d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
                         />
                       </svg>
                     </div>
                     <input
-                      className="w-[30px] text-15px tracking-wider text-center text-black-555 font-osb"
+                      className={`w-[30px] text-15px tracking-wider text-center text-black-555 font-osb
+                      ${
+                        updateStatusUpdateCart !== THUNK_STATUS.fulfilled
+                          ? "text-[#e5e5e5] cursor-not-allowed"
+                          : "text-black-555 cursor-auto pointer-events-auto"
+                      } duration-300 transition-all`}
                       value={numbInput}
                       type="number"
                       min={min}
@@ -353,15 +370,26 @@ const ShopDetail = () => {
                     />
                     <div
                       onClick={onIncrease}
-                      className="h-full flex items-center justify-center px-[16px] cursor-pointer
-                      group"
+                      className={`h-full flex items-center justify-center px-[16px] cursor-pointer
+                      group  ${
+                        updateStatusUpdateCart !== THUNK_STATUS.fulfilled ||
+                        numbInput >= max
+                          ? "cursor-not-allowed"
+                          : "cursor-pointer pointer-events-auto"
+                      }`}
                     >
                       <svg
                         className="h-[10px] w-[10px] rotate-[180deg]"
                         viewBox="0 0 24 24"
                       >
                         <path
-                          className="fill-black-555 group-hover:fill-primary duration-300 transition-colors "
+                          className={`fill-black-555  duration-300 transition-colors 
+                          ${
+                            updateStatusUpdateCart !== THUNK_STATUS.fulfilled ||
+                            numbInput >= max
+                              ? "fill-[#e5e5e5] "
+                              : "fill-black-555 group-hover:fill-primary "
+                          }`}
                           d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
                         />
                       </svg>
@@ -369,13 +397,12 @@ const ShopDetail = () => {
                   </div>
                   <button
                     onClick={() =>
-                      onAddToCart({
-                        ...productDetail,
-                        quantity:
-                          (productDetail?.quantity
-                            ? productDetail?.quantity
-                            : 0) + numbInput,
-                      })
+                      onAddToCart(
+                        {
+                          ...productDetail,
+                        },
+                        numbInput
+                      )
                     }
                     className="font-osb text-white text-15px flex items-center border 
                   border-solid border-[#ececec] rounded-md bg-black-555 px-[27.5px]

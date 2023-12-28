@@ -10,6 +10,9 @@ const InputM = (
     renderProps,
     placeholder,
     className,
+    onChange,
+    onBlur,
+    value,
     ...inputProps
   },
   ref
@@ -20,6 +23,9 @@ const InputM = (
         renderProps?.({ ...inputProps, ref: ref })
       ) : (
         <input
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
           placeholder={placeholder}
           disabled={disabled}
           style={{ cursor: disabled ? "not-allowed" : "" }}

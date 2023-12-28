@@ -888,7 +888,7 @@ const DashboardAnalyst = () => {
   return (
     <>
       <div
-        className={`  h-fit flex  items-center xs:justify-center  md:justify-between 
+        className={`h-fit flex  items-center xs:justify-center  md:justify-between 
       gap-3 xs:fixed lg:static top-[60px] z-10 xs:bg-gray-100 lg:bg-white xs:px-[15px] lg:px-[30px] py-[14px]
       ${
         toggleSidebar
@@ -1057,8 +1057,8 @@ const DashboardAnalyst = () => {
             />
           </div>
         </div>
-        <div className="py-[20px] flex lg:flex-row xs:flex-col gap-[20px] items-center        ">
-          <div className="lg:w-1/2 xs:w-full   table__dashboard-analyst ">
+        <div className="py-[20px] flex lg:flex-row xs:flex-col gap-[20px] items-center ">
+          <div className="lg:w-1/2 xs:w-full   table__dashboard table__dashboard-analyst">
             <div className="font-om text-md text-black-555 my-[15px] text-center ">
               Top 10 CountInStock
             </div>
@@ -1077,7 +1077,7 @@ const DashboardAnalyst = () => {
               }}
             />
           </div>
-          <div className="lg:w-1/2 xs:w-full  table__dashboard-analyst">
+          <div className="lg:w-1/2 xs:w-full  table__dashboard table__dashboard-analyst">
             <div className="font-om text-md text-black-555 my-[15px] text-center">
               Top 10 Sold
             </div>

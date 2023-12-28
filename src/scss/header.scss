@@ -7,8 +7,8 @@
       @apply w-full min-w-max  cursor-pointer flex items-center pb-[10px]
       gap-2;
       a {
-        @apply text-sm leading-[20px] text-black-555 font-osr w-full
-        duration-400 transition-colors max-w-[300px];
+        @apply text-sm leading-[20px] text-black-555 font-osr  w-full
+        duration-400 transition-colors  min-w-[200px] max-w-[300px];
       }
       svg {
         path {
@@ -17,7 +17,7 @@
       }
       &:hover {
         a {
-          @apply text-primary;
+          @apply text-black;
         }
       }
     }
@@ -26,7 +26,8 @@
     @apply h-full container flex items-center justify-between;
   }
   &__menu {
-    @apply h-full center-absolute flex items-center lg:gap-[20px] xl:gap-[30px];
+    @apply h-full center-absolute flex items-center justify-center
+    w-full lg:gap-[20px] xl:gap-[30px];
     &-item {
       @apply h-full flex items-center;
       &:hover {
@@ -58,11 +59,21 @@
       }
     }
   }
+  &__info-profile {
+    .sub {
+      &__item {
+        &:last-child {
+          a {
+            @apply text-red-700;
+          }
+        }
+      }
+    }
+  }
   &__info {
     &-search,
     &-profile,
     &-whitelist,
-    &-address,
     &-cart {
       @apply cursor-pointer relative md:px-[10px] xl:px-[12px] h-full
       flex items-center;
@@ -70,13 +81,14 @@
         @apply not-lastChild:border-b not-lastChild:border-[#e3e3e3]
        not-lastChild:border-solid duration-300 transition-colors
        first:p-[10px_10px] hover:bg-black-ebe p-0;
+
         &:not(:first-child) {
           a {
             @apply p-[10px_10px_10px_20px];
           }
         }
         a {
-          @apply flex items-center gap-2  text-[#222] w-full;
+          @apply font-om flex items-center gap-2 text-black-222 w-full;
         }
       }
 
@@ -93,7 +105,17 @@
         }
       }
     }
+    &-profile {
+      .sub {
+        &__item {
+          a {
+            @apply min-w-max;
+          }
+        }
+      }
+    }
   }
+
   &__advertisement {
     @apply fixed w-full h-[30px] left-0 top-0 flex items-center justify-center gap-2
      bg-header-banner py-[9px];

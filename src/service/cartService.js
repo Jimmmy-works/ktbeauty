@@ -1,7 +1,8 @@
+import { LOCAL_STORAGE } from "@/contants/localStorage";
 import instanceAxios from "@/utils/configAxios";
 
 export const cartService = {
-  getCart: (payload, token) => {
+  getCart: (token) => {
     return instanceAxios.get(`/api/cart/get-all-cart`, {
       headers: { token: `Bearer ${token}` },
     });

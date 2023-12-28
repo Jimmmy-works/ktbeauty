@@ -1,3 +1,4 @@
+import LoadingBall from "@/components/Loading/LoadingBall";
 import useQuery from "@/hooks/useQuery";
 import productService from "@/service/productService";
 import {
@@ -327,24 +328,21 @@ const ConselShowcaseProduct = ({
     }, 1500);
     return () => clearTimeout(timeout);
   }, [valueSex, valueAge, valueSkinType, valueLifeStyle]);
-  console.log("loadingConsel", loadingConsel);
-  console.log("loadingPage", loadingPage);
   return (
     <>
       <div
         className={`w-screen h-screen fixed bottom-0 right-0 top-0 left-0 bg-[#1c2020] z-[1000]
         ${
-          !loadingPage && !loadingConsel
-            ? "opacity-100 visible"
-            : "opacity-0 invisible"
+          loadingPage ? "opacity-100 visible" : "opacity-0 invisible"
         } transition-all duration-300`}
       >
         <div
           className="text-white text-lg font-osr center-absolute z-[20]
-        flex flex-col items-center gap-6"
+        flex  items-center gap-6"
         >
-          Đợi giây lát, chuyên gia đang hỗ trợ
-          <Spin
+          <LoadingBall color={"#fff"} size={8} /> Đợi giây lát, chuyên gia đang
+          hỗ trợ
+          {/* <Spin
             indicator={
               <LoadingOutlined
                 style={{
@@ -354,7 +352,7 @@ const ConselShowcaseProduct = ({
                 spin
               />
             }
-          />
+          /> */}
         </div>
       </div>
       <div className="table__dashboard">

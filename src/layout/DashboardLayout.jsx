@@ -110,7 +110,7 @@ const DashboardLayout = () => {
     setToggleSidebar(false);
   };
   useEffect(() => {
-    document.querySelector("html").setAttribute("style", "overflow-y : scroll");
+    document.body.setAttribute("style", "overflow-y : scroll");
     backtotop();
   }, [pathname]);
   useEffect(() => {

@@ -5,6 +5,8 @@ import { cartReducer } from "./reducer/cartReducer";
 import { dashboardReducer } from "./reducer/dashboardReducer";
 import { orderReducer } from "./reducer/orderReducer";
 import { productReducer } from "./reducer/productReducer";
+import { ENV } from "@/contants/environment";
+import thunkMiddleware from "redux-thunk";
 
 const store = configureStore({
   reducer: {
@@ -14,9 +16,9 @@ const store = configureStore({
     cart: cartReducer,
     order: orderReducer,
   },
-  middleware: [thunk],
-  // middleware: (getDefaultMiddleware) =>
-  //   getDefaultMiddleware().concat(thunkMiddleware),
-  // devTools: ENV === "development",
+  // middleware: [thunk],
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(thunkMiddleware),
+  devTools: ENV === "development",
 });
 export default store;

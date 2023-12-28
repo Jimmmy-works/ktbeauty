@@ -548,9 +548,9 @@ const Checkout = () => {
                   <h4 className="font-osb text-sm text-black-333">
                     Vận chuyển
                   </h4>
-                  {JSON.parse(shipping)?.value !== "default" ? (
+                  {JSON?.parse(shipping)?.value !== "default" ? (
                     <a className="capitalize font-osb text-sm text-primary">
-                      {JSON.parse(shipping)?.label}
+                      {JSON?.parse(shipping)?.label}
                     </a>
                   ) : (
                     <Link
@@ -565,24 +565,26 @@ const Checkout = () => {
                   )}
                 </div>
               </div>
-              {JSON.parse(discountCode).hasOwnProperty("price") && (
+              {JSON?.parse(discountCode)?.hasOwnProperty("price") && (
                 <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
                   <div className="flex items-start justify-between font-osb text-sm text-black-333">
                     <p>Tổng giảm giá</p>
                     <p className="text-primary tracking-wider">
-                      {total >= 1 * million && JSON.parse(shipping)?.price > 0
-                        ? `- ${formatPriceVND(JSON.parse(discountCode)?.price)}`
-                        : formatPriceVND(JSON.parse(discountCode)?.price)}
+                      {total >= 1 * million && JSON?.parse(shipping)?.price > 0
+                        ? `- ${formatPriceVND(
+                            JSON?.parse(discountCode)?.price
+                          )}`
+                        : formatPriceVND(JSON?.parse(discountCode)?.price)}
                     </p>
                   </div>
                   <div className="flex items-start justify-between mt-[14px] ">
                     <p className="pl-[6px] font-om text-[12px] text-black-333">
-                      {`1. ` + JSON.parse(discountCode)?.name}
+                      {`1. ` + JSON?.parse(discountCode)?.name}
                     </p>
                     <p className="font-osb text-[12px] text-black-333 tracking-wider">
                       {formatPriceVND(
-                        JSON.parse(discountCode)?.price -
-                          JSON.parse(shipping)?.price
+                        JSON?.parse(discountCode)?.price -
+                          JSON?.parse(shipping)?.price
                       )}
                     </p>
                   </div>
@@ -590,7 +592,7 @@ const Checkout = () => {
                     <p className="pl-[6px] font-om text-[12px] text-black-333 ">
                       {` ${
                         subTotal >= 3 * million &&
-                        JSON.parse(shipping)?.price > 0
+                        JSON?.parse(shipping)?.price > 0
                           ? `2. Miễn phí vận chuyển`
                           : ""
                       } `}
@@ -598,8 +600,8 @@ const Checkout = () => {
                     <p className="font-osb text-[12px] text-black-333 tracking-wider">
                       {` ${
                         subTotal >= 3 * million &&
-                        JSON.parse(shipping)?.price > 0
-                          ? formatPriceVND(JSON.parse(shipping)?.price)
+                        JSON?.parse(shipping)?.price > 0
+                          ? formatPriceVND(JSON?.parse(shipping)?.price)
                           : ""
                       }`}
                     </p>

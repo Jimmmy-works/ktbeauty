@@ -10,7 +10,6 @@ export const PATHS = {
     INDEX: PROFILE_PATH,
     ORDER: `${PROFILE_PATH}/order`,
     WHITELIST: `${PROFILE_PATH}/whitelist`,
-    ADDRESS: `${PROFILE_PATH}/address`,
   },
   BLOG: {
     INDEX: BLOG_PATH,

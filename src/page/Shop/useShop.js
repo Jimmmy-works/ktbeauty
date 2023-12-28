@@ -1,10 +1,12 @@
 import { useMainContext } from "@/components/MainContext";
-import { OPTION_SORT } from "@/contants/general";
+import { useMainParamContext } from "@/components/MainParamShopContext";
+import { OPTION_SORT, _LIMIT } from "@/contants/general";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
+import useDebounce from "@/hooks/useDebounce";
 import useQuery from "@/hooks/useQuery";
 import productService from "@/service/productService";
-import { cartActions } from "@/store/reducer/cartReducer";
+import { cartActions, updateCart } from "@/store/reducer/cartReducer";
 import { message } from "antd";
 import queryString from "query-string";
 import { useEffect, useMemo, useState } from "react";
@@ -18,7 +20,7 @@ const useShop = () => {
     categoryGlobalTab,
     onChangeCategoryGlobal,
   } = useMainContext();
-  const _limit = 9;
+  const { valueChecked } = useMainParamContext();
   const [imageloading, setImageLoading] = useState(true);
   const onImageLoading = () => {
     setImageLoading(false);
@@ -30,14 +32,14 @@ const useShop = () => {
     productDetail,
     categories,
     statusGetProductDetail,
-    statusGetProducts,
+    statusGetProductSelected,
     productFilter,
     productFilterAll,
     totalProducts,
     totalPage,
     productSearch,
   } = useSelector((state) => state.product);
-  const { updateStatusCreateCart, cartInfo, minPrice, maxPrice } = useSelector(
+  const { updateStatusUpdateCart, cartInfo, minPrice, maxPrice } = useSelector(
     (state) => state.cart
   );
   /// useParams
@@ -53,20 +55,16 @@ const useShop = () => {
     setSearchParams(new URLSearchParams(newQuerryString));
   };
   /// category
-  const customCategories = categories?.map((cate) => {
-    let value = { _id: cate?._id, name: cate?.name, label: cate?.label };
-    return value;
-  });
+  // const customCategories = categories?.map((cate) => {
+  //   let value = { _id: cate?._id, name: cate?.name, label: cate?.label };
+  //   return value;
+  // });
   const findCategoryAll = categories?.find((cate) => {
     return cate?.name === "all";
   });
   /// filter
-  const defaultFilters = useMemo(() => {
-    let querryParse = queryString.parse(search);
-    return querryParse;
-  }, [search]);
-  const [valueChecked, setValueChecked] = useState([]);
-  const [renderChecked, setRenderChecked] = useState([]);
+  // const [valueChecked, setValueChecked] = useState([]);
+  // const [renderChecked, setRenderChecked] = useState([]);
   const [optionSortSelected, setOptionSortSelected] = useState(
     OPTION_SORT.NEWEST
   );
@@ -98,39 +96,13 @@ const useShop = () => {
         page: pageNumb - 1,
       });
   };
-
-  const onChangeCheckbox = (id) => {
-    if (valueChecked?.includes(id)) {
-      let filterCate = valueChecked?.filter((cate) => {
-        return cate !== id;
-      });
-      setValueChecked(filterCate);
-    } else {
-      let filterCate = valueChecked?.filter((cate) => {
-        return cate !== id;
-      });
-      setValueChecked([...filterCate, id]);
-    }
-  };
-  const onChangeRenderCheckbox = (selected) => {
-    if (valueChecked?.includes(selected?._id)) {
-      let filterRenderCate = renderChecked?.filter((cate) => {
-        return cate?._id !== selected?._id;
-      });
-      setRenderChecked(filterRenderCate);
-    } else {
-      let filterRenderCate = renderChecked?.filter((cate) => {
-        return cate?._id !== selected?._id;
-      });
-      setRenderChecked([...filterRenderCate, selected]);
-    }
-  };
   /// Main
-  const onAddToCart = async (payload) => {
+
+  const onAddToCart = async (payload, updateValue) => {
     const _token = localStorage.getItem(LOCAL_STORAGE.token);
     try {
       if (_token) {
-        if (payload?._id && updateStatusCreateCart !== THUNK_STATUS.pending) {
+        if (payload?._id && updateStatusUpdateCart !== THUNK_STATUS.pending) {
           let cartPayload = {};
           const matchIndex = cartInfo?.products?.findIndex(
             (productMatched) => productMatched?.product_id === payload?._id
@@ -139,7 +111,7 @@ const useShop = () => {
           if (matchIndex > -1) {
             if (
               newProductPayload[matchIndex]?.quantity >= 20 ||
-              payload?.quantity > 20 - newProductPayload[matchIndex]?.quantity
+              updateValue > 20 - newProductPayload[matchIndex]?.quantity
             ) {
               message.error(
                 `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
@@ -147,7 +119,7 @@ const useShop = () => {
             } else {
               if (
                 newProductPayload[matchIndex]?.quantity +
-                  (payload?.quantity ? payload?.quantity : 1) >=
+                  (updateValue ? updateValue : 1) >=
                 newProductPayload[matchIndex]?.countInStock
               ) {
                 message.error(
@@ -158,10 +130,10 @@ const useShop = () => {
                   ...newProductPayload[matchIndex],
                   quantity:
                     newProductPayload[matchIndex]?.quantity +
-                    (payload?.quantity ? payload?.quantity : 1),
+                    (updateValue ? updateValue : 1),
                 };
                 message.success(
-                  `+${payload?.quantity ? payload?.quantity : 1} ${
+                  `+${updateValue ? updateValue : 1} ${
                     newProductPayload[matchIndex]?.name
                   }`
                 );
@@ -173,16 +145,16 @@ const useShop = () => {
                 `Sản phẩm ${payload?.name}, chỉ còn ${payload?.countInStock}`
               );
             } else {
-              if (payload?.quantity <= 20) {
+              if (updateValue <= 20) {
                 newProductPayload.push({
                   ...payload,
                   quantity:
-                    payload?.quantity >= payload?.countInStock
+                    updateValue >= payload?.countInStock
                       ? payload?.countInStock
                       : payload.quantity,
                   product_id: payload?._id,
                 });
-              } else if (!payload?.quantity) {
+              } else if (!updateValue) {
                 newProductPayload.push({
                   ...payload,
                   quantity: 1,
@@ -199,7 +171,7 @@ const useShop = () => {
             ...cartInfo,
             products: newProductPayload,
           };
-          dispatch(cartActions.setCartInfo(cartPayload));
+          dispatch(updateCart(cartPayload));
         }
       } else {
         message.error(`Xin vui lòng đăng nhập để thêm sản phẩm`);
@@ -208,29 +180,14 @@ const useShop = () => {
       console.log("error", error);
     }
   };
-  const {
-    data: dataShop,
-    loading: loadingDataShop,
-    refetch: refetchDataShop,
-  } = useQuery((query) => {
-    if (search) {
-      return productService.getProductSelected(search);
-    }
-  });
-  useEffect(() => {
-    updateQueryString({
-      ...queryObject,
-      page: pageCurrent - 1 || 0,
-      limit: 12,
-      sort: optionSortSelected || "newest",
-      categories: valueChecked?.toString() || findCategoryAll?._id,
-      priceStart: newMin,
-      priceEnd: newMax,
-    });
-    if (search) {
-      refetchDataShop();
-    }
-  }, [valueChecked, newMin, newMax, optionSortSelected]);
+  const { data: dataShop, loading: loadingDataShop } = useQuery(
+    (query) => {
+      return productService.getProductSelected(
+        query || search || `?limit=${_LIMIT}&page=0`
+      );
+    },
+    [search]
+  );
   return {
     isFilter,
     onToggleFilter,
@@ -239,14 +196,14 @@ const useShop = () => {
     products,
     productDetail,
     statusGetProductDetail,
-    statusGetProducts,
+    statusGetProductSelected,
     imageloading,
     onImageLoading,
     onAddToCart,
     /// category
     onChangeCategoryGlobal,
     categoryGlobalTab,
-    customCategories,
+    // customCategories,
     totalProducts,
     totalPage,
     ////
@@ -266,11 +223,7 @@ const useShop = () => {
     updateQueryString,
     queryObject,
     search,
-    ////
-    valueChecked,
-    renderChecked,
-    onChangeCheckbox,
-    onChangeRenderCheckbox,
+    updateStatusUpdateCart,
   };
 };
 

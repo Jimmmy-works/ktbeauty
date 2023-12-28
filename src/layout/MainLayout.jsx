@@ -1,6 +1,7 @@
 import AuthenModal from "@/components/Authen";
 import BackToTop from "@/components/BackToTop";
 import { MainProvider } from "@/components/MainContext";
+import { MainParamShopProvider } from "@/components/MainParamShopContext";
 import Overplay from "@/components/Overplay";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
 import Footer from "@/page/Footer";
@@ -21,7 +22,7 @@ const MainLayout = () => {
   const dispatch = useDispatch();
   const { checkLogin } = useSelector((state) => state.auth);
   useEffect(() => {
-    document.querySelector("html").setAttribute("style", "overflow-y : scroll");
+    document.body.setAttribute("style", "overflow-y : scroll");
     backtotop();
   }, [pathname]);
 
@@ -35,18 +36,20 @@ const MainLayout = () => {
   }, []);
   useEffect(() => {
     if (_token) {
-      dispatch(getCart(_token));
+      dispatch(getCart());
     }
   }, [checkLogin]);
   return (
     <MainProvider>
-      <Header />
-      <Outlet />
-      <Footer />
-      <AuthenModal />
-      <Overplay className={`z-50`} />
-      <Nav />
-      <BackToTop />
+      <MainParamShopProvider>
+        <Header />
+        <Outlet />
+        <Footer />
+        <AuthenModal />
+        <Overplay className={`z-50`} />
+        <Nav />
+        <BackToTop />
+      </MainParamShopProvider>
     </MainProvider>
   );
 };

@@ -1,16 +1,19 @@
 import { useMainContext } from "@/components/MainContext";
+import { _LIMIT } from "@/contants/general";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { PATHS } from "@/contants/path";
 import useWindowSize from "@/utils/windowResize";
-
+import { useMainParamContext } from "@/components/MainParamShopContext";
 import queryString from "query-string";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, NavLink, useLocation, useSearchParams } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import WrapperPortal from "@/components/WrapperPortal";
+import { createPortal } from "react-dom";
 
 const Nav = () => {
   const { pathname } = useLocation();
-  const { isNavbar, setIsNavbar, onAuthenModal, onLogout, onToggleNav, html } =
+  const { isNavbar, setIsNavbar, onAuthenModal, onLogout, onToggleNav } =
     useMainContext();
   const { products, categories } = useSelector((state) => state.product);
   const { profile } = useSelector((state) => state.auth);
@@ -19,25 +22,15 @@ const Nav = () => {
   const [searchTerm, setSearchTerm] = useState("");
   /// category
   const [categoryTab, setCategoryTab] = useState();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const updateQueryString = (queryObject) => {
-    const newQuerryString = queryString.stringify({
-      ...queryObject,
-    });
-    setSearchParams(new URLSearchParams(newQuerryString));
-  };
+  const { setValueChecked, setRenderChecked, updateQueryString } =
+    useMainParamContext();
   useEffect(() => {
-    updateQueryString({
-      limit: 9,
-      page: 0,
-      categories: categoryTab,
-    });
     setIsNavbar(false);
     onToggleNav();
   }, [categoryTab]);
   const _token = localStorage.getItem(LOCAL_STORAGE.token);
   const handleCloseNav = () => {
-    html?.setAttribute("style", "overflow-y : scroll");
+    document.body?.setAttribute("style", "overflow-y : scroll");
     document
       ?.querySelector(`main`)
       ?.setAttribute("style", "transform: translateX(0)");
@@ -74,11 +67,12 @@ const Nav = () => {
     }, 500);
     return () => clearTimeout(time);
   }, [searchTerm]);
+
   return (
     <nav
-      className={`nav  ${
+      className={` nav  ${
         isNavbar ? "translate-x-0" : "-translate-x-[100%]"
-      } duration-200  transition-transform`}
+      } duration-300  transition-transform`}
     >
       <div className="nav__inner">
         <div
@@ -95,26 +89,26 @@ const Nav = () => {
               <a>Menu</a>
             </li>
             {/* <div
-              className="group/hover search xs:flex md:hidden items-center xs:gap-2 xs:py-[10px]
-                  md:py-[16px]  pr-[10px]"
-            >
-              <input
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                type="text"
-                className="bg-white border-black-be border font-om text-black-555 text-sm duration-500 transition-all 
-                    w-full xs:h-[26px] md:h-[36px] pl-[10px]  rounded-lg "
-              />
-              <button type="submit">
-                <svg className="w-[20px] h-[20px]" viewBox="0 0 24 24">
-                  <path
-                    fill="#000000BF"
-                    className="group-hover/hover:fill-primary duration-300 transition-colors"
-                    d="M23.111 20.058l-4.977-4.977c.965-1.52 1.523-3.322 1.523-5.251 0-5.42-4.409-9.83-9.829-9.83-5.42 0-9.828 4.41-9.828 9.83s4.408 9.83 9.829 9.83c1.834 0 3.552-.505 5.022-1.383l5.021 5.021c2.144 2.141 5.384-1.096 3.239-3.24zm-20.064-10.228c0-3.739 3.043-6.782 6.782-6.782s6.782 3.042 6.782 6.782-3.043 6.782-6.782 6.782-6.782-3.043-6.782-6.782zm2.01-1.764c1.984-4.599 8.664-4.066 9.922.749-2.534-2.974-6.993-3.294-9.922-.749z"
+                  className="group/hover search xs:flex md:hidden items-center xs:gap-2 xs:py-[10px]
+                      md:py-[16px]  pr-[10px]"
+                >
+                  <input
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    type="text"
+                    className="bg-white border-black-be border font-om text-black-555 text-sm duration-500 transition-all
+                        w-full xs:h-[26px] md:h-[36px] pl-[10px]  rounded-lg "
                   />
-                </svg>
-              </button>
-            </div> */}
+                  <button type="submit">
+                    <svg className="w-[20px] h-[20px]" viewBox="0 0 24 24">
+                      <path
+                        fill="#000000BF"
+                        className="group-hover/hover:fill-primary duration-300 transition-colors"
+                        d="M23.111 20.058l-4.977-4.977c.965-1.52 1.523-3.322 1.523-5.251 0-5.42-4.409-9.83-9.829-9.83-5.42 0-9.828 4.41-9.828 9.83s4.408 9.83 9.829 9.83c1.834 0 3.552-.505 5.022-1.383l5.021 5.021c2.144 2.141 5.384-1.096 3.239-3.24zm-20.064-10.228c0-3.739 3.043-6.782 6.782-6.782s6.782 3.042 6.782 6.782-3.043 6.782-6.782 6.782-6.782-3.043-6.782-6.782zm2.01-1.764c1.984-4.599 8.664-4.066 9.922.749-2.534-2.974-6.993-3.294-9.922-.749z"
+                      />
+                    </svg>
+                  </button>
+                </div> */}
             <li className="item">
               <Link to={PATHS.HOME}>TRANG CHỦ</Link>
             </li>
@@ -197,8 +191,16 @@ const Nav = () => {
               return (
                 <li className="item" key={item?._id}>
                   <NavLink
-                    to={PATHS.SHOP.INDEX}
-                    onClick={() => setCategoryTab(item?._id)}
+                    to={`${PATHS.SHOP.INDEX}?${queryString.stringify({
+                      limit: _LIMIT,
+                      page: 0,
+                      categories: item?._id,
+                    })}`}
+                    onClick={() => {
+                      setCategoryTab(item?._id);
+                      setValueChecked([item?._id]);
+                      setRenderChecked([item]);
+                    }}
                   >
                     {item?.label}
                   </NavLink>

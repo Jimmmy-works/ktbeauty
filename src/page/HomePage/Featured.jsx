@@ -1,21 +1,16 @@
-import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
 import ProductCard from "@/components/ProductCard";
 import { FEATURED_OPTIONS } from "@/contants/general";
+import { PATHS } from "@/contants/path";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
+import { Link } from "react-router-dom";
 import { Keyboard, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-import Button from "@/components/Button";
-import { Link } from "react-router-dom";
-import { PATHS } from "@/contants/path";
 const Featured = ({
   onChangeFeaturedTab,
   featuerdTab,
-  products,
-  statusGetProduct,
   imageloading,
   onImageLoading,
-  onAddToCart,
   dataFeatured,
   loadingFeatured,
 }) => {
@@ -120,7 +115,6 @@ const Featured = ({
                     <SwiperSlide key={`${item?._id}`}>
                       {!loadingFeatured ? (
                         <ProductCard
-                          onAddToCart={onAddToCart}
                           onLoadingImage={onImageLoading}
                           imageloading={imageloading}
                           isProductDetail
@@ -210,7 +204,7 @@ const Featured = ({
         <div className="w-fit mx-auto xs:mt-[30px] lg:mt-[40px]">
           <Link
             to={`${PATHS.SHOP.INDEX}`}
-            class="btn-flip"
+            className="btn-flip"
             data-back="Đến shop"
             data-front="Xem tất cả"
           ></Link>

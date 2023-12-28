@@ -1,7 +1,6 @@
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
 import Button from "../Button";
 
 const Login = ({
@@ -14,8 +13,6 @@ const Login = ({
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [hiddenPassword, setHiddenPassword] = useState(true);
-  const dispatch = useDispatch();
-  const { profile } = useSelector((state) => state.auth);
   const {
     register,
     handleSubmit,

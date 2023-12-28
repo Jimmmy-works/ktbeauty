@@ -4,9 +4,9 @@ import Textbox from "@/components/Textbox";
 const Advertising = () => {
   return (
     <section className="scadvertising pt-section">
-      <div className="container ">
+      <div className="container">
         <Textbox title={`DANH MỤC NỔI BẬT`} />
-        <div className="scadvertising__list flex items-center lg:flex-nowrap xs:flex-wrap gap-[30px] md:-mx-[15px]">
+        <div className="scadvertising__list flex items-center lg:flex-nowrap xs:flex-wrap gap-[20px]">
           <div
             className="scadvertising__list-item xs:w-full lg:w-1/2 relative
            after:w-full after:h-full after:bg-[rgba(0,0,0,0.35)] after:absolute
@@ -36,7 +36,7 @@ const Advertising = () => {
             </div>
           </div>
           <div
-            className="scadvertising__list-item xs:w-full md:w-[calc(50%-15px)] lg:w-1/4 relative
+            className="scadvertising__list-item xs:w-full md:w-[calc(50%-10px)] lg:w-1/4 relative
           after:w-full after:h-full after:bg-[rgba(0,0,0,0.35)] after:absolute 
               after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2"
           >
@@ -68,7 +68,7 @@ const Advertising = () => {
             </div>
           </div>
           <div
-            className="scadvertising__list-item xs:w-full md:w-[calc(50%-15px)] lg:w-1/4 relative
+            className="scadvertising__list-item xs:w-full md:w-[calc(50%-10px)] lg:w-1/4 relative
            after:w-full after:h-full after:bg-[rgba(0,0,0,0.35)] after:absolute 
               after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2"
           >

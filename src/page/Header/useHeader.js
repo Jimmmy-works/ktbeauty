@@ -1,6 +1,7 @@
 import { useMainContext } from "@/components/MainContext";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
 import productService from "@/service/productService";
-import { cartActions } from "@/store/reducer/cartReducer";
+import { cartActions, updateCart } from "@/store/reducer/cartReducer";
 import { removeAccents } from "@/utils/removeAccents";
 import useWindowSize from "@/utils/windowResize";
 import { useState } from "react";
@@ -13,7 +14,8 @@ const useHeader = () => {
   const { isNavbar, onToggleNav, onAuthenModal, onActiveLinkTab, onLogout } =
     useMainContext();
   const { profile } = useSelector((state) => state.auth);
-  const { cartInfo, minPrice, maxPrice } = useSelector((state) => state.cart);
+  const { cartInfo, total, subTotal, discountCode, updateStatusUpdateCart } =
+    useSelector((state) => state.cart);
   const [productListSearch, setProductListSearch] = useState([]);
   //// useParams
   const { search, pathname } = useLocation();
@@ -43,6 +45,28 @@ const useHeader = () => {
       console.log("error", error);
     }
   };
+  /// quantity
+  const onChangeQuantity = async (updateValue, updateIndex) => {
+    let cartPayload = {};
+    let newProductPayload = cartInfo?.products.map((product) => {
+      return product;
+    });
+    try {
+      if (cartInfo?._id && updateStatusUpdateCart !== THUNK_STATUS.pending) {
+        newProductPayload[updateIndex] = {
+          ...newProductPayload[updateIndex],
+          quantity: updateValue,
+        };
+        cartPayload = {
+          ...cartInfo,
+          products: newProductPayload,
+        };
+        dispatch(updateCart(cartPayload));
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   const headerProps = {
     profile,
     isNavbar,
@@ -57,6 +81,11 @@ const useHeader = () => {
     pathname,
     productListSearch,
     width,
+    onChangeQuantity,
+    total,
+    subTotal,
+    discountCode,
+    updateStatusUpdateCart,
   };
   return { headerProps };
 };

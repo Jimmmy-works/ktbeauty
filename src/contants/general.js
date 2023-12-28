@@ -97,3 +97,4 @@ export const STATUS_OPTION = {
   COMPLETE: "complete",
   CANCEL: "canceled",
 };
+export const _LIMIT = 12;
