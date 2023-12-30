@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { twMerge } from "tailwind-merge";
 import { useMainContext } from "./MainContext";
+import { updateWhiteList } from "@/store/reducer/whitelistReducer";
 const StyleRate = styled.div`
   display: flex;
   justify-content: center;
@@ -45,6 +46,7 @@ const StyleDiscount = styled.div`
 const ProductCard = ({
   item,
   className,
+  classNameContent,
   isProductDetail = false,
   imageloading,
   onLoadingImage,
@@ -56,7 +58,84 @@ const ProductCard = ({
   const { updateStatusUpdateCart, cartInfo } = useSelector(
     (state) => state.cart
   );
+  const { whiteListInfo, statusUpdateWhiteList } = useSelector(
+    (state) => state.whitelist
+  );
   const { onAuthenModal } = useMainContext();
+  const onAddToWhiteList = async () => {
+    const payload = item;
+    const _token = localStorage.getItem(LOCAL_STORAGE.token);
+    try {
+      if (_token) {
+        if (payload?._id && statusUpdateWhiteList !== THUNK_STATUS.pending) {
+          let whiteListPayload = {};
+          const matchIndex = whiteListInfo?.products?.findIndex(
+            (productMatched) => productMatched?.product_id === payload?._id
+          );
+          let newProductPayload = whiteListInfo?.products?.map(
+            (product) => product
+          );
+          if (whiteListInfo?._id) {
+            if (matchIndex > -1) {
+              if (newProductPayload[matchIndex]?.quantity >= 20) {
+                return message.error(
+                  `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+                );
+              } else {
+                newProductPayload[matchIndex] = {
+                  ...newProductPayload[matchIndex],
+                  quantity: newProductPayload[matchIndex]?.quantity + 1,
+                };
+                message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+              }
+            } else {
+              newProductPayload.push({
+                ...payload,
+                quantity: 1,
+                product_id: payload?._id,
+              });
+              message.success(`+1 ${payload?.name}`);
+            }
+            whiteListPayload = {
+              ...whiteListInfo,
+              products: newProductPayload,
+            };
+          } else {
+            whiteListPayload = {
+              ...whiteListInfo,
+              products: newProductPayload,
+            };
+            if (matchIndex > -1) {
+              if (newProductPayload[matchIndex]?.quantity >= 20) {
+                return message.error(
+                  `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+                );
+              } else {
+                newProductPayload[matchIndex] = {
+                  ...newProductPayload[matchIndex],
+                  quantity: newProductPayload[matchIndex]?.quantity + 1,
+                };
+                message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+              }
+            } else {
+              newProductPayload.push({
+                ...payload,
+                quantity: 1,
+                product_id: payload?._id,
+              });
+              message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+            }
+          }
+          dispatch(updateWhiteList(whiteListPayload));
+        }
+      } else {
+        onAuthenModal("login");
+        return message.error(`Xin vui lòng đăng nhập để thêm sản phẩm`);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   const onAddToCart = async () => {
     const payload = item;
     const _token = localStorage.getItem(LOCAL_STORAGE.token);
@@ -132,44 +211,47 @@ const ProductCard = ({
   if (isProductDetail) {
     return (
       <div
-        className={`card cursor-pointer rounded-[10px] hover:shadow-card hover:transform-3d-card relative ${
+        className={`card bg-transparent cursor-pointer rounded-[10px]  hover:transform-3d-card hover:shadow-card  relative ${
           className ?? ""
-        } transition-all duration-300  group/addtocart`}
+        } transition-all duration-300  group/addtocart overflow-hidden `}
       >
-        <div className="relative rounded-tl-[10px] rounded-tr-[10px]  group/img overflow-hidden ">
-          {discount > 0 ? (
+        <div className="center-absolute w-full h-[99%] bg-white rounded-[10px] "></div>
+        <div className=" group/img overflow-hidden relative">
+          {discount > 0 && (
             <StyleDiscount
               className="absolute top-4 left-[-3px] w-[50px] h-[16px] 
-                    border border-red-200 text-xs tracking-wider  flex justify-center
-                    bg-primary items-center z-50 text-white font-om "
+                      border border-red-200 text-xs tracking-wider  flex justify-center
+                      bg-primary items-center z-50 text-white font-om "
             >
               {`-${Math.round((discount / price) * 100)}%`}
             </StyleDiscount>
-          ) : (
-            ""
           )}
-          <Link to={`${PATHS.SHOP.INDEX}/${item?._id}`} className="">
+          <Link
+            to={`${PATHS.SHOP.INDEX}/${item?._id}`}
+            className={`${classNameContent ?? ""}`}
+          >
             <LazyLoadImage
-              wrapperClassName="block relative h-0 pb-[100%] w-full"
+              wrapperClassName={twMerge(`block relative h-0 pb-[100%] w-full `)}
               loading="lazy"
               key={_id}
-              className={twMerge(`center-absolute z-10 object-cover 
-                    h-full w-full `)}
-              alt={image?.[0]}
+              className={twMerge(
+                `center-absolute z-10 object-cover  h-full w-full `
+              )}
               effect="blur"
+              alt={image?.[0]}
               src={image?.[0]}
             />
           </Link>
           <div
-            onClick={onAddToCart}
             className="py-[6px] w-[100%] bg-[rgba(0,0,0,0.03)] absolute bottom-0 translate-y-[100%]
-            flex gap-[16px] items-center justify-center  group-hover/addtocart:translate-y-0 overflow-hidden 
-            transition-all duration-400 z-[100]"
+              flex gap-[16px] items-center justify-center  group-hover/addtocart:translate-y-0 overflow-hidden 
+              transition-all duration-400 z-[100]"
           >
             <Tooltip placement="top" title="Thêm vào giỏ" color={`#333`}>
               <div
                 className="cart xs:p-[6px] md:p-[6px] bg-white border-[1px] rounded-[50%] border-[#ececec]  max-w-[38px]
-                   cursor-pointer group/hover max-h-[38px] hover:bg-black-333 duration-300 transition-colors"
+                     cursor-pointer group/hover max-h-[38px] hover:bg-black-333 duration-300 transition-colors"
+                onClick={onAddToCart}
               >
                 <svg className=" w-[13px] h-[13px]" viewBox="0 0 24 24">
                   <path
@@ -182,7 +264,8 @@ const ProductCard = ({
             <Tooltip placement="top" color="#333" title="Yêu thích">
               <div
                 className="whitelist xs:p-[6px] md:p-[6px] bg-white border-[1px] rounded-[50%] border-[#ececec]  max-w-[38px]
-                                cursor-pointer group/hover hover:bg-black-333 duration-300 transition-colors max-h-[38px]"
+                                  cursor-pointer group/hover hover:bg-black-333 duration-300 transition-colors max-h-[38px]"
+                onClick={onAddToWhiteList}
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -198,7 +281,7 @@ const ProductCard = ({
             <Tooltip placement="top" color="#333" title="Chia sẻ">
               <div
                 className="share xs:p-[6px] md:p-[6px] bg-white border-[1px] rounded-[50%] border-[#ececec]  max-w-[38px]
-                                 cursor-pointer group/hover max-h-[38px] hover:bg-black-333 duration-300 transition-colors"
+                                   cursor-pointer group/hover max-h-[38px] hover:bg-black-333 duration-300 transition-colors"
               >
                 <svg
                   className="group-hover/hover:fill-white duration-300 transition-colors h-[13px] w-[13px]"
@@ -208,15 +291,15 @@ const ProductCard = ({
                   <g>
                     <path
                       d="M165.9,125.903c0,2.761,2.238,5,5,5h51.15c2.762,0,5-2.239,5-5v-19.404
-                                        c0-39.761-32.321-72.107-72.049-72.107c-39.732,0-72.055,32.347-72.055,72.107v95.274c0,6.009-4.887,10.898-10.893,10.898
-                                        c-6.01,0-10.898-4.89-10.898-10.898v-42.338c0-2.761-2.238-5-5-5H5c-2.762,0-5,2.239-5,5v44.066
-                                        c0,39.761,32.323,72.107,72.055,72.107c39.728,0,72.049-32.347,72.049-72.107v-97.002c0-6.005,4.889-10.891,10.898-10.891
-                                        c6.01,0,10.898,4.886,10.898,10.891V125.903z"
+                                          c0-39.761-32.321-72.107-72.049-72.107c-39.732,0-72.055,32.347-72.055,72.107v95.274c0,6.009-4.887,10.898-10.893,10.898
+                                          c-6.01,0-10.898-4.89-10.898-10.898v-42.338c0-2.761-2.238-5-5-5H5c-2.762,0-5,2.239-5,5v44.066
+                                          c0,39.761,32.323,72.107,72.055,72.107c39.728,0,72.049-32.347,72.049-72.107v-97.002c0-6.005,4.889-10.891,10.898-10.891
+                                          c6.01,0,10.898,4.886,10.898,10.891V125.903z"
                     />
                     <path
                       d="M305,155.3h-51.152c-2.762,0-5,2.239-5,5v43.201c0,6.009-4.889,10.898-10.898,10.898
-                                        c-6.01,0-10.898-4.89-10.898-10.898V160.3c0-2.761-2.238-5-5-5H170.9c-2.762,0-5,2.239-5,5v43.201
-                                        c0,39.761,32.321,72.107,72.049,72.107c39.729,0,72.051-32.347,72.051-72.107V160.3C310,157.539,307.762,155.3,305,155.3z"
+                                          c-6.01,0-10.898-4.89-10.898-10.898V160.3c0-2.761-2.238-5-5-5H170.9c-2.762,0-5,2.239-5,5v43.201
+                                          c0,39.761,32.321,72.107,72.049,72.107c39.729,0,72.051-32.347,72.051-72.107V160.3C310,157.539,307.762,155.3,305,155.3z"
                     />
                   </g>
                 </svg>
@@ -224,12 +307,18 @@ const ProductCard = ({
             </Tooltip>
           </div>
         </div>
-        <div className="xs:p-[10px] md:p-[10px_14px] ">
+        <div
+          className={twMerge(
+            `xs:p-[10px] md:p-[10px_14px] ${
+              classNameContent ?? ""
+            } relative z-10`
+          )}
+        >
           <Link
             to={`${PATHS.SHOP.INDEX}/${item?._id}`}
             className="text-center font-ossb text-15px capitalize text-black-555 
-                    xs:leading-[16px] md:leading-[18px] truncate whitespace-normal line-clamp-2 hover:text-primary
-                    duration-400 transition-colors xs:min-h-[32px] md:min-h-[36px]"
+                      xs:leading-[16px] md:leading-[18px] truncate whitespace-normal line-clamp-2 hover:text-primary
+                      duration-400 transition-colors xs:min-h-[32px] md:min-h-[36px]"
           >
             {name || ""}
           </Link>

@@ -15,18 +15,30 @@ export const MainParamShopProvider = ({ children }) => {
   };
   const [valueChecked, setValueChecked] = useState([]);
   const [renderChecked, setRenderChecked] = useState([]);
-
+  const [valueCheckedSex, setValueCheckedSex] = useState([]);
+  const [renderCheckedSex, setRenderCheckedSex] = useState([]);
   const onChangeCheckbox = (id) => {
     if (valueChecked?.includes(id)) {
-      let filterCate = valueChecked?.filter((cate) => {
-        return cate !== id;
-      });
-      setValueChecked(filterCate);
-      updateQueryString({
-        categories: filterCate?.toString() || "",
-        page: 0,
-        limit: _LIMIT,
-      });
+      if (valueChecked.length > 1) {
+        let filterCate = valueChecked?.filter((cate) => {
+          return cate !== id;
+        });
+        setValueChecked(filterCate);
+        updateQueryString({
+          categories: filterCate?.toString() || "",
+          page: 0,
+          limit: _LIMIT,
+        });
+      } else {
+        let filterCate = valueChecked?.filter((cate) => {
+          return cate !== id;
+        });
+        setValueChecked(filterCate);
+        updateQueryString({
+          page: 0,
+          limit: _LIMIT,
+        });
+      }
     } else {
       let filterCate = valueChecked?.filter((cate) => {
         return cate !== id;
@@ -52,6 +64,53 @@ export const MainParamShopProvider = ({ children }) => {
       setRenderChecked([...filterRenderCate, selected]);
     }
   };
+  const onChangeCheckboxSex = (value) => {
+    if (valueCheckedSex?.includes(value)) {
+      if (valueCheckedSex.length > 0) {
+        let filterCate = valueCheckedSex?.filter((sexValue) => {
+          return sexValue !== value;
+        });
+        setValueChecked(filterCate);
+        updateQueryString({
+          sex: filterCate?.toString() || "",
+          page: 0,
+          limit: _LIMIT,
+        });
+      } else {
+        let filterCate = valueCheckedSex?.filter((sexValue) => {
+          return sexValue !== value;
+        });
+        setValueChecked(filterCate);
+        updateQueryString({
+          page: 0,
+          limit: _LIMIT,
+        });
+      }
+    } else {
+      let filterCate = valueCheckedSex?.filter((sexValue) => {
+        return sexValue !== value;
+      });
+      setValueChecked([...filterCate, value]);
+      updateQueryString({
+        sex: [...filterCate, value]?.toString() || "",
+        page: 0,
+        limit: _LIMIT,
+      });
+    }
+  };
+  const onChangeRenderCheckboxSex = (selected) => {
+    if (valueCheckedSex?.includes(selected?.value)) {
+      let filterRenderCate = renderCheckedSex?.filter((sexValue) => {
+        return sexValue?.value !== selected?.value;
+      });
+      setRenderCheckedSex(filterRenderCate);
+    } else {
+      let filterRenderCate = renderCheckedSex?.filter((sexValue) => {
+        return sexValue?.value !== selected?.value;
+      });
+      setRenderCheckedSex([...filterRenderCate, selected]);
+    }
+  };
   return (
     <MainParamShopContext.Provider
       value={{
@@ -61,6 +120,13 @@ export const MainParamShopProvider = ({ children }) => {
         onChangeRenderCheckbox,
         setValueChecked,
         setRenderChecked,
+        /////
+        valueCheckedSex,
+        renderCheckedSex,
+        setValueCheckedSex,
+        setRenderCheckedSex,
+        onChangeCheckboxSex,
+        onChangeRenderCheckboxSex,
       }}
     >
       {children}

@@ -160,11 +160,28 @@ const ShowcaseProduct = ({
                           imageloading={imageloading}
                         />
                       ) : (
-                        <LoadingSkeleton
-                          isArray={1}
-                          isLoading={loadingShowcaseProduct}
-                          isParagraph={width >= 768 ? 3 : 2}
-                        />
+                        // <LoadingSkeleton
+                        //   isArray={1}
+                        //   isLoading={loadingShowcaseProduct}
+                        //   isParagraph={width >= 768 ? 3 : 2}
+                        // />
+                        <div
+                          className="xs:min-h-[300px] md:min-h-[350px]  xs:p-[20px_14px_14px] md:p-[30px_30px_20px] lg:p-[40px_40px_26px]
+                           h-full flex justify-center items-center"
+                        >
+                          <Spin
+                            indicator={
+                              <LoadingOutlined
+                                style={{
+                                  color: "#555",
+                                  fontSize: 24,
+                                }}
+                                spin
+                              />
+                            }
+                            size="default"
+                          />
+                        </div>
                       )}
                     </SwiperSlide>
                   );

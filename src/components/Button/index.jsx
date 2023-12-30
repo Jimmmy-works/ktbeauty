@@ -44,7 +44,7 @@ const Button = ({
       <Link
         to={`${link}`}
         className={twMerge(
-          ` font-osb xs:text-xs md:text-sm  xs:px-[20px] md:px-[30.35px] xs:py-[7px] md:py-[10px] duration-[500ms] transition-all ${variantButton} ${
+          ` font-osb xs:text-xs md:text-sm  xs:px-[20px] md:px-[30.35px] xs:py-[7px] md:py-[10px] duration-400 transition-all ${variantButton} ${
             className ?? ""
           } ${
             disabled || outStock

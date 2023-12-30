@@ -1,4 +1,3 @@
-import { LOCAL_STORAGE } from "@/contants/localStorage";
 import instanceAxios from "@/utils/configAxios";
 
 export const cartService = {

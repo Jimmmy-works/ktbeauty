@@ -13,6 +13,7 @@ import {
   getAllCategories,
   getAllProduct,
 } from "@/store/reducer/productReducer";
+import { getWhiteList } from "@/store/reducer/whitelistReducer";
 import backtotop from "@/utils/backtotop";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,6 +38,7 @@ const MainLayout = () => {
   useEffect(() => {
     if (_token) {
       dispatch(getCart());
+      dispatch(getWhiteList());
     }
   }, [checkLogin]);
   return (

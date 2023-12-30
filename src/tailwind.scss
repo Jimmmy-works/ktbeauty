@@ -31,15 +31,16 @@
   .ant-dropdown-menu,
   .ant-drawer-body {
     &::-webkit-scrollbar {
-      width: 6px;
+      width: 5px;
     }
     &::-webkit-scrollbar-track {
-      background-color: #fafafa;
+      background-color: #e5e5e5;
+
       border-radius: 10px;
     }
     &::-webkit-scrollbar-thumb {
       border-radius: 10px;
-      background-color: #a8a8a8;
+      background: #a8a8a8;
     }
   }
   html {
@@ -60,11 +61,12 @@
       width: 6px;
     }
     &::-webkit-scrollbar-track {
-      background-color: #fafafa;
+      background-color: #e5e5e5;
       border-radius: 10px;
     }
     &::-webkit-scrollbar-thumb {
       border-radius: 10px;
+
       background-color: #a8a8a8;
     }
   }
@@ -701,7 +703,7 @@
   }
 }
 .btn-flip {
-  @apply font-osb text-sm;
+  @apply font-osb text-sm rounded-md;
   opacity: 1;
   outline: 0;
   color: #fff;

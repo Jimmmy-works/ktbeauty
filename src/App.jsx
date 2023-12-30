@@ -67,7 +67,6 @@ function App() {
       <Suspense fallback={<LoadingPage />}>
         <BrowserRouter>
           <Routes>
-            <Route path={PATHS.COUNSEL} element={<ConselPage />} />
             <Route path={PATHS.HOME} element={<MainLayout />}>
               <Route index element={<HomePage />} />
               <Route path={PATHS.SHOP.INDEX} element={<Shop />} />
@@ -77,6 +76,7 @@ function App() {
               <Route path={PATHS.CONTACT} element={<ContactPage />} />
               <Route path={PATHS.CART} element={<CartPage />} />
               <Route path={PATHS.CHECKOUT} element={<Checkout />} />
+              <Route path={PATHS.COUNSEL} element={<ConselPage />} />
               <Route path={PATHS.COMPLETE} element={<OrderComplete />} />
               <Route element={<PrivateRoute></PrivateRoute>}>
                 <Route path={PATHS.PROFILE.INDEX} element={<ProfileLayout />}>

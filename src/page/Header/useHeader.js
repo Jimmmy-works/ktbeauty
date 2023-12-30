@@ -1,7 +1,9 @@
 import { useMainContext } from "@/components/MainContext";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import productService from "@/service/productService";
 import { cartActions, updateCart } from "@/store/reducer/cartReducer";
+import { updateWhiteList } from "@/store/reducer/whitelistReducer";
 import { removeAccents } from "@/utils/removeAccents";
 import useWindowSize from "@/utils/windowResize";
 import { useState } from "react";
@@ -9,23 +11,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 const useHeader = () => {
   const { width } = useWindowSize();
-  const { categories, products } = useSelector((state) => state.product);
+  const { categories } = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const { isNavbar, onToggleNav, onAuthenModal, onActiveLinkTab, onLogout } =
     useMainContext();
   const { profile } = useSelector((state) => state.auth);
-  const { cartInfo, total, subTotal, discountCode, updateStatusUpdateCart } =
-    useSelector((state) => state.cart);
+  const { cartInfo, updateStatusUpdateCart } = useSelector(
+    (state) => state.cart
+  );
+  const { whiteListInfo, statusUpdateWhiteList, statusGetWhiteList } =
+    useSelector((state) => state.whitelist);
   const [productListSearch, setProductListSearch] = useState([]);
   //// useParams
   const { search, pathname } = useLocation();
-  const onDeleteProductInCart = (id) => {
-    const findItem = cartInfo?.products?.find((item) => item?._id === id);
-    const filterItem = cartInfo?.products?.filter(
-      (item) => item?._id !== findItem?._id
-    );
-    dispatch(cartActions?.setCartInfo({ ...cartInfo, products: filterItem }));
-  };
   const onSearchProduct = async (productName) => {
     try {
       const dataProduct = await productService.getAllProduct();
@@ -67,6 +65,30 @@ const useHeader = () => {
       console.log("error", error);
     }
   };
+  const onDeleteProductInCart = (id) => {
+    let cartPayload = {};
+    const findItem = cartInfo?.products?.find((item) => item?._id === id);
+    const filterItem = cartInfo?.products?.filter(
+      (item) => item?._id !== findItem?._id
+    );
+    cartPayload = {
+      ...cartInfo,
+      products: filterItem,
+    };
+    dispatch(updateCart(cartPayload));
+  };
+  const onDeleteProductInWhiteList = (id) => {
+    let whiteListPayload = {};
+    const findItem = whiteListInfo?.products?.find((item) => item?._id === id);
+    const filterItem = whiteListInfo?.products?.filter(
+      (item) => item?._id !== findItem?._id
+    );
+    whiteListPayload = {
+      ...whiteListInfo,
+      products: filterItem,
+    };
+    dispatch(updateWhiteList(whiteListPayload));
+  };
   const headerProps = {
     profile,
     isNavbar,
@@ -81,11 +103,14 @@ const useHeader = () => {
     pathname,
     productListSearch,
     width,
+    ////
     onChangeQuantity,
-    total,
-    subTotal,
-    discountCode,
     updateStatusUpdateCart,
+    ///
+    whiteListInfo,
+    statusUpdateWhiteList,
+    statusGetWhiteList,
+    onDeleteProductInWhiteList,
   };
   return { headerProps };
 };

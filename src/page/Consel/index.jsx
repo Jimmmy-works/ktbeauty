@@ -1,17 +1,16 @@
-import React, { useMemo, useState } from "react";
-import Header from "../Header";
-import { Button, Col, Row, Steps, message } from "antd";
-import ConselSex from "./ConselSex";
-import ConselAge from "./ConselAge";
-import ConselSkinType from "./ConselSkinType";
-import ConselLifeStyle from "./ConselLifeStyle";
-import ConselProgress from "./ConselProgress";
-import ConselShowcaseProduct from "./ConselShowcaseProduct";
-import useWindowSize from "@/utils/windowResize";
-import { MainProvider } from "@/components/MainContext";
-import Nav from "../Nav";
-import Overplay from "@/components/Overplay";
 import BackToTop from "@/components/BackToTop";
+import { MainProvider } from "@/components/MainContext";
+import Overplay from "@/components/Overplay";
+import useWindowSize from "@/utils/windowResize";
+import { Button, Steps, message } from "antd";
+import { useMemo, useState } from "react";
+import Header from "../Header";
+import Nav from "../Nav";
+import ConselAge from "./ConselAge";
+import ConselLifeStyle from "./ConselLifeStyle";
+import ConselSex from "./ConselSex";
+import ConselShowcaseProduct from "./ConselShowcaseProduct";
+import ConselSkinType from "./ConselSkinType";
 const style = {
   background: "#0092ff",
   padding: "8px 0",

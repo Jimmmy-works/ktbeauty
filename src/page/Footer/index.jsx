@@ -7,10 +7,10 @@ const Footer = () => {
         xs:gap-[20px] xs:flex-col md:flex-row "
         >
           <div className="footer__subscription-text xs:text-center xl:text-left max-w-[400px] xs:w-full md:w-1/3 ">
-            <h3 className="font-mab leading-[24px] text-md text-primary xs:mb-[10px] xl:mb-[14px]">
+            <h3 className="font-osb leading-[24px] text-md text-primary xs:mb-[10px] xl:mb-[14px]">
               SẢN PHẨM MỚI - ƯU ĐÃI TỐT
             </h3>
-            <p className="font-mam text-sm text-white leading-[24px]">
+            <p className="font-om text-sm text-white leading-[24px]">
               Hãy là người đầu tiên nhận được các sản phẩm mới và giảm giá độc
               quyền
             </p>

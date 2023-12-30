@@ -118,7 +118,7 @@ const Featured = ({
                           onLoadingImage={onImageLoading}
                           imageloading={imageloading}
                           isProductDetail
-                          className={`item`}
+                          classNameContent={`bg-white`}
                           item={item}
                         />
                       ) : (

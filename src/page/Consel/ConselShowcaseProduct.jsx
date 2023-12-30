@@ -1,6 +1,9 @@
 import LoadingBall from "@/components/Loading/LoadingBall";
+import { LOCAL_STORAGE } from "@/contants/localStorage";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
 import useQuery from "@/hooks/useQuery";
 import productService from "@/service/productService";
+import { updateCart } from "@/store/reducer/cartReducer";
 import {
   getAllCategories,
   getAllProduct,
@@ -8,7 +11,7 @@ import {
 import { formatPriceVND } from "@/utils/formatPrice";
 import { removeAccents } from "@/utils/removeAccents";
 import { LoadingOutlined, SearchOutlined } from "@ant-design/icons";
-import { Button, Image, Input, Slider, Spin, Table } from "antd";
+import { Button, Image, Input, Slider, Spin, Table, message } from "antd";
 import queryString from "query-string";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,8 +29,12 @@ const ConselShowcaseProduct = ({
   valueLifeStyle,
 }) => {
   const dispatch = useDispatch();
+  const { updateStatusUpdateCart, cartInfo } = useSelector(
+    (state) => state.cart
+  );
   const { categories } = useSelector((state) => state.product);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loadingPage, setLoadingPage] = useState(true);
   const [valueSlider, setValueSiler] = useState();
   const { data: dataConsel, loading: loadingConsel } = useQuery(() => {
     return productService.getProductSelected(
@@ -43,6 +50,77 @@ const ConselShowcaseProduct = ({
 
   const onChangeSlider = (value) => {
     setValueSiler(value);
+  };
+  const onAddToCart = async (payload) => {
+    const _token = localStorage.getItem(LOCAL_STORAGE.token);
+    try {
+      if (_token) {
+        if (payload?._id && updateStatusUpdateCart !== THUNK_STATUS.pending) {
+          let cartPayload = {};
+          const matchIndex = cartInfo?.products?.findIndex(
+            (productMatched) => productMatched?.product_id === payload?._id
+          );
+          let newProductPayload = cartInfo?.products?.map((product) => product);
+          if (cartInfo?._id) {
+            if (matchIndex > -1) {
+              if (newProductPayload[matchIndex]?.quantity >= 20) {
+                return message.error(
+                  `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+                );
+              } else {
+                newProductPayload[matchIndex] = {
+                  ...newProductPayload[matchIndex],
+                  quantity: newProductPayload[matchIndex]?.quantity + 1,
+                };
+                message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+              }
+            } else {
+              newProductPayload.push({
+                ...payload,
+                quantity: 1,
+                product_id: payload?._id,
+              });
+              message.success(`+1 ${payload?.name}`);
+            }
+            cartPayload = {
+              ...cartInfo,
+              products: newProductPayload,
+            };
+          } else {
+            cartPayload = {
+              ...cartInfo,
+              products: newProductPayload,
+            };
+            if (matchIndex > -1) {
+              if (newProductPayload[matchIndex]?.quantity >= 20) {
+                return message.error(
+                  `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+                );
+              } else {
+                newProductPayload[matchIndex] = {
+                  ...newProductPayload[matchIndex],
+                  quantity: newProductPayload[matchIndex]?.quantity + 1,
+                };
+                message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+              }
+            } else {
+              newProductPayload.push({
+                ...payload,
+                quantity: 1,
+                product_id: payload?._id,
+              });
+              message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+            }
+          }
+          dispatch(updateCart(cartPayload));
+        }
+      } else {
+        onAuthenModal("login");
+        return message.error(`Xin vui lòng đăng nhập để thêm sản phẩm`);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
   };
   const columns = [
     {
@@ -161,13 +239,7 @@ const ConselShowcaseProduct = ({
           return record;
         }
       },
-      filterDropdown: ({
-        setSelectedKeys,
-        // selectedKeys,
-        confirm,
-        clearFilters,
-        close,
-      }) => {
+      filterDropdown: ({ setSelectedKeys, confirm, clearFilters, close }) => {
         return (
           <div className="p-[10px] flex flex-col gap-2">
             <label className="font-ossb">Search Price </label>
@@ -230,6 +302,7 @@ const ConselShowcaseProduct = ({
       key: 5,
     },
   ];
+
   const data = dataConsel?.data?.data?.map((product, index) => {
     return {
       key: `${product?._id}`,
@@ -257,7 +330,11 @@ const ConselShowcaseProduct = ({
             </span>
           </strong>
         ),
-      createdAt: <Button className="font-osr">Thêm vào giỏ</Button>,
+      createdAt: (
+        <Button onClick={() => onAddToCart(product)} className="font-osr">
+          Thêm vào giỏ
+        </Button>
+      ),
       name:
         width >= 768 ? (
           `${product?.name}`
@@ -311,8 +388,6 @@ const ConselShowcaseProduct = ({
   useEffect(() => {
     dispatch(getAllProduct());
     dispatch(getAllCategories());
-  }, []);
-  useEffect(() => {
     onChangeSlider([0, 2000]);
   }, []);
   useEffect(() => {
@@ -321,13 +396,15 @@ const ConselShowcaseProduct = ({
     }, 500);
     return () => clearTimeout(myTimeout);
   }, [searchTerm, valueSlider]);
-  const [loadingPage, setLoadingPage] = useState(true);
   useEffect(() => {
+    document.body.setAttribute("style", "overflow-y: hidden");
     const timeout = setTimeout(() => {
+      document.body?.setAttribute("style", "overflow-y : scroll");
       setLoadingPage(false);
-    }, 1500);
+    }, 1800);
     return () => clearTimeout(timeout);
   }, [valueSex, valueAge, valueSkinType, valueLifeStyle]);
+
   return (
     <>
       <div
@@ -342,20 +419,9 @@ const ConselShowcaseProduct = ({
         >
           <LoadingBall color={"#fff"} size={8} /> Đợi giây lát, chuyên gia đang
           hỗ trợ
-          {/* <Spin
-            indicator={
-              <LoadingOutlined
-                style={{
-                  fontSize: 30,
-                  color: "#fff",
-                }}
-                spin
-              />
-            }
-          /> */}
         </div>
       </div>
-      <div className="table__dashboard">
+      <div className="table__dashboard min-h-[800px]">
         <Table
           key={`page/consel`}
           style={{ verticalAlign: "middle" }}

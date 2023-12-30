@@ -55,13 +55,6 @@ const Shop = () => {
     updateQueryString,
     search,
     /////
-    productSearch,
-    // valueChecked,
-    // renderChecked,
-    // onChangeCheckbox,
-    // onChangeRenderCheckbox,
-    // setValueChecked,
-    // setRenderChecked,
   } = useShop();
   const {
     valueChecked,
@@ -70,13 +63,41 @@ const Shop = () => {
     onChangeRenderCheckbox,
     setValueChecked,
     setRenderChecked,
+    /////
+    valueCheckedSex,
+    renderCheckedSex,
+    setValueCheckedSex,
+    setRenderCheckedSex,
+    onChangeCheckboxSex,
+    onChangeRenderCheckboxSex,
   } = useMainParamContext();
   const listRef = useRef([]);
   const { width } = useWindowSize();
   const [controlCollapse, setControlCollapse] = useState([]);
   //////
   const inputRangeProps = { updateQueryString, queryObject };
-
+  const optionSex = [
+    { label: "Nam", value: "male" },
+    { label: "Nữ", value: "female" },
+  ];
+  const optionLifeStyle = [
+    {
+      label: "Nhân viên văn phòng",
+      value: "office",
+    },
+    {
+      label: "Makeup thường xuyên",
+      value: "makeup",
+    },
+    {
+      label: "Học sinh - Sinh viên",
+      value: "student",
+    },
+    {
+      label: "Năng động hoặc Làm việc ngoài trời",
+      value: "outside",
+    },
+  ];
   const itemCategories = [
     {
       key: "1",
@@ -121,6 +142,84 @@ const Shop = () => {
     },
     {
       key: "2",
+      label: (
+        <p
+          className={`font-ossb text-16px transition-all duration-400 ${
+            controlCollapse?.includes("3") ? "text-black" : "text-black-333"
+          }`}
+        >
+          Giới tính
+        </p>
+      ),
+      children: optionSex?.map((sex) => {
+        return (
+          <div
+            key={sex?.value}
+            className={`hover:text-primary cursor-pointer duration-400 transition-all
+           flex items-start gap-2 my-[4px]   ${
+             valueCheckedSex?.includes(sex?.value) ? "font-om text-black" : ""
+           } ${loadingDataShop ? "text-[#d9d9d9] cursor-not-allowed" : ""}`}
+            onClick={() => {
+              if (!loadingDataShop)
+                onChangeCheckboxSex(sex?.value), onChangeRenderCheckboxSex(sex);
+            }}
+          >
+            <Checkbox
+              disabled={loadingDataShop ? true : false}
+              checked={
+                valueCheckedSex?.length && valueCheckedSex?.includes(sex?.value)
+              }
+              onChange={() => {
+                onChangeCheckboxSex(sex?.value), onChangeRenderCheckboxSex(sex);
+              }}
+            />
+            <p className="">{sex?.label} </p>
+          </div>
+        );
+      }),
+    },
+    {
+      key: "3",
+      label: (
+        <p
+          className={`font-ossb text-16px transition-all duration-400 ${
+            controlCollapse?.includes("3") ? "text-black" : "text-black-333"
+          }`}
+        >
+          Sở thích
+        </p>
+      ),
+      children: optionLifeStyle?.map((life, index) => {
+        return (
+          <div
+            key={life?.value}
+            className={`hover:text-primary cursor-pointer duration-400 transition-all
+           flex items-start gap-2 my-[4px]`}
+            //   ${
+            //    valueChecked?.includes(cate?._id) ? "font-om text-black" : ""
+            //  } ${loadingDataShop ? "text-[#d9d9d9] cursor-not-allowed" : ""}
+
+            // onClick={() => {
+            //   if (!loadingDataShop)
+            //     onChangeCheckbox(cate?._id), onChangeRenderCheckbox(cate);
+            // }}
+          >
+            <Checkbox
+              disabled={loadingDataShop ? true : false}
+              // checked={
+              //   valueChecked?.length && valueChecked?.includes(cate?._id)
+              // }
+              // onChange={() => {
+              //   onChangeCheckbox(cate?._id), onChangeRenderCheckbox(cate);
+              // }}
+            />
+            <p className="">{life?.label} </p>
+          </div>
+        );
+      }),
+    },
+    {
+      key: "4",
       label: (
         <p
           className={`font-ossb text-16px transition-all duration-400 ${
@@ -298,6 +397,33 @@ const Shop = () => {
                             <div>Xóa tất cả &#10006;</div>
                           </li>
                         </Tooltip>
+                      </ul>
+                    ) : (
+                      ""
+                    )}
+                    {renderCheckedSex?.length ? (
+                      <ul className=" flex items-center justify-start gap-x-3 gap-y-2 flex-wrap">
+                        {renderCheckedSex?.map((sex, index) => {
+                          return (
+                            <Tooltip
+                              key={`${sex?.value}${index}`}
+                              placement={`top`}
+                              color="#999"
+                              title={`Bỏ filter ${sex?.label}`}
+                            >
+                              <li
+                                className="cursor-pointer font-om text-black-333 text-sm 
+                                 rounded-md border border-black-333 border-solid p-[4px]"
+                                onClick={() => {
+                                  onChangeCheckboxSex(sex?.value);
+                                  onChangeRenderCheckboxSex(sex);
+                                }}
+                              >
+                                <div>{sex?.label} &#10006;</div>
+                              </li>
+                            </Tooltip>
+                          );
+                        })}
                       </ul>
                     ) : (
                       ""

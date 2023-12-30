@@ -14,6 +14,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import useHeader from "./useHeader";
 import { useSelector } from "react-redux";
 import QuantityInput from "@/assets/Input/QuantityInput";
+import { v4 as uuidv4 } from "uuid";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 const EmptyWrapper = styled.div`
   margin-bottom: 12px;
@@ -49,10 +50,12 @@ const Header = () => {
     // categoryTab,
     width,
     onChangeQuantity,
-    total,
-    subTotal,
-    discountCode,
+    ///
     updateStatusUpdateCart,
+    ////whiteListInfo,
+    whiteListInfo,
+    statusUpdateWhiteList,
+    onDeleteProductInWhiteList,
   } = headerProps || {};
   const refHeader = useRef(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -70,16 +73,13 @@ const Header = () => {
     ?.filter((cate) => cate?.name === "all")
     ?.map((item) => item?._id);
   const [open, setOpen] = useState("");
-  const [controlShowDrawer, setControlShowDrawer] = useState(false);
   const showDrawer = (name) => {
     document.body.setAttribute("style", "overflow-y : hidden");
     setOpen(name);
-    setControlShowDrawer(true);
   };
-  console.log("controlShowDrawer", controlShowDrawer);
   const onClose = () => {
+    setOpen("");
     document.body?.setAttribute("style", "overflow-y : scroll");
-    setControlShowDrawer(false);
   };
   const max = 20;
   const min = 1;
@@ -94,6 +94,7 @@ const Header = () => {
   }, [toggleSearch]);
   useEffect(() => {
     setSearchTerm("");
+    setOpen("");
   }, [pathname]);
   const [categoryTab, setCategoryTab] = useState();
   return (
@@ -241,20 +242,21 @@ const Header = () => {
               <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24">
                 <path
                   fill="#555"
-                  className="group-hover/hover:fill-primary duration-300 transition-colors"
+                  className="group-hover/hover:fill-primary duration-400 transition-colors"
                   d="M23.111 20.058l-4.977-4.977c.965-1.52 1.523-3.322 1.523-5.251 0-5.42-4.409-9.83-9.829-9.83-5.42 0-9.828 4.41-9.828 9.83s4.408 9.83 9.829 9.83c1.834 0 3.552-.505 5.022-1.383l5.021 5.021c2.144 2.141 5.384-1.096 3.239-3.24zm-20.064-10.228c0-3.739 3.043-6.782 6.782-6.782s6.782 3.042 6.782 6.782-3.043 6.782-6.782 6.782-6.782-3.043-6.782-6.782zm2.01-1.764c1.984-4.599 8.664-4.066 9.922.749-2.534-2.974-6.993-3.294-9.922-.749z"
                 />
               </svg>
             </div>
           </div>
           <Drawer
-            key={`search`}
+            key={`my-drawer-search`}
             rootClassName="my-drawer"
             title={`Tìm kiếm sản phẩm`}
             placement="right"
             onClose={onClose}
-            open={controlShowDrawer && open === "search"}
+            open={open === "search"}
             contentWrapperStyle={{ width: "460px" }}
+            ty
             footer={
               <div
                 onClick={onClose}
@@ -332,7 +334,14 @@ const Header = () => {
                           </div>
                           <div className="text-sm flex gap-1 items-center justify-between ">
                             {countInStock ? (
-                              <span className="font-om text-secondary">
+                              <span
+                                className={`font-om ${
+                                  statusUpdateWhiteList !==
+                                  THUNK_STATUS.fulfilled
+                                    ? "text-[#d9d9d9]"
+                                    : "text-secondary"
+                                }`}
+                              >
                                 Còn {countInStock} sản phẩm
                               </span>
                             ) : (
@@ -356,7 +365,7 @@ const Header = () => {
                           </div>
                           <div
                             className={`relative cursor-pointer font-ossb text-sm  capitalize flex 
-                                    items-center justify-start gap-[6px] group hover:text-primary duration-300 transition-all ${
+                                    items-center justify-start gap-[6px] group hover:text-primary duration-400 transition-all ${
                                       countInStock === 0
                                         ? "pointer-events-none text-black-be"
                                         : "pointer-events-auto text-black-555"
@@ -370,11 +379,11 @@ const Header = () => {
                                   viewBox="0 0 491.00 491.00"
                                 >
                                   <path
-                                    className="duration-300 group-hover:fill-primary fill-black-555"
+                                    className="duration-400 group-hover:fill-primary fill-black-555"
                                     d="M484.058,112.28c-7.247-10.404-19.144-16.614-31.816-16.614h-94.624c13.291,2.775,24.603,11.714,29.943,24.615 c1.063,2.569,1.761,5.212,2.283,7.869h62.396c2.063,0,3.997,1.015,5.155,2.67c1.175,1.698,1.444,3.862,0.73,5.791 l-44.992,121.107c-0.905,2.451-3.267,4.102-5.887,4.102H154.939L114.734,90.314c-5.01-21.286-23.772-36.153-45.631-36.153H24.361 C10.912,54.161,0,65.065,0,78.522s10.912,24.362,24.361,24.362h43.286l54.131,230.919c4.914,20.864,23.058,35.479,44.36,36.042 c-12.532,9.103-20.764,23.765-20.764,40.436c0,27.662,22.429,50.078,50.09,50.078c27.662,0,50.072-22.416,50.072-50.078 c0-16.605-8.17-31.212-20.623-40.326h93.421c-12.454,9.114-20.634,23.721-20.634,40.326c0,27.662,22.428,50.078,50.083,50.078 c27.646,0,50.072-22.416,50.072-50.078c0-16.605-8.187-31.212-20.634-40.326h22.714c13.448,0,24.361-10.901,24.361-24.361 c0-13.457-10.913-24.361-24.361-24.361h-231.07l-6.313-26.931h244.693c16.113,0,30.703-10.143,36.338-25.256l44.994-121.118 C492.986,136.046,491.305,122.732,484.058,112.28z"
                                   />
                                   <path
-                                    className="duration-300 group-hover:fill-primary fill-black-555"
+                                    className="duration-400 group-hover:fill-primary fill-black-555"
                                     d="M275.701,209.63c1.776,1.785,4.109,2.673,6.437,2.673c2.334,0,4.667-0.888,6.426-2.673l67.007-66.987 c2.621-2.609,3.396-6.525,1.986-9.935c-0.923-2.221-3.986-5.64-8.422-5.64c-6.472,0-25.886,0-25.886,0V95.665v-55.89 c-0.017-5.035-4.094-9.137-9.138-9.137h-63.964c-5.044,0-9.12,4.102-9.12,9.12v55.908v31.412c0,0-19.408,0-25.878,0 c-4.144,0-7.473,3.332-8.424,5.622c-1.41,3.41-0.635,7.334,1.962,9.943L275.701,209.63z"
                                   />
                                 </svg>
@@ -409,11 +418,11 @@ const Header = () => {
                 className="text-xs text-white font-om rounded-[50%] bg-primary h-[18px] w-[18px]
                 flex items-center justify-center absolute right-[-8px] top-[-8px] "
               >
-                {cartInfo?.products?.length || 0}
+                {whiteListInfo?.products?.length || 0}
               </span>
               <svg className="w-[18px] h-[18px] " viewBox="0 0 24 24">
                 <path
-                  className="group-hover/hover:fill-primary duration-300 transition-colors"
+                  className="group-hover/hover:fill-primary duration-400 transition-colors"
                   fill="#555 "
                   d="M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z"
                 />
@@ -421,12 +430,12 @@ const Header = () => {
             </div>
           </div>
           <Drawer
-            key={`whitelist`}
+            key={`my-drawer-whitelist`}
             rootClassName="my-drawer"
             title="Sản phẩm yêu thích"
             placement="right"
             onClose={onClose}
-            open={controlShowDrawer && open === "whitelist"}
+            open={open === "whitelist"}
             contentWrapperStyle={{ width: "460px" }}
             footer={
               <div
@@ -456,8 +465,8 @@ const Header = () => {
           >
             <div className="flex flex-col h-full">
               <ul className="product__list h-full flex flex-col ">
-                {cartInfo?.products?.length ? (
-                  cartInfo?.products.map((item, index) => {
+                {whiteListInfo?.products?.length ? (
+                  whiteListInfo?.products.map((item, index) => {
                     const { image, name, _id, countInStock, price, discount } =
                       item || {};
                     return (
@@ -484,22 +493,37 @@ const Header = () => {
                           <div className="flex items-start gap-3">
                             <Link
                               to={`${PATHS.SHOP.INDEX}/${_id}`}
-                              className="text-sm text-black-555 font-om leading-[16px] truncate line-clamp-2 w-full
-                                   whitespace-normal hover:text-primary transition-colors duration-400"
+                              className={`text-sm  font-om leading-[16px] truncate line-clamp-2 w-full
+                                   whitespace-normal hover:text-primary transition-colors duration-400
+                                   ${
+                                     statusUpdateWhiteList !==
+                                     THUNK_STATUS.fulfilled
+                                       ? "text-[#d9d9d9]"
+                                       : "text-black-555"
+                                   }`}
                             >
                               {name}
                             </Link>
                             <div
-                              className="font-om text-sm text-black-555 border border-solid 
-                            border-black-333 hover:border-red-500  p-[2px] rounded-md group/delete transition-colors duration-400 "
+                              className={`font-om text-sm text-black-555 p-[2px] rounded-md group/delete transition-colors duration-400
+                               border border-solid
+                              ${
+                                statusUpdateWhiteList !== THUNK_STATUS.fulfilled
+                                  ? "border-[#d9d9d9]"
+                                  : "border-black-555"
+                              }  border-black-333 hover:border-red-500  `}
                             >
                               <button
-                                onClick={() => onDeleteProductInCart(_id)}
-                                className=" block group-hover/delete:text-red-500  
-                                text-red-555 transition-colors duration-400 "
+                                onClick={() => onDeleteProductInWhiteList(_id)}
+                                className=" block "
                               >
                                 <svg
-                                  className="w-[14px] h-[14px]"
+                                  className={`w-[14px] h-[14px] transition-colors duration-400 ${
+                                    statusUpdateWhiteList !==
+                                    THUNK_STATUS.fulfilled
+                                      ? "text-[#d9d9d9]"
+                                      : "text-black-555 group-hover/delete:text-red-500"
+                                  } `}
                                   viewBox="0 0 24 24"
                                   fill="none"
                                 >
@@ -523,7 +547,14 @@ const Header = () => {
                           </div>
                           <div className="text-sm flex gap-1 items-center justify-between ">
                             {countInStock ? (
-                              <span className="font-om text-secondary">
+                              <span
+                                className={`font-om transition-colors duration-400 ${
+                                  statusUpdateWhiteList !==
+                                  THUNK_STATUS.fulfilled
+                                    ? "text-[#d9d9d9]"
+                                    : "text-secondary"
+                                }`}
+                              >
                                 Còn {countInStock} sản phẩm
                               </span>
                             ) : (
@@ -534,13 +565,28 @@ const Header = () => {
 
                             <div className="flex gap-1 items-center">
                               {discount ? (
-                                <span className="line-through font-om text-black-be  leading-[18px]">
+                                <span
+                                  className={`line-through font-om leading-[18px] transition-colors duration-400
+                                 ${
+                                   statusUpdateWhiteList !==
+                                   THUNK_STATUS.fulfilled
+                                     ? "text-[#d9d9d9]"
+                                     : "text-black-be"
+                                 }`}
+                                >
                                   {formatPriceVND(price)}
                                 </span>
                               ) : (
                                 ""
                               )}
-                              <span className="font-osb text-black">
+                              <span
+                                className={`font-osb transition-colors duration-400 ${
+                                  statusUpdateWhiteList !==
+                                  THUNK_STATUS.fulfilled
+                                    ? "text-[#d9d9d9]"
+                                    : "text-black-555"
+                                }`}
+                              >
                                 {formatPriceVND(price - discount)}
                               </span>
                             </div>
@@ -570,7 +616,7 @@ const Header = () => {
               </span>
               <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24">
                 <path
-                  className="group-hover/hover:fill-primary duration-300 transition-colors"
+                  className={`group-hover/hover:fill-primary `}
                   fill="#555"
                   d="M6 23.73l-3-2.122v-14.2l3 1.359v14.963zm2-14.855v15.125l13-1.954v-15.046l-13 1.875zm5.963-7.875c-2.097 0-3.958 2.005-3.962 4.266l-.001 1.683c0 .305.273.54.575.494.244-.037.425-.247.425-.494v-1.681c.003-1.71 1.416-3.268 2.963-3.268.537 0 1.016.195 1.384.564.422.423.654 1.035.653 1.727v1.747c0 .305.273.54.575.494.243-.037.423-.246.423-.492l.002-1.749c.002-1.904-1.32-3.291-3.037-3.291zm-6.39 5.995c.245-.037.427-.247.427-.495v-2.232c.002-1.71 1.416-3.268 2.963-3.268l.162.015c.366-.283.765-.513 1.188-.683-.405-.207-.858-.332-1.35-.332-2.096 0-3.958 2.005-3.962 4.266v2.235c0 .306.272.538.572.494z"
                 />
@@ -578,17 +624,19 @@ const Header = () => {
             </div>
           </div>
           <Drawer
-            key={`cart`}
+            key={`my-drawer-cart`}
             rootClassName="my-drawer"
             title="Giỏ hàng của bạn"
             placement="right"
             onClose={onClose}
             footer={
               <div
-                className={`flex flex-col gap-[16px] items-center justify-center`}
+                className={`flex flex-col gap-[12px] items-start justify-center`}
                 onClick={onClose}
               >
-                <div className="w-full flex gap-1 items-center justify-between text-15px font-osb text-black">
+                <div
+                  className={`w-full flex gap-1 items-center justify-between text-15px font-osb text-black`}
+                >
                   <p className="">Tạm tính giá trị đơn hàng</p>
                   <p className="tracking-wider">
                     {formatPriceVND(
@@ -600,19 +648,19 @@ const Header = () => {
                     )}
                   </p>
                 </div>
-                <p className="font-om text text-black">
+                <p className={`font-om `}>
                   Bạn có thể xem các chương trình khuyến mãi ở màn hình kế tiếp
                 </p>
                 <Button
                   link={PATHS.CART}
                   variant="outline-secondary"
-                  className={`w-full uppercase text-center text-sm xs:py-[12px] md:py-[17px]`}
+                  className={`w-full uppercase text-center text-sm xs:py-[12px] md:py-[17px]  `}
                 >
                   Tiếp tục với hình thức giao hàng
                 </Button>
               </div>
             }
-            open={controlShowDrawer && open === "cart"}
+            open={open === "cart"}
             contentWrapperStyle={{ width: "460px" }}
           >
             <div className="flex flex-col h-full">
@@ -645,22 +693,37 @@ const Header = () => {
                           <div className="flex items-start gap-3">
                             <Link
                               to={`${PATHS.SHOP.INDEX}/${_id}`}
-                              className="text-sm text-black-555 font-om leading-[16px] truncate line-clamp-2 w-full
-                                   whitespace-normal hover:text-primary transition-colors duration-400"
+                              className={`text-sm text- font-om leading-[16px] truncate line-clamp-2 w-full
+                                   whitespace-normal hover:text-primary duration-400 transition-colors ${
+                                     updateStatusUpdateCart !==
+                                     THUNK_STATUS.fulfilled
+                                       ? "text-[#d9d9d9]"
+                                       : "text-black-555"
+                                   } `}
                             >
                               {name}
                             </Link>
+
                             <div
-                              className="font-om text-sm text-black-555 border border-solid 
-                            border-black-333 hover:border-red-500  p-[2px] rounded-md group/delete transition-colors duration-400 "
+                              className={`font-om text-sm  border border-solid 
+                              p-[2px] rounded-md group/delete duration-400 transition-colors 
+                            ${
+                              updateStatusUpdateCart !== THUNK_STATUS.fulfilled
+                                ? "border-[#d9d9d9] "
+                                : "border-black-555 hover:border-red-500"
+                            }`}
                             >
                               <button
                                 onClick={() => onDeleteProductInCart(_id)}
-                                className=" block group-hover/delete:text-red-500  
-                                text-red-555 transition-colors duration-400 "
+                                className=" block "
                               >
                                 <svg
-                                  className="w-[14px] h-[14px]"
+                                  className={`w-[14px] h-[14px] transition-colors duration-400 ${
+                                    updateStatusUpdateCart !==
+                                    THUNK_STATUS.fulfilled
+                                      ? "text-[#d9d9d9]"
+                                      : "text-black-555 group-hover/delete:text-red-500"
+                                  } `}
                                   viewBox="0 0 24 24"
                                   fill="none"
                                 >
@@ -699,13 +762,27 @@ const Header = () => {
                             </div>
                             <div className="flex gap-1 items-center">
                               {discount ? (
-                                <span className="line-through font-om text-black-be  leading-[18px]">
+                                <span
+                                  className={`line-through font-om leading-[18px] duration-400 transition-colors ${
+                                    updateStatusUpdateCart !==
+                                    THUNK_STATUS.fulfilled
+                                      ? "text-[#d9d9d9]"
+                                      : "text-black-be"
+                                  }`}
+                                >
                                   {formatPriceVND(price)}
                                 </span>
                               ) : (
                                 ""
                               )}
-                              <span className="font-osb text-black">
+                              <span
+                                className={`font-osb duration-400 transition-colors ${
+                                  updateStatusUpdateCart !==
+                                  THUNK_STATUS.fulfilled
+                                    ? "text-[#d9d9d9]"
+                                    : "text-black"
+                                }`}
+                              >
                                 {formatPriceVND(price - discount)}
                               </span>
                             </div>
@@ -808,7 +885,7 @@ const Header = () => {
               <ul className="sub min-w-[120px] p-0 shadow-header right-0 left-[unset]">
                 <li
                   onClick={() => onAuthenModal("login")}
-                  className=" sub__item   p-[10px]  duration-300 transition-colors hover:bg-black-ebe"
+                  className=" sub__item   p-[10px]  duration-400 transition-colors hover:bg-black-ebe"
                 >
                   <svg className="w-[20px] h-[20px] " viewBox="0 0 24 24">
                     <path d="M8 9v-4l8 7-8 7v-4h-8v-6h8zm6-7c-1.787 0-3.46.474-4.911 1.295l.228.2 1.395 1.221c1.004-.456 2.115-.716 3.288-.716 4.411 0 8 3.589 8 8s-3.589 8-8 8c-1.173 0-2.284-.26-3.288-.715l-1.395 1.221-.228.2c1.451.82 3.124 1.294 4.911 1.294 5.522 0 10-4.477 10-10s-4.478-10-10-10z"></path>
@@ -817,7 +894,7 @@ const Header = () => {
                 </li>
                 <li
                   onClick={() => onAuthenModal("register")}
-                  className=" sub__item   p-[10px]  duration-300 transition-colors hover:bg-black-ebe"
+                  className=" sub__item   p-[10px]  duration-400 transition-colors hover:bg-black-ebe"
                 >
                   <svg className="w-[20px] h-[20px] " viewBox="0 0 24 24">
                     <path d="M12.408 13.032c1.158-.062 2.854-.388 4.18-1.128.962-1.478 1.598-2.684 2.224-4-.86.064-1.852-.009-2.736-.257 1.068-.183 2.408-.565 3.422-1.216 1.255-1.784 2.185-4.659 2.502-6.429-2.874-.048-5.566.89-7.386 2.064-.614.7-1.146 2.389-1.272 3.283-.277-.646-.479-1.68-.242-2.542-1.458.767-2.733 1.643-4.177 2.86-.72 1.528-.834 3.29-.768 4.276-.391-.553-.915-1.63-.842-2.809-2.59 2.504-4.377 5.784-2.682 9.324 1.879-1.941 4.039-3.783 5.354-4.639-3.036 3.474-5.866 8.047-7.985 12.181l2.504-.786c1.084-1.979 2.059-3.684 2.933-4.905 3.229.423 6.096-2.168 8.028-4.795-.77.19-2.246-.058-3.057-.482z"></path>

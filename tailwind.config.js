@@ -1135,15 +1135,6 @@ export default {
           "@media (min-width: 1024px)": {
             height: "80px",
           },
-          // "@media (min-width: 360px)": {
-          //   height: "56px",
-          // },
-          // "@media (min-width: 768px)": {
-          //   height: "76px",
-          // },
-          // "@media (min-width: 1024px)": {
-          //   height: "92px",
-          // },
         },
         ".pt-main-wrapper": {
           "@media (min-width: 360px)": {
