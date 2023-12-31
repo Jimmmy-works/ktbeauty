@@ -94,6 +94,7 @@ const useShop = () => {
       updateQueryString({
         ...queryObject,
         page: pageNumb - 1,
+        limit: _LIMIT,
       });
   };
   /// Main
