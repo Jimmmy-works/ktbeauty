@@ -31,8 +31,35 @@ const EmptyWrapper = styled.div`
   }
 `;
 const Header = () => {
-  const { valueChecked, setValueChecked, setRenderChecked } =
-    useMainParamContext();
+  const {
+    valueChecked,
+    renderChecked,
+    onChangeCheckbox,
+    onChangeRenderCheckbox,
+    setValueChecked,
+    setRenderChecked,
+    //////
+    valueCheckedSex,
+    renderCheckedSex,
+    setValueCheckedSex,
+    setRenderCheckedSex,
+    onChangeCheckboxSex,
+    onChangeRenderCheckboxSex,
+    /////
+    valueCheckedLifeStyle,
+    renderCheckedLifeStyle,
+    setValueCheckedLifeStyle,
+    setRenderCheckedLifeStyle,
+    onChangeCheckboxLifeStyle,
+    onChangeRenderCheckboxLifeStyle,
+    ////
+    valueCheckedSkinType,
+    renderCheckedSkinType,
+    setValueCheckedSkinType,
+    setRenderCheckedSkinType,
+    onChangeCheckboxSkinType,
+    onChangeRenderCheckboxSkinType,
+  } = useMainParamContext();
   const { headerProps } = useHeader();
   const {
     profile,
@@ -155,7 +182,16 @@ const Header = () => {
                     })}`
                   : `${PATHS?.SHOP?.INDEX}`
               }`}
-              onClick={() => setCategoryTab(categoryAll)}
+              onClick={() => {
+                setCategoryTab(categoryAll);
+                setValueChecked([]),
+                  setRenderChecked([]),
+                  setValueCheckedSex([]),
+                  setRenderCheckedSex([]),
+                  setValueCheckedLifeStyle([]),
+                  setRenderCheckedLifeStyle([]);
+                setValueCheckedSkinType([]), setRenderCheckedSkinType([]);
+              }}
             >
               sản phẩm
               <div className="arrow-down">

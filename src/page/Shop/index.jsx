@@ -9,7 +9,12 @@ import NavbarFilter from "@/components/NavbarFilter";
 import Pagination from "@/components/Pagination";
 import ProductCard from "@/components/ProductCard";
 import SelectCustom from "@/components/Select/SelectCustom";
-import { _LIMIT } from "@/contants/general";
+import {
+  OPTION_LIFE_STYLE,
+  OPTION_SEX,
+  OPTION_SKIN_TYPE,
+  _LIMIT,
+} from "@/contants/general";
 import { PATHS } from "@/contants/path";
 import useWindowSize from "@/utils/windowResize";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -17,6 +22,8 @@ import { Checkbox, Collapse, Empty, Spin, Tooltip } from "antd";
 import { useRef, useState } from "react";
 import styled from "styled-components";
 import useShop from "./useShop";
+import { useDispatch } from "react-redux";
+import { cartActions } from "@/store/reducer/cartReducer";
 const EmptyWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -56,6 +63,7 @@ const Shop = () => {
     search,
     /////
   } = useShop();
+  const dispatch = useDispatch();
   const {
     valueChecked,
     renderChecked,
@@ -70,34 +78,26 @@ const Shop = () => {
     setRenderCheckedSex,
     onChangeCheckboxSex,
     onChangeRenderCheckboxSex,
+    /////
+    valueCheckedLifeStyle,
+    renderCheckedLifeStyle,
+    setValueCheckedLifeStyle,
+    setRenderCheckedLifeStyle,
+    onChangeCheckboxLifeStyle,
+    onChangeRenderCheckboxLifeStyle,
+    ////
+    valueCheckedSkinType,
+    renderCheckedSkinType,
+    setValueCheckedSkinType,
+    setRenderCheckedSkinType,
+    onChangeCheckboxSkinType,
+    onChangeRenderCheckboxSkinType,
   } = useMainParamContext();
-  const listRef = useRef([]);
   const { width } = useWindowSize();
   const [controlCollapse, setControlCollapse] = useState([]);
   //////
   const inputRangeProps = { updateQueryString, queryObject };
-  const optionSex = [
-    { label: "Nam", value: "male" },
-    { label: "Nữ", value: "female" },
-  ];
-  const optionLifeStyle = [
-    {
-      label: "Nhân viên văn phòng",
-      value: "office",
-    },
-    {
-      label: "Makeup thường xuyên",
-      value: "makeup",
-    },
-    {
-      label: "Học sinh - Sinh viên",
-      value: "student",
-    },
-    {
-      label: "Năng động hoặc Làm việc ngoài trời",
-      value: "outside",
-    },
-  ];
+
   const itemCategories = [
     {
       key: "1",
@@ -145,13 +145,13 @@ const Shop = () => {
       label: (
         <p
           className={`font-ossb text-16px transition-all duration-400 ${
-            controlCollapse?.includes("3") ? "text-black" : "text-black-333"
+            controlCollapse?.includes("2") ? "text-black" : "text-black-333"
           }`}
         >
           Giới tính
         </p>
       ),
-      children: optionSex?.map((sex) => {
+      children: OPTION_SEX?.map((sex) => {
         return (
           <div
             key={sex?.value}
@@ -189,29 +189,32 @@ const Shop = () => {
           Sở thích
         </p>
       ),
-      children: optionLifeStyle?.map((life, index) => {
+      children: OPTION_LIFE_STYLE?.map((life) => {
         return (
           <div
             key={life?.value}
             className={`hover:text-primary cursor-pointer duration-400 transition-all
-           flex items-start gap-2 my-[4px]`}
-            //   ${
-            //    valueChecked?.includes(cate?._id) ? "font-om text-black" : ""
-            //  } ${loadingDataShop ? "text-[#d9d9d9] cursor-not-allowed" : ""}
-
-            // onClick={() => {
-            //   if (!loadingDataShop)
-            //     onChangeCheckbox(cate?._id), onChangeRenderCheckbox(cate);
-            // }}
+           flex items-start gap-2 my-[4px]   ${
+             valueCheckedLifeStyle?.includes(life?.value)
+               ? "font-om text-black"
+               : ""
+           } ${loadingDataShop ? "text-[#d9d9d9] cursor-not-allowed" : ""}`}
+            onClick={() => {
+              if (!loadingDataShop)
+                onChangeCheckboxLifeStyle(life?.value),
+                  onChangeRenderCheckboxLifeStyle(life);
+            }}
           >
             <Checkbox
               disabled={loadingDataShop ? true : false}
-              // checked={
-              //   valueChecked?.length && valueChecked?.includes(cate?._id)
-              // }
-              // onChange={() => {
-              //   onChangeCheckbox(cate?._id), onChangeRenderCheckbox(cate);
-              // }}
+              checked={
+                valueCheckedLifeStyle?.length &&
+                valueCheckedLifeStyle?.includes(life?.value)
+              }
+              onChange={() => {
+                onChangeCheckboxLifeStyle(life?.value),
+                  onChangeRenderCheckboxLifeStyle(life);
+              }}
             />
             <p className="">{life?.label} </p>
           </div>
@@ -223,7 +226,50 @@ const Shop = () => {
       label: (
         <p
           className={`font-ossb text-16px transition-all duration-400 ${
-            controlCollapse?.includes("2") ? "text-black" : "text-black-333"
+            controlCollapse?.includes("4") ? "text-black" : "text-black-333"
+          }`}
+        >
+          Loại da
+        </p>
+      ),
+      children: OPTION_SKIN_TYPE?.map((skin) => {
+        return (
+          <div
+            key={skin?.value}
+            className={`hover:text-primary cursor-pointer duration-400 transition-all
+           flex items-start gap-2 my-[4px]   ${
+             valueCheckedSkinType?.includes(skin?.value)
+               ? "font-om text-black"
+               : ""
+           } ${loadingDataShop ? "text-[#d9d9d9] cursor-not-allowed" : ""}`}
+            onClick={() => {
+              if (!loadingDataShop)
+                onChangeCheckboxSkinType(skin?.value),
+                  onChangeRenderCheckboxSkinType(skin);
+            }}
+          >
+            <Checkbox
+              disabled={loadingDataShop ? true : false}
+              checked={
+                valueCheckedSkinType?.length &&
+                valueCheckedSkinType?.includes(skin?.value)
+              }
+              onChange={() => {
+                onChangeCheckboxSkinType(skin?.value),
+                  onChangeRenderCheckboxSkinType(skin);
+              }}
+            />
+            <p className="">{skin?.label} </p>
+          </div>
+        );
+      }),
+    },
+    {
+      key: "5",
+      label: (
+        <p
+          className={`font-ossb text-16px transition-all duration-400 ${
+            controlCollapse?.includes("5") ? "text-black" : "text-black-333"
           }`}
         >
           Giá sản phẩm
@@ -304,7 +350,7 @@ const Shop = () => {
                 />
               </div>
             </aside>
-            <div className="w-full ">
+            <div className="w-full min-h-[800px]">
               <div
                 className="flex items-center  justify-between
                 gap-y-[12px] xs:pb-[16px] md:pb-[24px] mb-[24px] border-b 
@@ -377,26 +423,6 @@ const Shop = () => {
                             </Tooltip>
                           );
                         })}
-                        <Tooltip
-                          key={`delete-all`}
-                          placement={`top`}
-                          color="#999"
-                          title={`Bỏ tất cả filter`}
-                        >
-                          <li
-                            className="cursor-pointer font-om text-red-700 text-sm 
-                                 rounded-md border border-red-700 border-solid p-[4px]"
-                            onClick={() => {
-                              setValueChecked([]), setRenderChecked([]);
-                              updateQueryString({
-                                page: 0,
-                                limit: _LIMIT,
-                              });
-                            }}
-                          >
-                            <div>Xóa tất cả &#10006;</div>
-                          </li>
-                        </Tooltip>
                       </ul>
                     ) : (
                       ""
@@ -425,6 +451,97 @@ const Shop = () => {
                           );
                         })}
                       </ul>
+                    ) : (
+                      ""
+                    )}
+                    {renderCheckedSkinType?.length ? (
+                      <ul className=" flex items-center justify-start gap-x-3 gap-y-2 flex-wrap">
+                        {renderCheckedSkinType?.map((skin, index) => {
+                          return (
+                            <Tooltip
+                              key={`${skin?.value}${index}`}
+                              placement={`top`}
+                              color="#999"
+                              title={`Bỏ filter ${skin?.label}`}
+                            >
+                              <li
+                                className="cursor-pointer font-om text-black-333 text-sm 
+                                 rounded-md border border-black-333 border-solid p-[4px]"
+                                onClick={() => {
+                                  onChangeCheckboxSkinType(skin?.value);
+                                  onChangeRenderCheckboxSkinType(skin);
+                                }}
+                              >
+                                <div>{skin?.label} &#10006;</div>
+                              </li>
+                            </Tooltip>
+                          );
+                        })}
+                      </ul>
+                    ) : (
+                      ""
+                    )}
+                    {renderCheckedLifeStyle?.length ? (
+                      <ul className=" flex items-center justify-start gap-x-3 gap-y-2 flex-wrap">
+                        {renderCheckedLifeStyle?.map((lifeStyle, index) => {
+                          return (
+                            <Tooltip
+                              key={`${lifeStyle?.value}${index}`}
+                              placement={`top`}
+                              color="#999"
+                              title={`Bỏ filter ${lifeStyle?.label}`}
+                            >
+                              <li
+                                className="cursor-pointer font-om text-black-333 text-sm 
+                                 rounded-md border border-black-333 border-solid p-[4px]"
+                                onClick={() => {
+                                  onChangeCheckboxLifeStyle(lifeStyle?.value);
+                                  onChangeRenderCheckboxLifeStyle(lifeStyle);
+                                }}
+                              >
+                                <div>{lifeStyle?.label} &#10006;</div>
+                              </li>
+                            </Tooltip>
+                          );
+                        })}
+                      </ul>
+                    ) : (
+                      ""
+                    )}
+                    {valueChecked?.length +
+                      valueCheckedSex?.length +
+                      valueCheckedSkinType?.length +
+                      valueCheckedLifeStyle?.length >
+                    1 ? (
+                      <Tooltip
+                        key={`delete-all`}
+                        placement={`top`}
+                        color="#999"
+                        title={`Bỏ tất cả filter`}
+                      >
+                        <a
+                          className="cursor-pointer font-om text-red-700 text-sm 
+                                rounded-md border border-red-700 border-solid p-[4px]"
+                          onClick={() => {
+                            setValueChecked([]),
+                              setRenderChecked([]),
+                              setValueCheckedSex([]),
+                              setRenderCheckedSex([]),
+                              setValueCheckedLifeStyle([]),
+                              setRenderCheckedLifeStyle([]);
+                            setValueCheckedSkinType([]),
+                              setRenderCheckedSkinType([]);
+                            dispatch(cartActions.setMinPrice(0));
+                            dispatch(cartActions.setMaxPrice(60000));
+                            updateQueryString({
+                              page: 0,
+                              limit: _LIMIT,
+                            });
+                          }}
+                        >
+                          <div>Xóa tất cả &#10006;</div>
+                        </a>
+                      </Tooltip>
                     ) : (
                       ""
                     )}
@@ -465,7 +582,7 @@ const Shop = () => {
                       isClassName={`mb-[30px] lg:w-[calc(25%-10px)] xs:w-[calc(50%-10px)] md:w-[calc(33.333333%-10px)]`}
                       isLoading={loadingDataShop}
                       isParagraph={2}
-                      isArray={9}
+                      isArray={12}
                     />
                   </div>
                 )}
@@ -481,50 +598,152 @@ const Shop = () => {
         </div>
       </main>
       <NavbarFilter {...filterMobileProps}>
-        {width < 1280 && renderChecked?.length > 0 && (
+        {width < 1280 && (
           <div className="flex w-full p-[20px_20px_0_20px]  gap-4 flex-wrap">
             <ul className=" flex w-full items-center  gap-2 flex-wrap">
-              {renderChecked?.map((category, index) => {
-                return (
-                  <Tooltip
-                    key={`${category?._id}${index}`}
-                    placement={`top`}
-                    color="#999"
-                    title={`Bỏ filter ${category?.label}`}
-                  >
-                    <li
-                      className="cursor-pointer font-om text-black-333 text-sm 
+              {renderChecked?.length ? (
+                <ul className=" flex items-center justify-start gap-x-3 gap-y-2 flex-wrap">
+                  {renderChecked?.map((category, index) => {
+                    return (
+                      <Tooltip
+                        key={`${category?._id}${index}`}
+                        placement={`top`}
+                        color="#999"
+                        title={`Bỏ filter ${category?.label}`}
+                      >
+                        <li
+                          className="cursor-pointer font-om text-black-333 text-sm 
                                  rounded-md border border-black-333 border-solid p-[4px]"
-                      onClick={() => {
-                        onChangeCheckbox(category?._id);
-                        onChangeRenderCheckbox(category);
-                      }}
-                    >
-                      <div>{category?.label} &#10006;</div>
-                    </li>
-                  </Tooltip>
-                );
-              })}
-              <Tooltip
-                key={`delete-all`}
-                placement={`top`}
-                color="#999"
-                title={`Bỏ tất cả filter`}
-              >
-                <li
-                  className="cursor-pointer font-om text-red-700 text-sm 
-                                 rounded-md border border-red-700 border-solid p-[4px]"
-                  onClick={() => {
-                    setValueChecked([]), setRenderChecked([]);
-                    updateQueryString({
-                      page: 0,
-                      limit: _LIMIT,
-                    });
-                  }}
+                          onClick={() => {
+                            onChangeCheckbox(category?._id);
+                            onChangeRenderCheckbox(category);
+                          }}
+                        >
+                          <div>{category?.label} &#10006;</div>
+                        </li>
+                      </Tooltip>
+                    );
+                  })}
+                </ul>
+              ) : (
+                ""
+              )}
+              {renderCheckedSex?.length ? (
+                <ul className=" flex items-center justify-start gap-x-3 gap-y-2 flex-wrap">
+                  {renderCheckedSex?.map((sex, index) => {
+                    return (
+                      <Tooltip
+                        key={`${sex?.value}${index}`}
+                        placement={`top`}
+                        color="#999"
+                        title={`Bỏ filter ${sex?.label}`}
+                      >
+                        <li
+                          className="cursor-pointer font-om text-black-333 text-sm 
+                                 rounded-md border border-black-333 border-solid p-[4px]"
+                          onClick={() => {
+                            onChangeCheckboxSex(sex?.value);
+                            onChangeRenderCheckboxSex(sex);
+                          }}
+                        >
+                          <div>{sex?.label} &#10006;</div>
+                        </li>
+                      </Tooltip>
+                    );
+                  })}
+                </ul>
+              ) : (
+                ""
+              )}
+              {renderCheckedSkinType?.length ? (
+                <ul className=" flex items-center justify-start gap-x-3 gap-y-2 flex-wrap">
+                  {renderCheckedSkinType?.map((skin, index) => {
+                    return (
+                      <Tooltip
+                        key={`${skin?.value}${index}`}
+                        placement={`top`}
+                        color="#999"
+                        title={`Bỏ filter ${skin?.label}`}
+                      >
+                        <li
+                          className="cursor-pointer font-om text-black-333 text-sm 
+                                 rounded-md border border-black-333 border-solid p-[4px]"
+                          onClick={() => {
+                            onChangeCheckboxSkinType(skin?.value);
+                            onChangeRenderCheckboxSkinType(skin);
+                          }}
+                        >
+                          <div>{skin?.label} &#10006;</div>
+                        </li>
+                      </Tooltip>
+                    );
+                  })}
+                </ul>
+              ) : (
+                ""
+              )}
+              {renderCheckedLifeStyle?.length ? (
+                <ul className=" flex items-center justify-start gap-x-3 gap-y-2 flex-wrap">
+                  {renderCheckedLifeStyle?.map((lifeStyle, index) => {
+                    return (
+                      <Tooltip
+                        key={`${lifeStyle?.value}${index}`}
+                        placement={`top`}
+                        color="#999"
+                        title={`Bỏ filter ${lifeStyle?.label}`}
+                      >
+                        <li
+                          className="cursor-pointer font-om text-black-333 text-sm 
+                                 rounded-md border border-black-333 border-solid p-[4px]"
+                          onClick={() => {
+                            onChangeCheckboxLifeStyle(lifeStyle?.value);
+                            onChangeRenderCheckboxLifeStyle(lifeStyle);
+                          }}
+                        >
+                          <div>{lifeStyle?.label} &#10006;</div>
+                        </li>
+                      </Tooltip>
+                    );
+                  })}
+                </ul>
+              ) : (
+                ""
+              )}
+              {valueChecked?.length +
+                valueCheckedSex?.length +
+                valueCheckedSkinType?.length +
+                valueCheckedLifeStyle?.length >
+              1 ? (
+                <Tooltip
+                  key={`delete-all`}
+                  placement={`top`}
+                  color="#999"
+                  title={`Bỏ tất cả filter`}
                 >
-                  <div>Xóa tất cả &#10006;</div>
-                </li>
-              </Tooltip>
+                  <a
+                    className="cursor-pointer font-om text-red-700 text-sm 
+                                rounded-md border border-red-700 border-solid p-[4px]"
+                    onClick={() => {
+                      setValueChecked([]), setRenderChecked([]);
+                      setValueCheckedSex([]),
+                        setRenderCheckedSex([]),
+                        setValueCheckedLifeStyle([]),
+                        setRenderCheckedLifeStyle([]);
+                      setValueCheckedSkinType([]), setRenderCheckedSkinType([]);
+                      dispatch(cartActions.setMinPrice(0));
+                      dispatch(cartActions.setMaxPrice(60000));
+                      updateQueryString({
+                        page: 0,
+                        limit: _LIMIT,
+                      });
+                    }}
+                  >
+                    <div>Xóa tất cả &#10006;</div>
+                  </a>
+                </Tooltip>
+              ) : (
+                ""
+              )}
             </ul>
           </div>
         )}

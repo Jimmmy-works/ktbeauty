@@ -98,3 +98,34 @@ export const STATUS_OPTION = {
   CANCEL: "canceled",
 };
 export const _LIMIT = 12;
+export const OPTION_SEX = [
+  { label: "Nam", value: "male" },
+  { label: "Nữ", value: "female" },
+];
+export const OPTION_LIFE_STYLE = [
+  {
+    label: "Nhân viên văn phòng",
+    value: "office",
+  },
+  {
+    label: "Makeup thường xuyên",
+    value: "makeup",
+  },
+  {
+    label: "Học sinh - Sinh viên",
+    value: "student",
+  },
+  {
+    label: "Năng động hoặc Làm việc ngoài trời",
+    value: "outside",
+  },
+];
+export const OPTION_SKIN_TYPE = [
+  { label: "Da thường", value: "nomal" },
+  { label: "Da dầu", value: "oil" },
+  { label: "Da khô", value: "dry" },
+  {
+    label: "Da hỗn hợp",
+    value: "combination",
+  },
+];

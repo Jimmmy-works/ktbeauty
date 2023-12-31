@@ -1,7 +1,44 @@
-import Button from "@/components/Button";
+import { useMainParamContext } from "@/components/MainParamShopContext";
 import Textbox from "@/components/Textbox";
-
+import {
+  OPTION_LIFE_STYLE,
+  OPTION_SEX,
+  OPTION_SKIN_TYPE,
+  _LIMIT,
+} from "@/contants/general";
+import { PATHS } from "@/contants/path";
+import queryString from "query-string";
+import { Link } from "react-router-dom";
 const Advertising = () => {
+  const forMen = OPTION_SEX?.find((sex) => sex?.value === "male");
+  const forOffice = OPTION_LIFE_STYLE?.find((life) => {
+    return life?.value === "office";
+  });
+  const forSkin = OPTION_SKIN_TYPE?.map((skin) => {
+    return skin?.value;
+  });
+  const {
+    valueCheckedSex,
+    renderCheckedSex,
+    setValueCheckedSex,
+    setRenderCheckedSex,
+    onChangeCheckboxSex,
+    onChangeRenderCheckboxSex,
+    /////
+    valueCheckedLifeStyle,
+    renderCheckedLifeStyle,
+    setValueCheckedLifeStyle,
+    setRenderCheckedLifeStyle,
+    onChangeCheckboxLifeStyle,
+    onChangeRenderCheckboxLifeStyle,
+    ////
+    valueCheckedSkinType,
+    renderCheckedSkinType,
+    setValueCheckedSkinType,
+    setRenderCheckedSkinType,
+    onChangeCheckboxSkinType,
+    onChangeRenderCheckboxSkinType,
+  } = useMainParamContext();
   return (
     <section className="scadvertising pt-section">
       <div className="container">
@@ -30,12 +67,21 @@ const Advertising = () => {
                 Dành cho nam
               </h3>
 
-              <a
+              <Link
+                onClick={() => {
+                  setValueCheckedSex([forMen?.value]);
+                  setRenderCheckedSex([forMen]);
+                }}
+                to={`${PATHS.SHOP.INDEX}?${queryString.stringify({
+                  limit: _LIMIT,
+                  page: 0,
+                  sex: forMen?.value,
+                })}`}
                 className="btn-flip "
                 data-back="Đến shop"
                 data-front="Xem ngay"
                 href="/shop"
-              ></a>
+              ></Link>
             </div>
           </div>
           <div
@@ -61,12 +107,21 @@ const Advertising = () => {
                 Công sở
               </h3>
 
-              <a
+              <Link
+                onClick={() => {
+                  setValueCheckedLifeStyle([forOffice?.value]);
+                  setRenderCheckedLifeStyle([forOffice]);
+                }}
+                to={`${PATHS.SHOP.INDEX}?${queryString.stringify({
+                  limit: _LIMIT,
+                  page: 0,
+                  hobby: forOffice?.value,
+                })}`}
                 className="btn-flip "
                 data-back="Đến shop"
                 data-front="Xem ngay"
                 href="/shop"
-              ></a>
+              ></Link>
             </div>
           </div>
           <div
@@ -91,13 +146,21 @@ const Advertising = () => {
               >
                 Trị mụn
               </h3>
-
-              <a
+              <Link
+                onClick={() => {
+                  setValueCheckedSkinType([...forSkin]);
+                  setRenderCheckedSkinType(OPTION_SKIN_TYPE);
+                }}
+                to={`${PATHS.SHOP.INDEX}?${queryString.stringify({
+                  limit: _LIMIT,
+                  page: 0,
+                  skinType: forSkin?.toString(),
+                })}`}
                 className="btn-flip "
                 data-back="Đến shop"
                 data-front="Xem ngay"
                 href="/shop"
-              ></a>
+              ></Link>
             </div>
           </div>
         </div>
@@ -105,5 +168,4 @@ const Advertising = () => {
     </section>
   );
 };
-
 export default Advertising;
