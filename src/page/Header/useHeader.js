@@ -1,8 +1,7 @@
 import { useMainContext } from "@/components/MainContext";
-import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import productService from "@/service/productService";
-import { cartActions, updateCart } from "@/store/reducer/cartReducer";
+import { updateCart } from "@/store/reducer/cartReducer";
 import { updateWhiteList } from "@/store/reducer/whitelistReducer";
 import { removeAccents } from "@/utils/removeAccents";
 import useWindowSize from "@/utils/windowResize";
@@ -25,23 +24,23 @@ const useHeader = () => {
   //// useParams
   const { search, pathname } = useLocation();
   const onSearchProduct = async (productName) => {
-    try {
-      const dataProduct = await productService.getAllProduct();
-      if (dataProduct?.status === 200) {
-        const result = dataProduct?.data?.data?.filter((product) => {
-          return removeAccents(product?.name ?? "")
-            .toLowerCase()
-            .includes(removeAccents(productName.toLowerCase()));
-        });
-        if (productName) {
-          setProductListSearch(result);
-        } else {
-          setProductListSearch([]);
-        }
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
+    // try {
+    //   const dataProduct = await productService.getAllProduct();
+    //   if (dataProduct?.status === 200) {
+    //     const result = dataProduct?.data?.data?.filter((product) => {
+    //       return removeAccents(product?.name ?? "")
+    //         .toLowerCase()
+    //         .includes(removeAccents(productName.toLowerCase()));
+    //     });
+    //     if (productName) {
+    //       setProductListSearch(result);
+    //     } else {
+    //       setProductListSearch([]);
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.log("error", error);
+    // }
   };
   /// quantity
   const onChangeQuantity = async (updateValue, updateIndex) => {

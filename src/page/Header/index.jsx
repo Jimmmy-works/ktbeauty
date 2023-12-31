@@ -1,8 +1,10 @@
+import QuantityInput from "@/assets/Input/QuantityInput";
 import Button from "@/components/Button";
 import Hamburger from "@/components/Hamburger";
 import { useMainParamContext } from "@/components/MainParamShopContext";
 import { _LIMIT } from "@/contants/general";
 import { PATHS } from "@/contants/path";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
 import { formatPriceVND } from "@/utils/formatPrice";
 import { Drawer, Empty } from "antd";
 import queryString from "query-string";
@@ -12,10 +14,6 @@ import styled from "styled-components";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useHeader from "./useHeader";
-import { useSelector } from "react-redux";
-import QuantityInput from "@/assets/Input/QuantityInput";
-import { v4 as uuidv4 } from "uuid";
-import { THUNK_STATUS } from "@/contants/thunkstatus";
 const EmptyWrapper = styled.div`
   margin-bottom: 12px;
   min-width: 200px;
@@ -27,6 +25,134 @@ const EmptyWrapper = styled.div`
     svg {
       width: 100px !important;
       height: 100px !important;
+    }
+  }
+`;
+const TextChangeColor = styled.div`
+  .waviy {
+    position: relative;
+    -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0, 0, 0, 0.2));
+    font-size: 60px;
+  }
+  .waviy span {
+    font-family: "Alfa Slab One", cursive;
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    text-transform: uppercase;
+    animation: waviy 1s infinite;
+    animation-delay: calc(0.1s * var(--i));
+  }
+  @keyframes waviy {
+    0%,
+    40%,
+    100% {
+      transform: translateY(0);
+    }
+    20% {
+      transform: translateY(-20px);
+    }
+  }
+  .animate-charcter {
+    text-transform: uppercase;
+    background-image: linear-gradient(
+      -225deg,
+      #231557 0%,
+      #44107a 29%,
+      #ff1361 67%,
+      #fff800 100%
+    );
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    color: #fff;
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 2s linear infinite;
+    display: inline-block;
+  }
+
+  @keyframes textclip {
+    to {
+      background-position: 200% center;
+    }
+  }
+  @keyframes Color {
+    0% {
+      background-color: #a0d468;
+    }
+
+    20% {
+      background-color: #4fc1e9;
+    }
+
+    40% {
+      background-color: #ffce54;
+    }
+
+    60% {
+      background-color: #fc6e51;
+    }
+
+    80% {
+      background-color: #ed5565;
+    }
+
+    100% {
+      background-color: #ac92ec;
+    }
+  }
+  @-moz-keyframes Color {
+    0% {
+      background-color: #a0d468;
+    }
+
+    20% {
+      background-color: #4fc1e9;
+    }
+
+    40% {
+      background-color: #ffce54;
+    }
+
+    60% {
+      background-color: #fc6e51;
+    }
+
+    80% {
+      background-color: #ed5565;
+    }
+
+    100% {
+      background-color: #ac92ec;
+    }
+  }
+
+  @-webkit-keyframes Color {
+    0% {
+      background-color: #a0d468;
+    }
+
+    20% {
+      background-color: #4fc1e9;
+    }
+
+    40% {
+      background-color: #ffce54;
+    }
+
+    60% {
+      background-color: #fc6e51;
+    }
+
+    80% {
+      background-color: #ed5565;
+    }
+
+    100% {
+      background-color: #ac92ec;
     }
   }
 `;
@@ -260,7 +386,11 @@ const Header = () => {
             <NavLink to={`${PATHS.CONTACT}`}>liên hệ</NavLink>
           </li>
           <li className="header__menu-item ">
-            <NavLink to={`${PATHS.COUNSEL}`}>Tư vấn</NavLink>
+            <TextChangeColor>
+              <NavLink className={`animate-charcter`} to={`${PATHS.COUNSEL}`}>
+                Tư vấn
+              </NavLink>
+            </TextChangeColor>
           </li>
         </ul>
         <div className="header__info xs:hidden md:flex h-full items-center relative">

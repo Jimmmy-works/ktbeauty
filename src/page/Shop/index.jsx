@@ -96,8 +96,7 @@ const Shop = () => {
   const { width } = useWindowSize();
   const [controlCollapse, setControlCollapse] = useState([]);
   //////
-  const inputRangeProps = { updateQueryString, queryObject };
-
+  const inputRangeProps = { updateQueryString, queryObject, loadingDataShop };
   const itemCategories = [
     {
       key: "1",
@@ -221,6 +220,7 @@ const Shop = () => {
         );
       }),
     },
+
     {
       key: "4",
       label: (

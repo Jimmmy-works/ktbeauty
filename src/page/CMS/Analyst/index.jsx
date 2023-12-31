@@ -36,13 +36,26 @@ import {
   endMonth,
 } from "@/utils/timeISOString";
 import { monthNameVN, monthNames } from "@/contants/general";
-import { DatePicker, Image, Popconfirm, Space, Table, Tag } from "antd";
+import {
+  Button,
+  DatePicker,
+  Image,
+  Input,
+  Popconfirm,
+  Select,
+  Space,
+  Table,
+  Tag,
+} from "antd";
 import { dateVN, localeVN, timeVN } from "@/utils/timeVN";
 import styled from "styled-components";
 import queryString from "query-string";
 import useQuery from "@/hooks/useQuery";
 import { Excel } from "antd-table-saveas-excel";
+import { SearchOutlined, CaretDownOutlined } from "@ant-design/icons";
+
 import dashboardService from "@/service/dashboardService";
+import { useLocation, useSearchParams } from "react-router-dom";
 const StyleImage = styled.div`
   .ant-image-mask {
     border-radius: 6px;
@@ -106,14 +119,26 @@ const DashboardAnalyst = () => {
   const [revenueFilter, setRevenueFilter] = useState({});
   const [soldProductFilter, setSoldProductFilter] = useState({});
   const [inventoryObj, setInventoryObj] = useState({});
-  const [topCountInStock, setTopCountInStock] = useState([]);
-  const [topTopSold, setTopSold] = useState([]);
+  const [renderLimit, setRenderLimit] = useState("");
+  const [renderTop, setRenderTop] = useState("");
+  const { search, pathname } = useLocation();
+  const queryObject = queryString.parse(search);
+  /// handle Update Query String
+  const [searchParams, setSearchParams] = useSearchParams();
+  const updateQueryString = (queryObject) => {
+    const newQuerryString = queryString.stringify({
+      ...queryObject,
+    });
+    setSearchParams(new URLSearchParams(newQuerryString));
+  };
   const handleRevenue = async () => {
     try {
       let allMonths = [];
       const today = await onGetRevenue({
         startDate: zeroTimeToday,
         endDate: endDay,
+        limit: 100000,
+        page: 0,
       });
       // const startToCurrent = await onGetRevenue({
       //   startDate: startMonth,
@@ -122,6 +147,8 @@ const DashboardAnalyst = () => {
       const zeroDayToCurrentDay = await onGetRevenue({
         startDate: zeroDay,
         endDate: currentDayInMonth,
+        limit: 100000,
+        page: 0,
       });
       // const allDayInYear = await onGetRevenue({
       //   startDate: zeroDay,
@@ -130,6 +157,8 @@ const DashboardAnalyst = () => {
       const currentMonth = await onGetRevenue({
         startDate: startMonth,
         endDate: endMonth,
+        limit: 100000,
+        page: 0,
       });
       ///
       const monthCurrentRender = new Date()?.getMonth();
@@ -756,19 +785,104 @@ const DashboardAnalyst = () => {
       })}`
     );
   });
+  handleSoldProducts;
+  const [renderDatePickerTop, setRenderDatePickerTop] = useState({});
   const { data: dataTop10Sold } = useQuery(() => {
-    return dashboardService.getTopRate(
-      `?${queryString.stringify({
-        limit: 10,
-        type: "top-sold",
-      })}`
-    );
-  });
+    return dashboardService.getSoldProducts({
+      limit: renderLimit ? renderLimit : 10,
+      type: "top-sold",
+      page: 0,
+      startDate: Object?.keys(renderDatePickerTop)?.length
+        ? new Date(renderDatePickerTop?.start?.localeDate)?.toISOString()
+        : zeroDay,
+      endDate: Object?.keys(renderDatePickerTop)?.length
+        ? new Date(renderDatePickerTop?.end?.localeDate)?.toISOString()
+        : startToEndInYear,
+    });
+  }, [renderLimit, renderDatePickerTop]);
+  const handleChangeTopLimit = (value) => {
+    setRenderLimit(value);
+  };
+  const onChangeDatePickerTop = async (dates, dateStrings) => {
+    const startDates = dates?.[0];
+    const endDates = dates?.[1];
+    try {
+      if (dates?.length) {
+        if (startDates?.$d.toString() === endDates?.$d.toString()) {
+          setRenderDatePickerTop({
+            start: {
+              day: startDates?.$D,
+              month: startDates?.$M,
+              hour: startDates?.$H,
+              year: startDates?.$y,
+              localeDate: new Date(
+                startDates?.$y,
+                startDates?.$M,
+                startDates?.$D,
+                0,
+                0
+              ).toISOString(),
+            },
+            end: {
+              day: endDates?.$D,
+              month: endDates?.$M,
+              hour: endDates?.$H,
+              year: endDates?.$y,
+              localeDate: new Date(
+                endDates?.$y,
+                endDates?.$M,
+                endDates?.$D,
+                23,
+                59,
+                59
+              ).toISOString(),
+            },
+          });
+        } else {
+          setRenderDatePickerTop({
+            start: {
+              day: startDates?.$D,
+              month: startDates?.$M,
+              hour: startDates?.$H,
+              year: startDates?.$y,
+              localeDate: new Date(
+                startDates?.$y,
+                startDates?.$M,
+                startDates?.$D,
+                0,
+                0
+              ),
+            },
+            end: {
+              day: endDates?.$D,
+              month: endDates?.$M,
+              hour: endDates?.$H,
+              year: endDates?.$y,
+              localeDate: new Date(
+                endDates?.$y,
+                endDates?.$M,
+                endDates?.$D,
+                23,
+                59,
+                59
+              ),
+            },
+          });
+        }
+      } else {
+        console.log("Clear");
+        setRenderDatePickerTop({});
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   const columnTopSold = [
     {
-      title: "Top",
+      title: "Top Sold",
       align: "center",
       dataIndex: "top",
+      width: 150,
     },
     {
       title: "Name",
@@ -843,7 +957,7 @@ const DashboardAnalyst = () => {
   const dataTopSold = dataTop10Sold?.data?.data?.map((item, index) => {
     return {
       key: item?._id,
-      name: item?.name,
+      name: item?.productName,
       sold: item?.sold,
       top: index + 1,
       image: (
@@ -870,7 +984,6 @@ const DashboardAnalyst = () => {
   });
   //// handle Table Excel
   const [messageConfirm, setMessageConfirm] = useState();
-
   const handleClick = (payload) => {
     const newColums = payload?.colums?.filter(
       (item) => item?.title !== "Image"
@@ -1059,8 +1172,11 @@ const DashboardAnalyst = () => {
         </div>
         <div className="py-[20px] flex lg:flex-row xs:flex-col gap-[20px] items-center ">
           <div className="lg:w-1/2 xs:w-full   table__dashboard table__dashboard-analyst">
-            <div className="font-om text-md text-black-555 my-[15px] text-center ">
-              Top 10 CountInStock
+            <div className="flex items-center justify-between">
+              <div className="font-om text-md text-black-555 my-[15px] text-center ">
+                Top 10 CountInStock
+              </div>
+              <div></div>
             </div>
             <Table
               rowClassName={`items-center `}
@@ -1078,8 +1194,56 @@ const DashboardAnalyst = () => {
             />
           </div>
           <div className="lg:w-1/2 xs:w-full  table__dashboard table__dashboard-analyst">
-            <div className="font-om text-md text-black-555 my-[15px] text-center">
-              Top 10 Sold
+            <div className="flex items-center gap-4 relative m-[12px]">
+              <div className="font-om text-md text-black-555 text-center ">
+                Top{" "}
+                <Select
+                  className=""
+                  defaultValue={`10`}
+                  style={{
+                    width: 70,
+                  }}
+                  onChange={handleChangeTopLimit}
+                  options={[
+                    {
+                      value: "5",
+                      label: "5",
+                    },
+                    {
+                      value: "10",
+                      label: "10",
+                    },
+                    {
+                      value: "20",
+                      label: "20",
+                    },
+                    {
+                      value: "100",
+                      label: "100",
+                    },
+                  ]}
+                />{" "}
+                Sold
+              </div>
+              {Object.keys(renderDatePickerTop)?.length ? (
+                <div className="flex items-center gap-2">
+                  <p className="font-osr text-black-333">
+                    {localeVN(renderDatePickerTop?.start?.localeDate)}
+                  </p>
+                  <p className="font-osr text-black-333">
+                    {localeVN(renderDatePickerTop?.end?.localeDate)}
+                  </p>
+                </div>
+              ) : (
+                ""
+              )}
+              <CustomCalendar className="top-0 right-0">
+                <DatePicker.RangePicker
+                  placement="bottomRight"
+                  className="w-full"
+                  onChange={onChangeDatePickerTop}
+                />
+              </CustomCalendar>
             </div>
             <Table
               rowClassName={`items-center `}
@@ -1097,7 +1261,6 @@ const DashboardAnalyst = () => {
             />
           </div>
         </div>
-
         {/* <div
           className={`w-full `}
           style={{

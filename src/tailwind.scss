@@ -23,6 +23,7 @@
   --height-header-md: 96px;
   --height-header-xs: 86px;
 }
+
 @layer base {
   main {
     @apply transition-transform duration-300;
@@ -128,7 +129,7 @@
       }
     }
   }
-  .range {
+  /*  .range {
     .slider {
       height: 5px;
       position: relative;
@@ -175,7 +176,7 @@
       box-shadow: 0 0 6px rgba(248, 220, 220, 0.5);
       cursor: pointer;
     }
-  }
+  }*/
   .accordion {
     @apply font-ossb text-15px text-black-333 py-[24px]  flex flex-col
         border-b-[1px] border-solid border-[rgb(229,229,229)]
@@ -640,7 +641,7 @@
       @apply border-x border-solid border-[#f0f0f0];
     }
     .ant-table-cell {
-      @apply [&:nth-child(4)]:max-w-[100px] [&:nth-child(1)]:max-w-[100px];
+      @apply [&:nth-child(4)]:max-w-[100px] [&:nth-child(1)]:max-w-[150px];
     }
   }
 }
@@ -765,5 +766,41 @@
     .ant-collapse-header {
       padding: 0 0 6px 0 !important;
     }
+  }
+}
+.waviy {
+  position: relative;
+  -webkit-box-reflect: below -2px linear-gradient(transparent, rgba(0, 0, 0, 0.2));
+}
+.waviy span {
+  position: relative;
+  display: inline-block;
+  color: #000;
+  animation: waviy 1s infinite;
+  letter-spacing: 0.5px;
+  &:nth-child(1) {
+    animation-delay: calc(0.1s * 2);
+  }
+  &:nth-child(2) {
+    animation-delay: calc(0.1s * 3);
+  }
+  &:nth-child(3) {
+    animation-delay: calc(0.1s * 4);
+  }
+  &:nth-child(4) {
+    animation-delay: calc(0.1s * 5);
+  }
+  &:nth-child(5) {
+    animation-delay: calc(0.1s * 6);
+  }
+}
+@keyframes waviy {
+  0%,
+  40%,
+  100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-10px);
   }
 }

@@ -1,0 +1,36 @@
+.cartpage .ant-select .ant-select-dropdown {
+  min-width: 130px !important;
+}
+.cartpage .ant-select .ant-select-item-option-content {
+  font-size: 14px;
+  font-family: "MontserratAlternates-Regular";
+  text-overflow: unset !important;
+}
+.cartpage .ant-select .ant-select-item-option-selected {
+  background: #ff887b !important;
+  color: #fff !important;
+}
+.cartpage .ant-select .ant-select:hover .ant-select-selector {
+  border-color: #ff887b !important;
+}
+.cartpage .ant-select .ant-select .ant-select-selection-item {
+  font-size: 14px;
+  font-family: "MontserratAlternates-Medium";
+}
+.cartpage .ant-select .ant-select .ant-select-arrow {
+  @apply transition-transform duration-400 rotate-[0];
+}
+.cartpage .ant-select .ant-select .ant-select-arrow path {
+  @apply fill-[#000000e0];
+}
+.cartpage .ant-select .ant-select.ant-select-open .ant-select-arrow {
+  @apply transition-transform duration-400 rotate-[-180deg];
+}
+.cartpage .ant-select .ant-select-item-option-content {
+  font-size: 14px;
+  font-family: "MontserratAlternates-Medium";
+}
+.cartpage .ant-select .ant-select-focused .ant-select-selector {
+  border-color: #ff887b !important;
+  box-shadow: none !important;
+}/*# sourceMappingURL=cart.css.map */

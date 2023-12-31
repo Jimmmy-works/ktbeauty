@@ -1,18 +1,40 @@
 .header {
-  @apply h-header fixed w-full left-0 top-0 shadow-header z-[1000] bg-white;
+  @apply h-header fixed w-full left-0 top-[30px] shadow-header z-[999] bg-white;
+}
+.header .sub {
+  @apply p-[10px_14px_0px]  top-[120%] -left-[75%] absolute 
+    bg-white shadow-header  transition-all duration-300 invisible opacity-0;
+}
+.header .sub__item {
+  @apply w-full min-w-max  cursor-pointer flex items-center pb-[10px]
+      gap-2;
+}
+.header .sub__item a {
+  @apply text-sm leading-[20px] text-black-555 font-osr  w-full
+        duration-400 transition-colors  min-w-[200px] max-w-[300px];
+}
+.header .sub__item svg path {
+  @apply transition-colors duration-400;
+}
+.header .sub__item:hover a {
+  @apply text-black;
+}
+.header__main {
+  @apply h-full container flex items-center justify-between;
 }
 .header__menu {
-  @apply h-full center-absolute flex items-center gap-[40px];
+  @apply h-full center-absolute flex items-center justify-center
+    w-full lg:gap-[20px] xl:gap-[30px];
 }
 .header__menu-item {
   @apply h-full flex items-center;
 }
 .header__menu-item:hover .sub {
-  @apply top-[100%] visible opacity-100;
+  @apply top-[calc(100%+1px)] visible opacity-100;
 }
 .header__menu-item a {
-  @apply flex items-center h-full text-sm text-black-555 font-mam  
-         font-[700]  duration-400 cursor-pointer gap-[5px] transition-colors;
+  @apply flex items-center h-full text-sm text-black-555 font-osr font-semibold  
+          duration-400 cursor-pointer gap-[5px] transition-colors capitalize;
 }
 .header__menu-item a .arrow-down {
   @apply duration-400 transition-transform;
@@ -21,59 +43,94 @@
   @apply duration-400 transition-colors;
 }
 .header__menu-item a:hover, .header__menu-item a.active {
-  @apply text-primary;
+  @apply text-black;
 }
 .header__menu-item a:hover .arrow-down, .header__menu-item a.active .arrow-down {
   @apply -rotate-180;
 }
 .header__menu-item a:hover .arrow-down svg path, .header__menu-item a.active .arrow-down svg path {
-  @apply fill-primary;
+  @apply fill-black;
+}
+.header__info-profile .sub__item:last-child a {
+  @apply text-red-700;
 }
 .header__info-search, .header__info-profile, .header__info-whitelist, .header__info-cart {
-  @apply cursor-pointer relative xs:px-[8px] md:px-[15px] h-full
+  @apply cursor-pointer relative md:px-[10px] xl:px-[12px] h-full
       flex items-center;
 }
+.header__info-search .sub__item, .header__info-profile .sub__item, .header__info-whitelist .sub__item, .header__info-cart .sub__item {
+  @apply not-lastChild:border-b not-lastChild:border-[#e3e3e3]
+       not-lastChild:border-solid duration-300 transition-colors
+       first:p-[10px_10px] hover:bg-black-ebe p-0;
+}
+.header__info-search .sub__item:not(:first-child) a, .header__info-profile .sub__item:not(:first-child) a, .header__info-whitelist .sub__item:not(:first-child) a, .header__info-cart .sub__item:not(:first-child) a {
+  @apply p-[10px_10px_10px_20px];
+}
+.header__info-search .sub__item a, .header__info-profile .sub__item a, .header__info-whitelist .sub__item a, .header__info-cart .sub__item a {
+  @apply font-om flex items-center gap-2 text-black-222 w-full;
+}
+.header__info-search svg, .header__info-profile svg, .header__info-whitelist svg, .header__info-cart svg {
+  @apply h-[22px] w-[22px];
+}
+.header__info-search svg path, .header__info-profile svg path, .header__info-whitelist svg path, .header__info-cart svg path {
+  @apply duration-300 transition-colors;
+}
 .header__info-search:hover .sub, .header__info-profile:hover .sub, .header__info-whitelist:hover .sub, .header__info-cart:hover .sub {
-  @apply top-[calc(100%)] visible opacity-100;
+  @apply top-[calc(100%+1px)] visible opacity-100;
+}
+.header__info-profile .sub__item a {
+  @apply min-w-max;
+}
+.header__advertisement {
+  @apply fixed w-full h-[30px] left-0 top-0 flex items-center justify-center gap-2
+     bg-header-banner py-[9px];
+}
+.header__advertisement p {
+  @apply text-xs font-om text-white relative flex items-center justify-center
+      before:rounded-[50%] gap-1 before:block before:h-[4px] 
+      before:w-[4px] before:bg-white;
 }
 .header__logo {
-  @apply xs:w-[130px] md:w-[150px] lg:w-auto md:-translate-x-[65%] md:-translate-y-1/2
+  @apply md:-translate-x-[65%] md:-translate-y-1/2
     lg:translate-x-0 lg:translate-y-0 lg:static md:absolute md:top-1/2 md:left-1/2;
 }
-.header .sub {
-  @apply p-[10px_14px_0px]  top-[120%] -left-[75%] absolute 
-    bg-white shadow-header  transition-all duration-300 invisible opacity-0;
-}
-.header .sub__item {
-  @apply w-full min-w-max pb-[14px] cursor-pointer flex items-center
-      gap-2;
-}
-.header .sub__item a {
-  @apply text-sm leading-[20px] text-black-555 font-mam
-        duration-400 transition-colors max-w-[300px];
-}
-.header .sub__item svg path {
-  @apply transition-colors duration-400;
-}
-.header .sub__item:hover a {
-  @apply text-primary;
+.header__logo svg {
+  @apply xs:w-[90px] md:w-[120px] lg:w-[120px];
 }
 
 .nav {
-  @apply fixed left-0 xs:top-[56px] 
-  md:top-[75px] h-screen w-[50%] z-[100];
+  @apply fixed left-0 top-0  h-screen min-w-[240px]
+   max-w-[440px] w-[80%]  z-[10000];
 }
 .nav__inner {
-  @apply h-full w-[100%] bg-[rgba(0,0,0,255)];
+  @apply bg-white h-full relative overflow-hidden;
+}
+.nav__inner-wrapper {
+  @apply absolute top-0 left-0 right-0 bottom-0;
+}
+.nav__inner-wrapper.is-open {
+  @apply duration-400  z-10;
+  transition: all 0.4s ease;
+}
+.nav__inner-wrapper.is-hidden {
+  @apply duration-400 z-0;
+  transition: all 0.4s ease;
+}
+.nav__inner-title {
+  @apply text-[#000000BF] xs:text-[14px] md:text-[16px] min-h-[44px] font-om 
+      flex justify-start items-center border-b border-solid border-[rgba(0,0,0,.1)];
 }
 .nav__inner-list {
-  @apply h-full w-full flex flex-col  py-[40px]
-       xs:pl-[14px] md:pl-[20px];
+  @apply h-full w-full flex flex-col bg-white;
 }
 .nav__inner-list .item {
-  @apply text-white font-mam xs:text-[16px] md:text-[20px]
-        md:py-[16px] xs:py-[12px];
+  @apply text-[#000000BF] font-om xs:text-[14px] md:text-[16px] flex items-center;
 }
-.nav__inner-list .item__sub {
-  @apply flex items-center gap-2;
+.nav__inner-list .item a {
+  @apply block w-full p-[12px_10px_12px_20px] uppercase;
+  transition: transform 0.4s;
+}
+.nav__inner-list .item .arrow-down {
+  @apply transition-all duration-400 min-w-[50px] min-h-[38px] flex
+          justify-center items-center rotate-[-90deg];
 }/*# sourceMappingURL=header.css.map */

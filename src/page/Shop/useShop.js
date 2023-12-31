@@ -43,9 +43,9 @@ const useShop = () => {
     (state) => state.cart
   );
   /// useParams
+  const { slug: slugParams } = useParams();
   const { search, pathname } = useLocation();
   const queryObject = queryString.parse(search);
-  const { slug: slugParams } = useParams();
   /// handle Update Query String
   const [searchParams, setSearchParams] = useSearchParams();
   const updateQueryString = (queryObject) => {

@@ -51,7 +51,7 @@ const useDashboard = () => {
     setOpenModalAndt("");
   };
   //// Sidebar
-  const [toggleSidebar, setToggleSidebar] = useState(false);
+  const [toggleSidebar, setToggleSidebar] = useState(true);
   /// Search
   const [toggleInputSearch, setToggleInputSearch] = useState(false);
   const [toggleInputSeacrhMobile, setToggleInputSeacrhMobile] = useState(false);

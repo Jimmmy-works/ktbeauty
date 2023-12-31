@@ -1,0 +1,108 @@
+.sidebar-profile {
+  @apply h-full  relative;
+}
+.sidebar-profile .list__item {
+  @apply duration-300 transition-colors cursor-pointer;
+}
+.sidebar-profile .list__item a {
+  @apply relative font-osr md:text-[14px] lg:text-[16px] text-black-555 
+        duration-300 transition-colors w-full flex items-center
+        xs:gap-2 md:gap-4 p-[20px]  border-b-[2px] border-solid border-transparent  before:absolute
+         cursor-pointer before:w-full before:h-[2px] before:bg-primary before:top-[calc(100%)]
+         before:left-0 before:origin-right before:scale-x-0 before:duration-400
+          before:transition-transform;
+}
+.sidebar-profile .list__item a.active {
+  @apply before:origin-left  before:scale-x-100 text-black-555;
+}
+.sidebar-profile .list__item a:hover {
+  @apply bg-gray-50 border-gray-300;
+}
+.sidebar-profile .list__item a:hover a {
+  @apply text-black;
+}
+.sidebar-profile .list__item a:hover svg path {
+  @apply fill-black;
+}
+.sidebar-profile .list__item svg {
+  @apply w-[18px] h-[18px];
+}
+.sidebar-profile .list__item svg path {
+  @apply fill-black-555 duration-300 transition-colors;
+}
+
+.order .table td,
+.whitelist .table td {
+  @apply text-center align-middle xs:pt-[10px] md:pt-[14px] 
+      xs:[&:nth-child(1)]:w-[320px] md:[&:nth-child(1)]:w-[500px]  
+      xs:[&:nth-child(2)]:w-[320px] md:[&:nth-child(2)]:w-[150px] 
+      xs:[&:nth-child(3)]:w-[320px]  md:[&:nth-child(3)]:w-[100px]  
+       xs:[&:nth-child(4)]:w-[320px]  md:[&:nth-child(4)]:w-[100px]
+      xs:text-sm lg:text-[16px];
+}
+.order .table thead,
+.whitelist .table thead {
+  @apply border-b border-solid border-black-be;
+}
+.order .table thead tr td,
+.whitelist .table thead tr td {
+  @apply text-sm;
+}
+.order .table tbody tr td,
+.whitelist .table tbody tr td {
+  @apply md:text-xs lg:text-sm;
+}
+.order .table tbody tr td div,
+.whitelist .table tbody tr td div {
+  @apply flex md:flex-row xs:flex-col items-center md:gap-[10px]
+             xs:gap-[12px];
+}
+.order .table tbody tr:last-child td,
+.whitelist .table tbody tr:last-child td {
+  @apply pb-[14px];
+}
+.order .table tfoot td,
+.whitelist .table tfoot td {
+  @apply py-[14px];
+}
+
+.whitelist .table td {
+  @apply text-center align-middle xs:pt-[10px] md:pt-[14px] 
+      xs:[&:nth-child(1)]:w-[320px] md:[&:nth-child(1)]:w-[400px]   
+      xs:[&:nth-child(2)]:w-[320px] md:[&:nth-child(2)]:w-[100px] lg:[&:nth-child(2)]:w-[150px]
+      xs:[&:nth-child(3)]:w-[320px]  md:[&:nth-child(3)]:w-[200px]  
+      xs:[&:nth-child(4)]:w-[320px]  md:[&:nth-child(4)]:w-[200px] 
+      xs:[&:nth-child(5)]:w-[320px] md:[&:nth-child(5)]:w-[40px] 
+      xs:text-sm lg:text-[16px];
+}
+
+.address .accordion {
+  @apply pb-[10px] first:pt-0 first:mt-0 mt-[10px] pt-[10px];
+}
+.address .accordion.active .accordion__heading-dropdown {
+  @apply bg-primary;
+}
+.address .accordion.active .accordion__heading-dropdown svg path {
+  @apply fill-white;
+}
+.address .accordion__heading {
+  @apply font-om text-[16px] text-black-555  capitalize;
+}
+.address .accordion__heading .accordion__heading-dropdown {
+  @apply duration-400 transition-all;
+}
+.address .accordion__heading .accordion__heading-dropdown svg path {
+  @apply duration-400 transition-all;
+}
+.address .accordion__heading:hover .accordion__heading-dropdown {
+  @apply bg-primary;
+}
+.address .accordion__heading:hover .accordion__heading-dropdown svg path {
+  @apply fill-white;
+}
+.address .accordion__content-heading a {
+  @apply font-osr text-15px pointer-events-none;
+}
+.address .accordion__content-list .item__list-child {
+  @apply text-sm font-osr text-black-555 pointer-events-none;
+}/*# sourceMappingURL=profile.css.map */

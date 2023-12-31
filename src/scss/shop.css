@@ -1,0 +1,13 @@
+.shoppage__left-wrapper .item {
+  @apply h-[68px] w-[68px] duration-300 transition-all
+        border-dashed border-transparent border block;
+}
+.shoppage__left-wrapper .item.active {
+  @apply border-dashed border-primary border;
+}
+.shoppage-swiper {
+  @apply max-h-[400px];
+}
+.shoppage-swiper-item {
+  @apply cursor-pointer border-none h-[68px] w-[68px] !important;
+}/*# sourceMappingURL=shop.css.map */
