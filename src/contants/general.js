@@ -104,6 +104,11 @@ export const OPTION_SEX = [
   { label: "Nam", value: "male" },
   { label: "Nữ", value: "female" },
 ];
+export const OPTION_AGE = [
+  { label: "Dưới 25 Tuổi", value: "below25" },
+  { label: "Từ 25-35 Tuổi", value: "from25to35" },
+  { label: "Trên 35 Tuổi", value: "above35" },
+];
 export const OPTION_LIFE_STYLE = [
   {
     label: "Nhân viên văn phòng",

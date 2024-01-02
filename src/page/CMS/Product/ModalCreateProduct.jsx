@@ -1,5 +1,11 @@
 import { firebaseStorage } from "@/config/firebase";
-import { MODAL_OPTION } from "@/contants/general";
+import {
+  MODAL_OPTION,
+  OPTION_AGE,
+  OPTION_LIFE_STYLE,
+  OPTION_SEX,
+  OPTION_SKIN_TYPE,
+} from "@/contants/general";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
 import MDEditor from "@uiw/react-md-editor";
 import { Button, Empty, Modal, Rate, Tooltip, message } from "antd";
@@ -36,11 +42,15 @@ const ModalCreateProduct = ({
   const [countInStock, setCountInStock] = useState("");
   const [discount, setDiscount] = useState(0);
   const [name, setName] = useState("");
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState({});
   const [rating, setRating] = useState();
   const [desc, setDesc] = useState([]);
   const [descHeading, setDescHeading] = useState("");
   const [renderDesc, setRenderDesc] = useState([]);
+  const [valueSex, setValueSex] = useState([]);
+  const [valueAge, setValueAge] = useState([]);
+  const [valueSkinType, setValueSkinType] = useState([]);
+  const [valueLifeStyle, setValueLifeStyle] = useState([]);
   //// handle Description
   const addingDescription = (payload) => {
     setRenderDesc([...renderDesc, payload]);
@@ -68,14 +78,70 @@ const ModalCreateProduct = ({
     e.preventDefault();
     setCategory(cate);
   };
-  /// Redux
-  const { getStatusCreateProduct } = useSelector((state) => state.dashboard);
+  const handleChangeSex = (e, sexId) => {
+    e.preventDefault();
+    if (valueSex?.includes(sexId?.value)) {
+      let filterCate = valueSex?.filter((sex) => {
+        return sex !== sexId?.value;
+      });
+      setValueSex(filterCate);
+    } else {
+      let filterCate = valueSex?.filter((sex) => {
+        return sex !== sexId?.value;
+      });
+      setValueSex([...filterCate, sexId?.value]);
+    }
+  };
+  const handleChangeAge = (e, ageId) => {
+    e.preventDefault();
+    if (valueAge?.includes(ageId?.value)) {
+      let filterCate = valueAge?.filter((sex) => {
+        return sex !== ageId?.value;
+      });
+      setValueAge(filterCate);
+    } else {
+      let filterCate = valueAge?.filter((sex) => {
+        return sex !== ageId?.value;
+      });
+      setValueAge([...filterCate, ageId?.value]);
+    }
+  };
+  const handleChangeSkinType = (e, skinId) => {
+    e.preventDefault();
+    if (valueSkinType?.includes(skinId?.value)) {
+      let filterCate = valueSkinType?.filter((sex) => {
+        return sex !== skinId?.value;
+      });
+      setValueSkinType(filterCate);
+    } else {
+      let filterCate = valueSkinType?.filter((sex) => {
+        return sex !== skinId?.value;
+      });
+      setValueSkinType([...filterCate, skinId?.value]);
+    }
+  };
+  const handleChangeLifeType = (e, lifeId) => {
+    e.preventDefault();
+    if (valueLifeStyle?.includes(lifeId?.value)) {
+      let filterCate = valueLifeStyle?.filter((sex) => {
+        return sex !== lifeId?.value;
+      });
+      setValueLifeStyle(filterCate);
+    } else {
+      let filterCate = valueLifeStyle?.filter((sex) => {
+        return sex !== lifeId?.value;
+      });
+      setValueLifeStyle([...filterCate, lifeId?.value]);
+    }
+  };
   ////
   const [progress, setProgress] = useState("");
   const [images, setImages] = useState([]);
   const [currentImages, setCurrentImages] = useState([]);
   const [URLs, setURLs] = useState([]);
   const [currentFileURLs, setCurrnetFileURLs] = useState([]);
+  const [loadingUploadImage, setLoadingUploadImage] = useState(false);
+
   ////  handle Images
   const uploadImages = (files) => {
     const promises = [];
@@ -131,17 +197,8 @@ const ModalCreateProduct = ({
     }
     setImages(allImages);
   };
-  const convertToBlobUrl = useMemo(() => {
-    let blobUrls = [];
-    if (currentFileURLs) {
-      for (let index = 0; index < currentFileURLs?.length; index++) {
-        let newImage = currentFileURLs[index];
-        let url = URL.createObjectURL(newImage);
-        blobUrls.push(url);
-      }
-    }
-    return blobUrls;
-  }, [currentFileURLs]);
+
+  console.log("desc", desc);
   /// handle Main
   const handleDeleteImage = (file) => {
     console.log("file", file);
@@ -158,10 +215,13 @@ const ModalCreateProduct = ({
     setCountInStock("");
     setDiscount("");
     setCategory("");
+    setValueSex([]);
+    setValueAge([]);
+    setValueSkinType([]);
+    setValueLifeStyle([]);
     setDescIntro("");
     setRating(null);
     setRenderDesc([]);
-
     setURLs([]);
     setImages([]);
     setProgress("");
@@ -169,29 +229,38 @@ const ModalCreateProduct = ({
     setCurrnetFileURLs([]);
     cancel();
   };
-  const [loadingUploadImage, setLoadingUploadImage] = useState(false);
   const handleCreateProduct = () => {
-    var promise = new Promise(function (resolve, reject) {
+    if (
+      descIntro &&
+      price &&
+      countInStock &&
+      discount &&
+      name &&
+      Object?.keys(category)?.length &&
+      rating &&
+      renderDesc?.length &&
+      descHeading &&
+      renderDesc?.length &&
+      valueSex?.length &&
+      valueAge?.length &&
+      valueSkinType?.length &&
+      valueLifeStyle?.length &&
+      images?.length
+    ) {
       if (currentFileURLs.length > 0) {
-        resolve();
-      } else {
-        reject();
-      }
-    });
-    promise.then(
-      () => {
         uploadImages(currentFileURLs);
         setLoadingUploadImage(true);
-      },
-      (error) => {
-        console.log("error", error);
+      } else {
+        setLoadingUploadImage(true);
       }
-    );
+    } else {
+      message.error(`Xin vui lòng điền đầy đủ thông tin sản phẩm`);
+    }
   };
   useEffect(() => {
+    const _token = localStorage.getItem(LOCAL_STORAGE.token);
     const timeout = setTimeout(() => {
-      if (loadingUploadImage && currentImages?.length) {
-        const _token = localStorage.getItem(LOCAL_STORAGE.token);
+      if (loadingUploadImage && currentFileURLs?.length >= 1) {
         const payload = {
           name: name,
           price: price,
@@ -206,12 +275,16 @@ const ModalCreateProduct = ({
           descIntro: descIntro,
           descSub: renderDesc,
           image: currentImages,
+          age: valueAge,
+          hobby: valueLifeStyle,
+          sex: valueSex,
+          skinType: valueSkinType,
         };
         executeCreateProduct(payload, _token);
         setLoadingUploadImage(false);
         handleCancel();
       }
-    }, 700);
+    }, 1500);
     return () => {
       clearTimeout(timeout);
     };
@@ -229,15 +302,25 @@ const ModalCreateProduct = ({
   useEffect(() => {
     setCurrnetFileURLs([...images, ...currentFileURLs]);
   }, [images]);
+  const convertToBlobUrl = useMemo(() => {
+    let blobUrls = [];
+    if (currentFileURLs) {
+      for (let index = 0; index < currentFileURLs?.length; index++) {
+        let newImage = currentFileURLs[index];
+        let url = URL.createObjectURL(newImage);
+        blobUrls.push(url);
+      }
+    }
+    return blobUrls;
+  }, [currentFileURLs]);
   return (
     <Modal
-      confirmLoading={loadingCreateProduct}
       centered
+      confirmLoading={loadingCreateProduct}
       okText={`Create`}
       title="Create Product"
       key={MODAL_OPTION.PRODUCT.CREATE}
       className="dashboard-modal"
-      size
       onOk={handleCreateProduct}
       onCancel={handleCancel}
       open={open === MODAL_OPTION.PRODUCT.CREATE}
@@ -295,9 +378,7 @@ const ModalCreateProduct = ({
         </div>
         <div className="form__container mt-0 ">
           <div className="form__container-wrapper w-full mb-[20px]  ">
-            <label htmlFor="category" className="mb-[12px]">
-              Category
-            </label>
+            <label className="mb-[12px]">Category - Chọn 1</label>
             <div className="flex items-center gap-2 flex-wrap">
               {optionCategories?.length &&
                 optionCategories?.map((cate) => {
@@ -306,15 +387,129 @@ const ModalCreateProduct = ({
                       onClick={(e) => handleChangeCategories(e, cate)}
                       key={cate?._id}
                       className={` rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
-                         flex items-center gap-1 hover:bg-[#555] hover:text-white xs:p-[8px]
+                         flex items-center gap-1 hover:bg-[#4096FF] hover:text-white xs:p-[8px]
                          ${
                            cate?._id === category?._id
-                             ? "bg-[#555] text-white"
+                             ? "bg-[#4096FF] text-white"
                              : "bg-black-be text-black"
                          }`}
                     >
                       <span className="xs:text-xs md:text-sm font-osr  capitalize">
                         {cate?.label}
+                      </span>
+                    </button>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+        <div className="form__container mt-0 ">
+          <div className="form__container-wrapper w-full mb-[20px]  ">
+            <label className="mb-[12px]">Sex - Có thể chọn 1 hoặc nhiều</label>
+            <div className="flex items-center gap-2 flex-wrap">
+              {OPTION_SEX?.length &&
+                OPTION_SEX?.map((sex) => {
+                  return (
+                    <button
+                      onClick={(e) => handleChangeSex(e, sex)}
+                      key={sex?.value}
+                      className={` rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
+                         flex items-center gap-1 hover:bg-[#4096FF] hover:text-white xs:p-[8px]
+                         ${
+                           valueSex?.includes(sex?.value)
+                             ? "bg-[#4096FF] text-white"
+                             : "bg-black-be text-black"
+                         }`}
+                    >
+                      <span className="xs:text-xs md:text-sm font-osr  capitalize">
+                        {sex?.label}
+                      </span>
+                    </button>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+        <div className="form__container mt-0 ">
+          <div className="form__container-wrapper w-full mb-[20px]  ">
+            <label htmlFor="sex" className="mb-[12px]">
+              Age - Có thể chọn 1 hoặc nhiều
+            </label>
+            <div className="flex items-center gap-2 flex-wrap">
+              {OPTION_AGE?.length &&
+                OPTION_AGE?.map((age) => {
+                  return (
+                    <button
+                      onClick={(e) => handleChangeAge(e, age)}
+                      key={age?.value}
+                      className={` rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
+                         flex items-center gap-1 hover:bg-[#4096FF] hover:text-white xs:p-[8px]
+                         ${
+                           valueAge?.includes(age?.value)
+                             ? "bg-[#4096FF] text-white"
+                             : "bg-black-be text-black"
+                         }`}
+                    >
+                      <span className="xs:text-xs md:text-sm font-osr  capitalize">
+                        {age?.label}
+                      </span>
+                    </button>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+        <div className="form__container mt-0 ">
+          <div className="form__container-wrapper w-full mb-[20px]  ">
+            <label htmlFor="sex" className="mb-[12px]">
+              Skin Type - Có thể chọn 1 hoặc nhiều
+            </label>
+            <div className="flex items-center gap-2 flex-wrap">
+              {OPTION_SKIN_TYPE?.length &&
+                OPTION_SKIN_TYPE?.map((skin) => {
+                  return (
+                    <button
+                      onClick={(e) => handleChangeSkinType(e, skin)}
+                      key={skin?._id}
+                      className={` rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
+                         flex items-center gap-1 hover:bg-[#4096FF] hover:text-white xs:p-[8px]
+                         ${
+                           valueSkinType?.includes(skin?.value)
+                             ? "bg-[#4096FF] text-white"
+                             : "bg-black-be text-black"
+                         }`}
+                    >
+                      <span className="xs:text-xs md:text-sm font-osr  capitalize">
+                        {skin?.label}
+                      </span>
+                    </button>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+        <div className="form__container mt-0 ">
+          <div className="form__container-wrapper w-full mb-[20px]  ">
+            <label htmlFor="sex" className="mb-[12px]">
+              LifeStyle - Có thể chọn 1 hoặc nhiều
+            </label>
+            <div className="flex items-center gap-2 flex-wrap">
+              {OPTION_LIFE_STYLE?.length &&
+                OPTION_LIFE_STYLE?.map((life) => {
+                  return (
+                    <button
+                      onClick={(e) => handleChangeLifeType(e, life)}
+                      key={life?.value}
+                      className={` rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
+                         flex items-center gap-1 hover:bg-[#4096FF] hover:text-white xs:p-[8px]
+                         ${
+                           valueLifeStyle?.includes(life?.value)
+                             ? "bg-[#4096FF] text-white"
+                             : "bg-black-be text-black"
+                         }`}
+                    >
+                      <span className="xs:text-xs md:text-sm font-osr  capitalize">
+                        {life?.label}
                       </span>
                     </button>
                   );
@@ -588,10 +783,10 @@ const ModalCreateProduct = ({
     //                   onClick={(e) => handleChangeCategories(e, cate)}
     //                   key={cate?._id}
     //                   className={` rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
-    //                      flex items-center gap-1 hover:bg-[#555] hover:text-white xs:p-[8px]
+    //                      flex items-center gap-1 hover:bg-[#4096FF] hover:text-white xs:p-[8px]
     //                      ${
     //                        cate?._id === category?._id
-    //                          ? "bg-[#555] text-white"
+    //                          ? "bg-[#4096FF] text-white"
     //                          : "bg-black-be text-black"
     //                      }`}
     //                 >

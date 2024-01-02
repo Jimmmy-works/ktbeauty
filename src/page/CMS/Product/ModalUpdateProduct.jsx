@@ -1,5 +1,11 @@
 import { firebaseStorage } from "@/config/firebase";
-import { MODAL_OPTION } from "@/contants/general";
+import {
+  MODAL_OPTION,
+  OPTION_AGE,
+  OPTION_LIFE_STYLE,
+  OPTION_SEX,
+  OPTION_SKIN_TYPE,
+} from "@/contants/general";
 import MDEditor from "@uiw/react-md-editor";
 import { Button, Empty, Modal, Rate, Tooltip, message } from "antd";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -22,7 +28,6 @@ const ModalUpdateProduct = ({
   productDetail,
   onUpdateProduct,
   onDeleteImageFirebase,
-
   ///
   loadingUpdateProduct,
   executeUpdateProduct,
@@ -53,6 +58,10 @@ const ModalUpdateProduct = ({
   const [descHeading, setDescHeading] = useState("");
   const [renderDesc, setRenderDesc] = useState([]);
   const [currentImages, setCurrentImages] = useState([]);
+  const [valueSex, setValueSex] = useState([]);
+  const [valueAge, setValueAge] = useState([]);
+  const [valueSkinType, setValueSkinType] = useState([]);
+  const [valueLifeStyle, setValueLifeStyle] = useState([]);
   const addingDescription = (payload) => {
     if (payload) {
       setRenderDesc([...renderDesc, payload]);
@@ -69,7 +78,62 @@ const ModalUpdateProduct = ({
     e.preventDefault();
     setCategory(cate);
   };
-
+  const handleChangeSex = (e, sexId) => {
+    e.preventDefault();
+    if (valueSex?.includes(sexId?.value)) {
+      let filterCate = valueSex?.filter((sex) => {
+        return sex !== sexId?.value;
+      });
+      setValueSex(filterCate);
+    } else {
+      let filterCate = valueSex?.filter((sex) => {
+        return sex !== sexId?.value;
+      });
+      setValueSex([...filterCate, sexId?.value]);
+    }
+  };
+  const handleChangeAge = (e, ageId) => {
+    e.preventDefault();
+    if (valueAge?.includes(ageId?.value)) {
+      let filterCate = valueAge?.filter((sex) => {
+        return sex !== ageId?.value;
+      });
+      setValueAge(filterCate);
+    } else {
+      let filterCate = valueAge?.filter((sex) => {
+        return sex !== ageId?.value;
+      });
+      setValueAge([...filterCate, ageId?.value]);
+    }
+  };
+  const handleChangeSkinType = (e, skinId) => {
+    e.preventDefault();
+    if (valueSkinType?.includes(skinId?.value)) {
+      let filterCate = valueSkinType?.filter((sex) => {
+        return sex !== skinId?.value;
+      });
+      setValueSkinType(filterCate);
+    } else {
+      let filterCate = valueSkinType?.filter((sex) => {
+        return sex !== skinId?.value;
+      });
+      setValueSkinType([...filterCate, skinId?.value]);
+    }
+  };
+  const handleChangeLifeType = (e, lifeId) => {
+    e.preventDefault();
+    if (valueLifeStyle?.includes(lifeId?.value)) {
+      let filterCate = valueLifeStyle?.filter((sex) => {
+        return sex !== lifeId?.value;
+      });
+      setValueLifeStyle(filterCate);
+    } else {
+      let filterCate = valueLifeStyle?.filter((sex) => {
+        return sex !== lifeId?.value;
+      });
+      setValueLifeStyle([...filterCate, lifeId?.value]);
+    }
+  };
   ////
   const [images, setImages] = useState();
   const [URLs, setURLs] = useState([]);
@@ -161,9 +225,9 @@ const ModalUpdateProduct = ({
     setFileURLs(allImages);
   };
   const handleCancel = () => {
-    for (let index = 0; index < URLs.length; index++) {
-      onDeleteImageFirebase(URLs[index]);
-    }
+    // for (let index = 0; index < URLs.length; index++) {
+    //   onDeleteImageFirebase(URLs[index]);
+    // }
     setURLs([]);
     setImages([]);
     setProgress("");
@@ -173,13 +237,15 @@ const ModalUpdateProduct = ({
     setPrice(productDetail?.price);
     setCountInStock(productDetail?.countInStock);
     setDiscount(productDetail?.discount);
-
+    setCategory(productDetail?.category_id);
+    setValueSex(productDetail?.sex);
+    setValueAge(productDetail?.age);
+    setValueSkinType(productDetail?.skinType);
+    setValueLifeStyle(productDetail?.hobby);
     setDesc(productDetail?.description?.descSub);
     setDescHeading(productDetail?.description?.descTitle);
     setDescIntro(productDetail?.description?.descIntro);
     setRenderDesc(productDetail?.description?.descSub);
-
-    setCategory(productDetail?.category_id);
     setCurrentImages(productDetail?.image);
     ///
     setImages([]);
@@ -187,9 +253,8 @@ const ModalUpdateProduct = ({
     setFileURLs([]);
     ////
     setCurrnetFileURLs([]);
-
-    cancel();
     ///
+    cancel();
   };
   const handleUpdateProduct = () => {
     if (fileURLs?.length) {
@@ -201,6 +266,7 @@ const ModalUpdateProduct = ({
   };
   useEffect(() => {
     if (loadingUploadImage && fileURLs?.length < 1) {
+      console.log("111", 111);
       const payload = {
         name: name,
         price: price,
@@ -214,6 +280,10 @@ const ModalUpdateProduct = ({
         descTitle: descHeading,
         descIntro: descIntro,
         descSub: renderDesc,
+        age: valueAge,
+        hobby: valueLifeStyle,
+        sex: valueSex,
+        skinType: valueSkinType,
       };
       executeUpdateProduct(productDetail?._id, payload);
       if (loadingUpdateProduct) {
@@ -227,8 +297,7 @@ const ModalUpdateProduct = ({
       return;
     }
     const timeout = setTimeout(() => {
-      if (loadingUploadImage && fileURLs?.length > 1) {
-        console.log("3333", 3333);
+      if (loadingUploadImage && fileURLs?.length >= 1) {
         const payload = {
           name: name,
           price: price,
@@ -243,6 +312,11 @@ const ModalUpdateProduct = ({
           descIntro: descIntro,
           descSub: renderDesc,
           image: currentImages,
+
+          age: valueAge,
+          hobby: valueLifeStyle,
+          sex: valueSex,
+          skinType: valueSkinType,
         };
         executeUpdateProduct(productDetail?._id, payload);
         if (loadingUpdateProduct) {
@@ -255,7 +329,7 @@ const ModalUpdateProduct = ({
         setLoadingUploadImage(false);
         return;
       }
-    }, 1200);
+    }, 1500);
     return () => {
       clearTimeout(timeout);
     };
@@ -293,14 +367,16 @@ const ModalUpdateProduct = ({
     setDescHeading(productDetail?.description?.descTitle);
     setDescIntro(productDetail?.description?.descIntro);
     setRenderDesc(productDetail?.description?.descSub);
-
+    setValueSex(productDetail?.sex);
+    setValueAge(productDetail?.age);
+    setValueSkinType(productDetail?.skinType);
+    setValueLifeStyle(productDetail?.hobby);
     setCategory(productDetail?.category_id);
     setCurrentImages(productDetail?.image);
     setCurrnetFileURLs([]);
   }, [productDetail]);
   return (
     <Modal
-      id={"product-handle-2"}
       centered
       okText="Update"
       title="Update Product"
@@ -364,9 +440,7 @@ const ModalUpdateProduct = ({
         </div>
         <div className="form__container mt-0 ">
           <div className="form__container-wrapper w-full mb-[20px]  ">
-            <label htmlFor="category" className="mb-[12px]">
-              Category
-            </label>
+            <label className="mb-[12px]">Category - Chọn 1</label>
             <div className="flex items-center gap-2 flex-wrap">
               {optionCategories?.length &&
                 optionCategories?.map((cate) => {
@@ -375,15 +449,127 @@ const ModalUpdateProduct = ({
                       onClick={(e) => handleChangeCategories(e, cate)}
                       key={cate?._id}
                       className={` rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
-                         flex items-center gap-1 hover:bg-[#555] hover:text-white xs:p-[8px]
+                         flex items-center gap-1 hover:bg-[#4096FF] hover:text-white xs:p-[8px]
                          ${
                            cate?._id === category?._id
-                             ? "bg-[#555] text-white"
+                             ? "bg-[#4096FF] text-white"
                              : "bg-black-be text-black"
                          }`}
                     >
                       <span className="xs:text-xs md:text-sm font-osr  capitalize">
                         {cate?.label}
+                      </span>
+                    </button>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+        <div className="form__container mt-0 ">
+          <div className="form__container-wrapper w-full mb-[20px]  ">
+            <label className="mb-[12px]">Sex - Có thể chọn 1 hoặc nhiều</label>
+            <div className="flex items-center gap-2 flex-wrap">
+              {OPTION_SEX?.length &&
+                OPTION_SEX?.map((sex) => {
+                  return (
+                    <button
+                      onClick={(e) => handleChangeSex(e, sex)}
+                      key={sex?.value}
+                      className={` rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
+                         flex items-center gap-1 hover:bg-[#4096FF] hover:text-white xs:p-[8px]
+                         ${
+                           valueSex?.includes(sex?.value)
+                             ? "bg-[#4096FF] text-white"
+                             : "bg-black-be text-black"
+                         }`}
+                    >
+                      <span className="xs:text-xs md:text-sm font-osr  capitalize">
+                        {sex?.label}
+                      </span>
+                    </button>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+        <div className="form__container mt-0 ">
+          <div className="form__container-wrapper w-full mb-[20px]  ">
+            <label className="mb-[12px]">Age - Có thể chọn 1 hoặc nhiều</label>
+            <div className="flex items-center gap-2 flex-wrap">
+              {OPTION_AGE?.length &&
+                OPTION_AGE?.map((age) => {
+                  return (
+                    <button
+                      onClick={(e) => handleChangeAge(e, age)}
+                      key={age?.value}
+                      className={` rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
+                         flex items-center gap-1 hover:bg-[#4096FF] hover:text-white xs:p-[8px]
+                         ${
+                           valueAge?.includes(age?.value)
+                             ? "bg-[#4096FF] text-white"
+                             : "bg-black-be text-black"
+                         }`}
+                    >
+                      <span className="xs:text-xs md:text-sm font-osr  capitalize">
+                        {age?.label}
+                      </span>
+                    </button>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+        <div className="form__container mt-0 ">
+          <div className="form__container-wrapper w-full mb-[20px]  ">
+            <label className="mb-[12px]">
+              Skin Type - Có thể chọn 1 hoặc nhiều
+            </label>
+            <div className="flex items-center gap-2 flex-wrap">
+              {OPTION_SKIN_TYPE?.length &&
+                OPTION_SKIN_TYPE?.map((skin) => {
+                  return (
+                    <button
+                      onClick={(e) => handleChangeSkinType(e, skin)}
+                      key={skin?._id}
+                      className={` rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
+                         flex items-center gap-1 hover:bg-[#4096FF] hover:text-white xs:p-[8px]
+                         ${
+                           valueSkinType?.includes(skin?.value)
+                             ? "bg-[#4096FF] text-white"
+                             : "bg-black-be text-black"
+                         }`}
+                    >
+                      <span className="xs:text-xs md:text-sm font-osr  capitalize">
+                        {skin?.label}
+                      </span>
+                    </button>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+        <div className="form__container mt-0 ">
+          <div className="form__container-wrapper w-full mb-[20px]  ">
+            <label className="mb-[12px]">
+              LifeStyle - Có thể chọn 1 hoặc nhiều
+            </label>
+            <div className="flex items-center gap-2 flex-wrap">
+              {OPTION_LIFE_STYLE?.length &&
+                OPTION_LIFE_STYLE?.map((life) => {
+                  return (
+                    <button
+                      onClick={(e) => handleChangeLifeType(e, life)}
+                      key={life?.value}
+                      className={` rounded-[5px] md:p-[11.5px_12px]  duration-400 transition-colors
+                         flex items-center gap-1 hover:bg-[#4096FF] hover:text-white xs:p-[8px]
+                         ${
+                           valueLifeStyle?.includes(life?.value)
+                             ? "bg-[#4096FF] text-white"
+                             : "bg-black-be text-black"
+                         }`}
+                    >
+                      <span className="xs:text-xs md:text-sm font-osr  capitalize">
+                        {life?.label}
                       </span>
                     </button>
                   );

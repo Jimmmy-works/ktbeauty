@@ -384,7 +384,7 @@ const ProductCard = ({
           )}
           alt={name}
           effect="blur"
-          src={image?.[0]}
+          src={image?.[1]}
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = "/assets/img/error.png";

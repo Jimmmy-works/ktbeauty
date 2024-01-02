@@ -1,7 +1,5 @@
-import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import { authActions, register, signin } from "@/store/reducer/authReducer";
-import { cartActions, updateCart } from "@/store/reducer/cartReducer";
 import { createContext, useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";

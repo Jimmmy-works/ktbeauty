@@ -140,11 +140,11 @@ const Shop = () => {
       }),
     },
     {
-      key: "2",
+      key: "0",
       label: (
         <p
           className={`font-ossb text-16px transition-all duration-400 ${
-            controlCollapse?.includes("2") ? "text-black" : "text-black-333"
+            controlCollapse?.includes("0") ? "text-black" : "text-black-333"
           }`}
         >
           Giới tính
@@ -220,7 +220,6 @@ const Shop = () => {
         );
       }),
     },
-
     {
       key: "4",
       label: (
