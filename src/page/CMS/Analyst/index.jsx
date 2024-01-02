@@ -1,61 +1,38 @@
+import { monthNameVN } from "@/contants/general";
+import useQuery from "@/hooks/useQuery";
 import { formatPriceVND } from "@/utils/formatPrice";
-import { CalendarOutlined } from "@ant-design/icons";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import useDashboard from "../useDashboard";
 import {
-  Bar,
-  Line,
-  getDatasetAtEvent,
-  getElementAtEvent,
-  getElementsAtEvent,
-  Chart,
-  Pie,
-} from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  PointElement,
-  LineElement,
-  Filler,
-  ArcElement,
-} from "chart.js";
-import {
-  startToEndInYear,
   currentDayInMonth,
-  now,
-  startMonth,
-  zeroDay,
-  zeroTimeToday,
-  year,
   endDay,
   endMonth,
+  startMonth,
+  startToEndInYear,
+  zeroDay,
+  zeroTimeToday,
 } from "@/utils/timeISOString";
-import { monthNameVN, monthNames } from "@/contants/general";
-import {
-  Button,
-  DatePicker,
-  Image,
-  Input,
-  Popconfirm,
-  Select,
-  Space,
-  Table,
-  Tag,
-} from "antd";
-import { dateVN, localeVN, timeVN } from "@/utils/timeVN";
-import styled from "styled-components";
-import queryString from "query-string";
-import useQuery from "@/hooks/useQuery";
+import { localeVN } from "@/utils/timeVN";
+import { DatePicker, Image, Select, Table } from "antd";
 import { Excel } from "antd-table-saveas-excel";
-import { SearchOutlined, CaretDownOutlined } from "@ant-design/icons";
+import {
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Filler,
+  Legend,
+  LineElement,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+} from "chart.js";
+import queryString from "query-string";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Bar, Doughnut } from "react-chartjs-2";
+import styled from "styled-components";
+import useDashboard from "../useDashboard";
 
 import dashboardService from "@/service/dashboardService";
-import { useLocation, useSearchParams } from "react-router-dom";
 const StyleImage = styled.div`
   .ant-image-mask {
     border-radius: 6px;
@@ -66,7 +43,7 @@ const CustomCalendar = styled.div`
   width: auto;
   cursor: pointer;
   position: absolute;
-  z-index: 10000;
+  z-index: 999;
   right: 10px;
   top: 10px;
   .ant-picker {
@@ -112,28 +89,22 @@ const DashboardAnalyst = () => {
     onGetSoldProducts,
     onGetInventory,
     onGetRevenue,
+    categories,
   } = analystProps || {};
   const million = 1000000;
+  ////// State
   const [revenueObj, setRevenueObj] = useState({});
   const [soldProductObj, setSoldProductObj] = useState({});
   const [revenueFilter, setRevenueFilter] = useState({});
   const [soldProductFilter, setSoldProductFilter] = useState({});
   const [inventoryObj, setInventoryObj] = useState({});
-  const [renderLimit, setRenderLimit] = useState("");
-  const [renderTop, setRenderTop] = useState("");
-  const { search, pathname } = useLocation();
-  const queryObject = queryString.parse(search);
-  /// handle Update Query String
-  const [searchParams, setSearchParams] = useSearchParams();
-  const updateQueryString = (queryObject) => {
-    const newQuerryString = queryString.stringify({
-      ...queryObject,
-    });
-    setSearchParams(new URLSearchParams(newQuerryString));
-  };
+  const [renderLimitTopSold, setRenderLimitTopSold] = useState("");
+  const [renderLimitTopCountInStock, setRenderLimitTopCountInStock] =
+    useState("");
+  ///// handle Analyst
+  /// call API
   const handleRevenue = async () => {
     try {
-      let allMonths = [];
       const today = await onGetRevenue({
         startDate: zeroTimeToday,
         endDate: endDay,
@@ -150,38 +121,23 @@ const DashboardAnalyst = () => {
         limit: 100000,
         page: 0,
       });
-      // const allDayInYear = await onGetRevenue({
-      //   startDate: zeroDay,
-      //   endDate: startToEndInYear,
-      // });
+      const allDayInYear = await onGetRevenue({
+        startDate: zeroDay,
+        endDate: startToEndInYear,
+        limit: 100000,
+        page: 0,
+      });
       const currentMonth = await onGetRevenue({
         startDate: startMonth,
         endDate: endMonth,
         limit: 100000,
         page: 0,
       });
-      ///
-      const monthCurrentRender = new Date()?.getMonth();
-      // for (let index = 0; index < monthCurrentRender + 1; index++) {
-      //   const startMonth = new Date(year, index, 1).toISOString();
-      //   const endMonth = new Date(
-      //     year,
-      //     index,
-      //     31 || 30 || 29 || 28,
-      //     24,
-      //     0
-      //   ).toISOString();
-      //   const response = await onGetRevenue({
-      //     startDate: startMonth,
-      //     endDate: endMonth,
-      //   });
-      //   allMonths.push(response);
-      // }
       setRevenueObj({
         today: today,
         // startToCurrent: startToCurrent,
         zeroDayToCurrentDay: zeroDayToCurrentDay,
-        // allDayInYear: allDayInYear,
+        allDayInYear: allDayInYear,
         currentMonth: currentMonth,
       });
     } catch (error) {
@@ -190,24 +146,23 @@ const DashboardAnalyst = () => {
   };
   const handleSoldProducts = async () => {
     try {
-      let allMonths = [];
       const today = await onGetSoldProducts({
         limit: 100000,
         page: 0,
         startDate: zeroTimeToday,
         endDate: endDay,
       });
-      // const startToCurrent = await onGetSoldProducts({
-      // limit: 100000,
-      // page:0,
-      //   startDate: startMonth,
-      //   endDate: currentDayInMonth,
-      // });
       const zeroDayToCurrentDay = await onGetSoldProducts({
         limit: 100000,
         page: 0,
         startDate: zeroDay,
         endDate: currentDayInMonth,
+      });
+      const allDayInYear = await onGetSoldProducts({
+        startDate: zeroDay,
+        endDate: startToEndInYear,
+        limit: 100000,
+        page: 0,
       });
       const currentMonth = await onGetSoldProducts({
         limit: 100000,
@@ -215,51 +170,32 @@ const DashboardAnalyst = () => {
         startDate: startMonth,
         endDate: endMonth,
       });
-      // const allDayInYear = await onGetSoldProducts({
-      //   startDate: zeroDay, // limit: 100000,
-      // page:0,
-      //   endDate: startToEndInYear,
-      // });
-      // const currentMonth = await onGetSoldProducts({});
-      // for (let index = 0; index < monthNames.length; index++) {
-      //   const startMonth = new Date(year, index, 1).toISOString();
-      //   const endMonth = new Date(
-      //     year,
-      //     index,
-      //     31 || 30 || 29 || 28,
-      //     24,
-      //     0
-      //   ).toISOString();
-      //   const response = await onGetSoldProducts({
-      //     startDate: startMonth,
-      //     endDate: endMonth, // limit: 100000,
-      // page:0,
-      //   });
-      //   allMonths.push(response);
-      // }
       setSoldProductObj({
         today: today,
-        // startToCurrent: startToCurrent,
         zeroDayToCurrentDay: zeroDayToCurrentDay,
-        // allDayInYear: allDayInYear,
+        allDayInYear: allDayInYear,
         currentMonth: currentMonth,
       });
     } catch (error) {
       console.log("error", error);
     }
   };
-  useEffect(() => {
-    handleRevenue();
-    handleSoldProducts();
-  }, []);
-  // useEffect(() => {
-  //   if (Object.keys(revenueObj).length < 1) {
-  //     handleRevenue();
-  //   }
-  //   if (Object.keys(soldProductObj).length < 1) {
-  //     handleSoldProducts();
-  //   }
-  // }, [revenueObj, soldProductObj]);
+  const handleCountInStock = async () => {
+    try {
+      const totalProducts = await onGetInventory(
+        `?${queryString.stringify({
+          limit: 10,
+          type: "top-in-stock",
+        })}`
+      );
+      setInventoryObj({
+        totalProducts: totalProducts,
+      });
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  /// custom render Chart
   const customDataRevenueBar = useMemo(() => {
     if (Object?.keys(revenueFilter)?.length) {
       return revenueFilter?.data?.data?.map((month) => Math.round(month?.data));
@@ -296,6 +232,7 @@ const DashboardAnalyst = () => {
       return [100, 250, 300, 450, 500, 650, 700, 850, 900, 1050, 1100, 1250];
     }
   }, [soldProductObj, soldProductFilter]);
+  const customDataSoldProductLineTest = useMemo(() => {}, []);
   const customLabelRevenueBar = useMemo(() => {
     if (Object?.keys(revenueFilter)?.length) {
       return revenueFilter?.data?.data?.map((month) => {
@@ -321,7 +258,7 @@ const DashboardAnalyst = () => {
   }, [revenueFilter, revenueObj]);
   const customLabelSoldLine = useMemo(() => {
     if (Object?.keys(soldProductFilter)?.length) {
-      return soldProductFilter?.data?.data?.map((month) => {
+      return soldProductFilter?.data?.data?.map((time) => {
         return `${time.sold}`;
       });
     } else if (
@@ -338,6 +275,7 @@ const DashboardAnalyst = () => {
       return monthNameVN?.map((item) => item);
     }
   }, [soldProductFilter, soldProductObj]);
+  /// data Chart
   const dataBars = {
     labels: customLabelRevenueBar,
     datasets: [
@@ -374,13 +312,12 @@ const DashboardAnalyst = () => {
     ],
   };
   const dataPies = {
-    labels: customLabelSoldLine,
+    labels: categories?.map((cate) => cate?.label),
     datasets: [
       {
         type: "doughnut",
-        label: "Đã bán",
-        data: customDataSoldProductLine,
-        // backgroundColor: mapColor?.map((item) => item?.backgroundColor),
+        label: "Danh mục sản phẩm bán được",
+        data: categories?.map((cate) => cate?.totalProduct),
         backgroundColor: [
           "rgba(255, 99, 132,.2)",
           "rgba(255, 206, 86,.2)",
@@ -394,6 +331,8 @@ const DashboardAnalyst = () => {
           "rgba(173, 194, 65,.2)",
           "rgba(241, 176, 218,.2)",
           "rgba(60, 40, 75, .2)",
+          "rgba(59, 4, 170, 0.5)",
+          "#323232",
         ],
         borderColor: [
           "rgba(255, 99, 132, 0.4)",
@@ -408,6 +347,8 @@ const DashboardAnalyst = () => {
           "rgba(173, 194, 65, 0.7)",
           "rgba(241, 176, 218, 0.7)",
           "rgba(60, 40, 75, 0.4)",
+          "rgba(77, 10, 211, 0.4)",
+          "rgba(40, 40, 39, 0.4)",
         ],
         hoverBackgroundColor: [
           "rgba(255, 99, 132, 0.7)",
@@ -422,11 +363,14 @@ const DashboardAnalyst = () => {
           "rgba(173, 194, 65, 1)",
           "rgba(241, 176, 218, 1)",
           "rgba(60, 40, 75, 1)",
+          "rgba(59, 4, 170, 1)",
+          "#000000",
         ],
         borderWidth: Object.keys(soldProductFilter).length ? 0 : 1,
       },
     ],
   };
+  /// resizeChart
   const resizeChart = useMemo(() => {
     if (width >= 768) {
       return 650;
@@ -436,7 +380,7 @@ const DashboardAnalyst = () => {
       return 400;
     }
   }, [width]);
-  const revenueRef = useRef();
+  /// handle Chart Calendar
   const onChangeDatePickerRevenue = async (dates, dateStrings) => {
     const startDates = dates?.[0];
     const endDates = dates?.[1];
@@ -665,131 +609,22 @@ const DashboardAnalyst = () => {
       console.log("error", error);
     }
   };
-  // const onChangeDatePickerSoldProducts = async (dates, dateStrings) => {
-  //   const startDates = dates?.[0];
-  //   const endDates = dates?.[1];
-  //   try {
-  //     if (dates) {
-  //       if (startDates?.$d.toString() === endDates?.$d.toString()) {
-  //         const response = await onGetSoldProducts({
-  //           startDate: new Date(
-  //             startDates?.$y,
-  //             startDates?.$M,
-  //             startDates?.$D,
-  //             0,
-  //             0
-  //           ).toISOString(),
-  //           endDate: new Date(
-  //             endDates?.$y,
-  //             endDates?.$M,
-  //             endDates?.$D,
-  //             23,
-  //             59,
-  //             59
-  //           ).toISOString(),
-  //         });
-  //         if (response?.code === 200)
-  //           setSoldProductFilter({
-  //             data: response?.data,
-  //             start: {
-  //               day: startDates?.$D,
-  //               month: startDates?.$M,
-  //               hour: startDates?.$H,
-  //               localeDate: new Date(
-  //                 startDates?.$y,
-  //                 startDates?.$M,
-  //                 startDates?.$D,
-  //                 0,
-  //                 0
-  //               ).toISOString(),
-  //             },
-  //             end: {
-  //               day: endDates?.$D,
-  //               month: endDates?.$M,
-  //               hour: endDates?.$H,
-  //               localeDate: new Date(
-  //                 endDates?.$y,
-  //                 endDates?.$M,
-  //                 endDates?.$D,
-  //                 23,
-  //                 59,
-  //                 59
-  //               ).toISOString(),
-  //             },
-  //           });
-  //       } else {
-  //         const response = await onGetSoldProducts({
-  //           startDate: new Date(
-  //             startDates?.$y,
-  //             startDates?.$M,
-  //             startDates?.$D,
-  //             0,
-  //             0
-  //           ).toISOString(),
-  //           endDate: new Date(
-  //             endDates?.$y,
-  //             endDates?.$M,
-  //             endDates?.$D,
-  //             23,
-  //             59,
-  //             59
-  //           ).toISOString(),
-  //         });
-  //         if (response?.code === 200)
-  //           setSoldProductFilter({
-  //             data: response?.data,
-  //             start: {
-  //               day: startDates?.$D,
-  //               month: startDates?.$M,
-  //               hour: startDates?.$H,
-  //               localeDate: new Date(
-  //                 startDates?.$y,
-  //                 startDates?.$M,
-  //                 startDates?.$D,
-  //                 0,
-  //                 0
-  //               ),
-  //             },
-  //             end: {
-  //               day: endDates?.$D,
-  //               month: endDates?.$M,
-  //               hour: endDates?.$H,
-  //               localeDate: new Date(
-  //                 endDates?.$y,
-  //                 endDates?.$M,
-  //                 endDates?.$D,
-  //                 23,
-  //                 59,
-  //                 59
-  //               ),
-  //             },
-  //           });
-  //       }
-  //     } else {
-  //       console.log("Clear");
-  //       setSoldProductFilter({});
-  //     }
-  //   } catch (error) {
-  //     console.log("error", error);
-  //   }
-  // };
   const onClick = (event) => {
     console.log("event", event);
   };
-  /////
+  ///// handle render top-rate
   const { data: dataTop10CountInStock } = useQuery(() => {
     return dashboardService.getTopRate(
       `?${queryString.stringify({
-        limit: 10,
+        limit: renderLimitTopCountInStock ? renderLimitTopCountInStock : 10,
         type: "top-in-stock",
       })}`
     );
-  });
-  handleSoldProducts;
+  }, [renderLimitTopCountInStock]);
   const [renderDatePickerTop, setRenderDatePickerTop] = useState({});
   const { data: dataTop10Sold } = useQuery(() => {
     return dashboardService.getSoldProducts({
-      limit: renderLimit ? renderLimit : 10,
+      limit: renderLimitTopSold ? renderLimitTopSold : 10,
       type: "top-sold",
       page: 0,
       startDate: Object?.keys(renderDatePickerTop)?.length
@@ -799,10 +634,15 @@ const DashboardAnalyst = () => {
         ? new Date(renderDatePickerTop?.end?.localeDate)?.toISOString()
         : startToEndInYear,
     });
-  }, [renderLimit, renderDatePickerTop]);
-  const handleChangeTopLimit = (value) => {
-    setRenderLimit(value);
+  }, [renderLimitTopSold, renderDatePickerTop]);
+  const handleChangeLimitTopSold = (value) => {
+    setRenderLimitTopSold(value);
   };
+  const handleChangeLimitTopCountInStock = (value) => {
+    console.log("value", value);
+    setRenderLimitTopCountInStock(value);
+  };
+  /// handle top-rate Calendar
   const onChangeDatePickerTop = async (dates, dateStrings) => {
     const startDates = dates?.[0];
     const endDates = dates?.[1];
@@ -877,6 +717,7 @@ const DashboardAnalyst = () => {
       console.log("error", error);
     }
   };
+  //// Table top-rate
   const columnTopSold = [
     {
       title: "Top Sold",
@@ -899,6 +740,9 @@ const DashboardAnalyst = () => {
       title: "Sold",
       align: "center",
       dataIndex: "sold",
+      sorter: (a, b) => b?.sold - a?.sold,
+      sortDirections: ["descend"],
+      ellipsis: true,
     },
   ];
   const columnTopCountInStock = [
@@ -922,6 +766,11 @@ const DashboardAnalyst = () => {
       title: "Stock",
       dataIndex: "stock",
       align: "center",
+      sorter: (a, b) => {
+        return b?.stock - a?.stock;
+      },
+      sortDirections: ["descend"],
+      ellipsis: true,
     },
   ];
   const dataTopCountInStock = dataTop10CountInStock?.data?.data?.map(
@@ -982,6 +831,7 @@ const DashboardAnalyst = () => {
       priceCurrent: item?.price,
     };
   });
+  //////////////
   //// handle Table Excel
   const [messageConfirm, setMessageConfirm] = useState();
   const handleClick = (payload) => {
@@ -998,6 +848,12 @@ const DashboardAnalyst = () => {
       .saveAs("Excel.xlsx");
     setMessageConfirm("");
   };
+  /// Effect
+  useEffect(() => {
+    handleRevenue();
+    handleSoldProducts();
+    handleCountInStock();
+  }, []);
   return (
     <>
       <div
@@ -1013,7 +869,7 @@ const DashboardAnalyst = () => {
           Dashboard Analyst
         </h2>
       </div>
-      <div className="lg:mt-0 xs:mt-[60px] p-[0_20px_20px_20px] ">
+      <div className="lg:mt-0 xs:mt-[60px] p-[0_20px_0px_20px] ">
         <div className=" flex xs:flex-wrap xl:flex-nowrap items-center  m-[-8px] justify-start xl:justify-normal ">
           <div className="xs:w-full sm:w-[30%] md:w-[45%] xl:w-1/3 rounded-[5px] shadow-header p-[20px] m-[8px]">
             <div className="flex items-center gap-[6px]">
@@ -1025,7 +881,7 @@ const DashboardAnalyst = () => {
               className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-lg
                           pb-[12px] border-solid border-b border-black-ebe flex justify-between items-center gap-[10px]"
             >
-              {formatPriceVND(revenueObj?.zeroDayToCurrentDay?.total || 0)}
+              {formatPriceVND(revenueObj?.allDayInYear?.total || 0)}
             </div>
             <div className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-sm ">
               Doanh thu hôm nay: {formatPriceVND(revenueObj?.today?.total || 0)}
@@ -1039,7 +895,11 @@ const DashboardAnalyst = () => {
               className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-lg
                       pb-[12px] border-solid border-b border-black-ebe flex justify-between  items-center gap-[10px]"
             >
-              <p>{inventoryObj?.totalCountInStock}</p>
+              <p>
+                {inventoryObj?.totalProducts?.data?.reduce((acc, cur) => {
+                  return acc + cur?.countInStock;
+                }, 0)}
+              </p>
               <button
                 onClick={() =>
                   handleClick({
@@ -1054,7 +914,7 @@ const DashboardAnalyst = () => {
               </button>
             </div>
             <div className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-sm ">
-              Tổng các loại sản phẩm : {inventoryObj?.totalProduct}
+              Các loại sản phẩm: {categories?.length}
             </div>
           </div>
           <div className="xs:w-full sm:w-[30%] md:w-[45%] xl:w-1/3 rounded-[5px] shadow-header p-[20px] m-[8px] ">
@@ -1102,7 +962,6 @@ const DashboardAnalyst = () => {
             </CustomCalendar>
             <Bar
               onClick={onClick}
-              ref={revenueRef}
               className="shadow-header p-[10px] rounded-[5px]"
               options={{
                 responsive: true,
@@ -1153,7 +1012,7 @@ const DashboardAnalyst = () => {
                 onChange={onChangeDatePickerSoldProducts}
               />
             </CustomCalendar>
-            <Line
+            <Doughnut
               className="shadow-header p-[10px] rounded-[5px]"
               typeof="line"
               data={dataPies}
@@ -1171,39 +1030,16 @@ const DashboardAnalyst = () => {
           </div>
         </div>
         <div className="py-[20px] flex lg:flex-row xs:flex-col gap-[20px] items-center ">
-          <div className="lg:w-1/2 xs:w-full   table__dashboard table__dashboard-analyst">
+          <div className="lg:w-1/2 xs:w-full   table__dashboard table__dashboard-analyst xs:mt-[10px] ">
             <div className="flex items-center justify-between">
-              <div className="font-om text-md text-black-555 my-[15px] text-center ">
-                Top 10 CountInStock
-              </div>
-              <div></div>
-            </div>
-            <Table
-              rowClassName={`items-center `}
-              style={{ verticalAlign: "middle" }}
-              tableLayout={"auto"}
-              columns={columnTopCountInStock}
-              dataSource={dataTopCountInStock}
-              pagination={{
-                pageSize: 5,
-                // total: totalProducts,
-                position: ["bottomCenter"],
-                // onChange: onChangePagination,
-                // current: Number(pageCurrent || 1),
-              }}
-            />
-          </div>
-          <div className="lg:w-1/2 xs:w-full  table__dashboard table__dashboard-analyst">
-            <div className="flex items-center gap-4 relative m-[12px]">
-              <div className="font-om text-md text-black-555 text-center ">
+              <div className="font-om text-md text-black-555  m-[15px_12px] text-center ">
                 Top{" "}
                 <Select
-                  className=""
                   defaultValue={`10`}
                   style={{
                     width: 70,
                   }}
-                  onChange={handleChangeTopLimit}
+                  onChange={handleChangeLimitTopCountInStock}
                   options={[
                     {
                       value: "5",
@@ -1223,7 +1059,52 @@ const DashboardAnalyst = () => {
                     },
                   ]}
                 />{" "}
-                Sold
+                sản phẩm còn trong kho
+              </div>
+              <div></div>
+            </div>
+            <Table
+              rowClassName={`items-center `}
+              style={{ verticalAlign: "middle" }}
+              tableLayout={"auto"}
+              columns={columnTopCountInStock}
+              dataSource={dataTopCountInStock}
+              pagination={{
+                pageSize: 5,
+                position: ["bottomRight"],
+              }}
+            />
+          </div>
+          <div className="lg:w-1/2 xs:w-full  table__dashboard table__dashboard-analyst xs:mt-[10px] ">
+            <div className="flex items-center gap-4 relative m-[15px_12px]">
+              <div className="font-om text-md text-black-555 text-center ">
+                Top{" "}
+                <Select
+                  defaultValue={`10`}
+                  style={{
+                    width: 70,
+                  }}
+                  onChange={handleChangeLimitTopSold}
+                  options={[
+                    {
+                      value: "5",
+                      label: "5",
+                    },
+                    {
+                      value: "10",
+                      label: "10",
+                    },
+                    {
+                      value: "20",
+                      label: "20",
+                    },
+                    {
+                      value: "100",
+                      label: "100",
+                    },
+                  ]}
+                />{" "}
+                sản phẩm bán chạy
               </div>
               {Object.keys(renderDatePickerTop)?.length ? (
                 <div className="flex items-center gap-2">
@@ -1246,17 +1127,14 @@ const DashboardAnalyst = () => {
               </CustomCalendar>
             </div>
             <Table
-              rowClassName={`items-center `}
+              rowClassName={`items-center`}
               style={{ verticalAlign: "middle" }}
               tableLayout={"auto"}
               columns={columnTopSold}
               dataSource={dataTopSold}
               pagination={{
                 pageSize: 5,
-                // total: totalProducts,
-                position: ["bottomCenter"],
-                // onChange: onChangePagination,
-                // current: Number(pageCurrent || 1),
+                position: ["bottomRight"],
               }}
             />
           </div>

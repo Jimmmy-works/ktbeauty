@@ -15,7 +15,7 @@ const initialState = {
   statusGetAllUsers: null,
   statusGetAllOrders: null,
   getStatusCreateProduct: null,
-  ///
+  ////////
   soldProducts: null,
   revenue: null,
   inventory: null,
@@ -163,7 +163,6 @@ export const getSoldProducts = createAsyncThunk(
       }
       return soldData?.data;
     } catch (error) {
-      message.error(error?.response?.data?.message);
       console.log("error", error);
       throw error;
     }
@@ -179,7 +178,6 @@ export const getRevenue = createAsyncThunk(
       }
       return revenueData?.data;
     } catch (error) {
-      message.error(error?.response?.data?.message);
       console.log("error", error);
       throw error;
     }

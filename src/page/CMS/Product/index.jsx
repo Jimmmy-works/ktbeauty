@@ -1,6 +1,5 @@
-import { MODAL_OPTION, _LIMIT } from "@/contants/general";
+import { MODAL_OPTION } from "@/contants/general";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
-import { getAllProduct } from "@/store/reducer/productReducer";
 import { formatPriceVND } from "@/utils/formatPrice";
 import { removeAccents } from "@/utils/removeAccents";
 import { dateVN } from "@/utils/timeVN";
@@ -8,10 +7,10 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button, Image, Input, Slider, Spin, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import styled from "styled-components";
 import useDashboard from "../useDashboard";
 import ModalCreateProduct from "./ModalCreateProduct";
 import ModalUpdateProduct from "./ModalUpdateProduct";
-import styled from "styled-components";
 const StyleImage = styled.div`
   .ant-image-mask {
     border-radius: 6px;
@@ -31,9 +30,10 @@ const DashBoardProduct = () => {
     products,
     ///
   } = modalProps || {};
+  //// State
   const [valueSlider, setValueSiler] = useState();
   const [searchTerm, setSearchTerm] = useState("");
-  const [pageCurrent, setPageCurrent] = useState(1);
+  //// Table
   const onChangeSlider = (value) => {
     setValueSiler(value);
   };
@@ -50,17 +50,9 @@ const DashBoardProduct = () => {
       dataIndex: "name",
       align: "center",
       onFilter: (value, record) => {
-        if (width >= 768) {
-          const name = removeAccents(record?.name);
-          const newValue = removeAccents(value);
-          return name.includes(newValue) === true;
-        } else {
-          const name = removeAccents(
-            record?.name?.props?.children?.[1]?.props?.children
-          );
-          const newValue = removeAccents(value);
-          return name.includes(newValue) === true;
-        }
+        const name = removeAccents(record?.nameFilter);
+        const newValue = removeAccents(value);
+        return name.includes(newValue) === true;
       },
       filterDropdown: ({
         setSelectedKeys,
@@ -229,7 +221,7 @@ const DashBoardProduct = () => {
           <strong className="text-sm font-osr font-semibold ">
             Price:
             <span className="text-sm font-osr font-normal ml-[4px]">
-              ${formatPriceVND(product?.price)}
+              {formatPriceVND(product?.price)}
             </span>
           </strong>
         ),
@@ -244,6 +236,7 @@ const DashBoardProduct = () => {
             )}`}</span>
           </strong>
         ),
+      nameFilter: product?.name,
       name:
         width >= 768 ? (
           `${product?.name}`
@@ -317,29 +310,18 @@ const DashBoardProduct = () => {
   const findUpdateProduct = products?.find(
     (item) => item?._id === selectedRowKeys.toString()
   );
-  const handleOnchangeTable = (pagination, filters, sorter, extra, e) => {
-    console.log(e);
-  };
+  const handleOnchangeTable = (pagination, filters, sorter, extra, e) => {};
+  //// Effect
   useEffect(() => {
-    onChangeSlider([0, 2000]);
+    onChangeSlider([0, 60000]);
   }, []);
-
   useEffect(() => {
     const myTimeout = setTimeout(() => {
       setSearchTerm(valueSlider);
     }, 500);
     return () => clearTimeout(myTimeout);
   }, [searchTerm, valueSlider]);
-  const onChangePagination = (pageNumber) => {
-    const payloadPagination = {
-      limit: _LIMIT,
-      page: pageNumber - 1,
-    };
-    setPageCurrent(pageNumber);
-    if (pageNumber) {
-      dispatch(getAllProduct(payloadPagination));
-    }
-  };
+  //// loading
   if (statusGetAllProducts !== THUNK_STATUS.fulfilled) {
     return (
       <div className="w-screen h-screen top-0 left-0 fixed flex justify-center items-center">
@@ -347,7 +329,6 @@ const DashBoardProduct = () => {
       </div>
     );
   }
-
   return (
     <div className="table__dashboard table__dashboard-product ">
       <ModalCreateProduct
@@ -424,7 +405,6 @@ const DashBoardProduct = () => {
           </button>
         </div>
       </div>
-
       {statusGetAllProducts === THUNK_STATUS.fulfilled ? (
         <Table
           style={{ verticalAlign: "middle" }}
@@ -434,8 +414,6 @@ const DashBoardProduct = () => {
             pageSize: 9,
             total: totalProducts,
             position: ["bottomCenter"],
-            onChange: onChangePagination,
-            current: Number(pageCurrent || 1),
           }}
           onChange={handleOnchangeTable}
           rowSelection={rowSelection}

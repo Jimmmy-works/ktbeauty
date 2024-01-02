@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export const FEATURED_OPTIONS = {
   FEATURED: "featured",
   TOP_SOLD: "top-sold",

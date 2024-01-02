@@ -12,6 +12,7 @@ const initialState = {
   statusGetProductDetail: THUNK_STATUS.fulfilled,
   statusGetProductSelected: null,
   statusGetAllProducts: null,
+  statusGetAllCategories: null,
   totalProducts: null,
   totalPage: null,
   /// filter
@@ -70,6 +71,16 @@ export const { reducer: productReducer, actions: productActions } = createSlice(
       });
       builder.addCase(getProductSelected.rejected, (state) => {
         state.statusGetProductSelected = THUNK_STATUS.rejected;
+      });
+      //getAllCategories
+      builder.addCase(getAllCategories.pending, (state) => {
+        state.statusGetAllCategories = THUNK_STATUS.pending;
+      });
+      builder.addCase(getAllCategories.fulfilled, (state) => {
+        state.statusGetAllCategories = THUNK_STATUS.fulfilled;
+      });
+      builder.addCase(getAllCategories.rejected, (state) => {
+        state.statusGetAllCategories = THUNK_STATUS.rejected;
       });
     },
   }

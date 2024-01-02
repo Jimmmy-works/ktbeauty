@@ -16,7 +16,7 @@ const DashboardHeader = ({
   return (
     <div
       className={` flex items-center justify-between shadow-header h-[60px] bg-white fixed top-0 left-0
-          duration-400 transition-all px-[20px] z-[30] xs:w-full xs:ml-[0px] 
+          duration-400 transition-all px-[20px] z-[1000] xs:w-full xs:ml-[0px] 
          ${
            toggleSidebar
              ? " lg:ml-[280px] lg:w-[calc(100%-280px)]"

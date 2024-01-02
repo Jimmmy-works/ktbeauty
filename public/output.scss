@@ -2112,10 +2112,6 @@ input[type="number"] {
   top: calc(100% + 20px) !important;
 }
 
-.top-9 {
-  top: 2.25rem !important;
-}
-
 .z-0 {
   z-index: 0 !important;
 }
@@ -2160,10 +2156,6 @@ input[type="number"] {
   z-index: 20 !important;
 }
 
-.z-\[30\] {
-  z-index: 30 !important;
-}
-
 .z-\[9\] {
   z-index: 9 !important;
 }
@@ -2178,6 +2170,10 @@ input[type="number"] {
 
 .m-\[15px_10px\] {
   margin: 15px 10px !important;
+}
+
+.m-\[15px_12px\] {
+  margin: 15px 12px !important;
 }
 
 .m-\[30px_0_20px_0\] {
@@ -2200,10 +2196,6 @@ input[type="number"] {
   margin: auto !important;
 }
 
-.m-\[12px\] {
-  margin: 12px !important;
-}
-
 .-mx-\[15px\] {
   margin-left: -15px !important;
   margin-right: -15px !important;
@@ -2217,11 +2209,6 @@ input[type="number"] {
 .mx-auto {
   margin-left: auto !important;
   margin-right: auto !important;
-}
-
-.my-\[15px\] {
-  margin-top: 15px !important;
-  margin-bottom: 15px !important;
 }
 
 .my-\[20px\] {
@@ -2247,11 +2234,6 @@ input[type="number"] {
 .my-\[6px\] {
   margin-top: 6px !important;
   margin-bottom: 6px !important;
-}
-
-.my-\[12px\] {
-  margin-top: 12px !important;
-  margin-bottom: 12px !important;
 }
 
 .mb-\[10px\] {
@@ -2790,6 +2772,11 @@ input[type="number"] {
 
 .rotate-180 {
   --tw-rotate: 180deg !important;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
+}
+
+.rotate-\[-0deg\] {
+  --tw-rotate: -0deg !important;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
 }
 
@@ -3526,8 +3513,8 @@ input[type="number"] {
   padding: 0.5rem !important;
 }
 
-.p-\[0_20px_20px_20px\] {
-  padding: 0 20px 20px 20px !important;
+.p-\[0_20px_0px_20px\] {
+  padding: 0 20px 0px 20px !important;
 }
 
 .p-\[10px\] {
@@ -4527,6 +4514,12 @@ input[type="number"] {
 
 @media (min-width: 360px) {
   .table__dashboard {
+    margin-top: 60px;
+  }
+}
+
+@media (min-width: 768px) {
+  .table__dashboard {
     margin-top: 70px;
   }
 }
@@ -4597,16 +4590,6 @@ input[type="number"] {
       .ant-table-row {
         gap: 8px;
       }
-      .ant-table-row {
-        border-bottom-width: 1px;
-      }
-      .ant-table-row {
-        border-style: solid;
-      }
-      .ant-table-row {
-        --tw-border-opacity: 1;
-        border-color: rgb(190 190 190 / var(--tw-border-opacity));
-      }
       @media (min-width: 360px) {
         .ant-table-row {
           display: flex;
@@ -4626,6 +4609,22 @@ input[type="number"] {
       @media (min-width: 768px) {
         .ant-table-row {
           display: table-row;
+        }
+      }
+      @media (min-width: 768px) {
+        .ant-table-row {
+          border-bottom-width: 1px;
+        }
+      }
+      @media (min-width: 768px) {
+        .ant-table-row {
+          border-style: solid;
+        }
+      }
+      @media (min-width: 768px) {
+        .ant-table-row {
+          --tw-border-opacity: 1;
+          border-color: rgb(190 190 190 / var(--tw-border-opacity));
         }
       }
       @media (min-width: 1024px) {
@@ -4680,22 +4679,35 @@ input[type="number"] {
     }
   }
   &-analyst {
-    .ant-table {
-      border-left-width: 1px;
-      border-right-width: 1px;
+    @media (min-width: 360px) {
+      .table__dashboard {
+        margin-top: 0px;
+      }
     }
-    .ant-table {
-      border-style: solid;
+    @media (min-width: 768px) {
+      .table__dashboard {
+        margin-top: 0px;
+      }
     }
-    .ant-table {
-      --tw-border-opacity: 1;
-      border-color: rgb(240 240 240 / var(--tw-border-opacity));
+    @media (min-width: 768px) {
+      .ant-table {
+        border-left-width: 1px;
+        border-right-width: 1px;
+      }
+    }
+    @media (min-width: 768px) {
+      .ant-table {
+        border-style: solid;
+      }
+    }
+    @media (min-width: 768px) {
+      .ant-table {
+        --tw-border-opacity: 1;
+        border-color: rgb(240 240 240 / var(--tw-border-opacity));
+      }
     }
     .ant-table-cell:nth-child(1) {
-      max-width: 180px;
-    }
-    .ant-table-cell:nth-child(4) {
-      max-width: 100px;
+      max-width: 150px;
     }
   }
 }

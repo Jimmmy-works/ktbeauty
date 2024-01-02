@@ -6,7 +6,7 @@ import { localeVN } from "@/utils/timeVN";
 import { CheckOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Drawer, Input, Popconfirm, Spin, Table } from "antd";
 import { Excel } from "antd-table-saveas-excel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import useDashboard from "../useDashboard";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
@@ -22,6 +22,50 @@ const DashboardOrder = () => {
     profile,
     onConfirmOrder,
   } = orderProps || {};
+
+  /// State
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [controlDrawer, setControlDrawer] = useState();
+  const [statusButton, setStatusButton] = useState();
+  const [titleButton, setTitleButton] = useState();
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  //////
+  const handleShowDrawer = (id) => {
+    setControlDrawer(id);
+    dispatch(getDetailOrder(id));
+    setOpenDrawer(true);
+  };
+  const handleCloseDrawer = (index) => {
+    setOpenDrawer(false);
+  };
+
+  const handleButtonMessage = (status, title) => {
+    setStatusButton(status), setTitleButton(title);
+  };
+  const handleConfirmOrder = (payload) => {
+    onConfirmOrder(payload);
+  };
+  const handleCancelConfirmOrder = (e) => {
+    console.log(e);
+  };
+  //// handle Table
+  const handleOnchangeTableOrder = (
+    pagination,
+    filter,
+    sorter,
+    currentTable
+  ) => {
+    const newCurrentTable = currentTable?.currentDataSource?.map((item) => {
+      const value = {
+        ...item,
+        status: item?.status?.props?.children,
+        action: null,
+      };
+      return value;
+    });
+    setCurrentTable(newCurrentTable);
+    /// handle selected
+  };
   const columns = [
     {
       title: "Serial",
@@ -91,18 +135,6 @@ const DashboardOrder = () => {
       filterIcon: () => {
         return <SearchOutlined />;
       },
-      // filterSearch: true,
-      // onFilter: (value, record) => {
-      //   if (width >= 768) {
-      //     return record?.user?.indexOf(value) === 0;
-      //   } else {
-      //     return (
-      //       record?.user?.props?.children?.[1]?.props?.children?.indexOf(
-      //         value
-      //       ) === 0
-      //     );
-      //   }
-      // },
     },
 
     {
@@ -134,47 +166,6 @@ const DashboardOrder = () => {
     },
     { title: "Action", dataIndex: "action", align: "center" },
   ];
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [controlDrawer, setControlDrawer] = useState();
-  const handleShowDrawer = (id) => {
-    setControlDrawer(id);
-    dispatch(getDetailOrder(id));
-    setOpenDrawer(true);
-  };
-  const handleCloseDrawer = (index) => {
-    setOpenDrawer(false);
-  };
-  const [statusButton, setStatusButton] = useState();
-  const [titleButton, setTitleButton] = useState();
-  const handleButtonMessage = (status, title) => {
-    setStatusButton(status), setTitleButton(title);
-  };
-  const handleConfirmOrder = (payload) => {
-    onConfirmOrder(payload);
-  };
-  const handleCancelConfirmOrder = (e) => {
-    console.log(e);
-  };
-  //// handle Table Excel
-  const [currentTable, setCurrentTable] = useState();
-  const handleOnchangeTableOrder = (
-    pagination,
-    filter,
-    sorter,
-    currentTable
-  ) => {
-    const newCurrentTable = currentTable?.currentDataSource?.map((item) => {
-      const value = {
-        ...item,
-        status: item?.status?.props?.children,
-        action: null,
-      };
-      return value;
-    });
-    setCurrentTable(newCurrentTable);
-    /// handle selected
-  };
-
   const data = orders?.map((order, index) => {
     return {
       key: `${order?._id}`,
@@ -490,6 +481,28 @@ const DashboardOrder = () => {
       ),
     };
   });
+  const onSelectChange = (newSelectedRowKeys) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+    selections: [
+      Table.SELECTION_INVERT,
+      Table.SELECTION_ALL,
+      Table.SELECTION_NONE,
+    ],
+  };
+  const filterOrder = data?.filter((item) => {
+    return selectedRowKeys.indexOf(item.key) !== -1;
+  });
+  const handleDeleteOrderSelected = () => {
+    for (let index = 0; index < filterOrder.length; index++) {
+      onDeleteOrder(filterOrder[index]?.key);
+    }
+  };
+  //// handle Table excel
+  const [currentTable, setCurrentTable] = useState();
   const newData = data?.map((item) => {
     const value = {
       ...item,
@@ -513,28 +526,15 @@ const DashboardOrder = () => {
       .saveAs("Excel.xlsx");
     console.log("excel-->2", excel);
   };
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  //// loading
+  // useEffect(() => {
+  //   return (
+  //     <div className="w-screen h-screen top-0 left-0 fixed flex justify-center items-center">
+  //       <Spin size="default" />
+  //     </div>
+  //   );
+  // }, []);
 
-  const onSelectChange = (newSelectedRowKeys) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-    selections: [
-      Table.SELECTION_INVERT,
-      Table.SELECTION_ALL,
-      Table.SELECTION_NONE,
-    ],
-  };
-  const filterOrder = data?.filter((item) => {
-    return selectedRowKeys.indexOf(item.key) !== -1;
-  });
-  const handleDeleteOrderSelected = () => {
-    for (let index = 0; index < filterOrder.length; index++) {
-      onDeleteOrder(filterOrder[index]?.key);
-    }
-  };
   return (
     <div className="table__dashboard table__dashboard-order">
       <div

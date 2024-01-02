@@ -119,7 +119,7 @@ const DashboardLayout = () => {
   }, [pathname]);
   useEffect(() => {
     dispatch(getAllUsers());
-    dispatch(getAllProduct({ limit: 9, page: 0 }));
+    dispatch(getAllProduct());
     dispatch(getAllCategories());
     dispatch(getAllOrder());
   }, []);

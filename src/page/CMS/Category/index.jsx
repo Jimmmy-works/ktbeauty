@@ -1,14 +1,17 @@
 import { MODAL_OPTION } from "@/contants/general";
-import { Table, message } from "antd";
+import { Spin, Table, message } from "antd";
 import { useState } from "react";
 import useDashboard from "../useDashboard";
 import ModalCreateCategory from "./ModalCreateCategory";
 import ModalUpdateCategory from "./ModalUpdateCategory";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
 const DashboardCategory = () => {
   const { modalProps, categoryProps } = useDashboard();
   const { onShowModal, onCloseModal, openModalAndt, toggleSidebar, width } =
     modalProps || {};
-  const { categories, onDeleteCategory } = categoryProps || {};
+  const { categories, onDeleteCategory, statusGetAllCategories } =
+    categoryProps || {};
+  /// handle Table
   const columns = [
     {
       title: "Serial",
@@ -25,22 +28,15 @@ const DashboardCategory = () => {
       dataIndex: "name",
       align: "center",
       filters: categories?.map((item) => {
+        console.log("item", item);
         return {
-          text: item?.name,
+          text: item?.label,
           value: item?.name,
         };
       }),
       filterSearch: true,
       onFilter: (value, record) => {
-        if (width >= 768) {
-          return record?.name?.props?.children?.[1]?.indexOf(value) === 0;
-        } else {
-          return (
-            record?.name?.props?.children?.[1]?.props?.children?.indexOf(
-              value
-            ) === 0
-          );
-        }
+        return record?.nameFilter?.indexOf(value) === 0;
       },
     },
   ];
@@ -67,6 +63,7 @@ const DashboardCategory = () => {
             <span className="text-sm font-osr font-normal ml-[4px]">{`${category?._id}`}</span>
           </strong>
         ),
+      nameFilter: category?.name,
       name:
         width >= 768 ? (
           <p className="font-om capitalize"> {`${category?.label}`}</p>
@@ -78,7 +75,6 @@ const DashboardCategory = () => {
         ),
     };
   });
-  /// handle selected
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -101,6 +97,14 @@ const DashboardCategory = () => {
       onDeleteCategory(filterCategories[index]?._id);
     }
   };
+  //// loading
+  if (statusGetAllCategories !== THUNK_STATUS.fulfilled) {
+    return (
+      <div className="w-screen h-screen top-0 left-0 fixed flex justify-center items-center">
+        <Spin size="default" />
+      </div>
+    );
+  }
   return (
     <div className="table__dashboard table__dashboard-category">
       <ModalCreateCategory

@@ -1,7 +1,9 @@
 import { firebaseStorage } from "@/config/firebase";
+import { _LIMIT } from "@/contants/general";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
 import useMutation from "@/hooks/useMutation";
 import dashboardService from "@/service/dashboardService";
+import productService from "@/service/productService";
 import { register } from "@/store/reducer/authReducer";
 import {
   createProduct,
@@ -39,8 +41,13 @@ const useDashboard = () => {
     revenue,
     inventory,
   } = useSelector((state) => state.dashboard);
-  const { categories, products, statusGetAllProducts, totalProducts } =
-    useSelector((state) => state.product);
+  const {
+    categories,
+    statusGetAllCategories,
+    products,
+    statusGetAllProducts,
+    totalProducts,
+  } = useSelector((state) => state.product);
   ///// Modal
   const [openModalAndt, setOpenModalAndt] = useState("");
   const [productList, setProductList] = useState([]);
@@ -51,7 +58,7 @@ const useDashboard = () => {
     setOpenModalAndt("");
   };
   //// Sidebar
-  const [toggleSidebar, setToggleSidebar] = useState(true);
+  const [toggleSidebar, setToggleSidebar] = useState(false);
   /// Search
   const [toggleInputSearch, setToggleInputSearch] = useState(false);
   const [toggleInputSeacrhMobile, setToggleInputSeacrhMobile] = useState(false);
@@ -118,15 +125,6 @@ const useDashboard = () => {
       console.log("error", error);
     },
   });
-  const onDeleteImageFirebase = async (urls) => {
-    try {
-      const responseUrls = await deleteObject(ref(firebaseStorage, urls));
-      return responseUrls;
-    } catch (error) {
-      console.log("error", error);
-      throw error;
-    }
-  };
   const {
     data: dataCreateProduct,
     loading: loadingCreateProduct,
@@ -139,6 +137,15 @@ const useDashboard = () => {
       console.log("error", error);
     },
   });
+  const onDeleteImageFirebase = async (urls) => {
+    try {
+      const responseUrls = await deleteObject(ref(firebaseStorage, urls));
+      return responseUrls;
+    } catch (error) {
+      console.log("error", error);
+      throw error;
+    }
+  };
   const onCreateProduct = async (payload) => {
     try {
       const response = await dispatch(createProduct(payload));
@@ -193,7 +200,6 @@ const useDashboard = () => {
       throw error;
     }
   };
-
   //// CRUD CATEGORY
   const onCreateCategory = async (payload) => {
     try {
@@ -248,6 +254,7 @@ const useDashboard = () => {
     onCreateCategory,
     onDeleteCategory,
     onUpdateCategory,
+    statusGetAllCategories,
   };
   const orderProps = {
     orders,
@@ -295,6 +302,7 @@ const useDashboard = () => {
     onGetSoldProducts,
     onGetInventory,
     onGetRevenue,
+    categories,
   };
   const modalProps = {
     onShowModal,

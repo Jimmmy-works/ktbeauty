@@ -38,15 +38,7 @@ const DashboardUser = () => {
       }),
       filterSearch: true,
       onFilter: (value, record) => {
-        if (width >= 768) {
-          return record?.email?.indexOf(value) === 0;
-        } else {
-          return (
-            record?.email?.props?.children?.[1]?.props?.children?.indexOf(
-              value
-            ) === 0
-          );
-        }
+        return record?.emailFilter?.indexOf(value) === 0;
       },
     },
     {
@@ -62,19 +54,11 @@ const DashboardUser = () => {
       }),
       filterSearch: true,
       onFilter: (value, record) => {
-        if (width >= 768) {
-          return record?.phone?.indexOf(value) === 0;
-        } else {
-          return (
-            record?.phone?.props?.children?.[1]?.props?.children?.indexOf(
-              value
-            ) === 0
-          );
-        }
+        return record?.phoneFilter?.indexOf(value) === 0;
       },
     },
     {
-      title: "CreateAt ",
+      title: "CreateAt",
       dataIndex: "createdAt",
       align: "center",
       sorter: (a, b) =>
@@ -83,7 +67,6 @@ const DashboardUser = () => {
       ellipsis: true,
     },
   ];
-
   const handleOnchangeTable = (pagination, filters, sorter, extra) => {};
   const data = users.map((user, index) => {
     return {
@@ -100,6 +83,7 @@ const DashboardUser = () => {
             }`}</span>
           </strong>
         ),
+      emailFilter: user?.email,
       email:
         width >= 768 ? (
           `${user?.email}`
@@ -109,6 +93,7 @@ const DashboardUser = () => {
             <span className="text-sm font-osr font-normal ml-[4px]">{`${user?.email}`}</span>
           </strong>
         ),
+      phoneFilter: user?.phone,
       phone:
         width >= 768 ? (
           `${user?.phone} `
@@ -182,7 +167,7 @@ const DashboardUser = () => {
         cancel={onCloseModal}
       />
       <div
-        className={`  h-fit  flex  items-center xs:justify-center  md:justify-between
+        className={`h-fit flex items-center xs:justify-center  md:justify-between
         gap-3 xs:fixed lg:static top-[60px] z-10 xs:bg-gray-100 lg:bg-white xs:px-[15px] lg:px-[30px] py-[14px]
         ${
           toggleSidebar
