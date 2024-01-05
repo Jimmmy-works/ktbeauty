@@ -3,17 +3,30 @@
     &-wrapper {
       .item {
         &.active {
-          @apply border-dashed border-primary border;
+          @apply border-solid border-primary border-[1px];
         }
-        @apply h-[68px] w-[68px] duration-300 transition-all
-        border-dashed border-transparent border block;
+        @apply h-[70px] w-[70px] duration-300 transition-all
+        border-solid border-transparent border-[1px] block;
       }
     }
   }
   &-swiper {
-    @apply max-h-[400px];
+    .swiper-slide-active {
+      @apply border-solid border-primary border-[1px];
+    }
+    &-up,
+    &-down {
+      &.swiper-button-disabled {
+        @apply opacity-100 visible shadow-[0_0px_10px_0_rgba(0,0,0,0.2)] cursor-not-allowed
+         #{!important};
+        > div {
+          @apply bg-[#d9d9d9] 
+           #{!important};
+        }
+      }
+    }
     &-item {
-      @apply cursor-pointer border-none h-[68px] w-[68px] #{!important};
+      @apply cursor-pointer border-none  h-[70px] w-[70px] #{!important};
     }
   }
 }

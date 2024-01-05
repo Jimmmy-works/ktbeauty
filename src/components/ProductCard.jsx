@@ -2,6 +2,7 @@ import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { PATHS } from "@/contants/path";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import { updateCart } from "@/store/reducer/cartReducer";
+import { updateWhiteList } from "@/store/reducer/whitelistReducer";
 import { formatPriceVND } from "@/utils/formatPrice";
 import useWindowSize from "@/utils/windowResize";
 import { Rate, Tooltip, message } from "antd";
@@ -12,7 +13,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { twMerge } from "tailwind-merge";
 import { useMainContext } from "./MainContext";
-import { updateWhiteList } from "@/store/reducer/whitelistReducer";
 const StyleRate = styled.div`
   display: flex;
   justify-content: center;
@@ -42,7 +42,6 @@ const StyleDiscount = styled.div`
     border-left: 5px solid transparent;
   }
 `;
-
 const ProductCard = ({
   item,
   className,
@@ -62,7 +61,8 @@ const ProductCard = ({
     (state) => state.whitelist
   );
   const { onAuthenModal } = useMainContext();
-  const onAddToWhiteList = async () => {
+  const onAddToWhiteList = async (e) => {
+    e.preventDefault();
     const payload = item;
     const _token = localStorage.getItem(LOCAL_STORAGE.token);
     try {
@@ -77,54 +77,40 @@ const ProductCard = ({
           );
           if (whiteListInfo?._id) {
             if (matchIndex > -1) {
-              if (newProductPayload[matchIndex]?.quantity >= 20) {
-                return message.error(
-                  `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
-                );
-              } else {
-                newProductPayload[matchIndex] = {
-                  ...newProductPayload[matchIndex],
-                  quantity: newProductPayload[matchIndex]?.quantity + 1,
-                };
-                message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
-              }
+              message.warning(
+                `Đã có ${newProductPayload[matchIndex]?.name} trong danh sách yêu thích`
+              );
             } else {
               newProductPayload.push({
                 ...payload,
-                quantity: 1,
                 product_id: payload?._id,
               });
-              message.success(`+1 ${payload?.name}`);
+              message.success(
+                `Thêm sản phẩm thành công vào danh sách yêu thích`
+              );
             }
             whiteListPayload = {
               ...whiteListInfo,
               products: newProductPayload,
             };
           } else {
+            if (matchIndex > -1) {
+              message.warning(
+                `Đã có ${newProductPayload[matchIndex]?.name} trong danh sách yêu thích`
+              );
+            } else {
+              newProductPayload.push({
+                ...payload,
+                product_id: payload?._id,
+              });
+              message.success(
+                `Thêm sản phẩm thành công vào danh sách yêu thích`
+              );
+            }
             whiteListPayload = {
               ...whiteListInfo,
               products: newProductPayload,
             };
-            if (matchIndex > -1) {
-              if (newProductPayload[matchIndex]?.quantity >= 20) {
-                return message.error(
-                  `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
-                );
-              } else {
-                newProductPayload[matchIndex] = {
-                  ...newProductPayload[matchIndex],
-                  quantity: newProductPayload[matchIndex]?.quantity + 1,
-                };
-                message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
-              }
-            } else {
-              newProductPayload.push({
-                ...payload,
-                quantity: 1,
-                product_id: payload?._id,
-              });
-              message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
-            }
           }
           dispatch(updateWhiteList(whiteListPayload));
         }
@@ -425,7 +411,10 @@ const ProductCard = ({
             }}
           />
         )}
-        <button className="absolute z-[100] xs:top-6 md:top-9 right-5 group/hover">
+        <button
+          className="absolute z-[100] xs:top-6 md:top-9 right-5 group/hover"
+          onClick={onAddToWhiteList}
+        >
           <svg
             className="xs:w-[18px] md:w-[22px] xs:h-[18px] md:h-[22px] "
             viewBox="0 0 24 24"

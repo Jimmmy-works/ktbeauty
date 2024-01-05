@@ -17,6 +17,7 @@
 @import "swiper/css/pagination";
 @import "swiper/css/effect-flip";
 @import "swiper/css/effect-creative";
+
 @import "react-lazy-load-image-component/src/effects/blur.css";
 :root {
   --height-header-lg: 110px;
@@ -635,6 +636,17 @@
       }
     }
   }
+  &-product {
+    .ant-table {
+      .ant-table-tbody {
+        .ant-table-row {
+          .ant-table-cell {
+            @apply [&:nth-child(4)]:min-w-[120px];
+          }
+        }
+      }
+    }
+  }
   &-analyst {
     .table__dashboard {
       @apply xs:mt-0 md:mt-0;
@@ -805,4 +817,7 @@
   20% {
     transform: translateY(-10px);
   }
+}
+.swiper-button-disabled {
+  @apply invisible opacity-0;
 }

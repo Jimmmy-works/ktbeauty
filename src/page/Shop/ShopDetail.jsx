@@ -1,26 +1,25 @@
 import BreadCrumb from "@/components/BreadCrumb";
 import ImageZoom from "@/components/ImageZoom";
-import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
 import Review from "@/components/Review";
 import { Tab, Tabs } from "@/components/Tab/Tab";
+import { _LIMIT } from "@/contants/general";
 import { PATHS } from "@/contants/path";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import { getProductDetail } from "@/store/reducer/productReducer";
 import { formatPriceVND } from "@/utils/formatPrice";
+import { LoadingOutlined } from "@ant-design/icons";
 import MDEditor from "@uiw/react-md-editor";
-import { Rate } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { Rate, Spin } from "antd";
+import queryString from "query-string";
+import { useEffect, useState } from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Keyboard, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { twMerge } from "tailwind-merge";
 import useShop from "./useShop";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-import queryString from "query-string";
-import { _LIMIT } from "@/contants/general";
 const StyleRate = styled.div`
   display: flex;
   gap: 8px;
@@ -65,6 +64,7 @@ const ShopDetail = () => {
   const min = 1;
   const [currentImg, setCurrentImg] = useState();
   const [numbInput, setNumbInput] = useState(min);
+  const [controlThumb, setControlThumb] = useState(null);
   const dispatch = useDispatch();
   const onIncrease = () => {
     const value = modifyValue(Number(numbInput) + 1);
@@ -87,13 +87,16 @@ const ShopDetail = () => {
     }
   };
   /// navigate
-  const navigationPrevRef = useRef(null);
-  const navigationNextRef = useRef(null);
+
   useEffect(() => {
     if (slugParams) {
       dispatch(getProductDetail(slugParams));
     }
   }, [slugParams]);
+  useEffect(() => {
+    console.log("111", 111);
+    if (image) setCurrentImg(image[0]);
+  }, [image]);
   return (
     <main className="main-wrapper shoppage">
       <BreadCrumb>
@@ -132,65 +135,64 @@ const ShopDetail = () => {
         {statusGetProductDetail === THUNK_STATUS.fulfilled ? (
           <>
             <div className="flex lg:flex-row xs:flex-col xs:gap-[60px] lg:gap-[14px] xs:my-[20px] lg:my-[30px]">
-              <div className="shopapge__left md:w-full lg:w-1/2 ">
+              <div className="shopapge__left relative md:w-full lg:w-1/2 ">
                 <div className="shoppage__left-wrapper flex gap-[10px] ">
-                  <div className=" h-fit w-fit relative ">
-                    <div
-                      className="shoppage-swiper-up next cursor-pointer absolute z-10 top-[calc(100%+20px)] left-[8px]  p-[5.5px] group/hover
-                   bg-white rounded-[50%] hover:shadow-[0_0px_10px_0_rgba(0,0,0,0.2)] duration-300 transition-shadow"
-                      ref={navigationNextRef}
-                      id="shoppage-swiper-up"
-                    >
-                      <div className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors  rotate-[-90deg]">
-                        <svg viewBox="0 0 24 24" className="h-[10px] w-[10px]">
-                          <path
-                            fill="#fff"
-                            d="m13.022 14.999v3.251c0 .412.335.75.752.75.188 0 .375-.071.518-.206 1.775-1.685 4.945-4.692 6.396-6.069.2-.189.312-.452.312-.725 0-.274-.112-.536-.312-.725-1.451-1.377-4.621-4.385-6.396-6.068-.143-.136-.33-.207-.518-.207-.417 0-.752.337-.752.75v3.251h-9.02c-.531 0-1.002.47-1.002 1v3.998c0 .53.471 1 1.002 1z"
-                          ></path>
-                        </svg>
-                      </div>
-                    </div>
-                    <div
-                      className="shoppage-swiper-down prev cursor-pointer absolute z-10 top-[calc(100%+20px)] right-[8px]  p-[5.5px] group/hover
-                   bg-white rounded-[50%] hover:shadow-[0_0px_10px_0_rgba(0,0,0,0.2)] duration-300 transition-shadow"
-                      ref={navigationPrevRef}
-                      id="shoppage-swiper-down"
-                    >
-                      <div className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors rotate-[90deg]">
-                        <svg viewBox="0 0 24 24" className="h-[10px] w-[10px]">
-                          <path
-                            fill="#fff"
-                            d="m13.022 14.999v3.251c0 .412.335.75.752.75.188 0 .375-.071.518-.206 1.775-1.685 4.945-4.692 6.396-6.069.2-.189.312-.452.312-.725 0-.274-.112-.536-.312-.725-1.451-1.377-4.621-4.385-6.396-6.068-.143-.136-.33-.207-.518-.207-.417 0-.752.337-.752.75v3.251h-9.02c-.531 0-1.002.47-1.002 1v3.998c0 .53.471 1 1.002 1z"
-                          ></path>
-                        </svg>
-                      </div>
-                    </div>
+                  <div className=" relative max-h-[320px]">
+                    {image?.length > 3 ? (
+                      <>
+                        <div
+                          className="shoppage-swiper-up next cursor-pointer absolute z-10 top-[calc(100%+20px)] left-[8px]  p-[5.5px] group/hover
+                               bg-white rounded-[50%] hover:shadow-[0_0px_10px_0_rgba(0,0,0,0.2)] duration-300 transition-shadow"
+                          id="shoppage-swiper-up"
+                        >
+                          <div className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors  rotate-[-90deg]">
+                            <svg
+                              viewBox="0 0 24 24"
+                              className="h-[10px] w-[10px]"
+                            >
+                              <path
+                                fill="#fff"
+                                d="m13.022 14.999v3.251c0 .412.335.75.752.75.188 0 .375-.071.518-.206 1.775-1.685 4.945-4.692 6.396-6.069.2-.189.312-.452.312-.725 0-.274-.112-.536-.312-.725-1.451-1.377-4.621-4.385-6.396-6.068-.143-.136-.33-.207-.518-.207-.417 0-.752.337-.752.75v3.251h-9.02c-.531 0-1.002.47-1.002 1v3.998c0 .53.471 1 1.002 1z"
+                              ></path>
+                            </svg>
+                          </div>
+                        </div>
+                        <div
+                          className="shoppage-swiper-down prev cursor-pointer absolute z-10 top-[calc(100%+20px)] right-[8px]  p-[5.5px] group/hover
+                                  bg-white rounded-[50%] hover:shadow-[0_0px_10px_0_rgba(0,0,0,0.2)] duration-300 transition-shadow"
+                          id="shoppage-swiper-down"
+                        >
+                          <div className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors rotate-[90deg]">
+                            <svg
+                              viewBox="0 0 24 24"
+                              className="h-[10px] w-[10px]"
+                            >
+                              <path
+                                fill="#fff"
+                                d="m13.022 14.999v3.251c0 .412.335.75.752.75.188 0 .375-.071.518-.206 1.775-1.685 4.945-4.692 6.396-6.069.2-.189.312-.452.312-.725 0-.274-.112-.536-.312-.725-1.451-1.377-4.621-4.385-6.396-6.068-.143-.136-.33-.207-.518-.207-.417 0-.752.337-.752.75v3.251h-9.02c-.531 0-1.002.47-1.002 1v3.998c0 .53.471 1 1.002 1z"
+                              ></path>
+                            </svg>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      ""
+                    )}
                     <Swiper
                       modules={[Navigation, Keyboard]}
                       keyboard={{ enabled: true }}
                       grabCursor={true}
                       className="shoppage-swiper"
                       spaceBetween={10}
-                      loop={true}
                       direction={"vertical"}
-                      // breakpoints={{
-                      //   360: {
-                      //     slidesPerView: 2,
-                      //     spaceBetween: 10,
-                      //   },
-                      //   768: {
-                      //     slidesPerView: 2,
-                      //     spaceBetween: 20,
-                      //   },
-                      //   1024: {
-                      //     spaceBetween: 10,
-                      //     slidesPerView: 3,
-                      //   },
-                      // }}
-                      slidesPerView={"auto"}
+                      slidesPerView={3}
+                      onActiveIndexChange={(swiper) =>
+                        setControlThumb(swiper?.activeIndex)
+                      }
                       navigation={{
-                        prevEl: `.shoppage .prev`,
-                        nextEl: `.shoppage .next`,
+                        enabled: true,
+                        prevEl: `.shoppage-swiper-up`,
+                        nextEl: `.shoppage-swiper-down`,
                       }}
                     >
                       {image?.length &&
@@ -200,27 +202,20 @@ const ShopDetail = () => {
                               key={img}
                               className="shoppage-swiper-item"
                             >
-                              <a
-                                className={`item  ${
-                                  currentImg === img ? "active" : ""
-                                }`}
+                              <LazyLoadImage
+                                wrapperClassName={twMerge(
+                                  `item ${currentImg === img ? "active" : ""}`
+                                )}
                                 onClick={() => {
                                   setCurrentImg(img);
                                 }}
-                              >
-                                <img
-                                  onLoad={onImageLoading}
-                                  className={`h-full w-full object-cover duration-500 transition-opacity ${
-                                    !imageloading ? "opacity-100" : "opacity-0"
-                                  }`}
-                                  onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = "/assets/img/error.png";
-                                  }}
-                                  src={img || `/assets/img/error.png`}
-                                  alt=""
-                                />
-                              </a>
+                                loading="lazy"
+                                key={_id}
+                                className={`h-full w-full object-cover duration-500 transition-opacity `}
+                                effect="blur"
+                                src={img || `/assets/img/error.png`}
+                                alt=""
+                              />
                             </SwiperSlide>
                           );
                         })}
@@ -228,16 +223,12 @@ const ShopDetail = () => {
                   </div>
                   <div className="w-full h-full ">
                     {image?.length && (
-                      <a className="block relative pb-[100%] h-0 overflow-hidden group/zoom">
-                        <ImageZoom
-                          classNameImg={`duration-500 transition-opacity ${
-                            !imageloading ? "opacity-100" : "opacity-0"
-                          }`}
-                          magnifierHeight="250"
-                          magnifierWidth="250"
-                          src={`${currentImg || image[0]}`}
-                        />
-                      </a>
+                      <ImageZoom
+                        classNameImg={`duration-500 transition-opacity `}
+                        magnifierHeight="300"
+                        magnifierWidth="300"
+                        src={`${currentImg || image[0]}`}
+                      />
                     )}
                     <div className="social flex justify-center items-center gap-[10px] mt-[34px]">
                       <div

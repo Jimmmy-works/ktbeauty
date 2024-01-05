@@ -2357,10 +2357,6 @@ input[type="number"] {
   display: table !important;
 }
 
-.grid {
-  display: grid !important;
-}
-
 .hidden {
   display: none !important;
 }
@@ -2506,8 +2502,16 @@ input[type="number"] {
   max-height: 38px !important;
 }
 
+.max-h-\[400px\] {
+  max-height: 400px !important;
+}
+
 .max-h-\[600px\] {
   max-height: 600px !important;
+}
+
+.max-h-\[320px\] {
+  max-height: 320px !important;
 }
 
 .min-h-\[180px\] {
@@ -3246,14 +3250,14 @@ input[type="number"] {
   background-color: rgb(51 105 156 / var(--tw-bg-opacity)) !important;
 }
 
+.bg-\[\#4096FF\] {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(64 150 255 / var(--tw-bg-opacity)) !important;
+}
+
 .bg-\[\#4F649F\] {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(79 100 159 / var(--tw-bg-opacity)) !important;
-}
-
-.bg-\[\#555\] {
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(85 85 85 / var(--tw-bg-opacity)) !important;
 }
 
 .bg-\[\#58C5E5\] {
@@ -4678,6 +4682,17 @@ input[type="number"] {
       }
     }
   }
+  &-product {
+    .ant-table {
+      .ant-table-tbody {
+        .ant-table-row {
+          .ant-table-cell:nth-child(4) {
+            min-width: 120px;
+          }
+        }
+      }
+    }
+  }
   &-analyst {
     @media (min-width: 360px) {
       .table__dashboard {
@@ -5028,6 +5043,11 @@ input[type="number"] {
   }
 }
 
+.swiper-button-disabled {
+  visibility: hidden;
+  opacity: 0;
+}
+
 .placeholder\:text-white::-moz-placeholder {
   --tw-text-opacity: 1 !important;
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
@@ -5268,9 +5288,9 @@ input[type="number"] {
   background-color: rgb(3 60 115 / var(--tw-bg-opacity)) !important;
 }
 
-.hover\:bg-\[\#555\]:hover {
+.hover\:bg-\[\#4096FF\]:hover {
   --tw-bg-opacity: 1 !important;
-  background-color: rgb(85 85 85 / var(--tw-bg-opacity)) !important;
+  background-color: rgb(64 150 255 / var(--tw-bg-opacity)) !important;
 }
 
 .hover\:bg-\[\#80B04B\]:hover {

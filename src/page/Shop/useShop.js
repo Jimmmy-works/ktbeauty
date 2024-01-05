@@ -3,13 +3,12 @@ import { useMainParamContext } from "@/components/MainParamShopContext";
 import { OPTION_SORT, _LIMIT } from "@/contants/general";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
-import useDebounce from "@/hooks/useDebounce";
 import useQuery from "@/hooks/useQuery";
 import productService from "@/service/productService";
-import { cartActions, updateCart } from "@/store/reducer/cartReducer";
+import { updateCart } from "@/store/reducer/cartReducer";
 import { message } from "antd";
 import queryString from "query-string";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
 const useShop = () => {

@@ -6,7 +6,6 @@ import { dateVN } from "@/utils/timeVN";
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Image, Input, Slider, Spin, Table, message } from "antd";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import useDashboard from "../useDashboard";
 import ModalCreateProduct from "./ModalCreateProduct";
@@ -17,7 +16,6 @@ const StyleImage = styled.div`
   }
 `;
 const DashBoardProduct = () => {
-  const dispatch = useDispatch();
   const { modalProps, productProps } = useDashboard();
   const { onDeleteProduct, statusGetAllProducts, totalProducts } =
     productProps || {};
@@ -249,7 +247,7 @@ const DashBoardProduct = () => {
       image: (
         <div className="flex items-center xs:justify-center xs:gap-4 lg:gap-3 flex-wrap  ">
           <Image.PreviewGroup>
-            {Array(product?.image?.length < 4 ? product?.image?.length : 2)
+            {Array(width > 428 ? 2 : product?.image?.length)
               ?.fill(product?.image)
               ?.map((item, index) => {
                 return (

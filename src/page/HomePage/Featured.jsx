@@ -3,9 +3,10 @@ import { FEATURED_OPTIONS } from "@/contants/general";
 import { PATHS } from "@/contants/path";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Keyboard, Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Controller, Keyboard, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide, useSwiper, useSwiperSlide } from "swiper/react";
 const Featured = ({
   onChangeFeaturedTab,
   featuerdTab,
@@ -14,13 +15,11 @@ const Featured = ({
   dataFeatured,
   loadingFeatured,
 }) => {
+  const [slideCurrent, setSlideCurrent] = useState();
   return (
-    <section
-      className="scfeatured 
-    "
-    >
+    <section className="scfeatured ">
       <div className="container">
-        <div className="scfeatured__tabs  ">
+        <div className="scfeatured__tabs">
           <div
             className={`scfeatured__tabs-item ${
               featuerdTab === FEATURED_OPTIONS.FEATURED ? "active" : ""
@@ -48,7 +47,13 @@ const Featured = ({
         </div>
         <div className="scfeatured__content">
           <div className={`scfeatured__content-list`}>
-            <div className="prev">
+            <div
+              className={`prev ${
+                slideCurrent === 0
+                  ? "invisible opacity-0"
+                  : "visible opacity-100"
+              }`}
+            >
               <div
                 className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors rotate-180
               group-hover/hover:bg-white"
@@ -64,10 +69,16 @@ const Featured = ({
                 </svg>
               </div>
             </div>
-            <div className="next">
+            <div
+              className={`next ${
+                slideCurrent === dataFeatured?.data?.data?.length - 5
+                  ? "invisible opacity-0"
+                  : "visible opacity-100"
+              }`}
+            >
               <div
                 className="p-[2px] rounded-[50%] bg-primary duration-400 transition-colors 
-              group-hover/hover:bg-white"
+                group-hover/hover:bg-white"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -82,6 +93,9 @@ const Featured = ({
             </div>
             {dataFeatured?.data?.data?.length > 0 ? (
               <Swiper
+                onActiveIndexChange={(swiperCore) =>
+                  setSlideCurrent(swiperCore.activeIndex)
+                }
                 className="overflow-y-visible"
                 modules={[Navigation, Keyboard]}
                 keyboard={{
@@ -105,10 +119,10 @@ const Featured = ({
                   prevEl: ".scfeatured .prev",
                   nextEl: ".scfeatured .next",
                 }}
-                freeMode
                 grabCursor={true}
                 pagination={false}
-                loop={true}
+                // freeMode
+                // loop={true}
               >
                 {dataFeatured?.data?.data.map((item, index) => {
                   return (
@@ -169,10 +183,10 @@ const Featured = ({
                   prevEl: ".scfeatured .prev",
                   nextEl: ".scfeatured .next",
                 }}
-                freeMode
                 grabCursor={true}
                 pagination={false}
-                loop={true}
+                // freeMode
+                // loop={true}
               >
                 {Array(9)
                   ?.fill("")

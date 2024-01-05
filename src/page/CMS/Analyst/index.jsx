@@ -232,22 +232,25 @@ const DashboardAnalyst = () => {
       return [100, 250, 300, 450, 500, 650, 700, 850, 900, 1050, 1100, 1250];
     }
   }, [soldProductObj, soldProductFilter]);
-  const customDataSoldProductLineTest = useMemo(() => {}, []);
   const customLabelRevenueBar = useMemo(() => {
     if (Object?.keys(revenueFilter)?.length) {
       return revenueFilter?.data?.data?.map((month) => {
-        return `${month?.date?.day?.toString()?.padStart(2, 0)}/${
-          month?.date?.month
-        }/${month?.date?.year}`;
+        return `${month?.date?.day
+          ?.toString()
+          ?.padStart(2, 0)}/${month?.date?.month?.toString()?.padStart(2, 0)}/${
+          month?.date?.year
+        }`;
       });
     } else if (
       !Object?.keys(revenueFilter)?.length &&
       Object?.keys(revenueObj)?.length
     ) {
       return revenueObj?.currentMonth?.data?.map((time) => {
-        return `${time?.date?.day?.toString()?.padStart(2, 0)}/${
-          time?.date?.month
-        }/${time?.date?.year}`;
+        return `${time?.date?.day
+          ?.toString()
+          ?.padStart(2, 0)}/${time?.date?.month?.toString()?.padStart(2, 0)}/${
+          time?.date?.year
+        }`;
       });
     } else if (
       Object.keys(revenueObj).length < 1 &&
@@ -720,15 +723,15 @@ const DashboardAnalyst = () => {
   //// Table top-rate
   const columnTopSold = [
     {
-      title: "Top Sold",
+      title: "Serial",
       align: "center",
       dataIndex: "top",
-      width: 150,
     },
     {
       title: "Name",
       align: "center",
       dataIndex: "name",
+      width: 600,
     },
 
     {
@@ -740,6 +743,7 @@ const DashboardAnalyst = () => {
       title: "Sold",
       align: "center",
       dataIndex: "sold",
+      width: 100,
       sorter: (a, b) => b?.sold - a?.sold,
       sortDirections: ["descend"],
       ellipsis: true,
@@ -747,7 +751,7 @@ const DashboardAnalyst = () => {
   ];
   const columnTopCountInStock = [
     {
-      title: "Top",
+      title: "Serial",
       dataIndex: "top",
       align: "center",
     },
@@ -755,6 +759,7 @@ const DashboardAnalyst = () => {
       title: "Name",
       dataIndex: "name",
       align: "center",
+      width: 600,
     },
 
     {
@@ -766,6 +771,7 @@ const DashboardAnalyst = () => {
       title: "Stock",
       dataIndex: "stock",
       align: "center",
+      width: 100,
       sorter: (a, b) => {
         return b?.stock - a?.stock;
       },
@@ -777,7 +783,11 @@ const DashboardAnalyst = () => {
     (item, index) => {
       return {
         key: `${item?._id}`,
-        name: `${item?.name}`,
+        name: (
+          <p className="truncate whitespace-normal line-clamp-3">
+            {item?.name}
+          </p>
+        ),
         stock: item?.countInStock,
         top: index + 1,
         image: (
@@ -806,7 +816,11 @@ const DashboardAnalyst = () => {
   const dataTopSold = dataTop10Sold?.data?.data?.map((item, index) => {
     return {
       key: item?._id,
-      name: item?.productName,
+      name: (
+        <p className=" truncate whitespace-normal line-clamp-3">
+          {item?.productName}
+        </p>
+      ),
       sold: item?.sold,
       top: index + 1,
       image: (
@@ -940,7 +954,8 @@ const DashboardAnalyst = () => {
               </button>
             </div>
             <div className="mt-[12px] text-[rgba(0,0,0,.85)] font-osr tracking-wider text-sm ">
-              Bán được : {soldProductObj?.today?.total || 0} sản phẩm
+              Sản phẩm bán được hôm nay : {soldProductObj?.today?.total || 0}{" "}
+              sản phẩm
             </div>
           </div>
         </div>
@@ -960,6 +975,7 @@ const DashboardAnalyst = () => {
                 onChange={onChangeDatePickerRevenue}
               />
             </CustomCalendar>
+            {console.log("revenueFilter", revenueFilter)}
             <Bar
               onClick={onClick}
               className="shadow-header p-[10px] rounded-[5px]"
@@ -973,11 +989,17 @@ const DashboardAnalyst = () => {
                   title: {
                     display: true,
                     text: Object?.keys(revenueFilter)?.length
-                      ? `Doanh thu: ${revenueFilter?.start.day}/${
-                          revenueFilter?.start.month
-                        }/${revenueFilter?.start.year} - ${
-                          revenueFilter?.end?.day
-                        }/${revenueFilter?.end?.month}/${
+                      ? `Doanh thu: ${revenueFilter?.start.day
+                          ?.toString()
+                          ?.padStart(2, 0)}/${(revenueFilter?.start.month + 1)
+                          ?.toString()
+                          ?.padStart(2, 0)}/${
+                          revenueFilter?.start.year
+                        } - ${revenueFilter?.end?.day
+                          ?.toString()
+                          ?.padStart(2, 0)}/${(revenueFilter?.end?.month + 1)
+                          ?.toString()
+                          ?.padStart(2, 0)}/${
                           revenueFilter?.end?.year
                         }: ${formatPriceVND(revenueFilter?.data?.total)}`
                       : "Tổng doanh thu",
@@ -1005,13 +1027,6 @@ const DashboardAnalyst = () => {
               width: "100vw",
             }}
           >
-            <CustomCalendar className="">
-              <DatePicker.RangePicker
-                placement="bottomRight"
-                className="w-full"
-                onChange={onChangeDatePickerSoldProducts}
-              />
-            </CustomCalendar>
             <Doughnut
               className="shadow-header p-[10px] rounded-[5px]"
               typeof="line"
@@ -1020,7 +1035,7 @@ const DashboardAnalyst = () => {
                 plugins: {
                   title: {
                     display: true,
-                    text: "Tổng sản phẩm đã bán",
+                    text: "Tổng sản phẩm đã bán theo Category",
                   },
                 },
                 responsive: true,
@@ -1029,7 +1044,7 @@ const DashboardAnalyst = () => {
             />
           </div>
         </div>
-        <div className="py-[20px] flex lg:flex-row xs:flex-col gap-[20px] items-center ">
+        <div className="py-[20px] flex lg:flex-row xs:flex-col gap-[20px] items-start ">
           <div className="lg:w-1/2 xs:w-full   table__dashboard table__dashboard-analyst xs:mt-[10px] ">
             <div className="flex items-center justify-between">
               <div className="font-om text-md text-black-555  m-[15px_12px] text-center ">
@@ -1139,59 +1154,6 @@ const DashboardAnalyst = () => {
             />
           </div>
         </div>
-        {/* <div
-          className={`w-full `}
-          style={{
-            position: "relative",
-            height: `${resizeChart}px `,
-            width: "100vw",
-          }}
-        >
-          <CustomCalendar className="">
-            <DatePicker.RangePicker
-              placement="bottomRight"
-              className="w-full"
-              onChange={onChangeDatePickerSoldProducts}
-            />
-          </CustomCalendar>
-          <Line
-            className="shadow-header p-[10px] rounded-[5px]"
-            typeof="line"
-            options={{
-              responsive: true,
-              maintainAspectRatio: false,
-              interaction: {
-                mode: "index",
-                intersect: false,
-              },
-              stacked: false,
-              plugins: {
-                title: {
-                  display: true,
-                  text: "Tổng sản phẩm đã bán",
-                },
-              },
-
-              scales: {
-                y: {
-                  type: "linear",
-                  display: true,
-                  position: "left",
-                },
-                y1: {
-                  type: "linear",
-                  display: true,
-                  position: "right",
-
-                  grid: {
-                    drawOnChartArea: false,
-                  },
-                },
-              },
-            }}
-            data={dataLines}
-          />
-        </div> */}
       </div>
     </>
   );

@@ -183,10 +183,8 @@ const ModalUpdateProduct = ({
           .then((res) => {
             message.success("All images uploaded");
             setURLs([]);
-            timeout();
           })
-          .catch((err) => console.log(files))
-          .finally(() => {});
+          .catch((err) => console.log(files));
       }
       return promises;
     } catch (error) {
@@ -329,7 +327,7 @@ const ModalUpdateProduct = ({
         setLoadingUploadImage(false);
         return;
       }
-    }, 1500);
+    }, 2000);
     return () => {
       clearTimeout(timeout);
     };
@@ -342,7 +340,7 @@ const ModalUpdateProduct = ({
       if (URLs?.length) {
         setCurrentImages([...URLs, ...currentImages]);
       }
-    }, 300);
+    }, 400);
     return () => clearTimeout(timeout);
   }, [URLs]);
   const convertToBlobUrl = useMemo(() => {
@@ -416,24 +414,24 @@ const ModalUpdateProduct = ({
         </div>
         <div className="form__container mt-0 ">
           <div className="form__container-wrapper w-full mb-[20px]  ">
-            <label htmlFor="count">Count In Stock</label>
-            <input
-              value={countInStock}
-              onChange={(e) => setCountInStock(e.target.value)}
-              className=" "
-              id="count"
-              type="number"
-            />
-          </div>
-        </div>
-        <div className="form__container mt-0 ">
-          <div className="form__container-wrapper w-full mb-[20px]  ">
             <label htmlFor="discount">Discount</label>
             <input
               value={discount}
               onChange={(e) => setDiscount(e.target.value)}
               className=" "
               id="discount"
+              type="number"
+            />
+          </div>
+        </div>
+        <div className="form__container mt-0 ">
+          <div className="form__container-wrapper w-full mb-[20px]  ">
+            <label htmlFor="count">Count In Stock</label>
+            <input
+              value={countInStock}
+              onChange={(e) => setCountInStock(e.target.value)}
+              className=" "
+              id="count"
               type="number"
             />
           </div>

@@ -283,7 +283,7 @@ const Header = () => {
         )}
       </div>
       <div className="header__main ">
-        <NavLink to={`${PATHS.HOME}`} className={`header__logo `}>
+        <NavLink to={`${PATHS.HOME}`} className={`header__logo z-[1000]`}>
           {/* <svg className="group " viewBox="3 -40.5 215.18 41.1">
             <path
               className="fill-black-555 group-hover:fill-primary duration-400 transition-colors"

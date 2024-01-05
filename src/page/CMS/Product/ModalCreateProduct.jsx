@@ -140,7 +140,7 @@ const ModalCreateProduct = ({
   const [currentImages, setCurrentImages] = useState([]);
   const [URLs, setURLs] = useState([]);
   const [currentFileURLs, setCurrnetFileURLs] = useState([]);
-  const [loadingUploadImage, setLoadingUploadImage] = useState(false);
+  const [loadingUploadImage, setLoadingUploadImage] = useState();
 
   ////  handle Images
   const uploadImages = (files) => {
@@ -188,7 +188,6 @@ const ModalCreateProduct = ({
     }
   };
   const handleImageChange = (e) => {
-    let allUrls = [];
     let allImages = [];
     for (let i = 0; i < e.target.files.length; i++) {
       const newImage = e.target.files[i];
@@ -197,11 +196,8 @@ const ModalCreateProduct = ({
     }
     setImages(allImages);
   };
-
-  console.log("desc", desc);
   /// handle Main
   const handleDeleteImage = (file) => {
-    console.log("file", file);
     const filter = currentFileURLs?.filter(
       (curFile) => curFile?.name !== file?.name
     );
@@ -247,25 +243,21 @@ const ModalCreateProduct = ({
       valueLifeStyle?.length &&
       images?.length
     ) {
-      if (currentFileURLs.length > 0) {
-        uploadImages(currentFileURLs);
-        setLoadingUploadImage(true);
-      } else {
-        setLoadingUploadImage(true);
-      }
+      uploadImages(currentFileURLs);
+      setLoadingUploadImage(true);
     } else {
       message.error(`Xin vui lòng điền đầy đủ thông tin sản phẩm`);
     }
   };
   useEffect(() => {
-    const _token = localStorage.getItem(LOCAL_STORAGE.token);
     const timeout = setTimeout(() => {
-      if (loadingUploadImage && currentFileURLs?.length >= 1) {
+      if (loadingUploadImage && URLs?.length >= 1) {
+        const _token = localStorage.getItem(LOCAL_STORAGE.token);
         const payload = {
           name: name,
           price: price,
           countInStock: countInStock,
-          discount: discount || 0,
+          discount: discount,
           rating: rating,
           category_id: {
             name: category?.name,
@@ -282,9 +274,8 @@ const ModalCreateProduct = ({
         };
         executeCreateProduct(payload, _token);
         setLoadingUploadImage(false);
-        handleCancel();
       }
-    }, 1500);
+    }, 2000);
     return () => {
       clearTimeout(timeout);
     };
@@ -296,7 +287,7 @@ const ModalCreateProduct = ({
       } else if (URLs?.length && currentImages?.length) {
         setCurrentImages([...URLs, ...currentImages]);
       }
-    }, 300);
+    }, 400);
     return () => clearTimeout(timeout);
   }, [URLs]);
   useEffect(() => {
@@ -354,18 +345,6 @@ const ModalCreateProduct = ({
         </div>
         <div className="form__container mt-0 ">
           <div className="form__container-wrapper w-full mb-[20px]  ">
-            <label htmlFor="count">Count In Stock</label>
-            <input
-              value={countInStock}
-              onChange={(e) => setCountInStock(e.target.value)}
-              className=" "
-              id="count"
-              type="number"
-            />
-          </div>
-        </div>
-        <div className="form__container mt-0 ">
-          <div className="form__container-wrapper w-full mb-[20px]  ">
             <label htmlFor="discount">Discount</label>
             <input
               value={discount}
@@ -376,6 +355,19 @@ const ModalCreateProduct = ({
             />
           </div>
         </div>
+        <div className="form__container mt-0 ">
+          <div className="form__container-wrapper w-full mb-[20px]  ">
+            <label htmlFor="count">Count In Stock</label>
+            <input
+              value={countInStock}
+              onChange={(e) => setCountInStock(e.target.value)}
+              className=" "
+              id="count"
+              type="number"
+            />
+          </div>
+        </div>
+
         <div className="form__container mt-0 ">
           <div className="form__container-wrapper w-full mb-[20px]  ">
             <label className="mb-[12px]">Category - Chọn 1</label>

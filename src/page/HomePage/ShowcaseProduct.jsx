@@ -1,17 +1,15 @@
-import Button from "@/components/Button";
 import LoadingSkeleton from "@/components/Loading/LoadingSkeleton";
 import ProductCard from "@/components/ProductCard";
 import Textbox from "@/components/Textbox";
-import useWindowSize from "@/utils/windowResize";
-import { Empty } from "antd";
-import { useEffect, useRef } from "react";
-import styled from "styled-components";
-import { FreeMode, Keyboard, Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-import { Link, NavLink } from "react-router-dom";
 import { PATHS } from "@/contants/path";
+import useWindowSize from "@/utils/windowResize";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Empty, Spin } from "antd";
+import { useRef } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { Keyboard, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 const EmptyWrapper = styled.div`
   margin-bottom: 12px;
   min-width: 200px;
@@ -70,7 +68,7 @@ const ShowcaseProduct = ({
                 />
               </svg>
             </div>
-            <div className={`next  `}>
+            <div className={`next `}>
               <div className="rotate-180">
                 <svg viewBox="0 0 24 24">
                   <path d="M16.2426 6.34317L14.8284 4.92896L7.75739 12L14.8285 19.0711L16.2427 17.6569L10.5858 12L16.2426 6.34317Z" />
@@ -83,7 +81,7 @@ const ShowcaseProduct = ({
               grabCursor={true}
               pagination={false}
               slidesPerView={"auto"}
-              modules={[Navigation]}
+              modules={[Navigation, Keyboard]}
               navigation={{
                 prevEl: ".scshowcaseproduct__top .prev",
                 nextEl: ".scshowcaseproduct__top .next",
@@ -107,7 +105,7 @@ const ShowcaseProduct = ({
                               ? "text-primary"
                               : ""
                           }
-                             `}
+                               `}
                         >
                           {label}
                         </a>
@@ -141,15 +139,14 @@ const ShowcaseProduct = ({
                   },
                 }}
                 navigation={{
+                  enabled: true,
                   prevEl: ".scshowcaseproduct__bottom .prev",
                   nextEl: ".scshowcaseproduct__bottom .next",
                 }}
                 grabCursor={true}
                 pagination={false}
-                freeMode={true}
-                loop={true}
               >
-                {dataShowcaseProduct?.data?.data.map((item) => {
+                {dataShowcaseProduct?.data?.data.map((item, index) => {
                   return (
                     <SwiperSlide key={`${item?._id}`}>
                       {!loadingShowcaseProduct ? (
@@ -160,11 +157,6 @@ const ShowcaseProduct = ({
                           imageloading={imageloading}
                         />
                       ) : (
-                        // <LoadingSkeleton
-                        //   isArray={1}
-                        //   isLoading={loadingShowcaseProduct}
-                        //   isParagraph={width >= 768 ? 3 : 2}
-                        // />
                         <div
                           className="xs:min-h-[300px] md:min-h-[350px]  xs:p-[20px_14px_14px] md:p-[30px_30px_20px] lg:p-[40px_40px_26px]
                            h-full flex justify-center items-center"
@@ -203,7 +195,7 @@ const ShowcaseProduct = ({
               />
             )}
             <div
-              className={`prev  ${
+              className={`prev ${
                 dataShowcaseProduct?.data?.data?.length > 4 ? "block" : "hidden"
               }`}
             >

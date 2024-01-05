@@ -131,6 +131,7 @@ const useDashboard = () => {
     execute: executeCreateProduct,
   } = useMutation(dashboardService.createProduct, {
     onSuccess: () => {
+      onCloseModal();
       dispatch(getAllProduct());
     },
     onFail: (error) => {
