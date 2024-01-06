@@ -5,6 +5,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 import LoadingPage from "../Loading/LoadingPage";
 import { getProfileSlug } from "@/store/reducer/authReducer";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
+import { PATHS } from "@/contants/path";
+import { message } from "antd";
 
 const PrivateRouteCMS = () => {
   const dispatch = useDispatch();
@@ -13,7 +15,7 @@ const PrivateRouteCMS = () => {
   const navigate = useNavigate();
   if (updateStatusUser === THUNK_STATUS) {
     if (!profile && !profile?.isAdmin) {
-      navigate("/");
+      navigate(PATHS.HOME);
     }
   }
   useEffect(() => {
@@ -21,9 +23,19 @@ const PrivateRouteCMS = () => {
       dispatch(getProfileSlug());
     }
   }, []);
+  useEffect(() => {
+    if (!profile || !profile?.isAdmin) {
+      const timeout = setTimeout(() => {
+        navigate(PATHS.HOME);
+        message.error("Bạn chưa đăng nhập hoặc không đủ quyền truy cập");
+      }, 500);
+      return () => clearTimeout(timeout);
+    }
+  }, []);
   if (!profile || !profile?.isAdmin) {
     return <LoadingPage />;
+  } else {
+    return <Outlet></Outlet>;
   }
-  return <Outlet></Outlet>;
 };
 export default PrivateRouteCMS;

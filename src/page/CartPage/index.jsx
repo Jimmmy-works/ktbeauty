@@ -8,7 +8,7 @@ import useWindowSize from "@/utils/windowResize";
 import { Empty, Select, Steps, message } from "antd";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useCartPage from "./useCartPage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
@@ -78,6 +78,7 @@ const CartPage = () => {
     },
   ];
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { width } = useWindowSize();
   const {
     cartInfo,
@@ -163,10 +164,14 @@ const CartPage = () => {
     }
   }, [products, subTotal, shippingCurrent, total]);
   const handleSubmit = () => {
-    if (!shippingCurrent || shippingCurrent?.value === "default") {
-      message.error(`Hãy chọn phương thức vận chuyển`);
+    if (!!!cartInfo?._id) {
+      message.error(`Oh, bạn chưa có sản phẩm nào trong giỏ hàng`);
     } else {
-      dispatch(updateCart(JSON.parse(localStorage.getItem("cart"))));
+      if (!shippingCurrent || shippingCurrent?.value === "default") {
+        message.error(`Hãy chọn phương thức vận chuyển`);
+      } else {
+        navigate(PATHS.CHECKOUT);
+      }
     }
   };
   return (
@@ -421,11 +426,6 @@ const CartPage = () => {
             <div className=" p-[14px_20px] ">
               <Button
                 onClick={handleSubmit}
-                link={
-                  shippingCurrent && shippingCurrent?.value !== "default"
-                    ? PATHS.CHECKOUT
-                    : false
-                }
                 className={`block text-center rounded-none w-full  md:p-[14px]`}
               >
                 Thanh Toán

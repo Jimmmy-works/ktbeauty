@@ -1,5 +1,7 @@
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import { authActions, register, signin } from "@/store/reducer/authReducer";
+import { cartActions } from "@/store/reducer/cartReducer";
+import { whiteListActions } from "@/store/reducer/whitelistReducer";
 import { createContext, useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -63,26 +65,10 @@ export const MainProvider = ({ children }) => {
     }
   };
   const onLogout = async () => {
-    try {
-      // if (Object.values(cartInfo).length !== 0) {
-      //   const _token = localStorage.getItem(LOCAL_STORAGE.token);
-      //   const resUpdateCart = await dispatch(
-      //     updateCart({ ...cartInfo }, _token)
-      //   );
-      //   if (resUpdateCart?.payload?.status === 200) {
-      //     dispatch(cartActions.setCartInfo(null));
-      //     dispatch(authActions.logout());
-      //     setIsNavbar(false);
-      //   }
-      // } else {
-      //   dispatch(cartActions.setCartInfo(null));
-      //   dispatch(authActions.logout());
-      // }
-      // navigate("/");
-      dispatch(authActions.logout());
-    } catch (error) {
-      console.log("error", error);
-    }
+    dispatch(authActions.logout());
+    dispatch(cartActions.setCartInfo({}));
+    dispatch(whiteListActions.setWhiteListInfo({}));
+    navigate("/");
   };
   const onRegister = async (payload) => {
     try {

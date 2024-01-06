@@ -32,7 +32,6 @@ const MainLayout = () => {
     if (_token) {
       dispatch(getProfileSlug());
     }
-    // dispatch(getAllProduct());
     dispatch(getAllCategories());
   }, []);
   useEffect(() => {

@@ -8,6 +8,8 @@ const LoadingSpin = styled.div`
   justify-content: center;
   gap: 20px;
   position: fixed;
+  top: 0;
+  left: 0;
   z-index: 10000;
   background: #1c2020;
   opacity: 1;

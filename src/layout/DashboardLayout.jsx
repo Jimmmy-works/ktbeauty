@@ -1,4 +1,5 @@
 import AuthenModal from "@/components/Authen";
+import LoadingPage from "@/components/Loading/LoadingPage";
 import { MainProvider } from "@/components/MainContext";
 import { PATHS } from "@/contants/path";
 import DashboardHeader from "@/page/CMS/Header";
@@ -19,8 +20,8 @@ import {
 } from "@ant-design/icons";
 import { Collapse } from "antd";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 const SidebarDashboard = styled.aside`
   z-index: 20;
@@ -105,6 +106,7 @@ const DashboardLayout = () => {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const { modalProps } = useDashboard();
+  const { profile, updateStatusUser } = useSelector((state) => state.auth);
   const { toggleSidebar, setToggleSidebar, width } = modalProps || {};
   const handleToggleOverplay = () => {
     setToggleSidebar(false);
@@ -113,6 +115,7 @@ const DashboardLayout = () => {
   const onChange = (value) => {
     setControlCollapse(value);
   };
+  const navigate = useNavigate();
   useEffect(() => {
     document.body.setAttribute("style", "overflow-y : scroll");
     backtotop();
@@ -123,6 +126,7 @@ const DashboardLayout = () => {
     dispatch(getAllCategories());
     dispatch(getAllOrder());
   }, []);
+
   const items = [
     {
       key: "1",

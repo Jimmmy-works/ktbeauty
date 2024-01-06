@@ -3,19 +3,25 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import LoadingPage from "../Loading/LoadingPage";
+import { PATHS } from "@/contants/path";
+import { message } from "antd";
 
 const PrivateRoute = () => {
   const { profile } = useSelector((state) => state.auth);
-  const _token = localStorage.getItem(LOCAL_STORAGE.token);
   const navigate = useNavigate();
   useEffect(() => {
-    if (!_token) {
-      navigate("/");
+    if (!profile) {
+      const timeout = setTimeout(() => {
+        navigate(PATHS.HOME);
+        message.error("Bạn chưa đăng nhập");
+      }, 500);
+      return () => clearTimeout(timeout);
     }
   }, []);
-  if (!profile || profile === null) {
+  if (!profile) {
     return <LoadingPage />;
+  } else {
+    return <Outlet></Outlet>;
   }
-  return <Outlet></Outlet>;
 };
 export default PrivateRoute;

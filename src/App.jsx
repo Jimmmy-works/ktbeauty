@@ -13,13 +13,13 @@ const ShopDetail = lazy(() => import("./page/Shop/ShopDetail"));
 const CartPage = lazy(() => import("./page/CartPage"));
 const Checkout = lazy(() => import("./page/Checkout"));
 const OrderComplete = lazy(() => import("./page/OrderComplete"));
-const DashboardLayout = lazy(() => import("./layout/DashboardLayout"));
+// const DashboardLayout = lazy(() => import("./layout/DashboardLayout"));
 
-const ProfileLayout = lazy(() => import("./layout/ProfileLayout"));
+// const ProfileLayout = lazy(() => import("./layout/ProfileLayout"));
 const Account = lazy(() => import("./page/Profile/Account"));
 const Order = lazy(() => import("./page/Profile/Order"));
 const WhiteList = lazy(() => import("./page/Profile/WhiteList"));
-const PrivateRoute = lazy(() => import("./components/PrivateRoute"));
+// const PrivateRoute = lazy(() => import("./components/PrivateRoute"));
 
 // import MainLayout from "./layout/MainLayout";
 // import HomePage from "./page/HomePage";
@@ -32,13 +32,13 @@ const PrivateRoute = lazy(() => import("./components/PrivateRoute"));
 // import Checkout from "./page/Checkout";
 // import OrderComplete from "./page/OrderComplete";
 
-// import ProfileLayout from "./layout/ProfileLayout";
+import ProfileLayout from "./layout/ProfileLayout";
 // import Account from "./page/Profile/Account";
 // import Order from "./page/Profile/Order";
 // import WhiteList from "./page/Profile/WhiteList";
-// import PrivateRoute from "./components/PrivateRoute";
+import PrivateRoute from "./components/PrivateRoute";
 
-// import DashboardLayout from "./layout/DashboardLayout";
+import DashboardLayout from "./layout/DashboardLayout";
 import { Provider } from "react-redux";
 // const PrivateRouteCMS = lazy(() =>
 //   import("./components/PrivateRoute/PrivateRouteCMS")

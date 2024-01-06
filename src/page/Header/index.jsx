@@ -2,7 +2,12 @@ import QuantityInput from "@/assets/Input/QuantityInput";
 import Button from "@/components/Button";
 import Hamburger from "@/components/Hamburger";
 import { useMainParamContext } from "@/components/MainParamShopContext";
-import { _LIMIT } from "@/contants/general";
+import {
+  OPTION_LIFE_STYLE,
+  OPTION_SEX,
+  OPTION_SKIN_TYPE,
+  _LIMIT,
+} from "@/contants/general";
 import { PATHS } from "@/contants/path";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import { formatPriceVND } from "@/utils/formatPrice";
@@ -28,7 +33,7 @@ const EmptyWrapper = styled.div`
     }
   }
 `;
-const TextChangeColor = styled.div`
+const TextChangeColor = styled.span`
   .waviy {
     position: relative;
     -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0, 0, 0, 0.2));
@@ -283,7 +288,7 @@ const Header = () => {
         )}
       </div>
       <div className="header__main ">
-        <NavLink to={`${PATHS.HOME}`} className={`header__logo z-[1000]`}>
+        <NavLink to={`${PATHS.HOME}`} className={`header__logo z-[1000] `}>
           {/* <svg className="group " viewBox="3 -40.5 215.18 41.1">
             <path
               className="fill-black-555 group-hover:fill-primary duration-400 transition-colors"
@@ -293,108 +298,158 @@ const Header = () => {
           <img srcSet="/assets/img/sammishop.png 10x" alt="" />
         </NavLink>
         <Hamburger isNavbar={isNavbar} onToggleNav={onToggleNav} />
-        <ul className="header__menu xs:hidden lg:flex">
-          <li className="header__menu-item ">
-            <NavLink to={`${PATHS.HOME}`}>trang chủ</NavLink>
-          </li>
-          <li className="header__menu-item relative">
-            <NavLink
-              to={`${
-                valueChecked?.length
-                  ? `${PATHS?.SHOP.INDEX}?${queryString?.stringify({
-                      categories: valueChecked?.toString(),
-                      page: 0,
-                      limit: _LIMIT,
-                    })}`
-                  : `${PATHS?.SHOP?.INDEX}`
-              }`}
-              onClick={() => {
-                setCategoryTab(categoryAll);
-                setValueChecked([]),
-                  setRenderChecked([]),
-                  setValueCheckedSex([]),
-                  setRenderCheckedSex([]),
-                  setValueCheckedLifeStyle([]),
-                  setRenderCheckedLifeStyle([]);
-                setValueCheckedSkinType([]), setRenderCheckedSkinType([]);
-              }}
-            >
-              sản phẩm
-              <div className="arrow-down">
-                <svg
-                  className="w-2 h-2 fill-black-555 duration-400 transition-colors "
-                  viewBox="0 0 1024 1024"
-                >
-                  <path d="M556.01602 769.767264l453.883943-454.93226c18.798868-18.797098 18.798868-49.373591 0.008854-68.167148-9.057669-9.054127-21.159352-14.042485-34.080917-14.042485s-25.023249 4.988358-34.082688 14.044256L511.467873 687.601901 82.146769 246.561608c-8.95142-8.94965-21.054874-13.938008-33.972898-13.938008-12.919795 0-25.023249 4.988358-34.082688 14.044256-18.786473 18.791785-18.786473 49.368279 0 68.156523l452.562922 454.652473c10.723996 9.19225 25.28887 21.563095 38.55043 21.559553 1.156336 0 2.30913-0.093853 3.424737-0.279787l2.103717-0.348849 2.078925 0.462181c1.514038 0.336453 3.102451 0.504679 4.720967 0.504679 10.879827 0.001771 24.546902-7.672899 38.483139-21.607365z"></path>
-                </svg>
-              </div>
-            </NavLink>
-            {categories?.length ? (
-              <ul className="sub ">
-                {categories?.map((item) => (
-                  <li key={`${item?._id}`} className="sub__item capitalize ">
-                    <Link
-                      onClick={() => {
-                        setCategoryTab(item?._id), setValueChecked([item?._id]);
-                        setRenderChecked([item]);
-                      }}
-                      to={`${PATHS.SHOP.INDEX}?${queryString.stringify({
-                        limit: _LIMIT,
+        <div className="header__menu">
+          <ul className="mymenu">
+            <li>
+              <NavLink to={PATHS.HOME}>Trang chủ</NavLink>
+            </li>
+            <li>
+              <NavLink
+                to={`${
+                  valueChecked?.length
+                    ? `${PATHS?.SHOP.INDEX}?${queryString?.stringify({
+                        categories: valueChecked?.toString(),
                         page: 0,
-                        categories: item?._id,
-                      })}`}
-                    >
-                      {item?.label || "Lorem ipsum dolor sit amet."}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              ""
-            )}
-          </li>
-
-          <li className="header__menu-item relative">
-            <NavLink to={`${PATHS.BLOG.INDEX}`}>
-              tin tức
-              <div className="arrow-down">
-                <svg
-                  className="w-2 h-2 fill-black-555 duration-400 transition-colors "
-                  viewBox="0 0 1024 1024"
-                >
-                  <path d="M556.01602 769.767264l453.883943-454.93226c18.798868-18.797098 18.798868-49.373591 0.008854-68.167148-9.057669-9.054127-21.159352-14.042485-34.080917-14.042485s-25.023249 4.988358-34.082688 14.044256L511.467873 687.601901 82.146769 246.561608c-8.95142-8.94965-21.054874-13.938008-33.972898-13.938008-12.919795 0-25.023249 4.988358-34.082688 14.044256-18.786473 18.791785-18.786473 49.368279 0 68.156523l452.562922 454.652473c10.723996 9.19225 25.28887 21.563095 38.55043 21.559553 1.156336 0 2.30913-0.093853 3.424737-0.279787l2.103717-0.348849 2.078925 0.462181c1.514038 0.336453 3.102451 0.504679 4.720967 0.504679 10.879827 0.001771 24.546902-7.672899 38.483139-21.607365z"></path>
-                </svg>
-              </div>
-            </NavLink>
-            <ul className="sub">
-              {Array(5)
-                .fill("")
-                .map((item, index) => (
-                  <li key={`${item}${index}`} className="sub__item ">
-                    <a href="#">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Dignissimos quod numquam voluptate!
-                    </a>
-                  </li>
-                ))}
-            </ul>
-          </li>
-          <li className="header__menu-item ">
-            <NavLink to={`${PATHS.ABOUT}`}>chúng tôi</NavLink>
-          </li>
-          <li className="header__menu-item ">
-            <NavLink to={`${PATHS.CONTACT}`}>liên hệ</NavLink>
-          </li>
-          <li className="header__menu-item ">
-            <TextChangeColor>
-              <NavLink className={`animate-charcter`} to={`${PATHS.COUNSEL}`}>
-                Tư vấn
+                        limit: _LIMIT,
+                      })}`
+                    : `${PATHS?.SHOP?.INDEX}`
+                }`}
+                onClick={() => {
+                  setCategoryTab(categoryAll);
+                  setValueChecked([]),
+                    setRenderChecked([]),
+                    setValueCheckedSex([]),
+                    setRenderCheckedSex([]),
+                    setValueCheckedLifeStyle([]),
+                    setRenderCheckedLifeStyle([]);
+                  setValueCheckedSkinType([]), setRenderCheckedSkinType([]);
+                }}
+              >
+                Sản phẩm
+                <span className="arrow-down">
+                  <svg
+                    className="w-2 h-2 fill-black-555 duration-400 transition-colors "
+                    viewBox="0 0 1024 1024"
+                  >
+                    <path d="M556.01602 769.767264l453.883943-454.93226c18.798868-18.797098 18.798868-49.373591 0.008854-68.167148-9.057669-9.054127-21.159352-14.042485-34.080917-14.042485s-25.023249 4.988358-34.082688 14.044256L511.467873 687.601901 82.146769 246.561608c-8.95142-8.94965-21.054874-13.938008-33.972898-13.938008-12.919795 0-25.023249 4.988358-34.082688 14.044256-18.786473 18.791785-18.786473 49.368279 0 68.156523l452.562922 454.652473c10.723996 9.19225 25.28887 21.563095 38.55043 21.559553 1.156336 0 2.30913-0.093853 3.424737-0.279787l2.103717-0.348849 2.078925 0.462181c1.514038 0.336453 3.102451 0.504679 4.720967 0.504679 10.879827 0.001771 24.546902-7.672899 38.483139-21.607365z"></path>
+                  </svg>
+                </span>
               </NavLink>
-            </TextChangeColor>
-          </li>
-        </ul>
-        <div className="header__info xs:hidden md:flex h-full items-center relative">
-          <div
+              <ul className="submenu">
+                <li>
+                  <NavLink>Danh mục</NavLink>
+                  <ul className="submenu2">
+                    {categories?.map((item) => (
+                      <li key={`${item?._id}`}>
+                        <NavLink
+                          onClick={() => {
+                            setCategoryTab(item?._id),
+                              setValueChecked([item?._id]);
+                            setRenderChecked([item]);
+                          }}
+                          to={`${PATHS.SHOP.INDEX}?${queryString.stringify({
+                            limit: _LIMIT,
+                            page: 0,
+                            categories: item?._id,
+                          })}`}
+                        >
+                          {item?.label || "Lorem ipsum dolor sit amet."}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+                <li>
+                  <NavLink>Theo giới tính</NavLink>
+                  <ul className="submenu2">
+                    {OPTION_SEX?.map((item) => (
+                      <li key={`${item?.value}`}>
+                        <NavLink
+                          onClick={() => {
+                            setCategoryTab(item?.value),
+                              setValueChecked([item?.value]);
+                            setRenderChecked([item]);
+                          }}
+                          to={`${PATHS.SHOP.INDEX}?${queryString.stringify({
+                            limit: _LIMIT,
+                            page: 0,
+                            sex: item?.value,
+                          })}`}
+                        >
+                          {item?.label || "Lorem ipsum dolor sit amet."}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+                <li>
+                  <NavLink>Sản phẩm theo loại da</NavLink>
+                  <ul className="submenu2">
+                    {OPTION_SKIN_TYPE?.map((item) => (
+                      <li key={`${item?.value}`}>
+                        <NavLink
+                          onClick={() => {
+                            setCategoryTab(item?.value),
+                              setValueChecked([item?.value]);
+                            setRenderChecked([item]);
+                          }}
+                          to={`${PATHS.SHOP.INDEX}?${queryString.stringify({
+                            limit: _LIMIT,
+                            page: 0,
+                            skinType: item?.value,
+                          })}`}
+                        >
+                          {item?.label || "Lorem ipsum dolor sit amet."}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+                <li>
+                  <NavLink>Thói quen</NavLink>
+                  <ul className="submenu2">
+                    {OPTION_LIFE_STYLE?.map((item) => (
+                      <li key={`${item?.value}`}>
+                        <NavLink
+                          onClick={() => {
+                            setCategoryTab(item?.value),
+                              setValueChecked([item?.value]);
+                            setRenderChecked([item]);
+                          }}
+                          to={`${PATHS.SHOP.INDEX}?${queryString.stringify({
+                            limit: _LIMIT,
+                            page: 0,
+                            hobby: item?.value,
+                          })}`}
+                        >
+                          {item?.label || "Lorem ipsum dolor sit amet."}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <NavLink to={`${PATHS.ABOUT}`}>chúng tôi</NavLink>
+            </li>
+            <li>
+              <NavLink to={`${PATHS.ABOUT}`}>tin tức</NavLink>
+            </li>
+            <li>
+              <NavLink to={`${PATHS.CONTACT}`}>liên hệ</NavLink>
+            </li>
+            <li>
+              <TextChangeColor>
+                <NavLink className={`animate-charcter`} to={`${PATHS.COUNSEL}`}>
+                  Tư vấn
+                </NavLink>
+              </TextChangeColor>
+            </li>
+          </ul>
+        </div>
+        <ul className="header__info mymenu  relative">
+          <li
             className={`header__info-search group/hover 
               first-letter: before:h-[20px] ${
                 toggleSearch ? "before:block " : "before:hidden"
@@ -413,7 +468,7 @@ const Header = () => {
                 />
               </svg>
             </div>
-          </div>
+          </li>
           <Drawer
             key={`my-drawer-search`}
             rootClassName="my-drawer"
@@ -575,7 +630,7 @@ const Header = () => {
               </ul>
             </div>
           </Drawer>
-          <div
+          <li
             className="header__info-whitelist group/hover mb-[2px] relative"
             onClick={() => showDrawer("whitelist")}
           >
@@ -594,7 +649,7 @@ const Header = () => {
                 />
               </svg>
             </div>
-          </div>
+          </li>
           <Drawer
             key={`my-drawer-whitelist`}
             rootClassName="my-drawer"
@@ -769,7 +824,7 @@ const Header = () => {
               </ul>
             </div>
           </Drawer>
-          <div
+          <li
             className="header__info-cart group/hover mb-[2px] relative"
             onClick={() => showDrawer("cart")}
           >
@@ -788,7 +843,7 @@ const Header = () => {
                 />
               </svg>
             </div>
-          </div>
+          </li>
           <Drawer
             key={`my-drawer-cart`}
             rootClassName="my-drawer"
@@ -965,8 +1020,7 @@ const Header = () => {
               </ul>
             </div>
           </Drawer>
-
-          <div className="header__info-profile group/hover relative">
+          <li className="header__info-profile  group/hover relative">
             <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24">
               <path
                 className="group-hover/hover:fill-primary "
@@ -975,64 +1029,103 @@ const Header = () => {
               />
             </svg>
             {profile ? (
-              <ul className="sub min-w-[200px] p-0 shadow-header right-0 left-[unset]">
-                <li className="sub__item capitalize">
+              <ul className="submenu">
+                <li>
                   <Link
                     to={PATHS.PROFILE.INDEX}
-                    className=" group-hover/hover:text-[#222] font-osb"
                     onClick={() => onActiveLinkTab(0)}
                   >
-                    <div className=" rounded-[50%]">
-                      <img
-                        className="w-[50px] h-[50px] rounded-[50%]"
-                        src={`${
-                          profile?.image
-                            ? profile?.image
-                            : "/assets/img/avartar.png"
-                        }`}
-                        alt=""
-                      />
-                    </div>
+                    <img
+                      className="w-[40px] h-[40px] rounded-[50%]"
+                      src={`${
+                        profile?.image
+                          ? profile?.image
+                          : "/assets/img/avartar.png"
+                      }`}
+                      alt=""
+                    />
                     {profile ? `${profile?.name}` : "Guest"}
                   </Link>
                 </li>
                 {profile?.isAdmin ? (
-                  <li className="sub__item ">
-                    <Link to={PATHS.CMS.INDEX} className="text-[#222]">
-                      <svg className="h-[24px] w-[24px] ">
-                        <path d="M7 16.488l1.526-.723c1.792-.81 2.851-.344 4.349.232 1.716.661 2.365.883 3.077 1.164 1.278.506.688 2.177-.592 1.838-.778-.206-2.812-.795-3.38-.931-.64-.154-.93.602-.323.818 1.106.393 2.663.79 3.494 1.007.831.218 1.295-.145 1.881-.611.906-.72 2.968-2.909 2.968-2.909.842-.799 1.991-.135 1.991.72 0 .23-.083.474-.276.707-2.328 2.793-3.06 3.642-4.568 5.226-.623.655-1.342.974-2.204.974-.442 0-.922-.084-1.443-.25-1.825-.581-4.172-1.313-6.5-1.6v-5.662zm-1 6.538h-4v-8h4v8zm1-7.869v-1.714c-.006-1.557.062-2.447 1.854-2.861 1.963-.453 4.315-.859 3.384-2.577-2.761-5.092-.787-7.979 2.177-7.979 2.907 0 4.93 2.78 2.177 7.979-.904 1.708 1.378 2.114 3.384 2.577 1.799.415 1.859 1.311 1.853 2.879 0 .13-.011 1.171 0 1.665-.483-.309-1.442-.552-2.187.106-.535.472-.568.504-1.783 1.629-1.75-.831-4.456-1.883-6.214-2.478-.896-.304-2.04-.308-2.962.075l-1.683.699z" />
+                  <li>
+                    <Link to={PATHS.CMS.INDEX}>
+                      <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24">
+                        <path
+                          d="M14.8284 6.34313L16.2426 4.92892L12 0.686279L7.75735 4.92892L9.17156 6.34313L12 3.51471L14.8284 6.34313Z"
+                          fill="currentColor"
+                        />
+                        <path
+                          d="M4.92892 16.2426L6.34313 14.8284L3.51471 12L6.34313 9.17156L4.92892 7.75735L0.686279 12L4.92892 16.2426Z"
+                          fill="currentColor"
+                        />
+                        <path
+                          d="M7.75735 19.0711L12 23.3137L16.2426 19.0711L14.8284 17.6568L12 20.4853L9.17156 17.6568L7.75735 19.0711Z"
+                          fill="currentColor"
+                        />
+                        <path
+                          d="M17.6568 9.17156L20.4853 12L17.6568 14.8284L19.0711 16.2426L23.3137 12L19.0711 7.75735L17.6568 9.17156Z"
+                          fill="currentColor"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M12 8C14.2091 8 16 9.79086 16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8ZM12 10C13.1046 10 14 10.8954 14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10Z"
+                          fill="currentColor"
+                        />
                       </svg>
-                      <p> Quản lí trang</p>
+                      Quản lí trang
                     </Link>
                   </li>
                 ) : (
                   ""
                 )}
-                <li className=" sub__item ">
+                <li>
                   <Link
                     to={PATHS.PROFILE.ORDER}
                     onClick={() => onActiveLinkTab(1)}
                   >
-                    <svg className="h-[24px] w-[24px] " viewBox="0 0 24 24">
-                      <path d="M10 19.5c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm3.5-1.5c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm1.336-5l1.977-7h-16.813l2.938 7h11.898zm4.969-10l-3.432 12h-12.597l.839 2h13.239l3.474-12h1.929l.743-2h-4.195z" />
+                    <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24">
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M5.79166 2H1V4H4.2184L6.9872 16.6776H7V17H20V16.7519L22.1932 7.09095L22.5308 6H6.6552L6.08485 3.38852L5.79166 2ZM19.9869 8H7.092L8.62081 15H18.3978L19.9869 8Z"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M10 22C11.1046 22 12 21.1046 12 20C12 18.8954 11.1046 18 10 18C8.89543 18 8 18.8954 8 20C8 21.1046 8.89543 22 10 22Z"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M19 20C19 21.1046 18.1046 22 17 22C15.8954 22 15 21.1046 15 20C15 18.8954 15.8954 18 17 18C18.1046 18 19 18.8954 19 20Z"
+                        fill="currentColor"
+                      />
                     </svg>
-                    <p>Đơn mua</p>
+                    Đơn mua
                   </Link>
                 </li>
-                <li className=" sub__item ">
+                <li>
                   <Link
                     to={PATHS.PROFILE.WHITELIST}
                     onClick={() => onActiveLinkTab(2)}
                   >
-                    <svg className="w-[22px] h-[22px] " viewBox="0 0 24 24">
-                      <path d="M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z"></path>
+                    <svg className="w-[18px] h-[18px] " viewBox="0 0 24 24">
+                      <path
+                        d="M9.14648 12.2929C8.36544 11.5118 8.36544 10.2455 9.14648 9.46444C9.92753 8.68339 11.1939 8.68339 11.9749 9.46444L12 9.48955L12.0251 9.46449C12.8061 8.68345 14.0725 8.68345 14.8535 9.46449C15.6346 10.2455 15.6346 11.5119 14.8535 12.2929L12.0251 15.1213L12 15.0962L11.9749 15.1213L9.14648 12.2929Z"
+                        fill="currentColor"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M3 4C3 2.34315 4.34315 1 6 1H18C19.6569 1 21 2.34315 21 4V20C21 21.6569 19.6569 23 18 23H6C4.34315 23 3 21.6569 3 20V4ZM6 3H18C18.5523 3 19 3.44772 19 4V20C19 20.5523 18.5523 21 18 21H6C5.44772 21 5 20.5523 5 20V4C5 3.44772 5.44772 3 6 3Z"
+                      />
                     </svg>
-                    <p>Sản phẩm yêu thích</p>
+                    Sản phẩm yêu thích
                   </Link>
                 </li>
-                <li onClick={onLogout} className="sub__item ">
-                  <a>
-                    <svg className="h-[24px] w-[24px]" viewBox="0 0 24 24">
+                <li onClick={onLogout}>
+                  <a className="text-red-700">
+                    <svg className="h-[20px] w-[20px]" viewBox="0 0 24 24">
                       <path
                         d="M8.51428 20H4.51428C3.40971 20 2.51428 19.1046 2.51428 18V6C2.51428 4.89543 3.40971 4 4.51428 4H8.51428V6H4.51428V18H8.51428V20Z"
                         className="fill-red-600"
@@ -1042,35 +1135,32 @@ const Header = () => {
                         className="fill-red-600"
                       ></path>
                     </svg>
-
                     <p>Đăng xuất</p>
                   </a>
                 </li>
               </ul>
             ) : (
-              <ul className="sub min-w-[120px] p-0 shadow-header right-0 left-[unset]">
-                <li
-                  onClick={() => onAuthenModal("login")}
-                  className=" sub__item   p-[10px]  duration-400 transition-colors hover:bg-black-ebe"
-                >
-                  <svg className="w-[20px] h-[20px] " viewBox="0 0 24 24">
-                    <path d="M8 9v-4l8 7-8 7v-4h-8v-6h8zm6-7c-1.787 0-3.46.474-4.911 1.295l.228.2 1.395 1.221c1.004-.456 2.115-.716 3.288-.716 4.411 0 8 3.589 8 8s-3.589 8-8 8c-1.173 0-2.284-.26-3.288-.715l-1.395 1.221-.228.2c1.451.82 3.124 1.294 4.911 1.294 5.522 0 10-4.477 10-10s-4.478-10-10-10z"></path>
-                  </svg>
-                  <a>Đăng nhập</a>
+              <ul className="submenu shadow-header right-0 left-[unset]">
+                <li onClick={() => onAuthenModal("login")}>
+                  <a>
+                    <svg className="w-[18px] h-[18px] " viewBox="0 0 24 24">
+                      <path d="M8 9v-4l8 7-8 7v-4h-8v-6h8zm6-7c-1.787 0-3.46.474-4.911 1.295l.228.2 1.395 1.221c1.004-.456 2.115-.716 3.288-.716 4.411 0 8 3.589 8 8s-3.589 8-8 8c-1.173 0-2.284-.26-3.288-.715l-1.395 1.221-.228.2c1.451.82 3.124 1.294 4.911 1.294 5.522 0 10-4.477 10-10s-4.478-10-10-10z"></path>
+                    </svg>
+                    Đăng nhập
+                  </a>
                 </li>
-                <li
-                  onClick={() => onAuthenModal("register")}
-                  className=" sub__item   p-[10px]  duration-400 transition-colors hover:bg-black-ebe"
-                >
-                  <svg className="w-[20px] h-[20px] " viewBox="0 0 24 24">
-                    <path d="M12.408 13.032c1.158-.062 2.854-.388 4.18-1.128.962-1.478 1.598-2.684 2.224-4-.86.064-1.852-.009-2.736-.257 1.068-.183 2.408-.565 3.422-1.216 1.255-1.784 2.185-4.659 2.502-6.429-2.874-.048-5.566.89-7.386 2.064-.614.7-1.146 2.389-1.272 3.283-.277-.646-.479-1.68-.242-2.542-1.458.767-2.733 1.643-4.177 2.86-.72 1.528-.834 3.29-.768 4.276-.391-.553-.915-1.63-.842-2.809-2.59 2.504-4.377 5.784-2.682 9.324 1.879-1.941 4.039-3.783 5.354-4.639-3.036 3.474-5.866 8.047-7.985 12.181l2.504-.786c1.084-1.979 2.059-3.684 2.933-4.905 3.229.423 6.096-2.168 8.028-4.795-.77.19-2.246-.058-3.057-.482z"></path>
-                  </svg>
-                  <a className="p-0">Đăng ký</a>
+                <li onClick={() => onAuthenModal("register")}>
+                  <a>
+                    <svg className="w-[18px] h-[18px] " viewBox="0 0 24 24">
+                      <path d="M12.408 13.032c1.158-.062 2.854-.388 4.18-1.128.962-1.478 1.598-2.684 2.224-4-.86.064-1.852-.009-2.736-.257 1.068-.183 2.408-.565 3.422-1.216 1.255-1.784 2.185-4.659 2.502-6.429-2.874-.048-5.566.89-7.386 2.064-.614.7-1.146 2.389-1.272 3.283-.277-.646-.479-1.68-.242-2.542-1.458.767-2.733 1.643-4.177 2.86-.72 1.528-.834 3.29-.768 4.276-.391-.553-.915-1.63-.842-2.809-2.59 2.504-4.377 5.784-2.682 9.324 1.879-1.941 4.039-3.783 5.354-4.639-3.036 3.474-5.866 8.047-7.985 12.181l2.504-.786c1.084-1.979 2.059-3.684 2.933-4.905 3.229.423 6.096-2.168 8.028-4.795-.77.19-2.246-.058-3.057-.482z"></path>
+                    </svg>
+                    Đăng ký
+                  </a>
                 </li>
               </ul>
             )}
-          </div>
-        </div>
+          </li>
+        </ul>
       </div>
     </header>
   );

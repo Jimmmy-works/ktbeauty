@@ -2498,20 +2498,16 @@ input[type="number"] {
   max-height: 250px !important;
 }
 
+.max-h-\[320px\] {
+  max-height: 320px !important;
+}
+
 .max-h-\[38px\] {
   max-height: 38px !important;
 }
 
-.max-h-\[400px\] {
-  max-height: 400px !important;
-}
-
 .max-h-\[600px\] {
   max-height: 600px !important;
-}
-
-.max-h-\[320px\] {
-  max-height: 320px !important;
 }
 
 .min-h-\[180px\] {
@@ -2674,10 +2670,6 @@ input[type="number"] {
 
 .min-w-\[160px\] {
   min-width: 160px !important;
-}
-
-.min-w-\[200px\] {
-  min-width: 200px !important;
 }
 
 .min-w-\[64px\] {
@@ -5471,11 +5463,6 @@ input[type="number"] {
   color: rgb(239 68 68 / var(--tw-text-opacity)) !important;
 }
 
-.group\/hover:hover .group-hover\/hover\:text-\[\#222\] {
-  --tw-text-opacity: 1 !important;
-  color: rgb(34 34 34 / var(--tw-text-opacity)) !important;
-}
-
 .group\/hover:hover .group-hover\/hover\:text-primary {
   --tw-text-opacity: 1 !important;
   color: rgb(255 136 123 / var(--tw-text-opacity)) !important;
@@ -6098,10 +6085,6 @@ input[type="number"] {
 
   .md\:block {
     display: block !important;
-  }
-
-  .md\:flex {
-    display: flex !important;
   }
 
   .md\:hidden {
