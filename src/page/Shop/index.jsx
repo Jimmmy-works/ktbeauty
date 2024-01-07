@@ -118,8 +118,8 @@ const Shop = () => {
              valueChecked?.includes(cate?._id) ? "font-om text-black" : ""
            } ${loadingDataShop ? "text-[#d9d9d9] cursor-not-allowed" : ""}`}
             onClick={() => {
-              if (!loadingDataShop)
-                onChangeCheckbox(cate?._id), onChangeRenderCheckbox(cate);
+              if (!loadingDataShop) onChangePageCurrent(1);
+              onChangeCheckbox(cate?._id), onChangeRenderCheckbox(cate);
             }}
           >
             <Checkbox
@@ -159,8 +159,8 @@ const Shop = () => {
              valueCheckedSex?.includes(sex?.value) ? "font-om text-black" : ""
            } ${loadingDataShop ? "text-[#d9d9d9] cursor-not-allowed" : ""}`}
             onClick={() => {
-              if (!loadingDataShop)
-                onChangeCheckboxSex(sex?.value), onChangeRenderCheckboxSex(sex);
+              if (!loadingDataShop) onChangePageCurrent(1);
+              onChangeCheckboxSex(sex?.value), onChangeRenderCheckboxSex(sex);
             }}
           >
             <Checkbox
@@ -199,9 +199,9 @@ const Shop = () => {
                : ""
            } ${loadingDataShop ? "text-[#d9d9d9] cursor-not-allowed" : ""}`}
             onClick={() => {
-              if (!loadingDataShop)
-                onChangeCheckboxLifeStyle(life?.value),
-                  onChangeRenderCheckboxLifeStyle(life);
+              if (!loadingDataShop) onChangePageCurrent(1);
+              onChangeCheckboxLifeStyle(life?.value),
+                onChangeRenderCheckboxLifeStyle(life);
             }}
           >
             <Checkbox
@@ -242,9 +242,9 @@ const Shop = () => {
                : ""
            } ${loadingDataShop ? "text-[#d9d9d9] cursor-not-allowed" : ""}`}
             onClick={() => {
-              if (!loadingDataShop)
-                onChangeCheckboxSkinType(skin?.value),
-                  onChangeRenderCheckboxSkinType(skin);
+              if (!loadingDataShop) onChangePageCurrent(1);
+              onChangeCheckboxSkinType(skin?.value),
+                onChangeRenderCheckboxSkinType(skin);
             }}
           >
             <Checkbox
@@ -614,6 +614,7 @@ const Shop = () => {
                           className="cursor-pointer font-om text-black-333 text-sm 
                                  rounded-md border border-black-333 border-solid p-[4px]"
                           onClick={() => {
+                            setPageCurrent(1);
                             onChangeCheckbox(category?._id);
                             onChangeRenderCheckbox(category);
                           }}

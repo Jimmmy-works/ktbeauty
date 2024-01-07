@@ -362,21 +362,20 @@ const Header = () => {
                 <li>
                   <NavLink>Theo giới tính</NavLink>
                   <ul className="submenu2">
-                    {OPTION_SEX?.map((item) => (
-                      <li key={`${item?.value}`}>
+                    {OPTION_SEX?.map((sex) => (
+                      <li key={`${sex?.value}`}>
                         <NavLink
                           onClick={() => {
-                            setCategoryTab(item?.value),
-                              setValueChecked([item?.value]);
-                            setRenderChecked([item]);
+                            onChangeCheckboxSex(sex?.value);
+                            onChangeRenderCheckboxSex(sex);
                           }}
                           to={`${PATHS.SHOP.INDEX}?${queryString.stringify({
                             limit: _LIMIT,
                             page: 0,
-                            sex: item?.value,
+                            sex: sex?.value,
                           })}`}
                         >
-                          {item?.label || "Lorem ipsum dolor sit amet."}
+                          {sex?.label || "Lorem ipsum dolor sit amet."}
                         </NavLink>
                       </li>
                     ))}
@@ -385,21 +384,20 @@ const Header = () => {
                 <li>
                   <NavLink>Sản phẩm theo loại da</NavLink>
                   <ul className="submenu2">
-                    {OPTION_SKIN_TYPE?.map((item) => (
-                      <li key={`${item?.value}`}>
+                    {OPTION_SKIN_TYPE?.map((skin) => (
+                      <li key={`${skin?.value}`}>
                         <NavLink
                           onClick={() => {
-                            setCategoryTab(item?.value),
-                              setValueChecked([item?.value]);
-                            setRenderChecked([item]);
+                            onChangeCheckboxSkinType(skin?.value);
+                            onChangeRenderCheckboxSkinType(skin);
                           }}
                           to={`${PATHS.SHOP.INDEX}?${queryString.stringify({
                             limit: _LIMIT,
                             page: 0,
-                            skinType: item?.value,
+                            skinType: skin?.value,
                           })}`}
                         >
-                          {item?.label || "Lorem ipsum dolor sit amet."}
+                          {skin?.label || "Lorem ipsum dolor sit amet."}
                         </NavLink>
                       </li>
                     ))}
@@ -408,21 +406,20 @@ const Header = () => {
                 <li>
                   <NavLink>Thói quen</NavLink>
                   <ul className="submenu2">
-                    {OPTION_LIFE_STYLE?.map((item) => (
-                      <li key={`${item?.value}`}>
+                    {OPTION_LIFE_STYLE?.map((lifeStyle) => (
+                      <li key={`${lifeStyle?.value}`}>
                         <NavLink
                           onClick={() => {
-                            setCategoryTab(item?.value),
-                              setValueChecked([item?.value]);
-                            setRenderChecked([item]);
+                            onChangeCheckboxLifeStyle(lifeStyle?.value);
+                            onChangeRenderCheckboxLifeStyle(lifeStyle);
                           }}
                           to={`${PATHS.SHOP.INDEX}?${queryString.stringify({
                             limit: _LIMIT,
                             page: 0,
-                            hobby: item?.value,
+                            hobby: lifeStyle?.value,
                           })}`}
                         >
-                          {item?.label || "Lorem ipsum dolor sit amet."}
+                          {lifeStyle?.label || "Lorem ipsum dolor sit amet."}
                         </NavLink>
                       </li>
                     ))}
@@ -477,7 +474,6 @@ const Header = () => {
             onClose={onClose}
             open={open === "search"}
             contentWrapperStyle={{ width: "460px" }}
-            ty
             footer={
               <div
                 onClick={onClose}
@@ -1068,8 +1064,8 @@ const Header = () => {
                           fill="currentColor"
                         />
                         <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
+                          fillRule="evenodd"
+                          clipRule="evenodd"
                           d="M12 8C14.2091 8 16 9.79086 16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8ZM12 10C13.1046 10 14 10.8954 14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10Z"
                           fill="currentColor"
                         />
@@ -1087,8 +1083,8 @@ const Header = () => {
                   >
                     <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24">
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M5.79166 2H1V4H4.2184L6.9872 16.6776H7V17H20V16.7519L22.1932 7.09095L22.5308 6H6.6552L6.08485 3.38852L5.79166 2ZM19.9869 8H7.092L8.62081 15H18.3978L19.9869 8Z"
                         fill="currentColor"
                       />
@@ -1115,8 +1111,8 @@ const Header = () => {
                         fill="currentColor"
                       />
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M3 4C3 2.34315 4.34315 1 6 1H18C19.6569 1 21 2.34315 21 4V20C21 21.6569 19.6569 23 18 23H6C4.34315 23 3 21.6569 3 20V4ZM6 3H18C18.5523 3 19 3.44772 19 4V20C19 20.5523 18.5523 21 18 21H6C5.44772 21 5 20.5523 5 20V4C5 3.44772 5.44772 3 6 3Z"
                       />
                     </svg>

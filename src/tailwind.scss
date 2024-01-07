@@ -57,7 +57,7 @@
   }
   body {
     scroll-behavior: smooth;
-    @apply relative font-mar text-base text-black-555 overflow-x-hidden
+    @apply relative font-osr text-base text-black-555 overflow-x-hidden
      mx-auto h-full bg-white;
     &::-webkit-scrollbar {
       width: 6px;
@@ -258,7 +258,7 @@
         }
 
         &.disable {
-          @apply pointer-events-none text-gray-300;
+          @apply pointer-events-none text-gray-300 border-transparent;
         }
       }
     }

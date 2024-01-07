@@ -476,7 +476,7 @@ body {
   overflow-x: hidden;
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-  font-family: MontserratAlternates-Regular;
+  font-family: SVN-Gilroy-Regular;
   --tw-text-opacity: 1;
   color: rgb(85 85 85 / var(--tw-text-opacity));
   font-size: 18px;
@@ -2196,6 +2196,10 @@ input[type="number"] {
   margin: auto !important;
 }
 
+.m-\[10px_0_20px_0\] {
+  margin: 10px 0 20px 0 !important;
+}
+
 .-mx-\[15px\] {
   margin-left: -15px !important;
   margin-right: -15px !important;
@@ -2234,6 +2238,16 @@ input[type="number"] {
 .my-\[6px\] {
   margin-top: 6px !important;
   margin-bottom: 6px !important;
+}
+
+.my-\[10px\] {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+.my-\[10px_20px\] {
+  margin-top: 10px 20px !important;
+  margin-bottom: 10px 20px !important;
 }
 
 .mb-\[10px\] {
@@ -3171,6 +3185,11 @@ input[type="number"] {
 .border-black-ebe {
   --tw-border-opacity: 1 !important;
   border-color: rgb(235 235 235 / var(--tw-border-opacity)) !important;
+}
+
+.border-blue-300 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(147 197 253 / var(--tw-border-opacity)) !important;
 }
 
 .border-blue-500 {
@@ -5313,6 +5332,11 @@ input[type="number"] {
 .hover\:bg-black-ebe:hover {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(235 235 235 / var(--tw-bg-opacity)) !important;
+}
+
+.hover\:bg-blue-300:hover {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(147 197 253 / var(--tw-bg-opacity)) !important;
 }
 
 .hover\:bg-blue-500:hover {

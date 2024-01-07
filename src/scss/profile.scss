@@ -82,10 +82,10 @@
     td {
       @apply text-center align-middle xs:pt-[10px] md:pt-[14px] 
       xs:[&:nth-child(1)]:w-[320px] md:[&:nth-child(1)]:w-[400px]   
-      xs:[&:nth-child(2)]:w-[320px] md:[&:nth-child(2)]:w-[100px] lg:[&:nth-child(2)]:w-[150px]
+      xs:[&:nth-child(2)]:w-[320px] md:[&:nth-child(2)]:w-[150px] lg:[&:nth-child(2)]:w-[150px]
       xs:[&:nth-child(3)]:w-[320px]  md:[&:nth-child(3)]:w-[200px]  
       xs:[&:nth-child(4)]:w-[320px]  md:[&:nth-child(4)]:w-[200px] 
-      xs:[&:nth-child(5)]:w-[320px] md:[&:nth-child(5)]:w-[40px] 
+      xs:[&:nth-child(5)]:w-[320px] md:[&:nth-child(5)]:w-[100px] 
       xs:text-sm lg:text-[16px];
     }
   }

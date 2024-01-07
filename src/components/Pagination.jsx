@@ -1,7 +1,12 @@
 import { useMemo } from "react";
 
-const Pagination = ({ limit = 12, onChange, pageCurrent = 0, total }) => {
-  /// Demo
+const Pagination = ({
+  limit = 12,
+  onChange,
+  pageCurrent = 0,
+  total,
+  disable = false,
+}) => {
   const PAGE_STEP = 2;
   const onChangePage = (numbPage) => {
     onChange(numbPage);
@@ -49,11 +54,11 @@ const Pagination = ({ limit = 12, onChange, pageCurrent = 0, total }) => {
     <div className="pagination ">
       <div
         className={`pagination__prev group/hover ${
-          pageCurrent - 1 <= 0 ? "disable" : ""
+          pageCurrent - 1 <= 0 || disable ? "disable" : ""
         }`}
         onClick={onPrev}
       >
-        <div className="pagination__prev-wrapper group-hover/hover:bg-white ">
+        <div className={`pagination__prev-wrapper group-hover/hover:bg-white`}>
           <svg viewBox="0 0 24 24">
             <path
               fill="#fff"
@@ -71,11 +76,13 @@ const Pagination = ({ limit = 12, onChange, pageCurrent = 0, total }) => {
         >
           First
         </PaginationItem>
+        {console.log("disable", disable)}
         {myPagination?.map((item, index) => {
           return (
             <PaginationItem
               isHover={true}
               key={index}
+              isDisable={disable}
               onClick={() => onChangePage(item)}
               isActive={pageCurrent === item}
             >
@@ -94,7 +101,7 @@ const Pagination = ({ limit = 12, onChange, pageCurrent = 0, total }) => {
       </ul>
       <div
         className={`pagination__next group/hover  ${
-          pageCurrent >= totalPage ? "disable" : ""
+          pageCurrent >= totalPage || disable ? "disable" : ""
         }`}
         onClick={onNext}
       >

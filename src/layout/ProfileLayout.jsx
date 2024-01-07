@@ -1,5 +1,6 @@
 import BreadCrumb from "@/components/BreadCrumb";
 import { PATHS } from "@/contants/path";
+import { getProfileSlug } from "@/store/reducer/authReducer";
 import { getOrderUser } from "@/store/reducer/orderReducer";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -7,7 +8,7 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 const ProfileLayout = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getOrderUser());
+    dispatch(getOrderUser({ limit: 5, page: 0 }));
   }, []);
   return (
     <main className="main-wrapper ">

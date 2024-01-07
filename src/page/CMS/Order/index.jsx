@@ -10,6 +10,31 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import useDashboard from "../useDashboard";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
+import {
+  Document,
+  Text,
+  Page,
+  StyleSheet,
+  View,
+  PDFDownloadLink,
+} from "@react-pdf/renderer";
+import MyPDF from "@/components/MyPDF";
+
+const styles = StyleSheet.create({
+  page: {
+    marginTop: 30,
+    fontSize: 30,
+    padding: 20,
+  },
+  layout: {
+    marginTop: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  text: {
+    color: "#228b22",
+  },
+});
 const DashboardOrder = () => {
   const { modalProps, orderProps } = useDashboard();
   const { toggleSidebar, width } = modalProps || {};
@@ -26,6 +51,8 @@ const DashboardOrder = () => {
   /// State
   const [openDrawer, setOpenDrawer] = useState(false);
   const [controlDrawer, setControlDrawer] = useState();
+  const [openPFD, setOpenPDF] = useState(false);
+  const [controlPFD, setControlOpenPDF] = useState();
   const [statusButton, setStatusButton] = useState();
   const [titleButton, setTitleButton] = useState();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -38,12 +65,19 @@ const DashboardOrder = () => {
   const handleCloseDrawer = (index) => {
     setOpenDrawer(false);
   };
-
   const handleButtonMessage = (status, title) => {
     setStatusButton(status), setTitleButton(title);
   };
   const handleConfirmOrder = (payload) => {
     onConfirmOrder(payload);
+  };
+  const handleShowPDF = (id) => {
+    setControlOpenPDF(id);
+    dispatch(getDetailOrder(id));
+    setOpenPDF(true);
+  };
+  const handleClosePDF = (index) => {
+    setOpenPDF(false);
   };
   const handleCancelConfirmOrder = (e) => {
     console.log(e);
@@ -258,6 +292,16 @@ const DashboardOrder = () => {
             >
               Chi tiết
             </button>
+            {/* <button
+              onClick={() => {
+                handleShowPDF(order?._id);
+              }}
+              className="border-solid border-blue-300 border xs:p-[6px_12px] xs:text-sm 
+             md:p-[4px_8px] md:text-xs lg:p-[6px_12px] lg:text-sm 
+                hover:bg-blue-300 hover:text-white duration-400 transition-colors"
+            >
+              PDF
+            </button> */}
             <Popconfirm
               title={`Xác nhận ${titleButton}`}
               onConfirm={() =>
@@ -342,7 +386,7 @@ const DashboardOrder = () => {
               onClose={() => handleCloseDrawer(index)}
               open={controlDrawer === order?._id && openDrawer}
             >
-              <div className="w-full xs:p-[0] md:py-[15px] md:px-[20px] md:bg-[#f9f9f9]">
+              <div className=" w-full xs:p-[0] md:py-[15px] md:px-[20px] md:bg-[#f9f9f9]">
                 {width < 768 && (
                   <h3 className="font-osb text-black-333 text-md my-[20px]">
                     Giỏ hàng của bạn
@@ -476,6 +520,17 @@ const DashboardOrder = () => {
                 </div>
               </div>
             </Drawer>
+            {/* <Drawer
+              size="large"
+              key={`pdf-drawer-${order?._id}`}
+              bodyStyle={{ padding: 0 }}
+              title=" Giỏ hàng của bạn"
+              placement="right"
+              onClose={handleClosePDF}
+              open={controlPFD === order?._id && openPFD}
+            >
+              <MyPDF detailOrder={order}></MyPDF>
+            </Drawer> */}
           </div>
         </>
       ),

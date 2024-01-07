@@ -98,15 +98,15 @@ export const createOrder = createAsyncThunk(
 );
 export const getOrderUser = createAsyncThunk(
   "order/get/user",
-  async (_, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
       const _token = localStorage.getItem(LOCAL_STORAGE.token);
-      const response = await orderService.getOrderUser(_token);
+      const response = await orderService.getOrderUser(payload, _token);
       if (response?.status === 200) {
-        thunkAPI.dispatch(orderActions.setOrderList(response?.data?.data));
+        thunkAPI.dispatch(orderActions.setOrderList(response));
       }
       // message.success(response?.data?.message);
-      return response?.data?.data;
+      return response;
     } catch (error) {
       console.log("error", error);
       throw error;

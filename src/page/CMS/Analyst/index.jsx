@@ -184,7 +184,7 @@ const DashboardAnalyst = () => {
     try {
       const totalProducts = await onGetInventory(
         `?${queryString.stringify({
-          limit: 10,
+          limit: 10000,
           type: "top-in-stock",
         })}`
       );
@@ -642,7 +642,6 @@ const DashboardAnalyst = () => {
     setRenderLimitTopSold(value);
   };
   const handleChangeLimitTopCountInStock = (value) => {
-    console.log("value", value);
     setRenderLimitTopCountInStock(value);
   };
   /// handle top-rate Calendar
@@ -713,7 +712,6 @@ const DashboardAnalyst = () => {
           });
         }
       } else {
-        console.log("Clear");
         setRenderDatePickerTop({});
       }
     } catch (error) {

@@ -15,7 +15,6 @@ const style = {
   background: "#0092ff",
   padding: "8px 0",
 };
-
 const ConselPage = () => {
   const { width } = useWindowSize();
   const [controlSteps, setControlSteps] = useState(0);
@@ -102,85 +101,77 @@ const ConselPage = () => {
     }
   }, [controlSteps, valueSex, valueAge, valueLifeStyle, valueSkinType]);
   return (
-    <MainProvider>
-      <Overplay className={`z-50`} />
-      <BackToTop />
-      <Nav />
-      <Header />
-      <main className="main-wrapper w-full h-full">
-        <div className="container">
-          <div className="my-[30px] relative">
-            <div className="my-[20px]">
-              <Steps
-                onChange={setControlSteps}
-                current={controlSteps}
-                items={[
-                  {
-                    title: "ConselSex",
-                    description: valueSex?.label
-                      ? valueSex?.label
-                      : "Chọn giới tính",
-                  },
-                  {
-                    disabled: !valueSex?.label ? true : false,
-                    title: "ConselAge",
-                    description: `${
-                      valueAge?.label ? valueAge?.label : "Độ tuổi của bạn?"
-                    }`,
-                  },
-                  {
-                    disabled: !valueAge?.label ? true : false,
-                    title: "ConselSkinType",
-                    description: `${
-                      valueSkinType?.label
-                        ? valueSkinType?.label
-                        : "Loại da của bạn thuộc loại nào?"
-                    }`,
-                  },
-                  {
-                    disabled: !valueSkinType?.label ? true : false,
-                    title: "ConselLifeStyle",
-                    description: `${
-                      valueLifeStyle?.label
-                        ? valueLifeStyle?.label
-                        : "Sở thích của bạn?"
-                    }`,
-                  },
-                ]}
-              />
-            </div>
-            <div className="w-full flex items-center justify-between gap-10 ">
-              <Button
-                onClick={onPrev}
-                size="large"
-                className={`${
-                  controlSteps > 0
-                    ? "opacity-100 visible"
-                    : "opacity-0 invisible"
-                }`}
-              >
-                Trở lại
-              </Button>
-              <Button
-                disabled={controlDisableButton}
-                onClick={onNext}
-                size="large"
-                className={`${
-                  controlSteps >= 0 && controlSteps < 4
-                    ? "opacity-100 visible"
-                    : "opacity-0 invisible"
-                }`}
-              >
-                {controlSteps === 3 ? "Tư vấn" : "Tiếp tục"}
-              </Button>
-            </div>
-            <div className="my-[20px] ">
-              <CurrentConsel {...currentConselProps} />
-            </div>
+    <main className="main-wrapper w-full h-full">
+      <div className="container">
+        <div className="my-[30px] relative">
+          <div className="my-[20px]">
+            <Steps
+              onChange={setControlSteps}
+              current={controlSteps}
+              items={[
+                {
+                  title: "ConselSex",
+                  description: valueSex?.label
+                    ? valueSex?.label
+                    : "Chọn giới tính",
+                },
+                {
+                  disabled: !valueSex?.label ? true : false,
+                  title: "ConselAge",
+                  description: `${
+                    valueAge?.label ? valueAge?.label : "Độ tuổi của bạn?"
+                  }`,
+                },
+                {
+                  disabled: !valueAge?.label ? true : false,
+                  title: "ConselSkinType",
+                  description: `${
+                    valueSkinType?.label
+                      ? valueSkinType?.label
+                      : "Loại da của bạn thuộc loại nào?"
+                  }`,
+                },
+                {
+                  disabled: !valueSkinType?.label ? true : false,
+                  title: "ConselLifeStyle",
+                  description: `${
+                    valueLifeStyle?.label
+                      ? valueLifeStyle?.label
+                      : "Sở thích của bạn?"
+                  }`,
+                },
+              ]}
+            />
+          </div>
+          <div className="w-full flex items-center justify-between gap-10 ">
+            <Button
+              onClick={onPrev}
+              size="large"
+              className={`${
+                controlSteps > 0 ? "opacity-100 visible" : "opacity-0 invisible"
+              }`}
+            >
+              Trở lại
+            </Button>
+            <Button
+              disabled={controlDisableButton}
+              onClick={onNext}
+              size="large"
+              className={`${
+                controlSteps >= 0 && controlSteps < 4
+                  ? "opacity-100 visible"
+                  : "opacity-0 invisible"
+              }`}
+            >
+              {controlSteps === 3 ? "Tư vấn" : "Tiếp tục"}
+            </Button>
+          </div>
+          <div className="my-[20px] ">
+            <CurrentConsel {...currentConselProps} />
           </div>
         </div>
-      </main>
-    </MainProvider>
+      </div>
+    </main>
   );
 };
 

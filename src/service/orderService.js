@@ -6,10 +6,13 @@ export const orderService = {
       headers: { token: `Bearer ${token}` },
     });
   },
-  getOrderUser: (token) => {
-    return instanceAxios.get(`/api/order/get-order-user`, {
-      headers: { token: `Bearer ${token}` },
-    });
+  getOrderUser: (payload, token) => {
+    return instanceAxios.get(
+      `/api/order/get-order-user?limit=${payload?.limit}&page=${payload?.page}`,
+      {
+        headers: { token: `Bearer ${token}` },
+      }
+    );
   },
   updateOrder: (payload, order_id, token) => {
     return instanceAxios.put(`/api/order/update-order/${order_id}`, payload, {

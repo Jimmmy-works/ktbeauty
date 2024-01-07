@@ -7,6 +7,7 @@ import { dashboardReducer } from "./reducer/dashboardReducer";
 import { orderReducer } from "./reducer/orderReducer";
 import { productReducer } from "./reducer/productReducer";
 import { whiteListReducer } from "./reducer/whitelistReducer";
+import thunk from "redux-thunk";
 
 const store = configureStore({
   reducer: {
@@ -17,9 +18,13 @@ const store = configureStore({
     order: orderReducer,
     whitelist: whiteListReducer,
   },
-  // middleware: [thunk],
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(thunkMiddleware),
+  middleware: [thunk],
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware().concat({
+  //     thunkMiddleware,
+  //     serializableCheck: false,
+  //   }),
+
   devTools: ENV === "development",
 });
 export default store;
