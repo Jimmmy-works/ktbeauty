@@ -1209,6 +1209,9 @@ input[type="number"] {
         pointer-events: none;
       }
       &.disable {
+        border-color: transparent;
+      }
+      &.disable {
         --tw-text-opacity: 1;
         color: rgb(209 213 219 / var(--tw-text-opacity));
       }
@@ -2196,10 +2199,6 @@ input[type="number"] {
   margin: auto !important;
 }
 
-.m-\[10px_0_20px_0\] {
-  margin: 10px 0 20px 0 !important;
-}
-
 .-mx-\[15px\] {
   margin-left: -15px !important;
   margin-right: -15px !important;
@@ -2238,16 +2237,6 @@ input[type="number"] {
 .my-\[6px\] {
   margin-top: 6px !important;
   margin-bottom: 6px !important;
-}
-
-.my-\[10px\] {
-  margin-top: 10px !important;
-  margin-bottom: 10px !important;
-}
-
-.my-\[10px_20px\] {
-  margin-top: 10px 20px !important;
-  margin-bottom: 10px 20px !important;
 }
 
 .mb-\[10px\] {
@@ -2310,6 +2299,10 @@ input[type="number"] {
   margin-top: 14px !important;
 }
 
+.mt-\[15px\] {
+  margin-top: 15px !important;
+}
+
 .mt-\[20px\] {
   margin-top: 20px !important;
 }
@@ -2320,6 +2313,10 @@ input[type="number"] {
 
 .mt-\[34px\] {
   margin-top: 34px !important;
+}
+
+.mt-\[50px\] {
+  margin-top: 50px !important;
 }
 
 .mt-\[5px\] {
@@ -2520,10 +2517,6 @@ input[type="number"] {
   max-height: 38px !important;
 }
 
-.max-h-\[600px\] {
-  max-height: 600px !important;
-}
-
 .min-h-\[180px\] {
   min-height: 180px !important;
 }
@@ -2534,6 +2527,10 @@ input[type="number"] {
 
 .min-h-\[30px\] {
   min-height: 30px !important;
+}
+
+.min-h-\[400px\] {
+  min-height: 400px !important;
 }
 
 .min-h-\[64px\] {
@@ -2641,6 +2638,10 @@ input[type="number"] {
   width: 42px !important;
 }
 
+.w-\[50\%\] {
+  width: 50% !important;
+}
+
 .w-\[50px\] {
   width: 50px !important;
 }
@@ -2714,6 +2715,10 @@ input[type="number"] {
 
 .max-w-\[500px\] {
   max-width: 500px !important;
+}
+
+.max-w-\[900px\] {
+  max-width: 900px !important;
 }
 
 .max-w-\[90px\] {
@@ -2938,6 +2943,10 @@ input[type="number"] {
   gap: 4px !important;
 }
 
+.gap-\[60px\] {
+  gap: 60px !important;
+}
+
 .gap-\[6px\] {
   gap: 6px !important;
 }
@@ -3152,11 +3161,6 @@ input[type="number"] {
   border-color: rgb(236 236 236 / var(--tw-border-opacity)) !important;
 }
 
-.border-\[\#fafafa\] {
-  --tw-border-opacity: 1 !important;
-  border-color: rgb(250 250 250 / var(--tw-border-opacity)) !important;
-}
-
 .border-\[\#fff\] {
   --tw-border-opacity: 1 !important;
   border-color: rgb(255 255 255 / var(--tw-border-opacity)) !important;
@@ -3256,6 +3260,11 @@ input[type="number"] {
   background-color: rgb(28 32 32 / var(--tw-bg-opacity)) !important;
 }
 
+.bg-\[\#2c2c2c\] {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(44 44 44 / var(--tw-bg-opacity)) !important;
+}
+
 .bg-\[\#33699c\] {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(51 105 156 / var(--tw-bg-opacity)) !important;
@@ -3324,11 +3333,6 @@ input[type="number"] {
 .bg-\[\#f9f9f9\] {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(249 249 249 / var(--tw-bg-opacity)) !important;
-}
-
-.bg-\[\#fafafa\] {
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(250 250 250 / var(--tw-bg-opacity)) !important;
 }
 
 .bg-\[rgba\(0\2c 0\2c 0\2c 0\.03\)\] {
@@ -3415,6 +3419,10 @@ input[type="number"] {
   background-color: rgb(202 138 4 / var(--tw-bg-opacity)) !important;
 }
 
+.bg-about-banner {
+  background-image: url('/assets/img/about-banner.jpg') !important;
+}
+
 .bg-advertising-banner-2 {
   background-image: url('/assets/img/advertising-banner-2.jpg') !important;
 }
@@ -3433,6 +3441,10 @@ input[type="number"] {
 
 .bg-marketing-banner {
   background-image: url('/assets/img/marketing-banner.jpg') !important;
+}
+
+.bg-shop-banner {
+  background-image: url('/assets/img/shop-banner.jpg') !important;
 }
 
 .bg-slider-1 {
@@ -3457,6 +3469,10 @@ input[type="number"] {
 
 .bg-fixed {
   background-attachment: fixed !important;
+}
+
+.bg-\[50\%_20\%\] {
+  background-position: 50% 20% !important;
 }
 
 .bg-center {
@@ -3588,6 +3604,10 @@ input[type="number"] {
   padding: 35px 0 !important;
 }
 
+.p-\[47px_60px\] {
+  padding: 47px 60px !important;
+}
+
 .p-\[4px\] {
   padding: 4px !important;
 }
@@ -3658,6 +3678,11 @@ input[type="number"] {
   padding-right: 8px !important;
 }
 
+.py-\[100px\] {
+  padding-top: 100px !important;
+  padding-bottom: 100px !important;
+}
+
 .py-\[10px\] {
   padding-top: 10px !important;
   padding-bottom: 10px !important;
@@ -3710,6 +3735,10 @@ input[type="number"] {
 
 .pb-\[20px\] {
   padding-bottom: 20px !important;
+}
+
+.pb-\[50px\] {
+  padding-bottom: 50px !important;
 }
 
 .pb-\[66\.6669\%\] {
@@ -3941,11 +3970,6 @@ input[type="number"] {
 .text-\[\#FE73C5\] {
   --tw-text-opacity: 1 !important;
   color: rgb(254 115 197 / var(--tw-text-opacity)) !important;
-}
-
-.text-\[\#ccc\] {
-  --tw-text-opacity: 1 !important;
-  color: rgb(204 204 204 / var(--tw-text-opacity)) !important;
 }
 
 .text-\[\#d9d9d9\] {
@@ -4715,10 +4739,14 @@ input[type="number"] {
         margin-top: 0px;
       }
     }
+    .ant-table {
+      .ant-table-container {
+        min-height: 606px;
+      }
+    }
     @media (min-width: 768px) {
       .ant-table {
-        border-left-width: 1px;
-        border-right-width: 1px;
+        border-width: 1px;
       }
     }
     @media (min-width: 768px) {
@@ -5059,6 +5087,34 @@ input[type="number"] {
   opacity: 0;
 }
 
+.wmde-markdown {
+  white-space: normal !important;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: SVN-Gilroy-Bold;
+  }
+  ul {
+    li {
+      text-align: -webkit-match-parent;
+    }
+  }
+  li,
+  a,
+  p {
+    font-family: SVN-Gilroy-Regular;
+  }
+}
+
+.w-md-editor-preview {
+  p {
+    color: #000 !important;
+  }
+}
+
 .placeholder\:text-white::-moz-placeholder {
   --tw-text-opacity: 1 !important;
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
@@ -5215,6 +5271,11 @@ input[type="number"] {
   z-index: 1001 !important;
 }
 
+.after\:h-\[70\%\]::after {
+  content: var(--tw-content) !important;
+  height: 70% !important;
+}
+
 .after\:h-full::after {
   content: var(--tw-content) !important;
   height: 100% !important;
@@ -5223,6 +5284,11 @@ input[type="number"] {
 .after\:h-screen::after {
   content: var(--tw-content) !important;
   height: 100vh !important;
+}
+
+.after\:w-\[10px\]::after {
+  content: var(--tw-content) !important;
+  width: 10px !important;
 }
 
 .after\:w-full::after {
@@ -5265,6 +5331,12 @@ input[type="number"] {
 .after\:bg-\[rgba\(0\2c 0\2c 0\2c 0\.45\)\]::after {
   content: var(--tw-content) !important;
   background-color: rgba(0,0,0,0.45) !important;
+}
+
+.after\:bg-primary::after {
+  content: var(--tw-content) !important;
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(255 136 123 / var(--tw-bg-opacity)) !important;
 }
 
 .hover\:scale-110:hover {
@@ -5446,6 +5518,11 @@ input[type="number"] {
   --tw-scale-x: 1.05 !important;
   --tw-scale-y: 1.05 !important;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
+}
+
+.group\/delete:hover .group-hover\/delete\:border-red-500 {
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(239 68 68 / var(--tw-border-opacity)) !important;
 }
 
 .group\/hover:hover .group-hover\/hover\:bg-primary {
@@ -5658,12 +5735,12 @@ input[type="number"] {
     height: 18px !important;
   }
 
-  .xs\:h-\[20px\] {
-    height: 20px !important;
+  .xs\:h-\[200px\] {
+    height: 200px !important;
   }
 
-  .xs\:h-\[250px\] {
-    height: 250px !important;
+  .xs\:h-\[20px\] {
+    height: 20px !important;
   }
 
   .xs\:h-\[26px\] {
@@ -6436,11 +6513,6 @@ input[type="number"] {
     padding: 6px 12px !important;
   }
 
-  .md\:px-\[10px\] {
-    padding-left: 10px !important;
-    padding-right: 10px !important;
-  }
-
   .md\:px-\[15px\] {
     padding-left: 15px !important;
     padding-right: 15px !important;
@@ -6464,6 +6536,11 @@ input[type="number"] {
   .md\:py-\[10px\] {
     padding-top: 10px !important;
     padding-bottom: 10px !important;
+  }
+
+  .md\:py-\[12px\] {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
   }
 
   .md\:py-\[14px\] {
@@ -6499,11 +6576,6 @@ input[type="number"] {
   .md\:py-\[5px\] {
     padding-top: 5px !important;
     padding-bottom: 5px !important;
-  }
-
-  .md\:py-\[6px\] {
-    padding-top: 6px !important;
-    padding-bottom: 6px !important;
   }
 
   .md\:py-\[75px\] {
@@ -6829,11 +6901,6 @@ input[type="number"] {
   .lg\:px-\[30px\] {
     padding-left: 30px !important;
     padding-right: 30px !important;
-  }
-
-  .lg\:py-\[10px\] {
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
   }
 
   .lg\:py-\[18px\] {

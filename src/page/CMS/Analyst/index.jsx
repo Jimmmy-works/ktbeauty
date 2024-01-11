@@ -98,9 +98,9 @@ const DashboardAnalyst = () => {
   const [revenueFilter, setRevenueFilter] = useState({});
   const [soldProductFilter, setSoldProductFilter] = useState({});
   const [inventoryObj, setInventoryObj] = useState({});
-  const [renderLimitTopSold, setRenderLimitTopSold] = useState("");
+  const [renderLimitTopSold, setRenderLimitTopSold] = useState("10");
   const [renderLimitTopCountInStock, setRenderLimitTopCountInStock] =
-    useState("");
+    useState("10");
   ///// handle Analyst
   /// call API
   const handleRevenue = async () => {
@@ -616,16 +616,17 @@ const DashboardAnalyst = () => {
     console.log("event", event);
   };
   ///// handle render top-rate
-  const { data: dataTop10CountInStock } = useQuery(() => {
-    return dashboardService.getTopRate(
-      `?${queryString.stringify({
-        limit: renderLimitTopCountInStock ? renderLimitTopCountInStock : 10,
-        type: "top-in-stock",
-      })}`
-    );
-  }, [renderLimitTopCountInStock]);
+  const { data: dataTop10CountInStock, loading: loadingTop10CountInStock } =
+    useQuery(() => {
+      return dashboardService.getTopRate(
+        `?${queryString.stringify({
+          limit: renderLimitTopCountInStock ? renderLimitTopCountInStock : 10,
+          type: "top-in-stock",
+        })}`
+      );
+    }, [renderLimitTopCountInStock]);
   const [renderDatePickerTop, setRenderDatePickerTop] = useState({});
-  const { data: dataTop10Sold } = useQuery(() => {
+  const { data: dataTop10Sold, loading: loadingTop10Sold } = useQuery(() => {
     return dashboardService.getSoldProducts({
       limit: renderLimitTopSold ? renderLimitTopSold : 10,
       type: "top-sold",
@@ -813,7 +814,7 @@ const DashboardAnalyst = () => {
   );
   const dataTopSold = dataTop10Sold?.data?.data?.map((item, index) => {
     return {
-      key: item?._id,
+      key: item?.productId,
       name: (
         <p className=" truncate whitespace-normal line-clamp-3">
           {item?.productName}
@@ -1076,13 +1077,27 @@ const DashboardAnalyst = () => {
               </div>
               <div></div>
             </div>
+
             <Table
+              loading={{
+                spinning: loadingTop10CountInStock,
+                style: { maxHeight: "100%" },
+              }}
+              footer={() =>
+                `Tổng trong kho (Top ${renderLimitTopCountInStock}): ${dataTopCountInStock?.reduce(
+                  (acc, cur) => {
+                    return acc + cur?.stock;
+                  },
+                  0
+                )}`
+              }
               rowClassName={`items-center `}
               style={{ verticalAlign: "middle" }}
               tableLayout={"auto"}
               columns={columnTopCountInStock}
               dataSource={dataTopCountInStock}
               pagination={{
+                showSizeChanger: false,
                 pageSize: 5,
                 position: ["bottomRight"],
               }}
@@ -1140,12 +1155,25 @@ const DashboardAnalyst = () => {
               </CustomCalendar>
             </div>
             <Table
+              loading={{
+                spinning: loadingTop10Sold,
+                style: { maxHeight: "100%" },
+              }}
+              footer={() =>
+                `Tổng sản phẩm đã bán (Top ${renderLimitTopSold}): ${dataTopSold?.reduce(
+                  (acc, cur) => {
+                    return acc + cur?.sold;
+                  },
+                  0
+                )}`
+              }
               rowClassName={`items-center`}
               style={{ verticalAlign: "middle" }}
               tableLayout={"auto"}
               columns={columnTopSold}
               dataSource={dataTopSold}
               pagination={{
+                showSizeChanger: false,
                 pageSize: 5,
                 position: ["bottomRight"],
               }}

@@ -577,6 +577,7 @@ const ModalCreateProduct = ({
               <MDEditor
                 height={200}
                 value={descIntro}
+                data-color-mode="light"
                 onChange={setDescIntro}
               />
             </MDEditorWrapper>

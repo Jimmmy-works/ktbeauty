@@ -50,11 +50,11 @@ const Order = () => {
   const { profile } = useSelector((state) => state.auth);
   const { width } = useWindowSize();
   const [isActive, setIsActive] = useState(null);
-  // const sortOrderList = [...orderList?.data?.data]
-  //   ?.sort((a, b) => {
-  //     return new Date(b?.createdAt) - new Date(a?.createdAt);
-  //   })
-  //   ?.map((item) => item);
+  const sortOrderList = orderList?.data?.data?.slice()?.sort((a, b) => {
+    return (
+      new Date(b?.createdAt)?.getTime() - new Date(a?.createdAt)?.getTime()
+    );
+  });
   const listRef = useRef([]);
   const [open, setOpen] = useState(false);
   const showDrawer = (_id) => {
@@ -89,7 +89,7 @@ const Order = () => {
       ) : (
         <div className=" min-h-[400px]">
           {orderList?.data?.data?.length ? (
-            orderList?.data?.data?.map((item, index) => {
+            sortOrderList?.map((item, index) => {
               const { _id, createdAt, status, total, discount } = item || {};
               const handleColorTimeline = (type) => {
                 if (type === "canceled") {

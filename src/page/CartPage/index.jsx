@@ -190,7 +190,6 @@ const CartPage = () => {
             Giỏ hàng
           </h3>
         </div>
-
         {cartInfo?._id && (
           <table className="table ">
             <thead>

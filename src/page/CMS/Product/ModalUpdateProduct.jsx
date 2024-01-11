@@ -644,6 +644,7 @@ const ModalUpdateProduct = ({
                 height={200}
                 value={descIntro}
                 onChange={setDescIntro}
+                data-color-mode="light"
               />
             </MDEditorWrapper>
           </div>

@@ -409,7 +409,6 @@ const DashBoardProduct = () => {
           key={`cms/product`}
           tableLayout={"auto"}
           pagination={{
-            pageSize: 9,
             total: totalProducts,
             position: ["bottomCenter"],
           }}

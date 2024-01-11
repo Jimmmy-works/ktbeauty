@@ -305,15 +305,7 @@ const Shop = () => {
         </div>
       )}
       <main className="main-wrapper ">
-        <div className="container ">
-          <div className="xs:mt-[30px] lg:mt-[40px] md:h-[350px] xs:h-[250px]">
-            <img
-              className="w-full h-full object-cover rounded-lg"
-              src="/assets/img/shop-banner.jpg"
-              alt=""
-            />
-          </div>
-        </div>
+        <div className="relative  md:h-[350px] xs:h-[200px] bg-shop-banner bg-[50%_20%] bg-cover"></div>
         <BreadCrumb>
           <BreadCrumb.Item link={`${PATHS.HOME}`}>Trang chủ</BreadCrumb.Item>
           <BreadCrumb.Item isActive>Sản phẩm</BreadCrumb.Item>

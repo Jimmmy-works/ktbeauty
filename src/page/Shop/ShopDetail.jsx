@@ -94,7 +94,6 @@ const ShopDetail = () => {
     }
   }, [slugParams]);
   useEffect(() => {
-    console.log("111", 111);
     if (image) setCurrentImg(image[0]);
   }, [image]);
   return (

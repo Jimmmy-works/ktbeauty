@@ -56,13 +56,12 @@
       &:hover {
         & > a {
           @apply text-black;
-        }
-
-        .arrow-down {
-          @apply -rotate-180;
-          svg {
-            path {
-              @apply fill-black;
+          .arrow-down {
+            @apply -rotate-180;
+            svg {
+              path {
+                @apply fill-black;
+              }
             }
           }
         }

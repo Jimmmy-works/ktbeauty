@@ -45,10 +45,8 @@ const AuthenModal = () => {
           onClick={onAuthenModal}
           className="absolute w-full h-full z-[1002] cursor-pointer"
         ></div>
-        {/* <div className="relative  max-h-[600px] shadow-[0px_5px_20px_5px_rgba(126, 105, 105, 0.2)] h-full w-full"> */}
         <Login {...loginProps} />
         <Register {...registerProps}></Register>
-        {/* </div> */}
       </div>
     </div>
   );

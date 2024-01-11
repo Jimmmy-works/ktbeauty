@@ -941,6 +941,7 @@ export default {
       "slider-3": "url('/assets/img/slider-3.jpg')",
       "product-banner": "url('/assets/img/product-banner.jpg')",
       "shop-banner": "url('/assets/img/shop-banner.jpg')",
+      "about-banner": "url('/assets/img/about-banner.jpg')",
       "footer-banner": "url('/assets/img/footer-banner.jpg')",
       "marketing-banner": "url('/assets/img/marketing-banner.jpg')",
       "advertising-banner-1": "url('/assets/img/advertising-banner-1.gif')",

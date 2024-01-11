@@ -27,7 +27,11 @@ const Register = ({
   const [hiddenPassword, setHiddenPassword] = useState(true);
   const handleRegister = async (data) => {
     try {
-      if (updateStatusRegister !== THUNK_STATUS.pending) onRegister(data);
+      if (
+        updateStatusRegister !== THUNK_STATUS.pending ||
+        updateStatusRegister !== THUNK_STATUS.rejected
+      )
+        onRegister(data);
     } catch (error) {
       console.log("error", error);
     }
@@ -217,8 +221,8 @@ const Register = ({
                   })}
                   className="mt-0 xs:p-[14px_14px_14px_35px] md:p-[16px_16px_16px_45px] w-full h-full rounded-[50px] bg-[rgba(255,255,255,0.3)]
                       xs:text-xs md:text-[16px] font-mar text-white placeholder:text-white"
-                  placeholder="Số điện thoại"
-                  type="text"
+                  placeholder="+84"
+                  type="number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                 />

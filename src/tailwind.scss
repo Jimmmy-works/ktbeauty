@@ -1,17 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "/src/page/Header/header.scss";
+@import "/src/page/Footer/footer.scss";
+@import "/src/page/HomePage/homepage.scss";
+@import "/src/page/AboutPage/aboutPage.scss";
+@import "/src/page/Shop/shop.scss";
+@import "/src/page/CartPage/cart.scss";
+@import "/src/page/Checkout/checkout.scss";
+@import "/src/page/Profile/profile.scss";
 @import "/src/scss/reset.scss";
-@import "/src/scss/header.scss";
-@import "/src/scss/footer.scss";
-@import "/src/scss/homepage.scss";
-@import "/src/scss/shop.scss";
-@import "/src/scss/cart.scss";
-@import "/src/scss/checkout.scss";
-@import "/src/scss/authen.scss";
-@import "/src/scss/profile.scss";
+@import "/src/components/Authen/authen.scss";
 @import "/src/scss/hamburger.scss";
-
 @import "swiper/css";
 @import "swiper/css/effect-cube";
 @import "swiper/css/pagination";
@@ -103,7 +103,7 @@
   .breadcrumb {
     @apply py-[20px];
     &__list {
-      @apply flex flex-wrap gap-y-[6px];
+      @apply flex  flex-wrap gap-y-[6px];
       &-wrapper {
         @apply flex;
         &:last-child {
@@ -652,7 +652,10 @@
       @apply xs:mt-0 md:mt-0;
     }
     .ant-table {
-      @apply md:border-x md:border-solid md:border-[#f0f0f0];
+      .ant-table-container {
+        @apply min-h-[606px];
+      }
+      @apply md:border md:border-solid md:border-[#f0f0f0];
     }
     .ant-table-cell {
       @apply [&:nth-child(1)]:max-w-[150px];
@@ -820,4 +823,31 @@
 }
 .swiper-button-disabled {
   @apply invisible opacity-0;
+}
+.wmde-markdown {
+  white-space: normal !important;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-osb;
+  }
+  ul {
+    li {
+      text-align: -webkit-match-parent;
+    }
+  }
+  li,
+  a,
+  p {
+    @apply font-osr;
+  }
+}
+.w-md-editor-preview {
+  p {
+    color: #000 !important;
+  }
 }

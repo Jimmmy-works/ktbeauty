@@ -188,7 +188,6 @@ const useShop = () => {
     },
     [search]
   );
-  console.log("pageCurrent", pageCurrent);
   return {
     isFilter,
     onToggleFilter,

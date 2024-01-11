@@ -119,7 +119,7 @@ const useProfile = () => {
   const onCancelOrder = (payload) => {
     dispatch(updataStatusOrder(payload));
   };
-  const [pageCurrent, setPageCurrent] = useState();
+  const [pageCurrent, setPageCurrent] = useState(1);
   const onChangePageCurrent = (pageNumb) => {
     setPageCurrent(pageNumb);
   };
@@ -127,7 +127,7 @@ const useProfile = () => {
     if (statusGetOrderUser === THUNK_STATUS.fulfilled) {
       dispatch(
         getOrderUser(
-          { limit: 2, page: pageCurrent - 1 },
+          { limit: 2, page: pageCurrent ? pageCurrent - 1 : 1 },
           localStorage.getItem(LOCAL_STORAGE.token)
         )
       );

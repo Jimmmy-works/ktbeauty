@@ -76,7 +76,6 @@ const Pagination = ({
         >
           First
         </PaginationItem>
-        {console.log("disable", disable)}
         {myPagination?.map((item, index) => {
           return (
             <PaginationItem

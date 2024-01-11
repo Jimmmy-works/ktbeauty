@@ -177,7 +177,6 @@ const DashboardCategory = () => {
         style={{ verticalAlign: "middle" }}
         tableLayout={"auto"}
         pagination={{
-          pageSize: 12,
           total: data,
           position: ["bottomCenter"],
         }}

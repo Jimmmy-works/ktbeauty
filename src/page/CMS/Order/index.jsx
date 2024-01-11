@@ -627,7 +627,6 @@ const DashboardOrder = () => {
         style={{ verticalAlign: "middle" }}
         tableLayout={"auto"}
         pagination={{
-          pageSize: width >= 768 ? 12 : 8,
           total: data,
           position: ["bottomCenter"],
         }}

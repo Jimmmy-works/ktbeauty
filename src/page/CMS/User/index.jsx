@@ -207,7 +207,6 @@ const DashboardUser = () => {
         tableLayout={"auto"}
         key={`cms/user`}
         pagination={{
-          pageSize: width >= 768 ? 12 : 8,
           total: data,
           position: ["bottomCenter"],
         }}
