@@ -36,7 +36,6 @@ const WhiteList = () => {
     onDeleteProductInWhiteList,
   } = useProfile();
   const { width } = useWindowSize();
-  console.log("whiteListInfo", whiteListInfo);
   return (
     <div className="whitelist">
       <h3 className="text-[24px] xs:text-center md:text-left font-ossb text-black-333 xs:my-[16px]">

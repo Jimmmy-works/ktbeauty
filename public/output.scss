@@ -749,9 +749,23 @@ input[type="number"] {
         --tw-content: '\203A';
         content: var(--tw-content);
       }
-      &:not(:last-child)::after {
-        content: var(--tw-content);
-        font-size: 18px;
+      @media (min-width: 360px) {
+        &:not(:last-child)::after {
+          content: var(--tw-content);
+          font-size: 14px;
+        }
+      }
+      @media (min-width: 768px) {
+        &:not(:last-child)::after {
+          content: var(--tw-content);
+          font-size: 16px;
+        }
+      }
+      @media (min-width: 1024px) {
+        &:not(:last-child)::after {
+          content: var(--tw-content);
+          font-size: 18px;
+        }
       }
       a {
         display: flex;
@@ -1657,8 +1671,20 @@ input[type="number"] {
     --tw-text-opacity: 1;
     color: rgb(51 51 51 / var(--tw-text-opacity));
   }
-  &__title {
-    font-size: 18px;
+  @media (min-width: 360px) {
+    &__title {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 768px) {
+    &__title {
+      font-size: 16px;
+    }
+  }
+  @media (min-width: 1024px) {
+    &__title {
+      font-size: 18px;
+    }
   }
 }
 
@@ -1701,8 +1727,22 @@ input[type="number"] {
 }
 
 @media (min-width: 1024px) {
-  .table {
-    font-size: 18px;
+  @media (min-width: 360px) {
+    .table {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .table {
+      font-size: 16px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .table {
+      font-size: 18px;
+    }
   }
 }
 
@@ -2537,12 +2577,20 @@ input[type="number"] {
   min-height: 64px !important;
 }
 
+.min-h-\[70px\] {
+  min-height: 70px !important;
+}
+
 .min-h-\[800px\] {
   min-height: 800px !important;
 }
 
 .min-h-\[84px\] {
   min-height: 84px !important;
+}
+
+.min-h-\[calc\(24px\*4\)\] {
+  min-height: calc(24px * 4) !important;
 }
 
 .min-h-full {
@@ -2658,6 +2706,10 @@ input[type="number"] {
   width: 6px !important;
 }
 
+.w-\[70px\] {
+  width: 70px !important;
+}
+
 .w-\[800px\] {
   width: 800px !important;
 }
@@ -2689,6 +2741,10 @@ input[type="number"] {
 
 .min-w-\[64px\] {
   min-width: 64px !important;
+}
+
+.min-w-\[70px\] {
+  min-width: 70px !important;
 }
 
 .min-w-\[84px\] {
@@ -2937,6 +2993,10 @@ input[type="number"] {
 
 .gap-\[30px\] {
   gap: 30px !important;
+}
+
+.gap-\[40px\] {
+  gap: 40px !important;
 }
 
 .gap-\[4px\] {
@@ -3793,6 +3853,10 @@ input[type="number"] {
   padding-top: 5px !important;
 }
 
+.pt-\[7px\] {
+  padding-top: 7px !important;
+}
+
 .pt-\[8px\] {
   padding-top: 8px !important;
 }
@@ -4227,8 +4291,22 @@ input[type="number"] {
   }
 }
 
-.text-md {
-  font-size: 18px !important;
+@media (min-width: 360px) {
+  .text-md {
+    font-size: 14px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-md {
+    font-size: 16px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .text-md {
+    font-size: 18px !important;
+  }
 }
 
 @media (min-width: 360px) {
@@ -4266,6 +4344,12 @@ input[type="number"] {
 }
 
 @media (min-width: 768px) {
+  .text-lg {
+    font-size: 26px !important;
+  }
+}
+
+@media (min-width: 1024px) {
   .text-lg {
     font-size: 30px !important;
   }
@@ -4808,8 +4892,20 @@ input[type="number"] {
     .ant-drawer-title {
       font-family: SVN-Gilroy-Bold;
     }
-    .ant-drawer-title {
-      font-size: 18px;
+    @media (min-width: 360px) {
+      .ant-drawer-title {
+        font-size: 14px;
+      }
+    }
+    @media (min-width: 768px) {
+      .ant-drawer-title {
+        font-size: 16px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .ant-drawer-title {
+        font-size: 18px;
+      }
     }
   }
 }
@@ -5150,14 +5246,29 @@ input[type="number"] {
   left: 0px !important;
 }
 
+.before\:left-\[-20px\]::before {
+  content: var(--tw-content) !important;
+  left: -20px !important;
+}
+
 .before\:top-1\/2::before {
   content: var(--tw-content) !important;
   top: 50% !important;
 }
 
+.before\:top-\[7px\]::before {
+  content: var(--tw-content) !important;
+  top: 7px !important;
+}
+
 .before\:block::before {
   content: var(--tw-content) !important;
   display: block !important;
+}
+
+.before\:flex::before {
+  content: var(--tw-content) !important;
+  display: flex !important;
 }
 
 .before\:hidden::before {
@@ -5206,6 +5317,22 @@ input[type="number"] {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
 }
 
+.before\:rotate-\[180deg\]::before {
+  content: var(--tw-content) !important;
+  --tw-rotate: 180deg !important;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
+}
+
+.before\:items-center::before {
+  content: var(--tw-content) !important;
+  align-items: center !important;
+}
+
+.before\:justify-center::before {
+  content: var(--tw-content) !important;
+  justify-content: center !important;
+}
+
 .before\:rounded-\[50\%\]::before {
   content: var(--tw-content) !important;
   border-radius: 50% !important;
@@ -5229,6 +5356,22 @@ input[type="number"] {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
 }
 
+.before\:text-center::before {
+  content: var(--tw-content) !important;
+  text-align: center !important;
+}
+
+.before\:tracking-\[-0\.07em\]::before {
+  content: var(--tw-content) !important;
+  letter-spacing: -0.07em !important;
+}
+
+.before\:text-\[\#ccc\]::before {
+  content: var(--tw-content) !important;
+  --tw-text-opacity: 1 !important;
+  color: rgb(204 204 204 / var(--tw-text-opacity)) !important;
+}
+
 .before\:transition-colors::before {
   content: var(--tw-content) !important;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke !important;
@@ -5239,6 +5382,11 @@ input[type="number"] {
 .before\:duration-400::before {
   content: var(--tw-content) !important;
   transition-duration: 400ms !important;
+}
+
+.before\:content-\[\'\\275F\\275F\'\]::before {
+  --tw-content: '\275F\275F' !important;
+  content: var(--tw-content) !important;
 }
 
 .after\:absolute::after {
@@ -6661,8 +6809,22 @@ input[type="number"] {
     }
   }
 
-  .md\:text-md {
-    font-size: 18px !important;
+  @media (min-width: 360px) {
+    .md\:text-md {
+      font-size: 14px !important;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .md\:text-md {
+      font-size: 16px !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .md\:text-md {
+      font-size: 18px !important;
+    }
   }
 
   @media (min-width: 360px) {
@@ -6688,6 +6850,12 @@ input[type="number"] {
   }
 
   @media (min-width: 768px) {
+    .md\:text-lg {
+      font-size: 26px !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
     .md\:text-lg {
       font-size: 30px !important;
     }

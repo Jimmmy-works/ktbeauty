@@ -2,6 +2,8 @@ import BreadCrumb from "@/components/BreadCrumb";
 import { PATHS } from "@/contants/path";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { Keyboard, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 const AboutPage = () => {
   const [activeSubcase, setActiveSubcase] = useState(null);
@@ -49,6 +51,44 @@ const AboutPage = () => {
       ),
     },
   ];
+  const optionPeople = [
+    {
+      author: "Vincent Vanilla",
+      avatar: "/assets/img/cerfication-ktbeauty.jpg",
+      desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex aut impedit repudiandae distinctio quibusdam saepe voluptates ea soluta enim, fugit cum rem nostrum iure quisquam corporis odio odit atque. Adipisci.",
+      job: "Student",
+    },
+    {
+      author: "Jack",
+      avatar: "/assets/img/cerfication-ktbeauty.jpg",
+      desc: "Western Australia since 1997. Having established a solid reputation built on honesty and integrity, designFARM offer their customers a genuine experience. We believe in good, authentic design, in order to do what we do best – create meaningful spaces. You won’t find any replica’s here",
+      job: "Student",
+    },
+    {
+      author: "Mac",
+      avatar: "/assets/img/cerfication-ktbeauty.jpg",
+      desc: " Having established a solid reputation built on honesty and integrity, designFARM offer their customers a genuine experience. ",
+      job: "officer ",
+    },
+    {
+      author: "Thomson Wilson",
+      avatar: "/assets/img/cerfication-ktbeauty.jpg",
+      desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt facilis repellat labore numquam minus hic adipisicing eli.",
+      job: "officer ",
+    },
+    {
+      author: "Mr.Beast",
+      avatar: "/assets/img/cerfication-ktbeauty.jpg",
+      desc: ` Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus voluptatum maiores laboriosam quasi repellat inventore voluptatem mollitia in accusantium? Quasi rem nostrum voluptates vitae cum. `,
+      job: "Teacher",
+    },
+    {
+      author: "Customer",
+      desc: ` Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus voluptatum maiores laboriosam quasi repellat inventore voluptatem mollitia in accusantium? Quasi rem nostrum voluptates vitae cum. `,
+      avatar: "/assets/img/cerfication-ktbeauty.jpg",
+      job: "Doctor",
+    },
+  ];
   return (
     <main className="main-wrapper aboutpage">
       <div className="relative  md:h-[350px] xs:h-[200px] bg-about-banner bg-[50%_20%] bg-cover"></div>
@@ -68,9 +108,13 @@ const AboutPage = () => {
           <p className="text-md font-osr leading-[24px]">
             Thiên nhiên luôn hiện diện quanh ta, không quá xa vời và được chứa
             đựng trọn vẹn trong từng sản phẩm của
-            <strong> KTBEAUTY</strong> bởi <strong>KTBEAUTY</strong> biết cách
-            kết hợp giữa tinh túy của khoa học và sự hoàn hảo của thiên nhiên để
-            mang đến những sản phẩm tốt nhất cho làn da của bạn.
+            <strong className="font-ossb text-primary">
+              {" "}
+              KTBEAUTY
+            </strong> bởi{" "}
+            <strong className="font-ossb text-primary">KTBEAUTY</strong> biết
+            cách kết hợp giữa tinh túy của khoa học và sự hoàn hảo của thiên
+            nhiên để mang đến những sản phẩm tốt nhất cho làn da của bạn.
           </p>
         </div>
         <div
@@ -143,102 +187,12 @@ const AboutPage = () => {
                   </div>
                 );
               })}
-              {/* <div
-                className={`whychooseus__list-item flex flex-col mt-[20px] cursor-pointer overflow-hidden
-                ${toggleContent ? "active" : ""}
-                `}
-                onClick={() => setToggleContent(!toggleContent)}
-              >
-                <div className="content flex items-center gap-3 w-full">
-                  <div className={`content__left p-[11px] bg-primary `}>
-                    <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24">
-                      <path
-                        fill="#fff"
-                        d="M18 1h-11.916l-6.084 7 12 15 12-14.917-6-7.083zm-11.667 8l3.231 7.753-6.203-7.753h2.972zm9.167 0l-3.5 8.4-3.5-8.4h7zm-6.365-2l2.865-3.438 2.865 3.438h-5.73zm8.532 2h3.028l-6.283 7.811 3.255-7.811zm2.794-2h-2.992l-3.334-4h2.938l3.388 4zm-13.465-4h2.869l-3.334 4h-3.011l3.476-4z"
-                      />
-                    </svg>
-                  </div>
-                  <div className="content__right ">
-                    DEALS & PROMOTIONS
-                    <svg
-                      className={``}
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
-                      <path
-                        d="M6.34317 7.75732L4.92896 9.17154L12 16.2426L19.0711 9.17157L17.6569 7.75735L12 13.4142L6.34317 7.75732Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <div
-                  ref={ref}
-                  className={`content__desc `}
-                  style={{
-                    maxHeight: `${
-                      toggleContent ? `${ref?.current?.scrollHeight}px` : "0px"
-                    }`,
-                  }}
-                >
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus
-                  expedita ipsum ipsa magni consequatur maiores repellat
-                  temporibus saepe quidem perferendis!
-                </div>
-              </div>
-              <div
-                className={`whychooseus__list-item flex flex-col mt-[20px] cursor-pointer overflow-hidden
-                ${toggleContent ? "active" : ""}
-                `}
-                onClick={() => setToggleContent(!toggleContent)}
-              >
-                <div className="content flex items-center gap-3 w-full">
-                  <div className={`content__left p-[11px] bg-primary `}>
-                    <svg className="w-[18px] h-[18px] " viewBox="0 0 24 24">
-                      <path
-                        fill="#fff"
-                        d="M12 2.644c2.965 2.238 6.457 3.004 8.912 3.25-.658 7.052-4.892 12.593-8.912 15.655-4.021-3.062-8.255-8.603-8.912-15.656 2.454-.245 5.947-1.011 8.912-3.249zm0-2.644c-2.996 2.995-7.486 4-11 4 0 8.583 5.067 16.097 11 20 5.932-3.903 11-11.417 11-20-3.515 0-8.006-1.005-11-4zm3.794 8l-4.381 4.475-2.215-2.123-1.237 1.239 3.452 3.362 5.619-5.715-1.238-1.238z"
-                      />
-                    </svg>
-                  </div>
-                  <div className="content__right ">
-                    DEALS & PROMOTIONS
-                    <svg
-                      className={``}
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
-                      <path
-                        d="M6.34317 7.75732L4.92896 9.17154L12 16.2426L19.0711 9.17157L17.6569 7.75735L12 13.4142L6.34317 7.75732Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <div
-                  ref={ref}
-                  className={`content__desc `}
-                  style={{
-                    maxHeight: `${
-                      toggleContent ? `${ref?.current?.scrollHeight}px` : "0px"
-                    }`,
-                  }}
-                >
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus
-                  expedita ipsum ipsa magni consequatur maiores repellat
-                  temporibus saepe quidem perferendis!
-                </div>
-              </div> */}
             </div>
           </div>
           <div className="whychooseus__right  flex justify-end w-[50%]">
             <img
               style={{
-                maxHeight: `${refWhychoosusLeft?.current?.clientHeight}px`,
+                maxHeight: `390px`,
               }}
               className={`w-full object-cover `}
               srcSet="/assets/img/cerfication-ktbeauty.jpg"
@@ -247,10 +201,7 @@ const AboutPage = () => {
           </div>
         </div>
       </div>
-      <div className="gallery py-[100px] mt-[50px] bg-[#2c2c2c]">
-        {/* <h2 className="text-center font-ossb text-lg capitalize text-white mb-[30px]">
-            Galley
-          </h2> */}
+      <div className="gallery py-[100px] mt-section bg-[#2c2c2c]">
         <div className="container ">
           <div className="gallery__list">
             <div className="gallery__list-item">
@@ -278,6 +229,81 @@ const AboutPage = () => {
             <div className="gallery__list-item">
               <img src="/assets/img/about-8.jpg" alt="" />
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="people m-section">
+        <div className="container">
+          <div className="mb-[30px]">
+            <h2 className="font-osb text-md uppercase text-black-555 mb-[12px]">
+              Phản hồi từ khách hàng
+            </h2>
+            <p className="text-md font-osr leading-[24px]">
+              Đôi lời nhận xét và đánh giá từ khách hàng đã trải nghiệm qua dịch
+              vụ từ
+              <strong className="font-ossb text-primary"> KTBEAUTY</strong>
+            </p>
+          </div>
+          <div className="people__list ">
+            <Swiper
+              className="overflow-y-visible"
+              modules={[Navigation, Keyboard]}
+              keyboard={{
+                enabled: true,
+              }}
+              breakpoints={{
+                360: {
+                  slidesPerView: 1,
+                  spaceBetween: 10,
+                },
+                768: {
+                  slidesPerView: 2,
+                  spaceBetween: 10,
+                },
+                1024: {
+                  slidesPerView: 3,
+                  spaceBetween: 15,
+                },
+              }}
+              grabCursor={true}
+              pagination={false}
+            >
+              {optionPeople?.map((item) => {
+                return (
+                  <SwiperSlide>
+                    <div className="people__list-item gap-[40px] flex items-start">
+                      <a className="pt-[7px] rounded-[50%] block w-[70px] h-[70px]">
+                        <img
+                          className="rounded-[50%] object-cover min-w-[70px] min-h-[70px] h-full w-full"
+                          src={item?.avatar}
+                          alt=""
+                        />
+                      </a>
+                      <div
+                        className="content before:content-['\275F\275F'] relative before:text-[#ccc] text-lg
+                         before:rotate-[180deg] before:flex before:items-center before:justify-center before:text-center
+                         before:tracking-[-0.07em] before:absolute before:left-[-20px] before:top-[7px] "
+                      >
+                        <div
+                          className="content__top min-h-[calc(24px*4)] leading-[24px] font-osr text-16px text-black-555
+                        line-clamp-4 truncate whitespace-normal"
+                        >
+                          {item?.desc}
+                        </div>
+                        <div className="content__bottom leading-[20px] mt-[12px]">
+                          <p className="font-ossb uppercase text-sm text-primary">
+                            {item?.author}
+                          </p>
+                          <p className="capitalize font-osr text-sm text-black-555">
+                            {item?.job}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
           </div>
         </div>
       </div>

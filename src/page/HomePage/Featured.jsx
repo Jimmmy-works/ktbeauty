@@ -3,10 +3,10 @@ import { FEATURED_OPTIONS } from "@/contants/general";
 import { PATHS } from "@/contants/path";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Controller, Keyboard, Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide, useSwiper, useSwiperSlide } from "swiper/react";
+import { Keyboard, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 const Featured = ({
   onChangeFeaturedTab,
   featuerdTab,

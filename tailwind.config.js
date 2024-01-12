@@ -1082,7 +1082,15 @@ export default {
         },
         ".text-base": { fontSize: "18px" },
         ".text-md": {
-          fontSize: "18px",
+          "@media (min-width: 360px)": {
+            fontSize: "14px",
+          },
+          "@media (min-width: 768px)": {
+            fontSize: "16px",
+          },
+          "@media (min-width: 1024px)": {
+            fontSize: "18px",
+          },
         },
         ".text-16px": {
           "@media (min-width: 360px)": {
@@ -1106,6 +1114,9 @@ export default {
             fontSize: "24px",
           },
           "@media (min-width: 768px)": {
+            fontSize: "26px",
+          },
+          "@media (min-width: 1024px)": {
             fontSize: "30px",
           },
         },

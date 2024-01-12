@@ -1,3 +1,4 @@
+import { useMainContext } from "@/components/MainContext";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
 import { THUNK_STATUS } from "@/contants/thunkstatus";
 import { provinceService } from "@/service/provinceService";
@@ -8,7 +9,6 @@ import { updateWhiteList } from "@/store/reducer/whitelistReducer";
 import { message } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 const useProfile = () => {
   const [provinces, setProvinces] = useState([]);
   const [provinceId, setProvinceId] = useState("");
@@ -123,11 +123,15 @@ const useProfile = () => {
   const onChangePageCurrent = (pageNumb) => {
     setPageCurrent(pageNumb);
   };
+  console.log("pageCurrent", pageCurrent);
   useEffect(() => {
-    if (statusGetOrderUser === THUNK_STATUS.fulfilled) {
+    if (
+      statusGetOrderUser !== THUNK_STATUS.pending ||
+      statusGetOrderUser !== THUNK_STATUS.rejected
+    ) {
       dispatch(
         getOrderUser(
-          { limit: 2, page: pageCurrent ? pageCurrent - 1 : 1 },
+          { limit: 5, page: pageCurrent ? pageCurrent - 1 : 1 },
           localStorage.getItem(LOCAL_STORAGE.token)
         )
       );
@@ -208,7 +212,6 @@ const useProfile = () => {
   const onDeleteProductInWhiteList = (id) => {
     let whiteListPayload = {};
     const findItem = whiteListInfo?.products?.find((item) => item?._id === id);
-    console.log("findItem", findItem);
     const filterItem = whiteListInfo?.products?.filter(
       (item) => item?._id !== findItem?._id
     );

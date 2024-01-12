@@ -6,13 +6,16 @@
       a {
         @apply relative font-osr md:text-[14px] lg:text-[16px] text-black-555 
         duration-300 transition-colors w-full flex items-center
-        xs:gap-2 md:gap-4 p-[20px]  border-b-[2px] border-solid border-transparent  before:absolute
+        xs:gap-2 md:gap-4 p-[16px] lg:p-[20px]  border-b-[2px] border-solid border-transparent  before:absolute
          cursor-pointer before:w-full before:h-[2px] before:bg-primary before:top-[calc(100%)]
          before:left-0 before:origin-right before:scale-x-0 before:duration-400
           before:transition-transform;
 
         &.active {
           @apply before:origin-left  before:scale-x-100 text-black-555;
+          p {
+            @apply text-black;
+          }
         }
         &:hover {
           @apply bg-gray-50 border-gray-300;
@@ -27,7 +30,8 @@
         }
       }
       svg {
-        @apply w-[18px] h-[18px];
+        @apply w-[18px] h-[18px] xs:w-[16px] xs:h-[16px];
+
         path {
           @apply fill-black-555 duration-300 transition-colors;
         }

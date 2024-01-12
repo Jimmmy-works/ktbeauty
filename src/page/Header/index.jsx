@@ -877,35 +877,38 @@ const Header = () => {
             placement="right"
             onClose={onClose}
             footer={
-              <div
-                className={`flex flex-col gap-[12px] items-start justify-center`}
-                onClick={onClose}
-              >
+              cartInfo?.products?.length && (
                 <div
-                  className={`w-full flex gap-1 items-center justify-between text-15px font-osb text-black`}
+                  className={`flex flex-col gap-[12px] items-start justify-center`}
+                  onClick={onClose}
                 >
-                  <p className="">Tạm tính giá trị đơn hàng</p>
-                  <p className="tracking-wider">
-                    {formatPriceVND(
-                      cartInfo?.products?.reduce((acc, cur) => {
-                        return (
-                          acc + (cur?.price - cur?.discount) * cur?.quantity
-                        );
-                      }, 0)
-                    )}
+                  <div
+                    className={`w-full flex gap-1 items-center justify-between text-15px font-osb text-black`}
+                  >
+                    <p className="">Tạm tính giá trị đơn hàng</p>
+                    <p className="tracking-wider">
+                      {formatPriceVND(
+                        cartInfo?.products?.reduce((acc, cur) => {
+                          return (
+                            acc + (cur?.price - cur?.discount) * cur?.quantity
+                          );
+                        }, 0)
+                      )}
+                    </p>
+                  </div>
+                  <p className={`font-om `}>
+                    Bạn có thể xem các chương trình khuyến mãi ở màn hình kế
+                    tiếp
                   </p>
+                  <Button
+                    link={PATHS.CART}
+                    variant="outline-secondary"
+                    className={`w-full uppercase text-center text-sm xs:py-[12px] md:py-[17px]  `}
+                  >
+                    Tiếp tục với hình thức giao hàng
+                  </Button>
                 </div>
-                <p className={`font-om `}>
-                  Bạn có thể xem các chương trình khuyến mãi ở màn hình kế tiếp
-                </p>
-                <Button
-                  link={PATHS.CART}
-                  variant="outline-secondary"
-                  className={`w-full uppercase text-center text-sm xs:py-[12px] md:py-[17px]  `}
-                >
-                  Tiếp tục với hình thức giao hàng
-                </Button>
-              </div>
+              )
             }
             open={open === "cart"}
             contentWrapperStyle={{ width: "460px" }}

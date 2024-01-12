@@ -140,7 +140,7 @@
       @apply cursor-pointer relative md:px-[10px] xl:px-[12px] h-full
       flex items-center;
       .submenu {
-        @apply left-[unset] right-1/2 translate-x-[30%];
+        @apply left-[unset] right-0;
       }
       svg {
         path {
