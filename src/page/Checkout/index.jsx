@@ -448,204 +448,214 @@ const Checkout = () => {
                 </div>
               </form>
             </div>
-            <div
-              className="xs:w-full lg:w-[40%] screen-1200:w-[35%] xs:p-[0] md:py-[30px] md:px-[40px] 
-             md:bg-[#f9f9f9]"
-            >
-              {width < 768 && (
-                <h3 className="font-osb text-black-333 text-md my-[20px]">
-                  Giỏ hàng của bạn
-                </h3>
-              )}
-              <div className="pb-[20px] border-b border-solid border-[#e2e0e0]">
-                {cartInfo?.products?.length ? (
-                  cartInfo?.products?.map((item) => {
-                    const { image, name, _id, quantity, price, discount } =
-                      item || {};
-                    return (
-                      <div
-                        key={_id}
-                        className="flex items-center justify-between gap-[15px] not-firstChild:mt-[14px]"
-                      >
-                        <div className="flex items-center gap-[12px]">
-                          <Link
-                            className="relative min-w-[64px] min-h-[64px] rounded-[6px] border border-solid
-                        border-[#e2e0e0] duration-400 transition-colors hover:border-primary group/hover"
+            <div className=" flex flex-col xs:w-full lg:w-[40%] screen-1200:w-[35%]">
+              <div className="max-h-[650px] overflow-y-scroll my-scrollbar">
+                <div
+                  className=" xs:p-[0] md:py-[30px] md:px-[40px] 
+                 md:bg-[#f9f9f9] "
+                >
+                  {width < 768 && (
+                    <h3 className="font-osb text-black-333 text-md my-[20px]">
+                      Giỏ hàng của bạn
+                    </h3>
+                  )}
+                  <div className="">
+                    {cartInfo?.products?.length ? (
+                      cartInfo?.products?.map((item) => {
+                        const { image, name, _id, quantity, price, discount } =
+                          item || {};
+                        return (
+                          <div
+                            key={_id}
+                            className="flex items-center justify-between gap-[15px] not-firstChild:mt-[14px]"
                           >
-                            <img
-                              onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = "/assets/img/error.png";
-                              }}
-                              className="h-full w-full object-cover center-absolute rounded-[6px]"
-                              src={image?.[0]}
-                              alt=""
-                            />
-                            <span
-                              to={PATHS.SHOP.DETAIL}
-                              className="text-xs text-white font-om rounded-[50%] bg-[#908f8f]  h-[22px] w-[22px]
-                                     flex items-center justify-center absolute right-[-8px] top-[2px] -translate-y-1/2
-                                  group-hover/hover:bg-primary duration-400 transition-colors "
-                            >
-                              {quantity || 0}
-                            </span>
-                          </Link>
-                          <Link
-                            to={PATHS.SHOP.DETAIL}
-                            className="text-sm text-black-333 font-om truncate whitespace-normal line-clamp-4
-                         duration-400 transition-colors hover:text-primary"
-                          >
-                            {name}
-                          </Link>
-                        </div>
-                        <p className="text-xs text-primary font-osb">
-                          <div className=" text-xs text-primary font-osb flex gap-1 items-center justify-center">
-                            <span className="line-through text-black-555">
-                              {formatPriceVND(price)}
-                            </span>
-                            <span className="text-sm">
-                              {formatPriceVND(price - discount)}
-                            </span>
+                            <div className="flex items-center gap-[12px]">
+                              <Link
+                                className="relative min-w-[64px] min-h-[64px] rounded-[6px] border border-solid
+                            border-[#e2e0e0] duration-400 transition-colors hover:border-primary group/hover"
+                              >
+                                <img
+                                  onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = "/assets/img/error.png";
+                                  }}
+                                  className="h-full w-full object-cover center-absolute rounded-[6px]"
+                                  src={image?.[0]}
+                                  alt=""
+                                />
+                                <span
+                                  to={PATHS.SHOP.DETAIL}
+                                  className="text-xs text-white font-om rounded-[50%] bg-[#908f8f]  h-[22px] w-[22px]
+                                         flex items-center justify-center absolute right-[-8px] top-[2px] -translate-y-1/2
+                                      group-hover/hover:bg-primary duration-400 transition-colors "
+                                >
+                                  {quantity || 0}
+                                </span>
+                              </Link>
+                              <Link
+                                to={PATHS.SHOP.DETAIL}
+                                className="text-sm text-black-333 font-om truncate whitespace-normal line-clamp-4
+                             duration-400 transition-colors hover:text-primary"
+                              >
+                                {name}
+                              </Link>
+                            </div>
+                            <p className="text-xs text-primary font-osb">
+                              <div className=" text-xs text-primary font-osb flex gap-1 items-center justify-center">
+                                <span className="line-through text-black-555">
+                                  {formatPriceVND(price)}
+                                </span>
+                                <span className="text-sm">
+                                  {formatPriceVND(price - discount)}
+                                </span>
+                              </div>
+                            </p>
                           </div>
-                        </p>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <EmptyWrapper>
-                    <Empty description={false} />
-                  </EmptyWrapper>
-                )}
+                        );
+                      })
+                    ) : (
+                      <EmptyWrapper>
+                        <Empty description={false} />
+                      </EmptyWrapper>
+                    )}
+                  </div>
+                </div>
               </div>
               <div
-                className="flex items-center gap-2 py-[20px] border-b border-solid
-                    border-[#e2e0e0] "
+                className=" xs:p-[0]  md:px-[40px] 
+               md:bg-[#f9f9f9] "
               >
-                <input
-                  type="text"
-                  placeholder="Discount code"
-                  className={`border border-solid border-grey-999 p-[11px] font-osr text-sm text-black
-                  w-full `}
-                />
-                <button
-                  className="bg-black-555 font-om font-semibold p-[11.5px] text-[14px] text-white
-                  tracking-widest duration-400 transition-colors hover:bg-primary"
+                <div
+                  className="flex items-center gap-2 py-[20px] border-y border-solid
+                      border-[#e2e0e0] "
                 >
-                  Apply
-                </button>
-              </div>
-              <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
-                <div className="flex items-center justify-between ">
-                  <h4 className="font-osb text-sm text-black-333">
-                    Tổng chưa giảm giá
-                  </h4>
-                  <p className="font-osb text-sm text-primary tracking-wider">
-                    {formatPriceVND(subTotal)}
+                  <input
+                    type="text"
+                    placeholder="Discount code"
+                    className={`border border-solid border-grey-999 p-[11px] font-osr text-sm text-black
+                    w-full `}
+                  />
+                  <button
+                    className="bg-black-555 font-om font-semibold p-[11.5px] text-[14px] text-white
+                    tracking-widest duration-400 transition-colors hover:bg-primary"
+                  >
+                    Apply
+                  </button>
+                </div>
+                <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
+                  <div className="flex items-center justify-between ">
+                    <h4 className="font-osb text-sm text-black-333">
+                      Tổng chưa giảm giá
+                    </h4>
+                    <p className="font-osb text-sm text-primary tracking-wider">
+                      {formatPriceVND(subTotal)}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-[20px]">
+                    <h4 className="font-osb text-sm text-black-333">
+                      Vận chuyển
+                    </h4>
+                    {JSON?.parse(shipping)?.value !== "default" ? (
+                      <a className="capitalize font-osb text-sm text-primary">
+                        {JSON?.parse(shipping)?.label}
+                      </a>
+                    ) : (
+                      <Link
+                        to={PATHS.CART}
+                        className="font-osb text-sm text-black-333 relative before:w-full before:h-[1px]
+                    before:absolute before:bg-black-333 before:bottom-[-4px] duration-400 transition-colors
+                    before:duration-400 before:transition-colors hover:before:bg-primary hover:text-primary
+                    cursor-pointer"
+                      >
+                        Chọn phương thức
+                      </Link>
+                    )}
+                  </div>
+                </div>
+                {JSON?.parse(discountCode)?.hasOwnProperty("price") && (
+                  <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
+                    <div className="flex items-start justify-between font-osb text-sm text-black-333">
+                      <p>Tổng giảm giá</p>
+                      <p className="text-primary tracking-wider">
+                        {total >= 1 * million &&
+                        JSON?.parse(shipping)?.price > 0
+                          ? `- ${formatPriceVND(
+                              JSON?.parse(discountCode)?.price
+                            )}`
+                          : formatPriceVND(JSON?.parse(discountCode)?.price)}
+                      </p>
+                    </div>
+                    <div className="flex items-start justify-between mt-[14px] ">
+                      <p className="pl-[6px] font-om text-[12px] text-black-333">
+                        {`1. ` + JSON?.parse(discountCode)?.name}
+                      </p>
+                      <p className="font-osb text-[12px] text-black-333 tracking-wider">
+                        {formatPriceVND(
+                          JSON?.parse(discountCode)?.price -
+                            JSON?.parse(shipping)?.price
+                        )}
+                      </p>
+                    </div>
+                    <div className="flex items-start justify-between mt-[14px] ">
+                      <p className="pl-[6px] font-om text-[12px] text-black-333 ">
+                        {` ${
+                          subTotal >= 3 * million &&
+                          JSON?.parse(shipping)?.price > 0
+                            ? `2. Miễn phí vận chuyển`
+                            : ""
+                        } `}
+                      </p>
+                      <p className="font-osb text-[12px] text-black-333 tracking-wider">
+                        {` ${
+                          subTotal >= 3 * million &&
+                          JSON?.parse(shipping)?.price > 0
+                            ? formatPriceVND(JSON?.parse(shipping)?.price)
+                            : ""
+                        }`}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                <div className=" py-[20px] flex items-center justify-between">
+                  <h4 className="font-osb text-md text-black-333">Tổng cộng</h4>
+                  <p className="font-osb text-md text-primary ">
+                    {formatPriceVND(total)}
                   </p>
                 </div>
-
-                <div className="flex items-center justify-between mt-[20px]">
-                  <h4 className="font-osb text-sm text-black-333">
-                    Vận chuyển
-                  </h4>
-                  {JSON?.parse(shipping)?.value !== "default" ? (
-                    <a className="capitalize font-osb text-sm text-primary">
-                      {JSON?.parse(shipping)?.label}
-                    </a>
-                  ) : (
-                    <Link
-                      to={PATHS.CART}
-                      className="font-osb text-sm text-black-333 relative before:w-full before:h-[1px]
-                  before:absolute before:bg-black-333 before:bottom-[-4px] duration-400 transition-colors
-                  before:duration-400 before:transition-colors hover:before:bg-primary hover:text-primary
-                  cursor-pointer"
-                    >
-                      Chọn phương thức
-                    </Link>
-                  )}
+                <div className="mt-[10px] relative">
+                  <Button
+                    disabled={
+                      statusCreateOrder === THUNK_STATUS.pending ? true : false
+                    }
+                    // link={PATHS.COMPLETE}
+                    onClick={handleSubmit(handleOrder)}
+                    className={`block text-center rounded-none w-full md:p-[14px] ${
+                      statusCreateOrder === THUNK_STATUS.pending
+                        ? "border-black-be "
+                        : ""
+                    }`}
+                  >
+                    {statusCreateOrder === THUNK_STATUS.pending ? (
+                      <div className={`flex items-center justify-center `}>
+                        <Spin
+                          indicator={
+                            <LoadingOutlined
+                              style={{
+                                color: "#555",
+                                fontSize: 16,
+                              }}
+                              spin
+                            />
+                          }
+                          size="default"
+                        />
+                      </div>
+                    ) : (
+                      "Đặt hàng"
+                    )}
+                  </Button>
                 </div>
-              </div>
-              {JSON?.parse(discountCode)?.hasOwnProperty("price") && (
-                <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
-                  <div className="flex items-start justify-between font-osb text-sm text-black-333">
-                    <p>Tổng giảm giá</p>
-                    <p className="text-primary tracking-wider">
-                      {total >= 1 * million && JSON?.parse(shipping)?.price > 0
-                        ? `- ${formatPriceVND(
-                            JSON?.parse(discountCode)?.price
-                          )}`
-                        : formatPriceVND(JSON?.parse(discountCode)?.price)}
-                    </p>
-                  </div>
-                  <div className="flex items-start justify-between mt-[14px] ">
-                    <p className="pl-[6px] font-om text-[12px] text-black-333">
-                      {`1. ` + JSON?.parse(discountCode)?.name}
-                    </p>
-                    <p className="font-osb text-[12px] text-black-333 tracking-wider">
-                      {formatPriceVND(
-                        JSON?.parse(discountCode)?.price -
-                          JSON?.parse(shipping)?.price
-                      )}
-                    </p>
-                  </div>
-                  <div className="flex items-start justify-between mt-[14px] ">
-                    <p className="pl-[6px] font-om text-[12px] text-black-333 ">
-                      {` ${
-                        subTotal >= 3 * million &&
-                        JSON?.parse(shipping)?.price > 0
-                          ? `2. Miễn phí vận chuyển`
-                          : ""
-                      } `}
-                    </p>
-                    <p className="font-osb text-[12px] text-black-333 tracking-wider">
-                      {` ${
-                        subTotal >= 3 * million &&
-                        JSON?.parse(shipping)?.price > 0
-                          ? formatPriceVND(JSON?.parse(shipping)?.price)
-                          : ""
-                      }`}
-                    </p>
-                  </div>
-                </div>
-              )}
-              <div className=" py-[20px] flex items-center justify-between">
-                <h4 className="font-osb text-md text-black-333">Tổng cộng</h4>
-                <p className="font-osb text-md text-primary ">
-                  {formatPriceVND(total)}
-                </p>
-              </div>
-              <div className="mt-[10px] relative">
-                <Button
-                  disabled={
-                    statusCreateOrder === THUNK_STATUS.pending ? true : false
-                  }
-                  // link={PATHS.COMPLETE}
-                  onClick={handleSubmit(handleOrder)}
-                  className={`block text-center rounded-none w-full md:p-[14px] ${
-                    statusCreateOrder === THUNK_STATUS.pending
-                      ? "border-black-be "
-                      : ""
-                  }`}
-                >
-                  {statusCreateOrder === THUNK_STATUS.pending ? (
-                    <div className={`flex items-center justify-center `}>
-                      <Spin
-                        indicator={
-                          <LoadingOutlined
-                            style={{
-                              color: "#555",
-                              fontSize: 16,
-                            }}
-                            spin
-                          />
-                        }
-                        size="default"
-                      />
-                    </div>
-                  ) : (
-                    "Đặt hàng"
-                  )}
-                </Button>
               </div>
             </div>
           </div>

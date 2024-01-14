@@ -1,0 +1,27 @@
+.mypdf {
+  @apply xs:mt-[60px] md:mt-[70px] lg:mt-0;
+  .ant-table {
+    @apply min-h-[400px];
+    .ant-table-thead {
+      .ant-table-cell {
+        @apply font-om align-middle  xs:flex md:table-cell
+        [&:nth-child(3)]:min-w-[100px]
+            xs:[&:nth-child(2)]:hidden md:[&:nth-child(2)]:table-cell
+            xs:[&:nth-child(1)]:hidden md:[&:nth-child(1)]:table-cell
+               [&:nth-child(1)]:text-left;
+      }
+    }
+    .ant-table-tbody {
+      .ant-table-row {
+        @apply md:table-row xs:flex xs:flex-col justify-center items-center gap-[8px]
+              md:border-b md:border-solid md:border-black-be xs:py-[10px] lg:py-0;
+        .ant-table-cell {
+          @apply text-center font-osr lg:p-[16px] xs:p-[10px] align-middle
+         [&:nth-child(1)]:w-[350px]    [&:nth-child(1)]:text-left
+         [&:nth-child(2)]:w-[100px] [&:nth-child(3)]:w-[200px]
+         [&:nth-child(4)]:w-[200px];
+        }
+      }
+    }
+  }
+}

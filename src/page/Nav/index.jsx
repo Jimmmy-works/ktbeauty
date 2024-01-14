@@ -31,9 +31,6 @@ const Nav = () => {
   const _token = localStorage.getItem(LOCAL_STORAGE.token);
   const handleCloseNav = () => {
     document.body?.setAttribute("style", "overflow-y : scroll");
-    document
-      ?.querySelector(`main`)
-      ?.setAttribute("style", "transform: translateX(0)");
     setIsNavbar(false);
   };
   const onSearchProduct = (productName) => {

@@ -475,7 +475,7 @@ const Header = () => {
             </li>
           </ul>
         </div>
-        <ul className="header__info mymenu  relative">
+        <ul className="header__info mymenu relative">
           <li
             className={`header__info-search group/hover 
               first-letter: before:h-[20px] ${

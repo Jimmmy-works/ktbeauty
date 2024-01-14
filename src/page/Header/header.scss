@@ -22,14 +22,8 @@
       }
     }
   }
-  &__main {
-    @apply h-full container flex items-center justify-between;
-  }
-  &__menu {
-    @apply center-absolute h-full w-full xs:hidden lg:flex  items-center justify-center;
-  }
   .mymenu {
-    @apply h-full flex items-center;
+    @apply h-full xs:hidden md:flex items-center;
     .arrow-down {
       @apply duration-300 transition-transform;
       path {
@@ -97,40 +91,11 @@
       }
     }
   }
-  @keyframes slideup {
-    0% {
-      opacity: 0;
-      transform: translateY(18px);
-    }
-    100% {
-      opacity: 100%;
-      transform: translateY(0px);
-    }
+  &__main {
+    @apply h-full container flex items-center justify-between;
   }
-  @keyframes slideleft {
-    0% {
-      opacity: 0;
-      transform: translateX(18px);
-    }
-    100% {
-      opacity: 100%;
-      transform: translateX(0px);
-    }
-  }
-  &__info-profile {
-    .submenu {
-      li {
-        &:hover {
-          a {
-            svg {
-              path {
-                @apply fill-black;
-              }
-            }
-          }
-        }
-      }
-    }
+  &__menu {
+    @apply center-absolute h-full w-full xs:hidden lg:flex  items-center justify-center;
   }
   &__info {
     &-search,
@@ -145,6 +110,21 @@
       svg {
         path {
           @apply duration-300 transition-colors;
+        }
+      }
+    }
+    &-profile {
+      .submenu {
+        li {
+          &:hover {
+            a {
+              svg {
+                path {
+                  @apply fill-black;
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -166,12 +146,33 @@
       @apply xs:w-[90px] md:w-[120px] lg:w-[120px];
     }
   }
+
+  @keyframes slideup {
+    0% {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    100% {
+      opacity: 100%;
+      transform: translateY(0px);
+    }
+  }
+  @keyframes slideleft {
+    0% {
+      opacity: 0;
+      transform: translateX(18px);
+    }
+    100% {
+      opacity: 100%;
+      transform: translateX(0px);
+    }
+  }
 }
 .nav {
   @apply fixed left-0 top-0  h-screen min-w-[240px]
    max-w-[440px] w-[80%]  z-[10000];
   &__inner {
-    @apply bg-white h-full relative overflow-hidden;
+    @apply bg-white w-[80%] h-full relative overflow-hidden;
     &-wrapper {
       @apply absolute top-0 left-0 right-0 bottom-0;
       &.is-open {

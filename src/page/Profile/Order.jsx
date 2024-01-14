@@ -51,6 +51,7 @@ const Order = () => {
   const { width } = useWindowSize();
   const [isActive, setIsActive] = useState(null);
   const sortOrderList = orderList?.data?.data?.slice()?.sort((a, b) => {
+    // return b.createdAt.localeCompare(a.createdAt);
     return (
       new Date(b?.createdAt)?.getTime() - new Date(a?.createdAt)?.getTime()
     );

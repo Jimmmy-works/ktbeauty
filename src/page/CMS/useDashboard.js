@@ -1,17 +1,15 @@
 import { firebaseStorage } from "@/config/firebase";
-import { _LIMIT } from "@/contants/general";
 import { LOCAL_STORAGE } from "@/contants/localStorage";
 import useMutation from "@/hooks/useMutation";
 import dashboardService from "@/service/dashboardService";
-import productService from "@/service/productService";
 import { register } from "@/store/reducer/authReducer";
 import {
   createProduct,
   getAllOrder,
   getAllUsers,
-  getTopRate,
   getRevenue,
   getSoldProducts,
+  getTopRate,
 } from "@/store/reducer/dashboardReducer";
 import { updataStatusOrder } from "@/store/reducer/orderReducer";
 import {
@@ -21,7 +19,7 @@ import {
 import useWindowSize from "@/utils/windowResize";
 import { message } from "antd";
 import { deleteObject, ref } from "firebase/storage";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 const useDashboard = () => {
   /// token

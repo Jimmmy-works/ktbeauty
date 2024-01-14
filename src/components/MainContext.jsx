@@ -26,14 +26,8 @@ export const MainProvider = ({ children }) => {
     setIsNavbar(!isNavbar);
     if (isNavbar) {
       setdropDownNav(false);
-      document
-        .querySelector("main")
-        ?.setAttribute("style", "transform: translateX(0px)");
       document.body?.setAttribute("style", "overflow-y : scroll");
     } else {
-      document
-        .querySelector("main")
-        ?.setAttribute("style", "transform: translateX(150px)");
       document.body.setAttribute("style", "overflow-y: hidden");
     }
   };

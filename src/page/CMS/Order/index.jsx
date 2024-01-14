@@ -1,40 +1,15 @@
+import { ExportPDF } from "@/components/ExportOffice";
 import { OPTION_SORT_ORDER_ANTD } from "@/contants/general";
 import { getDetailOrder } from "@/store/reducer/dashboardReducer";
 import { formatPriceVND } from "@/utils/formatPrice";
 import { removeAccents } from "@/utils/removeAccents";
 import { localeVN } from "@/utils/timeVN";
 import { CheckOutlined, SearchOutlined } from "@ant-design/icons";
-import { Button, Drawer, Input, Popconfirm, Spin, Table } from "antd";
+import { Button, Drawer, Input, Popconfirm, Table } from "antd";
 import { Excel } from "antd-table-saveas-excel";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import useDashboard from "../useDashboard";
-import { THUNK_STATUS } from "@/contants/thunkstatus";
-import {
-  Document,
-  Text,
-  Page,
-  StyleSheet,
-  View,
-  PDFDownloadLink,
-} from "@react-pdf/renderer";
-import MyPDF from "@/components/MyPDF";
-
-const styles = StyleSheet.create({
-  page: {
-    marginTop: 30,
-    fontSize: 30,
-    padding: 20,
-  },
-  layout: {
-    marginTop: 30,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  text: {
-    color: "#228b22",
-  },
-});
 const DashboardOrder = () => {
   const { modalProps, orderProps } = useDashboard();
   const { toggleSidebar, width } = modalProps || {};
@@ -292,7 +267,7 @@ const DashboardOrder = () => {
             >
               Chi tiết
             </button>
-            {/* <button
+            <button
               onClick={() => {
                 handleShowPDF(order?._id);
               }}
@@ -301,7 +276,7 @@ const DashboardOrder = () => {
                 hover:bg-blue-300 hover:text-white duration-400 transition-colors"
             >
               PDF
-            </button> */}
+            </button>
             <Popconfirm
               title={`Xác nhận ${titleButton}`}
               onConfirm={() =>
@@ -520,8 +495,9 @@ const DashboardOrder = () => {
                 </div>
               </div>
             </Drawer>
-            {/* <Drawer
+            <Drawer
               size="large"
+              width={793}
               key={`pdf-drawer-${order?._id}`}
               bodyStyle={{ padding: 0 }}
               title=" Giỏ hàng của bạn"
@@ -529,8 +505,12 @@ const DashboardOrder = () => {
               onClose={handleClosePDF}
               open={controlPFD === order?._id && openPFD}
             >
-              <MyPDF detailOrder={order}></MyPDF>
-            </Drawer> */}
+              <ExportPDF
+                profile={profile}
+                id={detailOrder?._id}
+                data={detailOrder}
+              ></ExportPDF>
+            </Drawer>
           </div>
         </>
       ),
@@ -581,14 +561,6 @@ const DashboardOrder = () => {
       .saveAs("Excel.xlsx");
     console.log("excel-->2", excel);
   };
-  //// loading
-  // useEffect(() => {
-  //   return (
-  //     <div className="w-screen h-screen top-0 left-0 fixed flex justify-center items-center">
-  //       <Spin size="default" />
-  //     </div>
-  //   );
-  // }, []);
 
   return (
     <div className="table__dashboard table__dashboard-order">
