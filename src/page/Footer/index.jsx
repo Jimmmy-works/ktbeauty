@@ -1,7 +1,10 @@
 const Footer = () => {
   return (
     <footer className="footer mt-section">
-      <div className="footer__subscription bg-footer-banner bg-fixed bg-no-repeat bg-center xs:py-[40px] xl:py-[100px] h-full">
+      <div
+        className="footer__subscription bg-product-banner relative bg-fixed bg-no-repeat bg-center xs:py-[40px] xl:py-[100px] h-full
+      before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] before:absolute before:top-0 before:left-0"
+      >
         <div
           className="container flex items-center justify-between xl:gap-0  xl:flex-row 
         xs:gap-[20px] xs:flex-col md:flex-row "
@@ -138,7 +141,7 @@ const Footer = () => {
               </a>
               <a
                 target="_blank"
-                href="mailto:support@shb.com "
+                href="mailto:support@shb.com"
                 className=" email flex md:flex-row xs:flex-col  xs:w-full md:w-auto gap-[12px] 
                 items-center group/hover cursor-pointer"
               >
@@ -167,7 +170,7 @@ const Footer = () => {
                 md:-translate-y-1/2 h-full flex flex-col items-center   "
           >
             <a href="#">
-              {/* <svg
+              <svg
                 className="group xs:w-[110px] md:w-[120px] lg:w-[150px]"
                 viewBox="3 -40.5 215.18 41.1"
               >
@@ -175,21 +178,21 @@ const Footer = () => {
                   className="fill-black-555 group-hover:fill-primary duration-400 transition-colors"
                   d="M11.95 0L3 0 3-40.5 11.95-40.5 11.95-23.95 18.75-40.5 27.5-40.5 20-22.2 27.85 0 18.75 0 12.9-17.9 11.95-16.3 11.95 0ZM44 0L35 0 35-33.85 28.9-33.85 28.9-40.5 50.05-40.5 50.05-33.85 44-33.85 44 0ZM78.84 0L66.39 0 66.39-40.5 76.94-40.5Q79.54-40.5 81.87-40.1 84.19-39.7 85.99-38.58 87.79-37.45 88.82-35.38 89.84-33.3 89.84-29.9L89.84-29.9Q89.84-27.45 89.12-25.78 88.39-24.1 87.07-23.1 85.74-22.1 83.89-21.75L83.89-21.75Q86.24-21.45 87.84-20.23 89.44-19 90.27-16.95 91.09-14.9 91.09-12L91.09-12Q91.09-8.85 90.27-6.58 89.44-4.3 87.89-2.85 86.34-1.4 84.07-0.7 81.79 0 78.84 0L78.84 0ZM75.34-18.4L75.34-6.25 77.24-6.25Q80.19-6.25 81.32-7.75 82.44-9.25 82.44-12.15L82.44-12.15Q82.44-14.45 81.94-15.8 81.44-17.15 80.29-17.78 79.14-18.4 77.19-18.4L77.19-18.4 75.34-18.4ZM75.34-34.5L75.34-24.3 77.09-24.3Q79.14-24.3 80.19-24.93 81.24-25.55 81.62-26.75 81.99-27.95 81.99-29.65L81.99-29.65Q81.99-31.25 81.42-32.33 80.84-33.4 79.72-33.95 78.59-34.5 76.89-34.5L76.89-34.5 75.34-34.5ZM114.09 0L95.79 0 95.79-40.5 113.99-40.5 113.99-34.4 104.74-34.4 104.74-24.35 111.79-24.35 111.79-18.15 104.74-18.15 104.74-6.05 114.09-6.05 114.09 0ZM124.64 0L116.19 0 123.84-40.5 134.04-40.5 141.59 0 133.34 0 131.99-8.55 126.04-8.55 124.64 0ZM128.99-29.7L126.84-13.9 131.14-13.9 128.99-29.7ZM156.99 0.6L156.99 0.6Q152.34 0.6 149.71-0.93 147.09-2.45 146.04-5.38 144.99-8.3 144.99-12.55L144.99-12.55 144.99-40.5 153.84-40.5 153.84-11.2Q153.84-9.95 154.04-8.7 154.24-7.45 154.91-6.65 155.59-5.85 156.99-5.85L156.99-5.85Q158.44-5.85 159.09-6.65 159.74-7.45 159.91-8.7 160.09-9.95 160.09-11.2L160.09-11.2 160.09-40.5 168.99-40.5 168.99-12.55Q168.99-8.3 167.91-5.38 166.84-2.45 164.24-0.93 161.64 0.6 156.99 0.6ZM187.33 0L178.33 0 178.33-33.85 172.23-33.85 172.23-40.5 193.38-40.5 193.38-33.85 187.33-33.85 187.33 0ZM210.63 0L202.03 0 202.03-16.55 194.33-40.5 202.78-40.5 206.63-27.7 210.08-40.5 218.18-40.5 210.63-16.55 210.63 0Z"
                 ></path>
-              </svg> */}
-              <img srcSet="/assets/img/sammishop.png 10x" alt="" />
+              </svg>
+              {/* <img srcSet="/assets/img/sammishop.png 10x" alt="" /> */}
             </a>
             <p className="font-osr text-sm text-black-333 leading-[20px] text-center w-full">
               Thiên nhiên luôn là người bạn tốt nhất của sắc đẹp <br /> Cảm nhận
-              sự khác biệt với sản phẩm làm đẹp thiên nhiên Nature is Always the
-              Best Friend of Beauty <br /> Feel the Difference with Natural
-              Beauty Products
+              sự khác biệt với sản phẩm làm đẹp thiên nhiên <br /> Nature is
+              Always the Best Friend of Beauty <br />
+              Feel the Difference with Natural Beauty Products
             </p>
           </div>
           <div className="xs:w-full md:w-fit  footer__middle-menu ">
             <div>
               <h3 className="heading font-osb text-black-555 text-[22px] xs:text-center md:text-left ">
-                {/* KTBEAUTY INFO */}
-                SAMMISHOP INFO
+                KTBEAUTY INFO
+                {/* SAMMISHOP INFO */}
               </h3>
               <div className="flex mt-[10px] items-center xs:justify-center md:justify-start gap-3">
                 <ul className="flex flex-col xs:items-center md:items-start gap-[8px] ">

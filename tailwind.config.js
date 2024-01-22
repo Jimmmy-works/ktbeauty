@@ -935,10 +935,11 @@ export default {
       "consel-hobby-2": "url('/assets/img/bg-consel-hobby-2.png')",
       "consel-hobby-3": "url('/assets/img/bg-consel-hobby-3.png')",
       "consel-hobby-4": "url('/assets/img/bg-consel-hobby-4.png')",
-
+      "booking-banner": "url('/assets/img/booking-banner.jpg')",
       "slider-1": "url('/assets/img/slider-1.jpg')",
       "slider-2": "url('/assets/img/slider-2.jpg')",
       "slider-3": "url('/assets/img/slider-3.jpg')",
+      "menu-banner": "url('/assets/img/menu-banner.jpg')",
       "product-banner": "url('/assets/img/product-banner.jpg')",
       "shop-banner": "url('/assets/img/shop-banner.jpg')",
       "about-banner": "url('/assets/img/about-banner.jpg')",

@@ -41,8 +41,6 @@ const SelectWrapper = styled.div`
       color: #000 !important;
       box-shadow: unset !important;
     }
-    .ant-select-selection-item {
-    }
     .ant-select-selector {
       border: 0 !important;
       background-color: #f9f9f9 !important;

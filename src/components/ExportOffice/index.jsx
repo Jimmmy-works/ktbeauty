@@ -46,7 +46,7 @@ export const ExportPDF = ({ id, data, profile }) => {
   return (
     <div className="m-[20px] mypdf">
       <div className="" ref={pdfRef}>
-        <div className="p-[20px]">
+        <div className="p-[30px]">
           <div className=" bg-[#1F3862] p-[20px] rounded-xl ">
             <div className="flex items-center gap-[50px]  relative z-10 ">
               <a className="">
@@ -118,36 +118,41 @@ export const ExportPDF = ({ id, data, profile }) => {
                       <p className=" text-black-555 font-om">
                         Tổng chưa ưu đãi:
                       </p>
-                      <p className=" text-black font-ossb tracking-wider">
+                      <p className=" text-black font-om tracking-widest">
                         {formatPriceVND(data?.subTotal)}
+                      </p>
+                    </div>
+                    <div className=" min-w-[300px] flex gap-3 justify-between items-center text-16px ">
+                      <p className=" text-black-555 font-om">Vận chuyển:</p>
+                      <p className=" text-black font-om tracking-widest">
+                        {data?.shipping?.label}
                       </p>
                     </div>
                     {data?.discount?.price > 0 && (
                       <div className="min-w-[300px] flex flex-col items-start gap-1">
                         <div className=" min-w-[300px] flex gap-3 justify-between items-center text-16px ">
                           <p className=" text-black-555 font-om">Ưu đãi:</p>
-                          <p className=" text-black font-ossb tracking-wider">
+                          <p className=" text-black font-om tracking-widest">
                             {formatPriceVND(data?.discount?.price)}
                           </p>
                         </div>
                         <ul className="">
                           {data?.discount?.price > 1000000 && (
-                            <li className="font-osr text-black-222">
-                              1. {data?.shipping?.label} (Miễn phí)
+                            <li className="font-osr text-black">
+                              1. Miễn phí vận chuyển
                             </li>
                           )}
-                          <li className="font-osr text-black-222">
+                          <li className="font-osr text-black">
                             {data?.discount?.price > 1000000 ? "2." : "1."}{" "}
                             {data?.discount?.type}
                           </li>
                         </ul>
                       </div>
                     )}
+
                     <div className=" min-w-[300px] flex gap-3 justify-between items-center text-16px">
-                      <p className=" text-black-555 font-om">
-                        Tổng chưa giảm giá:
-                      </p>
-                      <p className=" text-black font-ossb tracking-wider">
+                      <p className=" text-black-555 font-om">Tổng cộng:</p>
+                      <p className=" text-black font-om tracking-widest">
                         {formatPriceVND(data?.total)}
                       </p>
                     </div>
@@ -195,7 +200,15 @@ export const ExportPDF = ({ id, data, profile }) => {
           </div>
         </div>
       </div>
-      <Button onClick={handlePrint}>Print</Button>
+      <div className="m-[20px]">
+        <Button
+          size="large"
+          className="font-osr uppercase"
+          onClick={handlePrint}
+        >
+          IN FILE PDF
+        </Button>
+      </div>
     </div>
   );
 };

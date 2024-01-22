@@ -18,6 +18,9 @@ const Advertising = () => {
     return skin?.value;
   });
   const {
+    setValueChecked,
+    setRenderChecked,
+    /////
     valueCheckedSex,
     renderCheckedSex,
     setValueCheckedSex,
@@ -71,6 +74,12 @@ const Advertising = () => {
                 onClick={() => {
                   setValueCheckedSex([forMen?.value]);
                   setRenderCheckedSex([forMen]);
+                  setValueCheckedLifeStyle([]);
+                  setRenderCheckedLifeStyle([]);
+                  setValueCheckedSkinType([]);
+                  setRenderCheckedSkinType([]);
+                  setValueChecked([]);
+                  setRenderChecked([]);
                 }}
                 to={`${PATHS.SHOP.INDEX}?${queryString.stringify({
                   limit: _LIMIT,
@@ -109,6 +118,12 @@ const Advertising = () => {
 
               <Link
                 onClick={() => {
+                  setValueCheckedSex([]);
+                  setRenderCheckedSex([]);
+                  setValueCheckedSkinType([]);
+                  setRenderCheckedSkinType([]);
+                  setValueChecked([]);
+                  setRenderChecked([]);
                   setValueCheckedLifeStyle([forOffice?.value]);
                   setRenderCheckedLifeStyle([forOffice]);
                 }}
@@ -148,6 +163,12 @@ const Advertising = () => {
               </h3>
               <Link
                 onClick={() => {
+                  setValueCheckedSex([]);
+                  setRenderCheckedSex([]);
+                  setValueChecked([]);
+                  setRenderChecked([]);
+                  setValueCheckedLifeStyle([]);
+                  setRenderCheckedLifeStyle([]);
                   setValueCheckedSkinType([...forSkin]);
                   setRenderCheckedSkinType(OPTION_SKIN_TYPE);
                 }}

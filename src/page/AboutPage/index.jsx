@@ -6,11 +6,7 @@ import { Keyboard, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 const AboutPage = () => {
-  const [activeSubcase, setActiveSubcase] = useState(null);
-  const [toggleContent, setToggleContent] = useState(0);
-  const handleActiveContentSubcase = (index) => {
-    setActiveSubcase((prevIndex) => (prevIndex === index ? null : index));
-  };
+  const [toggleContent, setToggleContent] = useState();
   const listRef = useRef([]);
   const refWhychoosusLeft = useRef(null);
   const optionWhychooseme = [
@@ -91,7 +87,7 @@ const AboutPage = () => {
   ];
   return (
     <main className="main-wrapper aboutpage">
-      <div className="relative  md:h-[350px] xs:h-[200px] bg-about-banner bg-[50%_20%] bg-cover"></div>
+      <div className="relative md:h-[350px] xs:h-[200px] bg-about-banner bg-[50%_20%] bg-cover"></div>
       <BreadCrumb>
         <BreadCrumb.Item>
           <Link to={`${PATHS.HOME}`}>Trang chủ</Link>

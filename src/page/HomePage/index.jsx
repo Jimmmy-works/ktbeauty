@@ -3,6 +3,7 @@ import Brand from "./Brand";
 import Countdown from "./Countdown";
 import Featured from "./Featured";
 import Hero from "./Hero";
+import MenuSpa from "./MenuSpa";
 import ShowcaseProduct from "./ShowcaseProduct";
 import useHome from "./useHome";
 
@@ -11,6 +12,7 @@ const HomePage = () => {
   return (
     <main className=" ">
       <Hero />
+      <MenuSpa />
       <Advertising />
       <Featured {...featuredProps} />
       <Brand />
