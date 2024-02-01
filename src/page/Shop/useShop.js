@@ -54,16 +54,10 @@ const useShop = () => {
     setSearchParams(new URLSearchParams(newQuerryString));
   };
   /// category
-  // const customCategories = categories?.map((cate) => {
-  //   let value = { _id: cate?._id, name: cate?.name, label: cate?.label };
-  //   return value;
-  // });
   const findCategoryAll = categories?.find((cate) => {
     return cate?.name === "all";
   });
   /// filter
-  // const [valueChecked, setValueChecked] = useState([]);
-  // const [renderChecked, setRenderChecked] = useState([]);
   const [optionSortSelected, setOptionSortSelected] = useState(
     OPTION_SORT.NEWEST
   );
@@ -97,14 +91,13 @@ const useShop = () => {
       });
   };
   /// Main
-
   const onAddToCart = async (payload, updateValue) => {
     const _token = localStorage.getItem(LOCAL_STORAGE.token);
     try {
       if (_token) {
         if (payload?._id && updateStatusUpdateCart !== THUNK_STATUS.pending) {
           let cartPayload = {};
-          const matchIndex = cartInfo?.products?.findIndex(
+          let matchIndex = cartInfo?.products?.findIndex(
             (productMatched) => productMatched?.product_id === payload?._id
           );
           let newProductPayload = cartInfo?.products?.map((product) => product);
@@ -148,10 +141,7 @@ const useShop = () => {
               if (updateValue <= 20) {
                 newProductPayload.push({
                   ...payload,
-                  quantity:
-                    updateValue >= payload?.countInStock
-                      ? payload?.countInStock
-                      : payload.quantity,
+                  quantity: updateValue ? updateValue : 1,
                   product_id: payload?._id,
                 });
               } else if (!updateValue) {

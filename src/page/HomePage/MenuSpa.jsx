@@ -125,7 +125,7 @@ const MenuSpa = () => {
       <div className="container ">
         <Textbox title={`Chăm sóc da`} textColor={`text-white`} />
         <div className="scmenu__list lg:flex-nowrap flex-wrap md:justify-center lg:justify-normal flex xs:gap-[40px] lg:gap-[60px]">
-          {optionMenu?.map((item, index) => {
+          {optionMenu?.map((item) => {
             return (
               <div
                 key={item?.title}
@@ -135,12 +135,6 @@ const MenuSpa = () => {
                 border-[1px] border-solid border-[rgba(255,255,255,0.5)] group/scroll"
               >
                 <div className="relative">
-                  {/* <span
-                    className="absolute -left-[25px] -top-[25px] font-gvr text-[52px] group-hover/scroll:text-white
-                duration-300 transition-colors"
-                  >
-                    {item?.firstTitle}
-                  </span> */}
                   <h3
                     className="text-center font-gvr  text-[52px] text-white pb-[20px] before:absolute relative
                   before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:bg-primary before:h-[5px]

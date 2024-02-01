@@ -1,7 +1,5 @@
 .aboutpage {
   .whychooseus {
-    &__heading {
-    }
     &__left {
       &-list {
         .item {
@@ -46,7 +44,8 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-auto-rows: auto;
-      gap: 24px;
+      gap: 20px;
+      @apply xs:grid-rows-2;
     }
     .gallery__list-item {
       img {

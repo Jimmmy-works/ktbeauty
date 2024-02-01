@@ -125,66 +125,73 @@ const ProductCard = ({
   const onAddToCart = async () => {
     const payload = item;
     const _token = localStorage.getItem(LOCAL_STORAGE.token);
+    console.log("payload", payload);
     try {
       if (_token) {
-        if (payload?._id && updateStatusUpdateCart !== THUNK_STATUS.pending) {
-          let cartPayload = {};
-          const matchIndex = cartInfo?.products?.findIndex(
-            (productMatched) => productMatched?.product_id === payload?._id
-          );
-          let newProductPayload = cartInfo?.products?.map((product) => product);
-          if (cartInfo?._id) {
-            if (matchIndex > -1) {
-              if (newProductPayload[matchIndex]?.quantity >= 20) {
-                return message.error(
-                  `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
-                );
+        if (payload?.countInStock < 1) {
+          message?.error?.(`${payload?.name} đã hết hàng`);
+        } else {
+          if (payload?._id && updateStatusUpdateCart !== THUNK_STATUS.pending) {
+            let cartPayload = {};
+            const matchIndex = cartInfo?.products?.findIndex(
+              (productMatched) => productMatched?.product_id === payload?._id
+            );
+            let newProductPayload = cartInfo?.products?.map(
+              (product) => product
+            );
+            if (cartInfo?._id) {
+              if (matchIndex > -1) {
+                if (newProductPayload[matchIndex]?.quantity >= 20) {
+                  return message.error(
+                    `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+                  );
+                } else {
+                  newProductPayload[matchIndex] = {
+                    ...newProductPayload[matchIndex],
+                    quantity: newProductPayload[matchIndex]?.quantity + 1,
+                  };
+                  message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+                }
               } else {
-                newProductPayload[matchIndex] = {
-                  ...newProductPayload[matchIndex],
-                  quantity: newProductPayload[matchIndex]?.quantity + 1,
-                };
+                newProductPayload.push({
+                  ...payload,
+                  quantity: 1,
+                  product_id: payload?._id,
+                });
+                message.success(`+1 ${payload?.name}`);
+              }
+              cartPayload = {
+                ...cartInfo,
+                products: newProductPayload,
+              };
+            } else {
+              cartPayload = {
+                ...cartInfo,
+                products: newProductPayload,
+              };
+              if (matchIndex > -1) {
+                if (newProductPayload[matchIndex]?.quantity >= 20) {
+                  return message.error(
+                    `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
+                  );
+                } else {
+                  newProductPayload[matchIndex] = {
+                    ...newProductPayload[matchIndex],
+                    quantity: newProductPayload[matchIndex]?.quantity + 1,
+                  };
+                  message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
+                }
+              } else {
+                newProductPayload.push({
+                  ...payload,
+                  quantity: 1,
+                  product_id: payload?._id,
+                });
                 message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
               }
-            } else {
-              newProductPayload.push({
-                ...payload,
-                quantity: 1,
-                product_id: payload?._id,
-              });
-              message.success(`+1 ${payload?.name}`);
             }
-            cartPayload = {
-              ...cartInfo,
-              products: newProductPayload,
-            };
-          } else {
-            cartPayload = {
-              ...cartInfo,
-              products: newProductPayload,
-            };
-            if (matchIndex > -1) {
-              if (newProductPayload[matchIndex]?.quantity >= 20) {
-                return message.error(
-                  `Không thể thêm > 20sp, vui lòng liên hệ shop để mua số lượng lớn`
-                );
-              } else {
-                newProductPayload[matchIndex] = {
-                  ...newProductPayload[matchIndex],
-                  quantity: newProductPayload[matchIndex]?.quantity + 1,
-                };
-                message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
-              }
-            } else {
-              newProductPayload.push({
-                ...payload,
-                quantity: 1,
-                product_id: payload?._id,
-              });
-              message.success(`+1 ${newProductPayload[matchIndex]?.name}`);
-            }
+            dispatch(updateCart(cartPayload));
           }
-          dispatch(updateCart(cartPayload));
         }
       } else {
         onAuthenModal("login");
@@ -233,45 +240,67 @@ const ProductCard = ({
               flex gap-[16px] items-center justify-center  group-hover/addtocart:translate-y-0 overflow-hidden 
               transition-all duration-400 z-[100]"
           >
-            <Tooltip placement="top" title="Thêm vào giỏ" color={`#333`}>
+            <Tooltip placement="top" title="Thêm vào giỏ" color={`#555`}>
               <div
                 className="cart xs:p-[6px] md:p-[6px] bg-white border-[1px] rounded-[50%] border-[#ececec]  max-w-[38px]
-                     cursor-pointer group/hover max-h-[38px] hover:bg-black-333 duration-300 transition-colors"
+                     cursor-pointer group/hover max-h-[38px] hover:bg-primary duration-300 transition-colors"
                 onClick={onAddToCart}
               >
-                <svg className=" w-[13px] h-[13px]" viewBox="0 0 24 24">
-                  <path
-                    className="group-hover/hover:fill-white duration-300 transition-colors  fill-grey-999"
-                    d="M16 6v-2c0-2.209-1.791-4-4-4s-4 1.791-4 4v2h-5v18h18v-18h-5zm-7-2c0-1.654 1.346-3 3-3s3 1.346 3 3v2h-6v-2zm10 8h-14v-4h3v1.5c0 .276.224.5.5.5s.5-.224.5-.5v-1.5h6v1.5c0 .276.224.5.5.5s.5-.224.5-.5v-1.5h3v4z"
-                  />
+                <svg
+                  className=" w-[13px] h-[13px] group-hover/hover:fill-white duration-300 transition-colors  fill-grey-999"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M16 6v-2c0-2.209-1.791-4-4-4s-4 1.791-4 4v2h-5v18h18v-18h-5zm-7-2c0-1.654 1.346-3 3-3s3 1.346 3 3v2h-6v-2zm10 8h-14v-4h3v1.5c0 .276.224.5.5.5s.5-.224.5-.5v-1.5h6v1.5c0 .276.224.5.5.5s.5-.224.5-.5v-1.5h3v4z" />
                 </svg>
               </div>
             </Tooltip>
-            <Tooltip placement="top" color="#333" title="Yêu thích">
+            <Tooltip
+              placement="top"
+              color="#555"
+              title={`${
+                whiteListInfo?.products?.find(
+                  (item) => item?.product_id === _id
+                )
+                  ? "Đã yêu thích"
+                  : "Yêu thích"
+              }`}
+            >
               <div
-                className="whitelist xs:p-[6px] md:p-[6px] bg-white border-[1px] rounded-[50%] border-[#ececec]  max-w-[38px]
-                                  cursor-pointer group/hover hover:bg-black-333 duration-300 transition-colors max-h-[38px]"
+                className={`whitelist xs:p-[6px] md:p-[6px] bg-white border-[1px] rounded-[50%] border-[#ececec]  max-w-[38px]
+                                  cursor-pointer group/hover  duration-300 transition-colors max-h-[38px]
+                                   ${
+                                     whiteListInfo?.products?.find(
+                                       (item) => item?.product_id === _id
+                                     )
+                                       ? "fill-primary"
+                                       : "hover:bg-primary"
+                                   }`}
                 onClick={onAddToWhiteList}
               >
                 <svg
                   viewBox="0 0 24 24"
-                  className="w-[13px] h-[13px] fill-black-555"
+                  className={`w-[13px] h-[13px] ${
+                    whiteListInfo?.products?.find(
+                      (item) => item?.product_id === _id
+                    )
+                      ? "fill-primary"
+                      : "fill-[#999] group-hover/hover:fill-white "
+                  } duration-300 transition-colors `}
                 >
                   <path
-                    className="group-hover/hover:fill-white duration-300 transition-colors fill-grey-999"
+                    className={``}
                     d="M12 4.248c-3.148-5.402-12-3.825-12 2.944 0 4.661 5.571 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-6.792-8.875-8.306-12-2.944z"
                   />
                 </svg>
               </div>
             </Tooltip>
-            <Tooltip placement="top" color="#333" title="Chia sẻ">
+            <Tooltip placement="top" color="#555" title="Chia sẻ">
               <div
                 className="share xs:p-[6px] md:p-[6px] bg-white border-[1px] rounded-[50%] border-[#ececec]  max-w-[38px]
-                                   cursor-pointer group/hover max-h-[38px] hover:bg-black-333 duration-300 transition-colors"
+                                   cursor-pointer group/hover max-h-[38px] hover:bg-primary duration-300 transition-colors"
               >
                 <svg
-                  className="group-hover/hover:fill-white duration-300 transition-colors h-[13px] w-[13px]"
-                  fill="#999"
+                  className="group-hover/hover:fill-white duration-300 transition-colors h-[13px] w-[13px] fill-[#999]"
                   viewBox="0 0 310 310"
                 >
                   <g>
@@ -308,17 +337,26 @@ const ProductCard = ({
           >
             {name || ""}
           </Link>
-
           <div className="flex justify-center items-center font-osb  xs:gap-[4px] md:gap-2 my-[6px]  ">
-            <span className="text-sm  text-black leading-[18px]">
-              {formatPriceVND(price - discount)}
-            </span>
-            {discount > 1000 && width >= 388 ? (
-              <span className="line-through text-sm font-om text-black-be  leading-[18px]">
-                {formatPriceVND(price)}
-              </span>
+            {item?.countInStock >= 1 ? (
+              <>
+                <span className="text-sm  text-black leading-[18px]">
+                  {discount > 1000
+                    ? formatPriceVND(price - discount)
+                    : formatPriceVND(price)}
+                </span>
+                {discount > 1000 && width >= 388 ? (
+                  <span className="line-through text-sm font-om text-black-be  leading-[18px]">
+                    {formatPriceVND(price)}
+                  </span>
+                ) : (
+                  ""
+                )}
+              </>
             ) : (
-              ""
+              <span className="text-sm font-om text-red-500 leading-[18px]">
+                Hết hàng
+              </span>
             )}
           </div>
           <StyleRate>
@@ -420,8 +458,13 @@ const ProductCard = ({
             viewBox="0 0 24 24"
           >
             <path
-              className="group-hover/hover:fill-primary duration-300 transition-colors"
-              fill="#555"
+              className={`group-hover/hover:fill-primary ${
+                whiteListInfo?.products?.find(
+                  (item) => item?.product_id === _id
+                )
+                  ? "fill-primary"
+                  : "fill-black-555"
+              } duration-300 transition-colors`}
               d="M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z"
             ></path>
           </svg>
@@ -438,7 +481,9 @@ const ProductCard = ({
         </Link>
         <div className="flex justify-center items-center font-osb  xs:gap-[4px] md:gap-2 mt-[8px]  ">
           <span className="text-sm  text-black leading-[18px]">
-            {formatPriceVND(price - discount)}
+            {discount > 1000
+              ? formatPriceVND(price - discount)
+              : formatPriceVND(price)}
           </span>
           {discount > 1000 && width >= 388 ? (
             <span className="line-through text-sm font-om text-black-be  leading-[18px]">
@@ -452,7 +497,7 @@ const ProductCard = ({
           className={`relative cursor-pointer pt-[8px] font-ossb text-sm  capitalize flex 
             items-center justify-center gap-[6px] group hover:text-primary duration-300 transition-all ${
               countInStock === 0
-                ? "pointer-events-none text-black-be"
+                ? "pointer-events-none text-red-400 no-underline"
                 : "pointer-events-auto text-black-555"
             } group underline`}
           onClick={onAddToCart}

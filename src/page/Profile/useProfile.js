@@ -123,7 +123,6 @@ const useProfile = () => {
   const onChangePageCurrent = (pageNumb) => {
     setPageCurrent(pageNumb);
   };
-  console.log("pageCurrent", pageCurrent);
   useEffect(() => {
     if (
       statusGetOrderUser !== THUNK_STATUS.pending ||

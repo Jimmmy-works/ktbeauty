@@ -441,6 +441,8 @@ main {
 }
 
 .my-scrollbar,
+  .textarea,
+  .ant-picker-time-panel-column,
   .ant-dropdown-menu,
   .ant-drawer-body {
   &::-webkit-scrollbar {
@@ -1521,6 +1523,82 @@ input[type="number"] {
 }
 
 .form {
+  .ant-picker {
+    border-radius: 0px;
+  }
+  .ant-picker {
+    .ant-picker-input > input {
+      margin-top: 0px;
+    }
+    .ant-picker-input > input {
+      line-height: 1;
+    }
+    &.ant-picker-focused {
+      --tw-shadow: 0 0 #0000;
+      --tw-shadow-colored: 0 0 #0000;
+      box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    }
+    &.ant-picker-focused {
+      outline-width: 0px;
+    }
+  }
+  .ant-select {
+    .ant-select-selection-item {
+      padding-left: 10px;
+    }
+    & .ant-select-selector,
+      & .ant-select-focused,
+      &.ant-select-focused:where(
+          .css-dev-only-do-not-override-18iikkb
+        ).ant-select:not(.ant-select-disabled):not(
+          .ant-select-customize-input
+        ):not(.ant-pagination-size-changer)
+        .ant-select-selector {
+      border-style: none;
+    }
+    & .ant-select-selector,
+      & .ant-select-focused,
+      &.ant-select-focused:where(
+          .css-dev-only-do-not-override-18iikkb
+        ).ant-select:not(.ant-select-disabled):not(
+          .ant-select-customize-input
+        ):not(.ant-pagination-size-changer)
+        .ant-select-selector {
+      background-color: transparent;
+    }
+    & .ant-select-selector,
+      & .ant-select-focused,
+      &.ant-select-focused:where(
+          .css-dev-only-do-not-override-18iikkb
+        ).ant-select:not(.ant-select-disabled):not(
+          .ant-select-customize-input
+        ):not(.ant-pagination-size-changer)
+        .ant-select-selector {
+      padding: 0px;
+    }
+    & .ant-select-selector,
+      & .ant-select-focused,
+      &.ant-select-focused:where(
+          .css-dev-only-do-not-override-18iikkb
+        ).ant-select:not(.ant-select-disabled):not(
+          .ant-select-customize-input
+        ):not(.ant-pagination-size-changer)
+        .ant-select-selector {
+      --tw-shadow: 0 0 #0000;
+      --tw-shadow-colored: 0 0 #0000;
+      box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    }
+    & .ant-select-selector,
+      & .ant-select-focused,
+      &.ant-select-focused:where(
+          .css-dev-only-do-not-override-18iikkb
+        ).ant-select:not(.ant-select-disabled):not(
+          .ant-select-customize-input
+        ):not(.ant-pagination-size-changer)
+        .ant-select-selector {
+      outline-width: 0px;
+    }
+  }
   & > div {
     margin-top: 10px;
   }
@@ -1573,6 +1651,7 @@ input[type="number"] {
     &-wrapper {
       &.success {
         input,
+          .input,
           .textarea {
           --tw-border-opacity: 1;
           border-bottom-color: rgb(21 128 61 / var(--tw-border-opacity));
@@ -1580,6 +1659,7 @@ input[type="number"] {
       }
       &.error {
         input,
+          .input,
           .textarea {
           --tw-border-opacity: 1;
           border-color: rgb(239 68 68 / var(--tw-border-opacity));
@@ -1591,30 +1671,38 @@ input[type="number"] {
           opacity: 1;
         }
       }
-      input {
+      input,
+        .input {
         margin-top: 12px;
       }
-      input {
+      input,
+        .input {
         border-width: 1px;
       }
-      input {
+      input,
+        .input {
         border-bottom-width: 1px;
       }
-      input {
+      input,
+        .input {
         border-style: solid;
       }
-      input {
+      input,
+        .input {
         border-color: transparent;
       }
-      input {
+      input,
+        .input {
         --tw-border-opacity: 1;
         border-bottom-color: rgb(153 153 153 / var(--tw-border-opacity));
       }
-      input {
+      input,
+        .input {
         --tw-bg-opacity: 1;
         background-color: rgb(249 249 249 / var(--tw-bg-opacity));
       }
-      input {
+      input,
+        .input {
         padding: 10px;
       }
       p {
@@ -2107,10 +2195,6 @@ input[type="number"] {
   right: 10px !important;
 }
 
-.right-\[5\%\] {
-  right: 5% !important;
-}
-
 .right-\[8px\] {
   right: 8px !important;
 }
@@ -2203,16 +2287,8 @@ input[type="number"] {
   z-index: 9 !important;
 }
 
-.float-right {
-  float: right !important;
-}
-
 .m-\[-8px\] {
   margin: -8px !important;
-}
-
-.m-\[10px\] {
-  margin: 10px !important;
 }
 
 .m-\[14px_0_10px_0\] {
@@ -2225,6 +2301,14 @@ input[type="number"] {
 
 .m-\[15px_12px\] {
   margin: 15px 12px !important;
+}
+
+.m-\[20px\] {
+  margin: 20px !important;
+}
+
+.m-\[20px_auto_0px\] {
+  margin: 20px auto 0px !important;
 }
 
 .m-\[30px_0_20px_0\] {
@@ -2247,13 +2331,19 @@ input[type="number"] {
   margin: auto !important;
 }
 
-.m-\[20px\] {
-  margin: 20px !important;
+.-mx-\[10px\] {
+  margin-left: -10px !important;
+  margin-right: -10px !important;
 }
 
 .-mx-\[15px\] {
   margin-left: -15px !important;
   margin-right: -15px !important;
+}
+
+.mx-\[10px\] {
+  margin-left: 10px !important;
+  margin-right: 10px !important;
 }
 
 .mx-\[15px\] {
@@ -2528,10 +2618,6 @@ input[type="number"] {
   height: 650px !important;
 }
 
-.h-\[66px\] {
-  height: 66px !important;
-}
-
 .h-\[70px\] {
   height: 70px !important;
 }
@@ -2563,6 +2649,10 @@ input[type="number"] {
 
 .max-h-\[250px\] {
   max-height: 250px !important;
+}
+
+.max-h-\[256px\] {
+  max-height: 256px !important;
 }
 
 .max-h-\[320px\] {
@@ -2710,10 +2800,6 @@ input[type="number"] {
   width: 42px !important;
 }
 
-.w-\[50\%\] {
-  width: 50% !important;
-}
-
 .w-\[50px\] {
   width: 50px !important;
 }
@@ -2724,10 +2810,6 @@ input[type="number"] {
 
 .w-\[60px\] {
   width: 60px !important;
-}
-
-.w-\[66px\] {
-  width: 66px !important;
 }
 
 .w-\[6px\] {
@@ -2759,16 +2841,16 @@ input[type="number"] {
   width: 100vw !important;
 }
 
-.w-\[85\%\] {
-  width: 85% !important;
-}
-
 .min-w-\[120px\] {
   min-width: 120px !important;
 }
 
 .min-w-\[160px\] {
   min-width: 160px !important;
+}
+
+.min-w-\[300px\] {
+  min-width: 300px !important;
 }
 
 .min-w-\[64px\] {
@@ -2793,12 +2875,8 @@ input[type="number"] {
   min-width: max-content !important;
 }
 
-.min-w-\[200px\] {
-  min-width: 200px !important;
-}
-
-.min-w-\[300px\] {
-  min-width: 300px !important;
+.max-w-\[1000px\] {
+  max-width: 1000px !important;
 }
 
 .max-w-\[38px\] {
@@ -2821,8 +2899,8 @@ input[type="number"] {
   max-width: 90px !important;
 }
 
-.max-w-\[300px\] {
-  max-width: 300px !important;
+.max-w-\[970px\] {
+  max-width: 970px !important;
 }
 
 .-translate-x-1\/2 {
@@ -2939,6 +3017,10 @@ input[type="number"] {
   cursor: zoom-in !important;
 }
 
+.resize-none {
+  resize: none !important;
+}
+
 .resize {
   resize: both !important;
 }
@@ -3053,10 +3135,6 @@ input[type="number"] {
 
 .gap-\[50px\] {
   gap: 50px !important;
-}
-
-.gap-\[60px\] {
-  gap: 60px !important;
 }
 
 .gap-\[6px\] {
@@ -3205,6 +3283,10 @@ input[type="number"] {
   border-width: 1px !important;
 }
 
+.border-\[2px\] {
+  border-width: 2px !important;
+}
+
 .border-y {
   border-top-width: 1px !important;
   border-bottom-width: 1px !important;
@@ -3219,10 +3301,6 @@ input[type="number"] {
 }
 
 .border-r {
-  border-right-width: 1px !important;
-}
-
-.border-r-\[1px\] {
   border-right-width: 1px !important;
 }
 
@@ -3285,6 +3363,10 @@ input[type="number"] {
 .border-\[\#fff\] {
   --tw-border-opacity: 1 !important;
   border-color: rgb(255 255 255 / var(--tw-border-opacity)) !important;
+}
+
+.border-\[rgba\(255\2c 255\2c 255\2c 0\.5\)\] {
+  border-color: rgba(255,255,255,0.5) !important;
 }
 
 .border-amber-600 {
@@ -3481,6 +3563,14 @@ input[type="number"] {
   background-color: rgba(255,255,255,0.3) !important;
 }
 
+.bg-\[rgba\(255\2c 255\2c 255\2c 0\.9\)\] {
+  background-color: rgba(255,255,255,0.9) !important;
+}
+
+.bg-\[rgba\(96\2c 96\2c 96\2c 0\.2\)\] {
+  background-color: rgba(96,96,96,0.2) !important;
+}
+
 .bg-black-333 {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(51 51 51 / var(--tw-bg-opacity)) !important;
@@ -3553,6 +3643,10 @@ input[type="number"] {
   background-image: url('/assets/img/advertising-banner-2.jpg') !important;
 }
 
+.bg-booking-banner {
+  background-image: url('/assets/img/booking-banner.jpg') !important;
+}
+
 .bg-consel-sex-1 {
   background-image: url('/assets/img/bg-consel-sex-1.png') !important;
 }
@@ -3561,12 +3655,16 @@ input[type="number"] {
   background-image: url('/assets/img/bg-consel-sex-2.png') !important;
 }
 
-.bg-footer-banner {
-  background-image: url('/assets/img/footer-banner.jpg') !important;
-}
-
 .bg-marketing-banner {
   background-image: url('/assets/img/marketing-banner.jpg') !important;
+}
+
+.bg-menu-banner {
+  background-image: url('/assets/img/menu-banner.jpg') !important;
+}
+
+.bg-product-banner {
+  background-image: url('/assets/img/product-banner.jpg') !important;
 }
 
 .bg-shop-banner {
@@ -3617,6 +3715,10 @@ input[type="number"] {
   fill: #033C73 !important;
 }
 
+.fill-\[\#999\] {
+  fill: #999 !important;
+}
+
 .fill-\[\#d9d9d9\] {
   fill: #d9d9d9 !important;
 }
@@ -3655,6 +3757,10 @@ input[type="number"] {
 
 .stroke-primary {
   stroke: #ff887b !important;
+}
+
+.stroke-\[2px\] {
+  stroke-width: 2px !important;
 }
 
 .object-cover {
@@ -3714,6 +3820,10 @@ input[type="number"] {
   padding: 20px !important;
 }
 
+.p-\[20px_15px_0_15px\] {
+  padding: 20px 15px 0 15px !important;
+}
+
 .p-\[20px_20px\] {
   padding: 20px 20px !important;
 }
@@ -3726,12 +3836,16 @@ input[type="number"] {
   padding: 2px !important;
 }
 
+.p-\[30px\] {
+  padding: 30px !important;
+}
+
 .p-\[35px_0\] {
   padding: 35px 0 !important;
 }
 
-.p-\[47px_60px\] {
-  padding: 47px 60px !important;
+.p-\[40px_0px\] {
+  padding: 40px 0px !important;
 }
 
 .p-\[4px\] {
@@ -3762,6 +3876,10 @@ input[type="number"] {
   padding: 6.5px 11.5px !important;
 }
 
+.p-\[60px_50px_30px\] {
+  padding: 60px 50px 30px !important;
+}
+
 .p-\[7px\] {
   padding: 7px !important;
 }
@@ -3774,8 +3892,9 @@ input[type="number"] {
   padding: 9px !important;
 }
 
-.p-\[30px\] {
-  padding: 30px !important;
+.px-0 {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
 
 .px-\[10px\] {
@@ -3798,6 +3917,11 @@ input[type="number"] {
   padding-right: 27.5px !important;
 }
 
+.px-\[32\.15px\] {
+  padding-left: 32.15px !important;
+  padding-right: 32.15px !important;
+}
+
 .px-\[5px\] {
   padding-left: 5px !important;
   padding-right: 5px !important;
@@ -3806,11 +3930,6 @@ input[type="number"] {
 .px-\[8px\] {
   padding-left: 8px !important;
   padding-right: 8px !important;
-}
-
-.py-\[100px\] {
-  padding-top: 100px !important;
-  padding-bottom: 100px !important;
 }
 
 .py-\[10px\] {
@@ -3838,6 +3957,11 @@ input[type="number"] {
   padding-bottom: 24px !important;
 }
 
+.py-\[3\.5px\] {
+  padding-top: 3.5px !important;
+  padding-bottom: 3.5px !important;
+}
+
 .py-\[32px\] {
   padding-top: 32px !important;
   padding-bottom: 32px !important;
@@ -3846,6 +3970,11 @@ input[type="number"] {
 .py-\[6px\] {
   padding-top: 6px !important;
   padding-bottom: 6px !important;
+}
+
+.py-\[9px\] {
+  padding-top: 9px !important;
+  padding-bottom: 9px !important;
 }
 
 .pb-0 {
@@ -3870,10 +3999,6 @@ input[type="number"] {
 
 .pb-\[20px\] {
   padding-bottom: 20px !important;
-}
-
-.pb-\[50px\] {
-  padding-bottom: 50px !important;
 }
 
 .pb-\[66\.6669\%\] {
@@ -4152,11 +4277,6 @@ input[type="number"] {
   color: rgb(0 0 0 / var(--tw-text-opacity)) !important;
 }
 
-.text-black-222 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(34 34 34 / var(--tw-text-opacity)) !important;
-}
-
 .text-black-333 {
   --tw-text-opacity: 1 !important;
   color: rgb(51 51 51 / var(--tw-text-opacity)) !important;
@@ -4250,6 +4370,10 @@ input[type="number"] {
   text-decoration-line: line-through !important;
 }
 
+.no-underline {
+  text-decoration-line: none !important;
+}
+
 .opacity-0 {
   opacity: 0 !important;
 }
@@ -4265,6 +4389,12 @@ input[type="number"] {
 .shadow-\[0_0_0_15px_rgba\(255\2c 255\2c 255\2c 0\.2\)\] {
   --tw-shadow: 0 0 0 15px rgba(255,255,255,0.2) !important;
   --tw-shadow-colored: 0 0 0 15px var(--tw-shadow-color) !important;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+}
+
+.shadow-\[0_10px_20px_0_rgba\(0\2c 0\2c 0\2c 0\.2\)\] {
+  --tw-shadow: 0 10px 20px 0 rgba(0,0,0,0.2) !important;
+  --tw-shadow-colored: 0 10px 20px 0 var(--tw-shadow-color) !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 
@@ -4443,25 +4573,24 @@ input[type="number"] {
   }
 }
 
-.text-xl {
-  font-size: 60px !important;
-}
-
 @media (min-width: 360px) {
   .text-xl {
     font-size: 32px !important;
+    line-height: 42px !important;
   }
 }
 
 @media (min-width: 768px) {
   .text-xl {
     font-size: 52px !important;
+    line-height: 62px !important;
   }
 }
 
 @media (min-width: 1024px) {
   .text-xl {
     font-size: 60px !important;
+    line-height: 72px !important;
   }
 }
 
@@ -4480,6 +4609,27 @@ input[type="number"] {
 @media (min-width: 1024px) {
   .pt-section {
     padding-top: 56px !important;
+  }
+}
+
+@media (min-width: 360px) {
+  .p-section {
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .p-section {
+    padding-top: 46px !important;
+    padding-bottom: 46px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .p-section {
+    padding-top: 56px !important;
+    padding-bottom: 56px !important;
   }
 }
 
@@ -4939,9 +5089,9 @@ input[type="number"] {
 }
 
 :where(.css-dev-only-do-not-override-18iikkb).ant-btn-primary {
-  background-color: #555 !important;
+  background-color: #ff887b !important;
   &:hover {
-    background-color: #ff887b !important;
+    opacity: 80%;
   }
 }
 
@@ -5324,6 +5474,11 @@ input[type="number"] {
   left: -0px !important;
 }
 
+.before\:bottom-0::before {
+  content: var(--tw-content) !important;
+  bottom: 0px !important;
+}
+
 .before\:bottom-\[-4px\]::before {
   content: var(--tw-content) !important;
   bottom: -4px !important;
@@ -5334,9 +5489,19 @@ input[type="number"] {
   left: 0px !important;
 }
 
+.before\:left-1\/2::before {
+  content: var(--tw-content) !important;
+  left: 50% !important;
+}
+
 .before\:left-\[-20px\]::before {
   content: var(--tw-content) !important;
   left: -20px !important;
+}
+
+.before\:top-0::before {
+  content: var(--tw-content) !important;
+  top: 0px !important;
 }
 
 .before\:top-1\/2::before {
@@ -5384,6 +5549,16 @@ input[type="number"] {
   height: 5px !important;
 }
 
+.before\:h-full::before {
+  content: var(--tw-content) !important;
+  height: 100% !important;
+}
+
+.before\:w-\[100px\]::before {
+  content: var(--tw-content) !important;
+  width: 100px !important;
+}
+
 .before\:w-\[44px\]::before {
   content: var(--tw-content) !important;
   width: 44px !important;
@@ -5397,6 +5572,12 @@ input[type="number"] {
 .before\:w-full::before {
   content: var(--tw-content) !important;
   width: 100% !important;
+}
+
+.before\:-translate-x-1\/2::before {
+  content: var(--tw-content) !important;
+  --tw-translate-x: -50% !important;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
 }
 
 .before\:-translate-y-1\/2::before {
@@ -5424,6 +5605,11 @@ input[type="number"] {
 .before\:rounded-\[50\%\]::before {
   content: var(--tw-content) !important;
   border-radius: 50% !important;
+}
+
+.before\:bg-\[rgba\(0\2c 0\2c 0\2c 0\.5\)\]::before {
+  content: var(--tw-content) !important;
+  background-color: rgba(0,0,0,0.5) !important;
 }
 
 .before\:bg-black-333::before {
@@ -5527,6 +5713,11 @@ input[type="number"] {
   width: 10px !important;
 }
 
+.after\:w-\[6px\]::after {
+  content: var(--tw-content) !important;
+  width: 6px !important;
+}
+
 .after\:w-full::after {
   content: var(--tw-content) !important;
   width: 100% !important;
@@ -5627,14 +5818,13 @@ input[type="number"] {
   background-color: rgb(248 78 78 / var(--tw-bg-opacity)) !important;
 }
 
+.hover\:bg-\[rgba\(255\2c 255\2c 255\2c 0\.2\)\]:hover {
+  background-color: rgba(255,255,255,0.2) !important;
+}
+
 .hover\:bg-amber-600:hover {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(217 119 6 / var(--tw-bg-opacity)) !important;
-}
-
-.hover\:bg-black-333:hover {
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(51 51 51 / var(--tw-bg-opacity)) !important;
 }
 
 .hover\:bg-black-ebe:hover {
@@ -5733,6 +5923,10 @@ input[type="number"] {
   background-color: rgb(255 136 123 / var(--tw-bg-opacity)) !important;
 }
 
+.group\/scroll:hover .group-hover\/scroll\:visible {
+  visibility: visible !important;
+}
+
 .group:hover .group-hover\:visible {
   visibility: visible !important;
 }
@@ -5747,6 +5941,11 @@ input[type="number"] {
 
 .group\/addtocart:hover .group-hover\/addtocart\:translate-y-0 {
   --tw-translate-y: 0px !important;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
+}
+
+.group\/scroll:hover .group-hover\/scroll\:-translate-y-\[66px\] {
+  --tw-translate-y: -66px !important;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
 }
 
@@ -5805,6 +6004,20 @@ input[type="number"] {
   color: rgb(255 136 123 / var(--tw-text-opacity)) !important;
 }
 
+.group\/hover:hover .group-hover\/hover\:text-white {
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+}
+
+.group:hover .group-hover\:text-primary {
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 136 123 / var(--tw-text-opacity)) !important;
+}
+
+.group\/scroll:hover .group-hover\/scroll\:opacity-100 {
+  opacity: 1 !important;
+}
+
 .group:hover .group-hover\:opacity-0 {
   opacity: 0 !important;
 }
@@ -5817,6 +6030,18 @@ input[type="number"] {
   --tw-shadow: 0 2px 0 #ad4141 !important;
   --tw-shadow-colored: 0 2px 0 var(--tw-shadow-color) !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+}
+
+.not-lastChild\:border-b-\[1px\]:not(:last-child) {
+  border-bottom-width: 1px !important;
+}
+
+.not-lastChild\:border-solid:not(:last-child) {
+  border-style: solid !important;
+}
+
+.not-lastChild\:border-\[rgba\(255\2c 255\2c 255\2c 0\.2\)\]:not(:last-child) {
+  border-color: rgba(255,255,255,0.2) !important;
 }
 
 .not-firstChild\:mt-\[14px\]:not(:first-child) {
@@ -5856,6 +6081,10 @@ input[type="number"] {
     right: 0.75rem !important;
   }
 
+  .xs\:right-\[5\%\] {
+    right: 5% !important;
+  }
+
   .xs\:top-6 {
     top: 1.5rem !important;
   }
@@ -5874,6 +6103,10 @@ input[type="number"] {
 
   .xs\:top-\[70px\] {
     top: 70px !important;
+  }
+
+  .xs\:m-\[0_15px_0px\] {
+    margin: 0 15px 0px !important;
   }
 
   .xs\:my-\[16px\] {
@@ -5983,6 +6216,10 @@ input[type="number"] {
     height: 26px !important;
   }
 
+  .xs\:h-\[300px\] {
+    height: 300px !important;
+  }
+
   .xs\:h-\[56px\] {
     height: 56px !important;
   }
@@ -6009,6 +6246,10 @@ input[type="number"] {
 
   .xs\:w-1\/2 {
     width: 50% !important;
+  }
+
+  .xs\:w-2\/3 {
+    width: 66.666667% !important;
   }
 
   .xs\:w-4 {
@@ -6145,12 +6386,24 @@ input[type="number"] {
     gap: 20px !important;
   }
 
+  .xs\:gap-\[30px\] {
+    gap: 30px !important;
+  }
+
+  .xs\:gap-\[40px\] {
+    gap: 40px !important;
+  }
+
   .xs\:gap-\[4px\] {
     gap: 4px !important;
   }
 
   .xs\:gap-\[60px\] {
     gap: 60px !important;
+  }
+
+  .xs\:gap-\[6px\] {
+    gap: 6px !important;
   }
 
   .xs\:gap-y-\[20px\] {
@@ -6208,6 +6461,10 @@ input[type="number"] {
     padding: 20px 14px 14px !important;
   }
 
+  .xs\:p-\[20px_40px\] {
+    padding: 20px 40px !important;
+  }
+
   .xs\:p-\[5\.5px_11px\] {
     padding: 5.5px 11px !important;
   }
@@ -6256,6 +6513,11 @@ input[type="number"] {
   .xs\:py-\[40px\] {
     padding-top: 40px !important;
     padding-bottom: 40px !important;
+  }
+
+  .xs\:py-\[60px\] {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
   }
 
   .xs\:py-\[7px\] {
@@ -6404,6 +6666,10 @@ input[type="number"] {
     top: calc(50% + 2px) !important;
   }
 
+  .md\:m-\[0_30px_20px\] {
+    margin: 0 30px 20px !important;
+  }
+
   .md\:mt-0 {
     margin-top: 0px !important;
   }
@@ -6474,6 +6740,10 @@ input[type="number"] {
 
   .md\:h-\[40px\] {
     height: 40px !important;
+  }
+
+  .md\:h-\[450px\] {
+    height: 450px !important;
   }
 
   .md\:h-\[60px\] {
@@ -6548,6 +6818,10 @@ input[type="number"] {
     width: 24px !important;
   }
 
+  .md\:w-\[25\%\] {
+    width: 25% !important;
+  }
+
   .md\:w-\[40\%\] {
     width: 40% !important;
   }
@@ -6582,6 +6856,10 @@ input[type="number"] {
 
   .md\:w-\[calc\(100\%-280px\)\] {
     width: calc(100% - 280px) !important;
+  }
+
+  .md\:w-\[calc\(33\.33333\%-20px\)\] {
+    width: calc(33.33333% - 20px) !important;
   }
 
   .md\:w-\[calc\(33\.333333\%-10px\)\] {
@@ -6655,6 +6933,10 @@ input[type="number"] {
     justify-content: flex-end !important;
   }
 
+  .md\:justify-center {
+    justify-content: center !important;
+  }
+
   .md\:justify-between {
     justify-content: space-between !important;
   }
@@ -6673,6 +6955,10 @@ input[type="number"] {
 
   .md\:gap-\[40px\] {
     gap: 40px !important;
+  }
+
+  .md\:gap-\[60px\] {
+    gap: 60px !important;
   }
 
   .md\:border {
@@ -6737,6 +7023,14 @@ input[type="number"] {
     padding: 30px 30px 20px !important;
   }
 
+  .md\:p-\[40px\] {
+    padding: 40px !important;
+  }
+
+  .md\:p-\[47px_60px\] {
+    padding: 47px 60px !important;
+  }
+
   .md\:p-\[4px_8px\] {
     padding: 4px 8px !important;
   }
@@ -6767,6 +7061,11 @@ input[type="number"] {
   .md\:px-\[40px\] {
     padding-left: 40px !important;
     padding-right: 40px !important;
+  }
+
+  .md\:py-\[100px\] {
+    padding-top: 100px !important;
+    padding-bottom: 100px !important;
   }
 
   .md\:py-\[10px\] {
@@ -6827,6 +7126,10 @@ input[type="number"] {
     padding-bottom: 24px !important;
   }
 
+  .md\:pb-\[50px\] {
+    padding-bottom: 50px !important;
+  }
+
   .md\:pt-\[40px\] {
     padding-top: 40px !important;
   }
@@ -6839,12 +7142,12 @@ input[type="number"] {
     font-size: 16px !important;
   }
 
-  .md\:text-\[22px\] {
-    font-size: 22px !important;
+  .md\:text-\[20px\] {
+    font-size: 20px !important;
   }
 
-  .md\:text-\[24px\] {
-    font-size: 24px !important;
+  .md\:text-\[22px\] {
+    font-size: 22px !important;
   }
 
   .md\:text-\[40px\] {
@@ -6863,8 +7166,8 @@ input[type="number"] {
     line-height: 18px !important;
   }
 
-  .md\:leading-\[24px\] {
-    line-height: 24px !important;
+  .md\:leading-\[20px\] {
+    line-height: 20px !important;
   }
 
   .md\:leading-\[36px\] {
@@ -7052,6 +7355,10 @@ input[type="number"] {
     width: 280px !important;
   }
 
+  .lg\:w-\[33\.33333\%\] {
+    width: 33.33333% !important;
+  }
+
   .lg\:w-\[40\%\] {
     width: 40% !important;
   }
@@ -7113,6 +7420,10 @@ input[type="number"] {
     flex-wrap: nowrap !important;
   }
 
+  .lg\:justify-normal {
+    justify-content: normal !important;
+  }
+
   .lg\:gap-0 {
     gap: 0px !important;
   }
@@ -7127,6 +7438,10 @@ input[type="number"] {
 
   .lg\:gap-\[30px\] {
     gap: 30px !important;
+  }
+
+  .lg\:gap-\[60px\] {
+    gap: 60px !important;
   }
 
   .lg\:rounded-none {
@@ -7206,6 +7521,14 @@ input[type="number"] {
 }
 
 @media (min-width: 1280px) {
+  .xl\:right-\[40px\] {
+    right: 40px !important;
+  }
+
+  .xl\:m-\[0_50px_30px\] {
+    margin: 0 50px 30px !important;
+  }
+
   .xl\:mb-\[14px\] {
     margin-bottom: 14px !important;
   }
@@ -7214,12 +7537,20 @@ input[type="number"] {
     display: block !important;
   }
 
+  .xl\:h-\[550px\] {
+    height: 550px !important;
+  }
+
   .xl\:w-1\/3 {
     width: 33.333333% !important;
   }
 
   .xl\:w-1\/4 {
     width: 25% !important;
+  }
+
+  .xl\:w-\[calc\(25\%-20px\)\] {
+    width: calc(25% - 20px) !important;
   }
 
   .xl\:max-w-\[200px\] {
@@ -7244,6 +7575,10 @@ input[type="number"] {
 
   .xl\:gap-0 {
     gap: 0px !important;
+  }
+
+  .xl\:p-\[100px\] {
+    padding: 100px !important;
   }
 
   .xl\:py-\[100px\] {

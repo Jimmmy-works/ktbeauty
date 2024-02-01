@@ -1122,22 +1122,22 @@ export default {
           },
         },
         ".text-xl": {
-          fontSize: "60px",
-
           "@media (min-width: 360px)": {
             fontSize: "32px",
+            lineHeight: "42px",
           },
           "@media (min-width: 768px)": {
             fontSize: "52px",
+            lineHeight: "62px",
           },
           "@media (min-width: 1024px)": {
             fontSize: "60px",
+            lineHeight: "72px",
           },
         },
         ".text-2xl": {
           fontSize: "72px",
         },
-
         ".h-header": {
           "@media (min-width: 360px)": {
             height: "56px",

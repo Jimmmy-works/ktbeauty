@@ -2,7 +2,8 @@ import BreadCrumb from "@/components/BreadCrumb";
 import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
 import { DatePicker, Select, TimePicker } from "antd";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 const ContactPage = () => {
   const optionContact = [
@@ -73,6 +74,54 @@ const ContactPage = () => {
       ),
     },
   ];
+  const optionService = [
+    {
+      value: "default",
+      label: "Chọn dịch vụ",
+    },
+    {
+      value: "service-1",
+      label: "Chăm sóc da",
+    },
+    {
+      value: "service-2",
+      label: "Lấy nhân mụn chuẩn y khoa",
+    },
+    {
+      value: "service-3",
+      label: "Đốt laser mụn",
+    },
+    {
+      value: "service-4",
+      label: "Peel da",
+    },
+    {
+      value: "service-5",
+      label: "Điều trị meso",
+    },
+  ];
+  const optionPeople = [
+    {
+      value: "default",
+      label: "Chọn số lượng người đến",
+    },
+    {
+      value: "people-1",
+      label: "1 người",
+    },
+    {
+      value: "people-2",
+      label: "2 người",
+    },
+    {
+      value: "people-3",
+      label: "3 người",
+    },
+    {
+      value: "people-4",
+      label: "4 người",
+    },
+  ];
   const {
     register,
     handleSubmit,
@@ -82,38 +131,48 @@ const ContactPage = () => {
     control,
     reset,
     trigger,
+    setError,
     formState: { isSubmitting, isDirty, isValid, errors },
-  } = useForm() || {};
+  } = useForm({ mode: "all" }) || {};
+  const [service, setService] = useState();
+  const [people, setPeople] = useState();
+  const [bookingHour, setBookingHour] = useState();
+  const [bookingDate, setBookingDate] = useState();
+  const handleBooking = () => {};
   return (
     <main className="main-wrapper contactpage ">
       <div className="relative md:h-[350px] xs:h-[200px] bg-about-banner bg-[50%_20%] bg-cover"></div>
       <BreadCrumb>
-        <BreadCrumb.Item>
-          <Link to={`${PATHS.HOME}`}>Trang chủ</Link>
-        </BreadCrumb.Item>
-        <BreadCrumb.Item isActive>
-          <Link>Liên hệ</Link>
-        </BreadCrumb.Item>
+        <BreadCrumb.Item link={`${PATHS.HOME}`}>Trang chủ</BreadCrumb.Item>
+        <BreadCrumb.Item isActive>Liên hệ</BreadCrumb.Item>
       </BreadCrumb>
-      <div className="container">
-        <div className="">
-          <h2 className="font-osb text-lg uppercase text-black-555 mb-[30px]">
+      <div className="container mt-[15px]">
+        <div className="mb-[30px]">
+          <h2 className="font-osb text-lg uppercase text-black-555 mb-[12px]">
             Liên hệ
           </h2>
+          <p className="text-md font-osr leading-[24px]">
+            <strong className="font-ossb text-primary tracking-widest">
+              KTBEAUTY{" "}
+            </strong>
+            luôn sẵn sàng hỗ trợ, tận tình giải đáp các thắc mắc cũng như khiếu
+            nại của quý Khách hàng 24/7.
+            <br />
+            Hãy liên hệ ngay với chúng tôi tại các thông tin bên dưới.
+          </p>
         </div>
       </div>
-
       <section
-        className="scbooking m-section p-[100px] bg-black-be w-full h-full bg-booking-banner bg-no-repeat
+        className="scbooking  m-section md:p-[40px] xl:p-[100px] bg-black-be w-full h-full bg-booking-banner bg-no-repeat
         bg-center bg-cover  min-h-[800px]"
       >
-        <div className="scbooking__wrapper p-[40px_30px] container bg-[rgba(255,255,255,0.9)] ">
-          <div className="scbooking__wrapper-content p-[20px_15px_0_15px] m-[0_100px_30px] ">
+        <div className="scbooking__wrapper max-w-[1000px] p-[40px_0px] container bg-[rgba(255,255,255,0.9)] ">
+          <div className="scbooking__wrapper-content p-[20px_15px_0_15px] xs:m-[0_15px_0px] md:m-[0_30px_20px] xl:m-[0_50px_30px] ">
             <h3 className="heading text-center  font-gvr text-xl mb-[12px]">
               Booking chăm sóc da Online
             </h3>
             <div className="desc">
-              <p className="mb-[30px] text-center max-w-[970px] mx-auto leading-[24px] font-om uppercase text-black-[#666]">
+              <p className="mb-[30px] text-16px text-center max-w-[970px] mx-auto leading-[24px] font-om uppercase text-black-[#666]">
                 KTBEAUTY studio & store cosmetics <br />
                 địa chỉ: 433/16 sư vạn hạnh p14 q10, thành phố hồ chí minh
               </p>
@@ -122,10 +181,10 @@ const ContactPage = () => {
               </a>
             </div>
           </div>
-          <div className="scbooking__wrapper-form m-[0_100px_30px]  form ">
-            <div className="form__container gap-[30px]">
+          <div className="scbooking__wrapper-form xs:m-[0_15px_0px] md:m-[0_30px_20px] xl:m-[0_50px_30px]  form ">
+            <div className="form__container xs:gap-[6px] md:gap-[30px]">
               <div
-                className={`form__container-wrapper w-[50%]  ${
+                className={`form__container-wrapper xs:w-full md:w-[50%]  ${
                   errors?.name?.message
                     ? "annimated-horizontal error animated-bounceHorizontal"
                     : "success"
@@ -175,85 +234,90 @@ const ContactPage = () => {
                 <p className="">{errors?.email?.message || ""}</p>
               </div>
             </div>
-            <div className="form__container gap-[30px]">
+            <div className="form__container xs:gap-[6px] md:gap-[30px]">
               <div
-                className={`form__container-wrapper w-[50%]  ${
-                  errors?.phone?.message
+                className={`form__container-wrapper xs:w-full md:w-[50%]  ${
+                  errors?.service?.message
                     ? "annimated-horizontal error animated-bounceHorizontal"
                     : "success"
                 }`}
               >
-                <label htmlFor="phone">Dịch vụ</label>
-                <Select
-                  placement="bottomLeft"
-                  defaultValue="1"
-                  style={{
-                    width: "100%",
+                <label htmlFor="service">Dịch vụ</label>
+                <Controller
+                  control={control}
+                  name="service"
+                  rules={{
+                    required: "Xin vui chọn loại dịch vụ",
                   }}
-                  className="input px-0  py-[3.5px]"
-                  options={[
-                    {
-                      value: "1",
-                      label: "Chăm sóc da",
-                    },
-                    {
-                      value: "2",
-                      label: "Lấy nhân mụn chuẩn y khoa",
-                    },
-                    {
-                      value: "3",
-                      label: "Đốt laser mụn",
-                    },
-                    {
-                      value: "4",
-                      label: "Peel da",
-                    },
-                    {
-                      value: "5",
-                      label: "Điều trị meso",
-                    },
-                  ]}
-                ></Select>
-                <p className="">{errors?.phone?.message || ""}</p>
+                  render={(
+                    { field } // :{ onChange, onBlur, value }
+                  ) => (
+                    <Select
+                      placement="bottomLeft"
+                      defaultValue="default"
+                      style={{
+                        width: "100%",
+                      }}
+                      className="input px-0  py-[3.5px]"
+                      options={optionService}
+                      value={service?.value}
+                      onChange={(value, e) => {
+                        if (value === "default") {
+                          field.onChange("");
+                          setService(e);
+                        } else {
+                          field.onChange(value);
+                          setService(e);
+                        }
+                      }}
+                    />
+                  )}
+                />
+                <p className="">{errors?.service?.message || ""}</p>
               </div>
               <div
-                className={`form__container-wrapper w-[25%]  ${
-                  errors?.phone?.message
+                className={`form__container-wrapper xs:w-full md:w-[25%]  ${
+                  errors?.people?.message
                     ? "annimated-horizontal error animated-bounceHorizontal"
                     : "success"
                 }`}
               >
-                <label htmlFor="phone">Số lượng</label>
-                <Select
-                  placement="bottomLeft"
-                  defaultValue="1"
-                  style={{
-                    width: "100%",
+                <label htmlFor="people">Số lượng</label>
+                <Controller
+                  control={control}
+                  name="people"
+                  rules={{
+                    required: "Số lượng người sẽ đến?",
                   }}
-                  className="input px-0  py-[3.5px]"
-                  options={[
-                    {
-                      value: "1",
-                      label: "1 người",
-                    },
-                    {
-                      value: "2",
-                      label: "2 người",
-                    },
-                    {
-                      value: "3",
-                      label: "3 người",
-                    },
-                    {
-                      value: "4",
-                      label: "4 người",
-                    },
-                  ]}
-                ></Select>
-                <p className="">{errors?.phone?.message || ""}</p>
+                  render={(
+                    { field } // :{ onChange, onBlur, value }
+                  ) => (
+                    <Select
+                      placement="bottomLeft"
+                      defaultValue="default"
+                      style={{
+                        width: "100%",
+                      }}
+                      className="input px-0 py-[3.5px]"
+                      options={optionPeople}
+                      value={people?.value}
+                      onChange={(value, e) => {
+                        if (value === "default") {
+                          field.onChange("");
+                          setPeople(e);
+                        } else {
+                          field.onChange(value);
+                          setPeople(e);
+                        }
+                      }}
+                    />
+                  )}
+                />
+
+                <p className="">{errors?.people?.message || ""}</p>
               </div>
               <div
-                className={`form__container-wrapper w-[25%]  ${
+                className={`form__container-wrapper  xs:w-full md:w-[25%]  ${
                   errors?.phone?.message
                     ? "annimated-horizontal error animated-bounceHorizontal"
                     : "success"
@@ -275,7 +339,7 @@ const ContactPage = () => {
                 <p className="">{errors?.phone?.message || ""}</p>
               </div>
             </div>
-            <div className="form__container gap-[30px]">
+            <div className="form__container xs:gap-[6px] md:gap-[30px]">
               <div className="form__container-wrapper w-full ">
                 <label htmlFor="note">Ghi chú</label>
                 <textarea
@@ -286,47 +350,49 @@ const ContactPage = () => {
                   cols="30"
                   rows="14"
                 ></textarea>
-                <p className="">{errors?.note?.message}</p>
               </div>
             </div>
           </div>
           <div className="flex justify-center">
-            <Button>Booking</Button>
+            <Button onClick={handleSubmit(handleBooking)}>Booking</Button>
           </div>
         </div>
       </section>
-      <div className="container">
-        <section className="scsupport flex items-center justify-start -mx-[10px]">
-          {optionContact?.map((item) => (
-            <a
-              target={item?.targetBlank ? "_blank" : ""}
-              href={item?.href ? item?.href : false}
-              className="draw text-16px font-osr leading-[24px] p-[16px_20px] 
-                          border border-primary border-solid rounded-lg relative 
-                          after:w-[6px] after:absolute after:top-1/2 after:-translate-y-1/2 
-                          after:left-0 after:bg-primary after:h-[70%] w-[calc(25%-30px)] mx-[10px]
-                          flex justify-center gap-1 items-center flex-col cursor-pointer group"
-            >
-              {item?.icon()}
-              <span className="group-hover:text-primary font-om text-black-333 duration-400 transition-colors">
-                {item?.title}
-              </span>
-              <span className="group-hover:text-primary text-sm block duration-400 transition-colors ">
-                {item?.desc}
-              </span>
-            </a>
-          ))}
-        </section>
-      </div>
-      <div className="container">
-        <section className="scmap mt-[50px] border-[4px] border-solid border-[#f7f7f7]">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.507054584115!2d106.66578147583827!3d10.772422659265922!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752fd931514ee9%3A0xf016c085433df551!2sKT%20Beauty.Studio!5e0!3m2!1sen!2s!4v1705571171498!5m2!1sen!2s"
-            width="100%"
-            height="550"
-          ></iframe>
-        </section>
-      </div>
+      <section className="scsupport ">
+        <div className="container ">
+          <div className="flex flex-wrap items-center justify-center -mx-[10px] gap-y-[20px]">
+            {optionContact?.map((item) => (
+              <a
+                key={item?.title}
+                target={item?.targetBlank ? "_blank" : ""}
+                href={item?.href ? item?.href : false}
+                className="draw text-16px font-osr leading-[24px] p-[16px_20px] 
+                            border border-primary border-solid rounded-lg relative 
+                            flex justify-center gap-1 items-center flex-col cursor-pointer group
+                            xl:w-[calc(25%-20px)] md:w-[calc(33.33333%-20px)] xs:w-2/3 mx-[10px] 
+                            after:w-[6px] after:absolute after:top-1/2 after:-translate-y-1/2 
+                            after:left-0 after:bg-primary after:h-[70%] 
+                            "
+              >
+                {item?.icon()}
+                <span className="group-hover:text-primary font-om text-black-333 duration-400 transition-colors">
+                  {item?.title}
+                </span>
+                <span className="group-hover:text-primary text-sm block duration-400 transition-colors ">
+                  {item?.desc}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="scmap mt-[50px]  ">
+        <iframe
+          className="xl:h-[550px] md:h-[450px] xs:h-[300px]"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.507054584115!2d106.66578147583827!3d10.772422659265922!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752fd931514ee9%3A0xf016c085433df551!2sKT%20Beauty.Studio!5e0!3m2!1sen!2s!4v1705571171498!5m2!1sen!2s"
+          width="100%"
+        ></iframe>
+      </section>
     </main>
   );
 };

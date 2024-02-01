@@ -2,7 +2,8 @@ import QuantityInput from "@/assets/Input/QuantityInput";
 import BreadCrumb from "@/components/BreadCrumb";
 import Button from "@/components/Button";
 import { PATHS } from "@/contants/path";
-import { cartActions, updateCart } from "@/store/reducer/cartReducer";
+import { THUNK_STATUS } from "@/contants/thunkstatus";
+import { cartActions } from "@/store/reducer/cartReducer";
 import { formatPriceVND } from "@/utils/formatPrice";
 import useWindowSize from "@/utils/windowResize";
 import { Empty, Select, Steps, message } from "antd";
@@ -11,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useCartPage from "./useCartPage";
-import { THUNK_STATUS } from "@/contants/thunkstatus";
 const StepsWrapper = styled.div`
   .ant-steps-item-icon {
     background-color: #555 !important;
@@ -163,8 +163,12 @@ const CartPage = () => {
       }
     }
   }, [products, subTotal, shippingCurrent, total]);
+  useEffect(() => {
+    dispatch(cartActions.setSubTotal(0));
+    dispatch(cartActions.setTotal(0));
+  }, [cartInfo?.products?.length < 1]);
   const handleSubmit = () => {
-    if (!!!cartInfo?._id) {
+    if (!!!cartInfo?._id || cartInfo?.products?.length < 1) {
       message.error(`Oh, bạn chưa có sản phẩm nào trong giỏ hàng`);
     } else {
       if (!shippingCurrent || shippingCurrent?.value === "default") {
@@ -178,12 +182,9 @@ const CartPage = () => {
     <main className="main-wrapper cartpage">
       <div className="container">
         <BreadCrumb>
-          <BreadCrumb.Item>
-            <Link to={`${PATHS.HOME}`}>Home</Link>
-          </BreadCrumb.Item>
-          <BreadCrumb.Item isActive>
-            <Link>Giỏ Hàng</Link>
-          </BreadCrumb.Item>
+          <BreadCrumb.Item link={`${PATHS.HOME}`}>Home</BreadCrumb.Item>
+
+          <BreadCrumb.Item isActive>Giỏ Hàng</BreadCrumb.Item>
         </BreadCrumb>
         <div className="bg-advertising-banner-2 bg-no-repeat bg-cover xs:h-[100px] md:h-[140px] w-full relative ">
           <h3 className="font-om xs:text-[26px] w-full text-center md:text-[40px] text-white center-absolute z-20">
@@ -235,7 +236,6 @@ const CartPage = () => {
                       <Link
                         to={`${PATHS.SHOP.INDEX}/${product_id}`}
                         className="leading-[20px] hover:text-primary duration-400 transition-colors"
-                        href=""
                       >
                         {name}
                       </Link>
@@ -394,17 +394,14 @@ const CartPage = () => {
                 {`${
                   subTotal < 1 * million
                     ? discountCodeCurrent?.name
-                    : "-" + formatPriceVND(discountCodeCurrent?.price)
+                    : discountCodeCurrent?.price
+                    ? "-" + formatPriceVND(discountCodeCurrent?.price)
+                    : formatPriceVND(discountCodeCurrent?.price)
                 }`}
               </p>
             </div>
-            <div
-              className="flex justify-between items-center 
-            p-[16px_20px]
-             "
-            >
+            <div className="flex justify-between items-center  p-[16px_20px] ">
               <h4 className="text-[16px] font-om text-black">Vận chuyển</h4>
-
               <Select
                 defaultValue={optionShippingNoDiscount?.[0]?.value}
                 value={shippingCurrent}
@@ -412,7 +409,6 @@ const CartPage = () => {
                 options={optionShippingNoDiscount}
               />
             </div>
-
             <div
               className="flex justify-between items-center p-[16px_20px] border-t border-solid
               border-grey-999"

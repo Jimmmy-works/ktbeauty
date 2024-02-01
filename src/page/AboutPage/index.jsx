@@ -89,15 +89,11 @@ const AboutPage = () => {
     <main className="main-wrapper aboutpage">
       <div className="relative md:h-[350px] xs:h-[200px] bg-about-banner bg-[50%_20%] bg-cover"></div>
       <BreadCrumb>
-        <BreadCrumb.Item>
-          <Link to={`${PATHS.HOME}`}>Trang chủ</Link>
-        </BreadCrumb.Item>
-        <BreadCrumb.Item isActive>
-          <Link>Về chúng tôi</Link>
-        </BreadCrumb.Item>
+        <BreadCrumb.Item link={`${PATHS.HOME}`}>Trang chủ</BreadCrumb.Item>
+        <BreadCrumb.Item isActive>Về chúng tôi</BreadCrumb.Item>
       </BreadCrumb>
       <div className="container  mt-[15px]">
-        <div className="">
+        <div className="mb-[30px]">
           <h2 className="font-osb text-lg uppercase text-black-555 mb-[12px]">
             về chúng tôi
           </h2>
@@ -114,7 +110,7 @@ const AboutPage = () => {
           </p>
         </div>
         <div
-          className="text-md font-osr leading-[24px] p-[47px_60px] mt-[30px]
+          className="text-md font-osr leading-[24px] xs:p-[20px_40px] md:p-[47px_60px] 
           border border-primary border-solid rounded-lg relative max-w-[900px]
           after:w-[10px] after:absolute after:top-1/2 after:-translate-y-1/2 
           after:left-0 after:bg-primary after:h-[70%] "
@@ -125,10 +121,10 @@ const AboutPage = () => {
           genuine experience. We believe in good, authentic design, in order to
           do what we do best
         </div>
-        <div className="whychooseus flex gap-[60px] items-start mt-[50px]">
+        <section className="whychooseus flex md:flex-row xs:flex-col xs:gap-[30px] md:gap-[60px] items-start mt-[50px]">
           <div
             ref={refWhychoosusLeft}
-            className="whychooseus__left w-[50%] pb-[50px]"
+            className="whychooseus__left md:w-[50%] xs:w-full md:pb-[50px]"
           >
             <h3 className="whychooseus__left-heading font-osb text-md uppercase text-black-555 mb-[30px]">
               Vì sao bạn nên lựa chọn ktbeauty
@@ -185,7 +181,7 @@ const AboutPage = () => {
               })}
             </div>
           </div>
-          <div className="whychooseus__right  flex justify-end w-[50%]">
+          <div className="whychooseus__right  flex justify-end md:w-[50%] xs:w-full">
             <img
               style={{
                 maxHeight: `390px`,
@@ -195,9 +191,9 @@ const AboutPage = () => {
               alt=""
             />
           </div>
-        </div>
+        </section>
       </div>
-      <div className="gallery py-[100px] mt-section bg-[#2c2c2c]">
+      <section className="gallery xs:py-[60px] md:py-[100px] mt-section bg-[#2c2c2c]">
         <div className="container ">
           <div className="gallery__list">
             <div className="gallery__list-item">
@@ -227,8 +223,8 @@ const AboutPage = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="people m-section">
+      </section>
+      <section className="people m-section">
         <div className="container">
           <div className="mb-[30px]">
             <h2 className="font-osb text-md uppercase text-black-555 mb-[12px]">
@@ -266,7 +262,7 @@ const AboutPage = () => {
             >
               {optionPeople?.map((item) => {
                 return (
-                  <SwiperSlide>
+                  <SwiperSlide key={item?.author}>
                     <div className="people__list-item gap-[40px] flex items-start">
                       <a className="pt-[7px] rounded-[50%] block w-[70px] h-[70px]">
                         <img
@@ -302,7 +298,7 @@ const AboutPage = () => {
             </Swiper>
           </div>
         </div>
-      </div>
+      </section>
     </main>
   );
 };

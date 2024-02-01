@@ -8,6 +8,7 @@ import {
   Drawer,
   Empty,
   Popconfirm,
+  Rate,
   Spin,
   Timeline,
   message,
@@ -51,19 +52,24 @@ const Order = () => {
   const { width } = useWindowSize();
   const [isActive, setIsActive] = useState(null);
   const sortOrderList = orderList?.data?.data?.slice()?.sort((a, b) => {
-    // return b.createdAt.localeCompare(a.createdAt);
     return (
       new Date(b?.createdAt)?.getTime() - new Date(a?.createdAt)?.getTime()
     );
   });
   const listRef = useRef([]);
-  const [open, setOpen] = useState(false);
-  const showDrawer = (_id) => {
-    setOpen(true);
-    handleDrawer(_id);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [controlDrawer, setControlDrawer] = useState();
+  const [drawerDataChild, setDrawerDataChild] = useState();
+  const [drawerData, setDrawerData] = useState();
+  /////
+  const handleShowDrawer = (id) => {
+    const find = orderList?.data?.data?.find((item) => item?._id === id);
+    setControlDrawer(id);
+    setDrawerData(find);
+    setOpenDrawer(true);
   };
-  const onClose = () => {
-    setOpen(false);
+  const handleCloseDrawer = () => {
+    setOpenDrawer(false);
   };
   const handleConfirmCancelOrder = (e) => {
     onCancelOrder({
@@ -72,12 +78,19 @@ const Order = () => {
       user_id: profile?._id,
     });
   };
-  const [drawerData, setDrawerData] = useState();
-  const handleDrawer = (id) => {
-    const find = orderList?.data?.data?.find((item) => item?._id === id);
-    setDrawerData(find);
+  ////
+  const [reviewText, setReviewText] = useState("");
+  const [reviewRating, setReviewRating] = useState([]);
+  const [childrenDrawer, setChildrenDrawer] = useState(false);
+  const showChildrenDrawer = (id) => {
+    setChildrenDrawer(true);
+    const find = drawerData?.products?.find((item) => item?._id === id);
+    setDrawerDataChild(find);
   };
-
+  const onChildrenDrawerClose = () => {
+    setChildrenDrawer(false);
+  };
+  console.log("first", drawerData);
   return (
     <div className="order ">
       <h3 className="text-[24px] font-ossb text-black-333 xs:my-[16px]">
@@ -89,6 +102,231 @@ const Order = () => {
         </div>
       ) : (
         <div className=" min-h-[400px]">
+          <Drawer
+            key={`order-${drawerData?._id}`}
+            title={`Chi tiết đơn hàng ${drawerData?._id}`}
+            placement="left"
+            rootClassName="my-drawer"
+            onClose={handleCloseDrawer}
+            open={controlDrawer === drawerData?._id && openDrawer}
+            width={768}
+            bodyStyle={{ padding: "0" }}
+          >
+            <Drawer
+              key={`order-${drawerDataChild?._id}`}
+              title={`Đánh giá sản phẩm `}
+              width={568}
+              placement="left"
+              rootClassName="my-drawer"
+              bodyStyle={{ paddingTop: "0" }}
+              onClose={onChildrenDrawerClose}
+              open={childrenDrawer}
+            >
+              <form className="form " action="">
+                <div className="form__container">
+                  <div className="form__container-wrapper w-full ">
+                    <div className="flex  gap-3 mb-[12px]">
+                      <a className="block h-[80px] w-[80px]">
+                        <img
+                          className="rounded-[6px] w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "/assets/img/error.png";
+                          }}
+                          src={drawerDataChild?.image[0]}
+                          alt=""
+                        />
+                      </a>
+                      <div className="flex justify-center flex-col ">
+                        <span>{drawerDataChild?.name}</span>
+                        <span>Số lượng: {drawerDataChild?.quantity}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="form__container ">
+                  <div className="form__container-wrapper w-full">
+                    <label className="font-om ">Chất lượng</label>
+                    <Rate
+                      onChange={setReviewRating}
+                      value={reviewRating}
+                      className="mt-[10px]"
+                      allowHalf
+                    />
+                  </div>
+                </div>
+                <div className="form__container-wrapper ">
+                  <label
+                    className="font-om "
+                    htmlFor={`reviewText-${drawerDataChild?._id}`}
+                  >
+                    Đánh giá
+                  </label>
+                  <textarea
+                    className="textarea"
+                    placeholder="Chia sẻ trải nghiệm và chất lượng thực tế của sản phẩm nhé"
+                    id={`reviewText-${drawerDataChild?._id}`}
+                    cols="30"
+                    rows="10"
+                    onChange={(e) => setReviewText(e.target.value)}
+                    value={reviewText}
+                  ></textarea>
+                </div>
+              </form>
+              <div className=" mt-[20px] flex justify-end">
+                <Button
+                  className={`font-om  p-[8px_12px]  h-full`}
+                  type="primary"
+                >
+                  Hoàn thành
+                </Button>
+              </div>
+            </Drawer>
+            <div className="w-full xs:p-[0] md:py-[15px] md:px-[20px] md:bg-[#f9f9f9] h-full">
+              {width < 768 && (
+                <h3 className="font-osb text-black-333 text-md my-[20px]">
+                  Giỏ hàng của bạn
+                </h3>
+              )}
+              <div className="pb-[20px] border-b border-solid border-[#e2e0e0]">
+                {drawerData?.products?.length &&
+                  drawerData?.products?.map((product, index) => {
+                    const { _id, price, quantity, image, name, discount } =
+                      product || {};
+                    return (
+                      <>
+                        <div
+                          key={_id}
+                          className="flex items-center justify-between gap-[15px] not-firstChild:mt-[14px]"
+                        >
+                          <div className="flex items-center gap-[12px]">
+                            <a
+                              className="relative min-w-[64px] min-h-[64px] rounded-[6px] border border-solid
+                                            border-[#e2e0e0] duration-400 transition-colors hover:border-primary group/hover"
+                            >
+                              <img
+                                onError={(e) => {
+                                  e.target.onerror = null;
+                                  e.target.src = "/assets/img/error.png";
+                                }}
+                                className="h-full w-full object-cover center-absolute rounded-[6px]"
+                                src={image?.[0]}
+                                alt=""
+                              />
+                              <span
+                                className="text-xs text-white font-om rounded-[50%] bg-[#908f8f]  h-[22px] w-[22px]
+                                             flex items-center justify-center absolute right-[-8px] top-[2px] -translate-y-1/2
+                                          group-hover/hover:bg-primary duration-400 transition-colors "
+                              >
+                                {quantity || 0}
+                              </span>
+                            </a>
+                            <a
+                              className="text-sm text-black-333 font-om truncate whitespace-normal line-clamp-4
+                                              duration-400 transition-colors hover:text-primary"
+                            >
+                              {name}
+                            </a>
+                          </div>
+                          <p className="text-xs text-primary font-osb">
+                            <div className=" text-xs text-primary font-osb flex gap-1 items-center justify-center">
+                              <span className="line-through text-black-555">
+                                {formatPriceVND(price)}
+                              </span>
+                              <span className="text-sm">
+                                {formatPriceVND(price - discount)}
+                              </span>
+                            </div>
+                          </p>
+                        </div>
+                        {drawerData?.status?.find((item) => {
+                          return item?.type === "complete";
+                        })?.type === "complete" && (
+                          <div className="flex justify-end">
+                            <Button
+                              onClick={() => showChildrenDrawer(_id)}
+                              className={`md:text-xs md:px-[15px] md:py-[5px]  `}
+                              type="primary"
+                            >
+                              Đánh giá
+                            </Button>
+                          </div>
+                        )}
+                      </>
+                    );
+                  })}
+              </div>
+              <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
+                <div className="flex items-center justify-between ">
+                  <h4 className="font-osb text-sm text-black-333">
+                    Tổng chưa giảm giá
+                  </h4>
+                  <p className="font-osb text-sm text-primary tracking-wider">
+                    {formatPriceVND(drawerData?.subTotal)}
+                  </p>
+                </div>
+                <div className="flex items-center justify-between mt-[20px]">
+                  <h4 className="font-osb text-sm text-black-333">
+                    Vận chuyển
+                  </h4>
+                  {drawerData?.shipping?.label && (
+                    <p className="capitalize font-osb text-sm text-primary">
+                      {drawerData?.shipping?.label}
+                    </p>
+                  )}
+                </div>
+              </div>
+              {drawerData?.discount?.hasOwnProperty("price") && (
+                <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
+                  <div className="flex items-start justify-between font-osb text-sm text-black-333">
+                    <p>Tổng giảm giá</p>
+                    <p className="text-primary tracking-wider">
+                      -
+                      {drawerData?.total >= 3 * 1000000 &&
+                      drawerData?.shipping?.price > 0
+                        ? formatPriceVND(
+                            drawerData?.discount?.price +
+                              drawerData?.shipping?.price
+                          )
+                        : formatPriceVND(drawerData?.discount?.price)}
+                    </p>
+                  </div>
+                  <div className="flex items-start justify-between mt-[14px] ">
+                    <p className="pl-[6px] font-om text-[12px] text-black-333">
+                      {`1. ` + drawerData?.discount?.type}
+                    </p>
+                    <p className="font-osb text-[12px] text-black-333 tracking-wider">
+                      {formatPriceVND(drawerData?.discount?.price)}
+                    </p>
+                  </div>
+                  <div className="flex items-start justify-between mt-[14px] ">
+                    <p className="pl-[6px] font-om text-[12px] text-black-333 ">
+                      {` ${
+                        drawerData?.subTotal >= 3 * 1000000 &&
+                        drawerData?.shipping?.price > 0
+                          ? `2. Miễn phí vận chuyển`
+                          : ""
+                      } `}
+                    </p>
+                    <p className="font-osb text-[12px] text-black-333 tracking-wider">
+                      {` ${
+                        drawerData?.subTotal >= 3 * 1000000 &&
+                        drawerData?.shipping?.price > 0
+                          ? formatPriceVND(drawerData?.shipping?.price)
+                          : ""
+                      }`}
+                    </p>
+                  </div>
+                </div>
+              )}
+              <div className=" py-[20px] flex items-center justify-between">
+                <h4 className="font-osb text-md text-black-333">Tổng cộng</h4>
+                <p className="font-osb text-md text-primary ">
+                  {formatPriceVND(drawerData?.total)}
+                </p>
+              </div>
+            </div>
+          </Drawer>
           {orderList?.data?.data?.length ? (
             sortOrderList?.map((item, index) => {
               const { _id, createdAt, status, total, discount } = item || {};
@@ -170,167 +408,16 @@ const Order = () => {
                         })}
                       />
                     </TimelineWrapper>
-                    <Drawer
-                      key={`${_id}`}
-                      title="Order"
-                      placement="left"
-                      onClose={onClose}
-                      open={open}
-                      bodyStyle={{ padding: "0" }}
-                    >
-                      <div
-                        key={`${_id}`}
-                        className="w-full xs:p-[0] md:py-[15px] md:px-[20px] md:bg-[#f9f9f9]"
-                      >
-                        {width < 768 && (
-                          <h3 className="font-osb text-black-333 text-md my-[20px]">
-                            Giỏ hàng của bạn
-                          </h3>
-                        )}
-                        <div className="pb-[20px] border-b border-solid border-[#e2e0e0]">
-                          {drawerData?.products?.length &&
-                            drawerData?.products?.map((product) => {
-                              const {
-                                _id,
-                                price,
-                                quantity,
-                                image,
-                                name,
-                                discount,
-                              } = product || {};
-                              return (
-                                <div
-                                  key={_id}
-                                  className="flex items-center justify-between gap-[15px] not-firstChild:mt-[14px]"
-                                >
-                                  <div className="flex items-center gap-[12px]">
-                                    <a
-                                      className="relative min-w-[64px] min-h-[64px] rounded-[6px] border border-solid
-                              border-[#e2e0e0] duration-400 transition-colors hover:border-primary group/hover"
-                                    >
-                                      <img
-                                        onError={(e) => {
-                                          e.target.onerror = null;
-                                          e.target.src =
-                                            "/assets/img/error.png";
-                                        }}
-                                        className="h-full w-full object-cover center-absolute rounded-[6px]"
-                                        src={image?.[0]}
-                                        alt=""
-                                      />
-                                      <span
-                                        className="text-xs text-white font-om rounded-[50%] bg-[#908f8f]  h-[22px] w-[22px]
-                                           flex items-center justify-center absolute right-[-8px] top-[2px] -translate-y-1/2
-                                        group-hover/hover:bg-primary duration-400 transition-colors "
-                                      >
-                                        {quantity || 0}
-                                      </span>
-                                    </a>
-                                    <a
-                                      className="text-sm text-black-333 font-om truncate whitespace-normal line-clamp-4
-                                            duration-400 transition-colors hover:text-primary"
-                                    >
-                                      {name}
-                                    </a>
-                                  </div>
-                                  <p className="text-xs text-primary font-osb">
-                                    <div className=" text-xs text-primary font-osb flex gap-1 items-center justify-center">
-                                      <span className="line-through text-black-555">
-                                        {formatPriceVND(price)}
-                                      </span>
-                                      <span className="text-sm">
-                                        {formatPriceVND(price - discount)}
-                                      </span>
-                                    </div>
-                                  </p>
-                                </div>
-                              );
-                            })}
-                        </div>
-                        <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
-                          <div className="flex items-center justify-between ">
-                            <h4 className="font-osb text-sm text-black-333">
-                              Tổng chưa giảm giá
-                            </h4>
-                            <p className="font-osb text-sm text-primary tracking-wider">
-                              {formatPriceVND(drawerData?.subTotal)}
-                            </p>
-                          </div>
-                          <div className="flex items-center justify-between mt-[20px]">
-                            <h4 className="font-osb text-sm text-black-333">
-                              Vận chuyển
-                            </h4>
-                            {drawerData?.shipping?.label && (
-                              <p className="capitalize font-osb text-sm text-primary">
-                                {drawerData?.shipping?.label}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                        {drawerData?.discount?.hasOwnProperty("price") && (
-                          <div className=" py-[20px] border-b border-solid border-[#e2e0e0] ">
-                            <div className="flex items-start justify-between font-osb text-sm text-black-333">
-                              <p>Tổng giảm giá</p>
-                              <p className="text-primary tracking-wider">
-                                -
-                                {total >= 3 * 1000000 &&
-                                drawerData?.shipping?.price > 0
-                                  ? formatPriceVND(
-                                      drawerData?.discount?.price +
-                                        drawerData?.shipping?.price
-                                    )
-                                  : formatPriceVND(drawerData?.discount?.price)}
-                              </p>
-                            </div>
-                            <div className="flex items-start justify-between mt-[14px] ">
-                              <p className="pl-[6px] font-om text-[12px] text-black-333">
-                                {`1. ` + drawerData?.discount?.type}
-                              </p>
-                              <p className="font-osb text-[12px] text-black-333 tracking-wider">
-                                {formatPriceVND(drawerData?.discount?.price)}
-                              </p>
-                            </div>
-                            <div className="flex items-start justify-between mt-[14px] ">
-                              <p className="pl-[6px] font-om text-[12px] text-black-333 ">
-                                {` ${
-                                  drawerData?.subTotal >= 3 * 1000000 &&
-                                  drawerData?.shipping?.price > 0
-                                    ? `2. Miễn phí vận chuyển`
-                                    : ""
-                                } `}
-                              </p>
-                              <p className="font-osb text-[12px] text-black-333 tracking-wider">
-                                {` ${
-                                  drawerData?.subTotal >= 3 * 1000000 &&
-                                  drawerData?.shipping?.price > 0
-                                    ? formatPriceVND(
-                                        drawerData?.shipping?.price
-                                      )
-                                    : ""
-                                }`}
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                        <div className=" py-[20px] flex items-center justify-between">
-                          <h4 className="font-osb text-md text-black-333">
-                            Tổng cộng
-                          </h4>
-                          <p className="font-osb text-md text-primary ">
-                            {formatPriceVND(drawerData?.total)}
-                          </p>
-                        </div>
-                      </div>
-                    </Drawer>
                     <div className="m-[8px_0_16px_0] flex gap-2">
                       <Button
-                        onClick={() => showDrawer(_id)}
+                        onClick={() => {
+                          handleShowDrawer(_id);
+                        }}
                         className={`md:text-xs md:px-[15px] md:py-[5px]  `}
                         variant="outline"
                       >
-                        Chi tiết
+                        Chi tiết & Đánh giá
                       </Button>
-
                       {status?.find((item) => {
                         return item?.type === "canceled";
                       })?.type !== "canceled" &&
@@ -360,8 +447,8 @@ const Order = () => {
                           >
                             <Button
                               danger
+                              type="dashed"
                               className={`md:text-xs md:px-[15px] md:py-[5px]  `}
-                              variant="outline"
                             >
                               Hủy
                             </Button>

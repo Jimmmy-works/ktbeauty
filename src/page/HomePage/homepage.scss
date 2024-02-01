@@ -4,16 +4,30 @@
       .schero__slider-prev,
       .schero__slider-next {
         @apply opacity-100 visible;
+        .icon {
+          path {
+            @apply fill-white;
+          }
+        }
       }
     }
     &-prev,
     &-next {
-      @apply bg-white absolute  top-1/2 -translate-y-1/2 xs:p-[6px] md:p-[11px]
+      @apply bg-white absolute top-1/2 -translate-y-1/2 xs:p-[6px] md:p-[11px]
         rounded-[50%] hover:bg-primary duration-400 transition-all cursor-pointer
          md:opacity-0 md:invisible z-10;
+      .icon {
+        @apply p-[2px] rounded-[50%] bg-primary duration-400 transition-colors;
+        svg {
+          @apply md:w-[14px] md:h-[14px] xs:h-[10px] xs:w-[10px];
+        }
+        path {
+          @apply fill-primary duration-400 transition-colors;
+        }
+      }
     }
     &-prev {
-      @apply left-[16px];
+      @apply left-[16px] rotate-180;
     }
     &-next {
       @apply right-[16px];

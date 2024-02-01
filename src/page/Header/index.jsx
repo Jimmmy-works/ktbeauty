@@ -218,6 +218,16 @@ const Header = () => {
   const refHeader = useRef(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [toggleSearch, setToggleSearch] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [controlDrawer, setControlDrawer] = useState("");
+  const handleShowDrawer = (id) => {
+    setControlDrawer(id);
+    setOpenDrawer(true);
+  };
+  const handleCloseDrawer = () => {
+    setOpenDrawer(false);
+    setControlDrawer("");
+  };
   const onChangeSearch = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -241,20 +251,19 @@ const Header = () => {
   };
   const max = 20;
   const min = 1;
-  useEffect(() => {
-    const time = setTimeout(() => {
-      onSearchProduct(searchTerm);
-    }, 500);
-    if (!toggleSearch) {
-      setSearchTerm("");
-    }
-    return () => clearTimeout(time);
-  }, [toggleSearch]);
+  // useEffect(() => {
+  //   const time = setTimeout(() => {
+  //     onSearchProduct(searchTerm);
+  //   }, 500);
+  //   if (!toggleSearch) {
+  //     setSearchTerm("");
+  //   }
+  //   return () => clearTimeout(time);
+  // }, [toggleSearch]);
   useEffect(() => {
     setSearchTerm("");
-    setOpen("");
+    handleCloseDrawer();
   }, [pathname]);
-  const [categoryTab, setCategoryTab] = useState();
   return (
     <header className={`header`} ref={refHeader}>
       <div className="header__advertisement">
@@ -315,7 +324,6 @@ const Header = () => {
                     : `${PATHS?.SHOP?.INDEX}`
                 }`}
                 onClick={() => {
-                  setCategoryTab(categoryAll);
                   setValueChecked([]),
                     setRenderChecked([]),
                     setValueCheckedSex([]),
@@ -343,8 +351,7 @@ const Header = () => {
                       <li key={`${item?._id}`}>
                         <NavLink
                           onClick={() => {
-                            setCategoryTab(item?._id),
-                              setValueChecked([item?._id]);
+                            setValueChecked([item?._id]);
                             setRenderChecked([item]);
                           }}
                           to={`${PATHS.SHOP.INDEX}?${queryString.stringify({
@@ -481,7 +488,7 @@ const Header = () => {
               first-letter: before:h-[20px] ${
                 toggleSearch ? "before:block " : "before:hidden"
               }`}
-            onClick={() => showDrawer("search")}
+            onClick={() => handleShowDrawer("search")}
           >
             <div
               onClick={onToggleSearch}
@@ -501,12 +508,13 @@ const Header = () => {
             rootClassName="my-drawer"
             title={`Tìm kiếm sản phẩm`}
             placement="right"
-            onClose={onClose}
-            open={open === "search"}
+            destroyOnClose
+            onClose={handleCloseDrawer}
+            open={controlDrawer === "search-drawer" && openDrawer}
             contentWrapperStyle={{ width: "460px" }}
             footer={
               <div
-                onClick={onClose}
+                onClick={handleCloseDrawer}
                 className={`flex justify-center items-center `}
               >
                 <Button
@@ -658,7 +666,7 @@ const Header = () => {
           </Drawer>
           <li
             className="header__info-whitelist group/hover mb-[2px] relative"
-            onClick={() => showDrawer("whitelist")}
+            onClick={() => handleShowDrawer("whitelist")}
           >
             <div className="relative ">
               <span
@@ -681,13 +689,14 @@ const Header = () => {
             rootClassName="my-drawer"
             title="Sản phẩm yêu thích"
             placement="right"
-            onClose={onClose}
-            open={open === "whitelist"}
+            destroyOnClose
+            onClose={handleCloseDrawer}
+            open={controlDrawer === "whitelist" && openDrawer}
             contentWrapperStyle={{ width: "460px" }}
             footer={
               <div
                 className={`flex flex-col gap-[12px] items-start justify-start `}
-                onClick={onClose}
+                onClick={handleCloseDrawer}
               >
                 <p className="font-ossb text-15px text-black">Ưu đãi</p>
                 <p className="font-om  text-black">
@@ -852,7 +861,7 @@ const Header = () => {
           </Drawer>
           <li
             className="header__info-cart group/hover mb-[2px] relative"
-            onClick={() => showDrawer("cart")}
+            onClick={() => handleShowDrawer("cart")}
           >
             <div className="quantity relative">
               <span
@@ -875,12 +884,13 @@ const Header = () => {
             rootClassName="my-drawer"
             title="Giỏ hàng của bạn"
             placement="right"
-            onClose={onClose}
+            destroyOnClose
+            onClose={handleCloseDrawer}
             footer={
               cartInfo?.products?.length && (
                 <div
                   className={`flex flex-col gap-[12px] items-start justify-center`}
-                  onClick={onClose}
+                  onClick={handleCloseDrawer}
                 >
                   <div
                     className={`w-full flex gap-1 items-center justify-between text-15px font-osb text-black`}
@@ -910,7 +920,7 @@ const Header = () => {
                 </div>
               )
             }
-            open={open === "cart"}
+            open={controlDrawer === "cart" && openDrawer}
             contentWrapperStyle={{ width: "460px" }}
           >
             <div className="flex flex-col h-full">

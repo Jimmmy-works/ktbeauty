@@ -11,7 +11,7 @@ const Textbox = ({
   if (textSlider)
     return (
       <div
-        className={`textbox center-absolute text-center w-full ${
+        className={`textbox center-absolute  text-center w-full ${
           className ?? ""
         }`}
       >

@@ -693,9 +693,9 @@
   }
 }
 :where(.css-dev-only-do-not-override-18iikkb).ant-btn-primary {
-  background-color: #555 !important;
+  background-color: #ff887b !important;
   &:hover {
-    background-color: #ff887b !important;
+    @apply opacity-[80%];
   }
 }
 .ant-slider {

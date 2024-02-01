@@ -37,7 +37,7 @@ const DashboardOrder = () => {
     dispatch(getDetailOrder(id));
     setOpenDrawer(true);
   };
-  const handleCloseDrawer = (index) => {
+  const handleCloseDrawer = () => {
     setOpenDrawer(false);
   };
   const handleButtonMessage = (status, title) => {
@@ -51,7 +51,7 @@ const DashboardOrder = () => {
     dispatch(getDetailOrder(id));
     setOpenPDF(true);
   };
-  const handleClosePDF = (index) => {
+  const handleClosePDF = () => {
     setOpenPDF(false);
   };
   const handleCancelConfirmOrder = (e) => {
@@ -358,7 +358,7 @@ const DashboardOrder = () => {
               bodyStyle={{ padding: 0 }}
               title="Order"
               placement="right"
-              onClose={() => handleCloseDrawer(index)}
+              onClose={handleCloseDrawer}
               open={controlDrawer === order?._id && openDrawer}
             >
               <div className=" w-full xs:p-[0] md:py-[15px] md:px-[20px] md:bg-[#f9f9f9]">
